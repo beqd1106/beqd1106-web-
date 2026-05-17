@@ -1,0 +1,75 @@
+name: 官公庁サイト更新監視 & 自動デプロイ
+
+on:
+  schedule:
+    # 毎週月曜日 00:00 UTC = 09:00 JST
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+    # GitHub の Actions タブから手動実行も可能
+
+jobs:
+  monitor-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # コミット・プッシュに必要
+
+    steps:
+      # ── 1. チェックアウト ──────────────────────────────
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── 2. Python セットアップ ────────────────────────
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: nursing/scripts/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r nursing/scripts/requirements.txt
+
+      # ── 3. 監視スクリプト実行 ─────────────────────────
+      - name: Run update checker
+        id: checker
+        run: python nursing/scripts/check_updates.py
+
+      # ── 4. 変更があればコミット & プッシュ ────────────
+      #    （Cloudflare Pages の GitHub 連携が有効なら push で自動デプロイ）
+      - name: Commit changes
+        run: |
+          git config user.name  "FukushiGuideBot"
+          git config user.email "bot@noreply.github.com"
+          git add nursing/news.js nursing/scripts/monitor_state.json
+          if git diff --staged --quiet; then
+            echo "変更なし - コミットをスキップ"
+          else
+            git commit -m "🔔 官公庁サイト更新検知: $(TZ=Asia/Tokyo date +'%Y-%m-%d')"
+            git push
+          fi
+
+      # ── 5. Cloudflare Pages へ直接デプロイ（バックアップ手段） ──
+      #    GitHub 連携で自動デプロイされる場合はこのステップは任意
+      #    シークレット CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID を設定すると有効になる
+      - name: Deploy to Cloudflare Pages
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npm install -g wrangler --silent
+          wrangler pages deploy . --project-name=beqd1106-web --commit-dirty=true
+
+      # ── 6. 結果サマリー ───────────────────────────────
+      - name: Summary
+        run: |
+          echo "## 🔍 監視結果" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.checker.outputs.changed }}" = "true" ]; then
+            echo "✅ **更新を検知** — news.js を更新してデプロイしました。" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ 変更なし。定期確認のみ実行しました。" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "実行日時: $(TZ=Asia/Tokyo date +'%Y-%m-%d %H:%M JST')" >> $GITHUB_STEP_SUMMARY
