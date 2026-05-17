@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>請求業務 ｜ 障碍者福祉事業所 運営ガイド</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <a href="index.html" class="site-logo">🏥 障碍者福祉 運営ガイド</a>
+  <nav class="site-nav">
+    <a href="index.html">TOP</a>
+    <a href="01_法令・制度.html">⚖️ 法令</a>
+    <a href="02_必要書類.html">📋 書類</a>
+    <a href="03_管理業務.html">📅 管理</a>
+    <a href="04_京都府・手続き.html">🏛️ 京都府</a>
+    <a href="05_請求業務.html" class="active">💴 請求</a>
+    <a href="06_就労継続A型.html">🏢 A型</a>
+    <a href="07_就労継続B型.html">🏭 B型</a>
+    <a href="08_相談支援.html">💬 相談</a>
+    <a href="09_監査対応.html">🔍 監査</a>
+    <a href="10_収入向上.html">📈 収入</a>
+    <a href="11_年間スケジュール.html">📆 年間</a>
+    <a href="12_QA.html">❓ Q&amp;A</a>
+    <a href="フォーマット/index.html" style="background:var(--coral-light);color:var(--coral-dark);border:1px solid var(--coral-mid);">📁 様式DL</a>
+  </nav>
+</header>
+<div class="page-hero-sm">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">💴 請求業務</div>
+      <h1>訪問看護 請求業務ガイド</h1>
+      <p>医療保険・障害福祉サービスの請求の仕組み、加算一覧（体制届要否・算定詳細）、収益試算、月次チェックリストをまとめています。</p>
+    </div><div class="hero-img"><img src="images/billing.png" alt=""></div>
+  </div>
+</div>
+<main class="container">
+  <a href="index.html" class="back-link">← TOPに戻る</a>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">💴</span><h2>訪問看護の請求の仕組み</h2></div>
+    <div class="two-col">
+      <div>
+        <h4 style="color:var(--coral-dark);margin-bottom:0.75rem;">医療保険（訪問看護療養費）</h4>
+        <div class="alert alert-info" style="font-size:0.83rem;">
+          <strong class="alert-hdr">主な対象</strong>精神科訪問看護（全年齢）・40歳未満・特定疾患（別表第7）の患者<br>
+          <strong>請求先：</strong>社会保険診療報酬支払基金（健保）・国保連（国保）<br>
+          <strong>サイクル：</strong>当月分→翌月10日まで提出→翌々月末入金
+        </div>
+      </div>
+      <div>
+        <h4 style="color:var(--coral-dark);margin-bottom:0.75rem;">障害福祉サービス費</h4>
+        <div class="alert alert-info" style="font-size:0.83rem;">
+          <strong class="alert-hdr">主な対象</strong>障害支援区分の認定を受けた障碍者（居宅介護等）<br>
+          <strong>請求先：</strong>国保連（障害福祉サービス費）<br>
+          <strong>サイクル：</strong>当月分→翌月10日まで提出→翌々月末入金
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-warning" style="margin-top:0.75rem;">
+      <strong class="alert-hdr">💡 金額について</strong>
+      以下の金額はすべて<strong>2024年6月診療報酬改定後の参考値</strong>です。改定により変更される場合がありますので、必ず厚生労働省の最新告示・通知でご確認ください。
+      <span class="src-badge">出典: 厚生労働省「訪問看護療養費に係る指定訪問看護の費用の額の算定方法」令和6年告示</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">📋</span><h2>訪問看護基本療養費（2024年6月改定）</h2></div>
+    <div class="table-wrap"><table>
+      <tr><th>種別</th><th>算定額（参考）</th><th>対象・条件</th><th>詳細</th></tr>
+      <tr>
+        <td><strong>訪問看護基本療養費(I)イ</strong><br><small>週3日目まで（1日1回）</small></td>
+        <td>5,610円/日</td>
+        <td>一般の在宅患者・居宅で1人の利用者に訪問</td>
+        <td><button class="popup-btn" onclick="openPopup('p05-kihon1')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>訪問看護基本療養費(I)イ</strong><br><small>週4日目以降</small></td>
+        <td>6,610円/日</td>
+        <td>厚生労働大臣が定める疾患等（別表第7）の患者</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>精神科訪問看護基本療養費(I)</strong><br><small>週3日目まで</small></td>
+        <td>5,610円/日</td>
+        <td>精神科を標榜する保険医から「精神科訪問看護指示書」取得済みの患者</td>
+        <td><button class="popup-btn" onclick="openPopup('p05-seishin-kihon')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>精神科訪問看護基本療養費(I)</strong><br><small>週4日目以降</small></td>
+        <td>6,610円/日</td>
+        <td>精神科疾患の急性増悪等で週4日以上の訪問が必要な場合（特別指示書取得）</td>
+        <td></td>
+      </tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">➕</span><h2>訪問看護 加算一覧（医療保険）</h2></div>
+    <div class="alert alert-danger">
+      <strong class="alert-hdr">⚠️ 体制届が必要な加算は事前に届出を！</strong>
+      体制届を前月末日までに国保連・支払基金に提出しないと翌月から算定できません。算定開始前に必ず確認を。
+    </div>
+    <div class="dl-box">
+      <div class="dl-box-title">📥 加算体制届・処遇改善関連様式</div>
+      <div class="dl-links">
+        <a href="フォーマット/05_処遇改善加算様式/01_処遇改善計画書（R7年度）.xlsx" class="dl-btn official">処遇改善計画書（R7）</a>
+        <a href="フォーマット/05_処遇改善加算様式/02_処遇改善実績報告書.xlsx" class="dl-btn official">処遇改善実績報告書</a>
+        <a href="フォーマット/05_処遇改善加算様式/03_特定処遇改善計画書.xlsx" class="dl-btn official">特定処遇改善計画書</a>
+        <a href="フォーマット/05_処遇改善加算様式/04_ベースアップ等支援加算計画書.xlsx" class="dl-btn official">ベースアップ等加算計画書</a>
+      </div>
+    </div>
+    <div class="table-wrap"><table>
+      <tr><th>加算名</th><th>算定額（参考）</th><th>算定要件（概要）</th><th>体制届</th><th>詳細</th></tr>
+      <tr>
+        <td><strong>24時間対応体制加算</strong></td>
+        <td class="rev-chip">6,520円/月</td>
+        <td>24時間365日の連絡・緊急訪問体制の整備。担当看護師の連絡先を利用者に提供。</td>
+        <td><span class="badge badge-danger">届出必要</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p05-24h')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>特別管理加算（Ⅰ）</strong></td>
+        <td class="rev-chip">5,100円/月</td>
+        <td>厚生労働大臣が定める疾患等（別表第7）の患者：人工呼吸器・気管切開・悪性腫瘍末期・真皮超える褥瘡・週3日以上の点滴等</td>
+        <td><span class="badge badge-danger">届出必要</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p05-tokukanI')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>特別管理加算（Ⅱ）</strong></td>
+        <td class="rev-chip">2,550円/月</td>
+        <td>留置カテーテル・人工肛門・人工膀胱・疼痛コントロール・真皮超えない褥瘡の者</td>
+        <td><span class="badge badge-danger">届出必要</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p05-tokukanII')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>緊急訪問看護加算</strong></td>
+        <td class="rev-chip">2,650円/回</td>
+        <td>計画外の緊急訪問。<span class="warn-chip">24時間対応体制加算の届出が算定の前提条件</span></td>
+        <td><span class="badge badge-gray">要件参照</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p05-kinkyuu')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>退院時共同指導加算</strong></td>
+        <td class="rev-chip">8,000円/回<br><small>（特別管理対象は16,000円）</small></td>
+        <td>入院中の患者の退院前に病院スタッフと共同で指導を行う</td>
+        <td><span class="badge badge-success">届出不要</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p05-taiin')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>長時間訪問看護加算</strong></td>
+        <td class="rev-chip">5,200円/回</td>
+        <td>1回の訪問が90分を超えた場合。対象は特別管理加算の対象者・急性増悪等の患者。</td>
+        <td><span class="badge badge-success">届出不要</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p05-chojikan')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>ターミナルケア加算</strong></td>
+        <td class="rev-chip">25,000円/月</td>
+        <td>死亡月に在宅でのターミナルケアを実施（死亡前14日間に2回以上訪問が条件）</td>
+        <td><span class="badge badge-success">届出不要</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p05-terminal')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>夜間・早朝訪問看護加算</strong></td>
+        <td class="rev-chip">2,100円/回</td>
+        <td>午後6時〜午後10時・午前6時〜午前8時の時間帯に訪問</td>
+        <td><span class="badge badge-success">届出不要</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p05-yakan')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>深夜訪問看護加算</strong></td>
+        <td class="rev-chip">4,200円/回</td>
+        <td>午後10時〜午前6時の時間帯に訪問</td>
+        <td><span class="badge badge-success">届出不要</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>訪問看護情報提供療養費</strong></td>
+        <td class="rev-chip">1,500円/回</td>
+        <td>学校・保育所・市区町村等に主治医の指示のもと情報提供を行った場合</td>
+        <td><span class="badge badge-success">届出不要</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p05-joho')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>複数名訪問看護加算（Ⅰ）</strong></td>
+        <td class="rev-chip">4,500円/回</td>
+        <td>看護師等2名が同時に訪問。暴力行為等の危険がある患者・特別管理加算対象者等。</td>
+        <td><span class="badge badge-success">届出不要</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p05-fukusu')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>精神科複数回訪問加算（Ⅰ）</strong></td>
+        <td class="rev-chip">4,500円/日</td>
+        <td>精神科訪問看護で1日に2回以上訪問した場合</td>
+        <td><span class="badge badge-success">届出不要</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>処遇改善加算（Ⅰ）</strong></td>
+        <td>所定費用×13.7%</td>
+        <td>職員の賃金改善計画（キャリアパス要件Ⅰ〜Ⅲ＋職場環境等要件）をすべて満たす場合</td>
+        <td><span class="badge badge-danger">届出必要</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p05-shoryo')">詳細▼</button></td>
+      </tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">📊</span><h2>収益シミュレーション（訪問看護 医療保険）</h2></div>
+    <div class="alert alert-info">
+      <strong class="alert-hdr">モデル試算：利用者10名・月20訪問/人の場合</strong>
+    </div>
+    <div class="table-wrap"><table>
+      <tr><th>項目</th><th>計算式</th><th>金額（参考）</th></tr>
+      <tr><td>基本療養費（週3日以内）</td><td>5,610円 × 10名 × 20回</td><td>1,122,000円</td></tr>
+      <tr><td>24時間対応体制加算</td><td>6,520円 × 10名</td><td>65,200円</td></tr>
+      <tr><td>特別管理加算(Ⅱ)（3名分）</td><td>2,550円 × 3名</td><td>7,650円</td></tr>
+      <tr><td><strong>月次売上合計（概算）</strong></td><td></td><td><strong>1,194,850円</strong></td></tr>
+      <tr><td>処遇改善加算(Ⅰ) 上乗せ</td><td>1,194,850円 × 13.7%</td><td>+163,695円</td></tr>
+      <tr><td><strong>処遇改善含む月次合計</strong></td><td></td><td><strong>約1,358,545円</strong></td></tr>
+    </table></div>
+    <p style="font-size:0.8rem;color:var(--text-light);">※上記はあくまでも参考試算です。実際の金額は利用者の状態・訪問回数・加算要件によって大きく異なります。</p>
+  </div>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">🗓️</span><h2>月次請求業務チェックリスト</h2></div>
+    <div class="table-wrap"><table>
+      <tr><th>タイミング</th><th>チェック項目</th><th>詳細</th></tr>
+      <tr><td><strong>月末まで</strong></td><td>訪問看護計画書・報告書の作成完了。利用者署名取得。主治医への報告書送付。</td><td><button class="popup-btn" onclick="openPopup('p05-tsukimatsu')">詳細▼</button></td></tr>
+      <tr><td><strong>翌月1〜5日</strong></td><td>サービス提供実績の集計。加算の算定要件の確認（訪問回数・時間・状態等）。</td><td></td></tr>
+      <tr><td><strong>翌月5〜9日</strong></td><td>請求ソフトへのデータ入力・レセプト作成。エラーチェック・修正。</td><td><button class="popup-btn" onclick="openPopup('p05-soft')">詳細▼</button></td></tr>
+      <tr><td><strong>翌月10日まで</strong></td><td>国保連・支払基金へのデータ伝送または媒体提出（締切厳守！）</td><td></td></tr>
+      <tr><td><strong>翌々月10日頃</strong></td><td>過誤・返戻の通知確認。必要な場合は再請求の手続き。</td><td><button class="popup-btn" onclick="openPopup('p05-henrei')">詳細▼</button></td></tr>
+      <tr><td><strong>翌々月末</strong></td><td>入金確認。請求額と入金額の照合。差異がある場合は原因を確認。</td><td></td></tr>
+    </table></div>
+  </div>
+
+<dialog id="p05-kihon1">
+  <div class="popup-header"><h3>訪問看護基本療養費の算定ルール</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>週の訪問回数のカウント</h4>
+  <ul>
+    <li>月曜〜日曜を1週として計算（暦週）</li>
+    <li>週3日目まで：5,610円/日</li>
+    <li>週4日目以降：6,610円/日（「厚生労働大臣が定める疾患等」の患者のみ）</li>
+    <li>通常の患者は週3日を超える訪問は医療保険では原則算定不可（特別指示書が必要）</li>
+  </ul>
+  <h4>「厚生労働大臣が定める疾患等」（別表第7）の例</h4>
+  <ul>
+    <li>末期悪性腫瘍・多発性硬化症・重症筋無力症・スモン・ALS（筋萎縮性側索硬化症）</li>
+    <li>脊髄小脳変性症・ハンチントン病・進行性筋ジストロフィー症</li>
+    <li>パーキンソン病関連疾患（ホーエン・ヤールⅢ度以上かつ生活機能障害度Ⅱ度以上）</li>
+    <li>多系統萎縮症・プリオン病・亜急性硬化性全脳炎</li>
+    <li>その他：医療保険の訪問看護が1日複数回・週4日以上可能な疾患</li>
+  </ul>
+<div class="popup-source">📎 出典: 厚生労働省「訪問看護療養費に係る指定訪問看護の費用の額の算定方法」令和6年告示・別表第7</div></div>
+</dialog>
+
+<dialog id="p05-seishin-kihon">
+  <div class="popup-header"><h3>精神科訪問看護の算定要件</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>精神科訪問看護基本療養費の算定要件</h4>
+  <ul>
+    <li>精神科を標榜する保険医療機関の主治医から「精神科訪問看護指示書」を取得していること</li>
+    <li>精神疾患を有する患者であること</li>
+    <li>訪問を行う看護師等が精神科の経験を有すること（精神科病棟等での6ヶ月以上の勤務経験等）</li>
+  </ul>
+  <h4>算定できる加算</h4>
+  <ul>
+    <li>精神科緊急訪問看護加算：2,650円/回（計画外の緊急訪問）</li>
+    <li>精神科複数回訪問加算(Ⅰ)：4,500円/日（1日2回以上の訪問）</li>
+    <li>精神科複数名訪問看護加算(Ⅰ)：4,500円/回（看護師2名以上の訪問）</li>
+    <li>長期入院後在宅移行時加算：2,000円/日（退院後3ヶ月以内、精神科病院から1年以上入院患者）</li>
+  </ul>
+  <h4>特記事項</h4>
+  <p>精神科訪問看護基本療養費を算定している場合は、同月に通常の訪問看護基本療養費(Ⅰ)は原則算定できない。</p>
+<div class="popup-source">📎 出典: 厚生労働省「訪問看護療養費に係る指定訪問看護の費用の額の算定方法」令和6年告示</div></div>
+</dialog>
+
+<dialog id="p05-24h">
+  <div class="popup-header"><h3>24時間対応体制加算 算定詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>算定要件</h4>
+  <ul>
+    <li>看護師等（または准看護師）が24時間365日、利用者からの連絡に対応できる体制を整備していること</li>
+    <li>緊急時に訪問できる体制を確保していること（オンコール体制）</li>
+    <li>利用者・家族に24時間連絡可能な担当者の電話番号を提供していること</li>
+  </ul>
+  <h4>必要な書類・届出</h4>
+  <ul>
+    <li>「24時間対応体制に係る届出書」を国保連・支払基金に提出（算定開始月の前月末日まで）</li>
+    <li>オンコール担当者の一覧・シフト表（事業所内保管）</li>
+    <li>緊急連絡先の書面（利用者への交付記録）</li>
+  </ul>
+  <h4>収益への影響</h4>
+  <div class="rev-chip">利用者10名で月+65,200円</div>
+  <p>算定要件を整えさえすれば、ほぼ全利用者に算定できる。収益改善の最優先事項。</p>
+<div class="popup-source">📎 出典: 厚生労働省「訪問看護療養費に係る指定訪問看護の費用の額の算定方法」24時間対応体制加算</div></div>
+</dialog>
+
+<dialog id="p05-tokukanI">
+  <div class="popup-header"><h3>特別管理加算（Ⅰ）算定詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>対象となる状態（厚生労働大臣が定める状態等・別表第8）</h4>
+  <ul>
+    <li>人工肺（ECMO）・人工呼吸器（在宅人工呼吸）の使用</li>
+    <li>気管切開の処置（人工気道管理）</li>
+    <li>真皮を超える褥瘡（DESIGN-Rの重症度がD3以上）</li>
+    <li>点滴注射を週3日以上行う必要がある状態</li>
+    <li>末期悪性腫瘍・多発性硬化症・重症筋無力症・スモン・ALS等（別表第7の疾患）</li>
+  </ul>
+  <h4>算定ルール</h4>
+  <ul>
+    <li>月1回のみ算定可能</li>
+    <li>特別管理加算(Ⅰ)と(Ⅱ)は同月に併算定できない</li>
+    <li>体制届の提出が必要（算定開始前月末日まで）</li>
+  </ul>
+  <h4>収益への影響</h4>
+  <div class="rev-chip">対象者1名で月+5,100円</div>
+<div class="popup-source">📎 出典: 厚生労働省「訪問看護療養費に係る指定訪問看護の費用の額の算定方法」別表第8</div></div>
+</dialog>
+
+<dialog id="p05-tokukanII">
+  <div class="popup-header"><h3>特別管理加算（Ⅱ）算定詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>対象となる状態</h4>
+  <ul>
+    <li>留置カテーテル（バルーンカテーテル）を使用している状態</li>
+    <li>人工肛門・人工膀胱を造設している状態</li>
+    <li>疼痛コントロールのための医療用麻薬を使用している状態</li>
+    <li>真皮を超えない褥瘡がある状態（DESIGN-RのD2以下）</li>
+    <li>排液のためのドレーンが留置されている状態</li>
+  </ul>
+  <h4>算定ルール</h4>
+  <ul>
+    <li>月1回のみ算定可能</li>
+    <li>特別管理加算(Ⅰ)が算定できる場合は(Ⅰ)を優先する（(Ⅱ)は算定不可）</li>
+    <li>体制届の提出が必要（算定開始前月末日まで）</li>
+  </ul>
+  <div class="rev-chip">対象者1名で月+2,550円</div>
+<div class="popup-source">📎 出典: 厚生労働省「訪問看護療養費に係る指定訪問看護の費用の額の算定方法」</div></div>
+</dialog>
+
+<dialog id="p05-kinkyuu">
+  <div class="popup-header"><h3>緊急訪問看護加算 算定要件と注意点</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>重要：24時間対応体制加算が前提条件</h4>
+  <p>緊急訪問看護加算は、<strong>24時間対応体制加算の届出をしていること</strong>が算定の前提条件となります。24時間対応体制加算を算定していない場合は、緊急訪問看護加算も算定できません。</p>
+  <h4>算定できる条件</h4>
+  <ul>
+    <li>利用者・家族からの求めに応じて、計画にない緊急の訪問を行った場合</li>
+    <li>1日2回まで算定可能</li>
+    <li>緊急訪問の記録（訪問時間・理由・対応内容）を必ず残す</li>
+  </ul>
+  <h4>算定できない場合</h4>
+  <ul>
+    <li>計画内の訪問（訪問看護計画書に記載されている訪問）は緊急訪問には該当しない</li>
+    <li>緊急を要しない定期外訪問には算定できない</li>
+  </ul>
+  <div class="rev-chip">1回あたり+2,650円</div>
+<div class="popup-source">📎 出典: 厚生労働省「訪問看護療養費に係る指定訪問看護の費用の額の算定方法」緊急訪問看護加算</div></div>
+</dialog>
+
+<dialog id="p05-taiin">
+  <div class="popup-header"><h3>退院時共同指導加算 算定要件</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>算定要件</h4>
+  <ul>
+    <li>入院中の患者の退院後の訪問看護を開始する前に実施すること</li>
+    <li>入院先の医師・看護師等と訪問看護ステーションの看護師等が共同で指導を行うこと</li>
+    <li>患者・家族に対して療養上必要な指導を行い、その内容を記録すること</li>
+    <li>1入院につき2回まで算定可能</li>
+  </ul>
+  <h4>特別管理加算対象者の場合</h4>
+  <p>特別管理加算(Ⅰ)または(Ⅱ)の対象者の場合：16,000円/回（通常の2倍）</p>
+  <h4>算定のポイント</h4>
+  <ul>
+    <li>退院日または退院後30日以内の最初の訪問看護の際に算定可能</li>
+    <li>病院への積極的な働きかけが重要（MSW・看護師へのアプローチ）</li>
+  </ul>
+  <div class="rev-chip">1回あたり+8,000〜16,000円</div>
+<div class="popup-source">📎 出典: 厚生労働省「訪問看護療養費に係る指定訪問看護の費用の額の算定方法」退院時共同指導加算</div></div>
+</dialog>
+
+<dialog id="p05-chojikan">
+  <div class="popup-header"><h3>長時間訪問看護加算 算定詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>算定要件</h4>
+  <ul>
+    <li>1回の訪問時間が90分を超えること</li>
+    <li>対象患者：①特別管理加算(Ⅰ)(Ⅱ)の対象者、②15歳未満の超重症児・準超重症児、③急性増悪等で医師の特別訪問看護指示書がある患者</li>
+  </ul>
+  <h4>算定のポイント</h4>
+  <ul>
+    <li>訪問開始時刻と終了時刻を記録書に明記すること</li>
+    <li>週1回のみ算定（15歳未満の超重症児等は週3回まで）</li>
+  </ul>
+  <div class="rev-chip">1回あたり+5,200円（週1回×4週=20,800円）</div>
+<div class="popup-source">📎 出典: 厚生労働省「訪問看護療養費に係る指定訪問看護の費用の額の算定方法」長時間訪問看護加算</div></div>
+</dialog>
+
+<dialog id="p05-terminal">
+  <div class="popup-header"><h3>ターミナルケア加算 算定詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>算定要件</h4>
+  <ul>
+    <li>在宅（自宅・グループホーム等）で死亡した患者への算定</li>
+    <li>死亡日および死亡日前14日以内に2日以上、訪問看護を実施していること</li>
+    <li>主治医との連携のもと、24時間体制でターミナルケアを実施していること</li>
+    <li>利用者・家族の同意を得てターミナルケアを行っていること</li>
+  </ul>
+  <h4>算定のポイント</h4>
+  <ul>
+    <li>記録書に「ターミナルケアを実施した旨・家族への支援内容・主治医への報告内容」を詳細に記録する</li>
+    <li>ターミナルケア加算とターミナルケア療養費（在宅死後）は別算定</li>
+    <li>死亡月に1回算定</li>
+  </ul>
+  <div class="rev-chip">1名あたり+25,000円（死亡月）</div>
+<div class="popup-source">📎 出典: 厚生労働省「訪問看護療養費に係る指定訪問看護の費用の額の算定方法」ターミナルケア加算</div></div>
+</dialog>
+
+<dialog id="p05-yakan">
+  <div class="popup-header"><h3>夜間・早朝・深夜訪問看護加算</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>時間帯の定義</h4>
+  <div class="table-wrap"><table>
+    <tr><th>区分</th><th>時間帯</th><th>算定額（参考）</th></tr>
+    <tr><td>夜間・早朝加算</td><td>午前6時〜8時・午後6時〜10時</td><td>+2,100円/回</td></tr>
+    <tr><td>深夜加算</td><td>午後10時〜翌午前6時</td><td>+4,200円/回</td></tr>
+  </table></div>
+  <h4>算定のポイント</h4>
+  <ul>
+    <li>訪問開始時刻が上記の時間帯に該当すれば算定可能</li>
+    <li>緊急訪問看護加算との併算定も可能</li>
+    <li>訪問記録に「訪問開始時刻・終了時刻」を必ず記録すること</li>
+  </ul>
+</div>
+</dialog>
+
+<dialog id="p05-joho">
+  <div class="popup-header"><h3>訪問看護情報提供療養費 算定詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>種類と算定要件</h4>
+  <div class="table-wrap"><table>
+    <tr><th>種別</th><th>提供先</th><th>算定額</th><th>条件</th></tr>
+    <tr><td>情報提供療養費(Ⅰ)</td><td>市区町村（保健師・管理栄養士等）</td><td>1,500円/回</td><td>主治医の指示のもと、1月に1回</td></tr>
+    <tr><td>情報提供療養費(Ⅱ)</td><td>学校・保育所・幼稚園の職員</td><td>1,500円/回</td><td>主治医の指示のもと、1年に1回</td></tr>
+    <tr><td>情報提供療養費(Ⅲ)</td><td>入所施設の職員</td><td>1,500円/回</td><td>主治医の指示のもと、退所月の前月から算定</td></tr>
+  </table></div>
+  <h4>算定のポイント</h4>
+  <ul>
+    <li>情報提供書の写しを訪問看護ステーションで保管する</li>
+    <li>学校・保育所等を利用している利用者には積極的に活用できる</li>
+  </ul>
+<div class="popup-source">📎 出典: 厚生労働省「訪問看護療養費に係る指定訪問看護の費用の額の算定方法」訪問看護情報提供療養費</div></div>
+</dialog>
+
+<dialog id="p05-fukusu">
+  <div class="popup-header"><h3>複数名訪問看護加算 算定要件</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>複数名訪問看護加算の種類</h4>
+  <div class="table-wrap"><table>
+    <tr><th>区分</th><th>同行者</th><th>算定額</th><th>主な要件</th></tr>
+    <tr><td>複数名訪問看護加算(Ⅰ)</td><td>看護師等＋看護師等</td><td>4,500円/回</td><td>暴力行為等の危険がある患者・特別管理加算対象者等</td></tr>
+    <tr><td>複数名訪問看護加算(Ⅱ)</td><td>看護師等＋看護補助者</td><td>3,000円/回（1日1回）、600円/回（1日2〜3回）</td><td>同上</td></tr>
+  </table></div>
+  <h4>算定のポイント</h4>
+  <ul>
+    <li>2名での訪問の理由（安全確保・医療処置の必要性等）を記録に残すこと</li>
+    <li>看護補助者には資格不要（ヘルパー等でも可）</li>
+  </ul>
+</div>
+</dialog>
+
+<dialog id="p05-shoryo">
+  <div class="popup-header"><h3>処遇改善加算の区分と要件</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>加算区分と割合（訪問看護）</h4>
+  <div class="table-wrap"><table>
+    <tr><th>区分</th><th>所定費用への上乗せ率（参考）</th><th>主な要件</th></tr>
+    <tr><td>処遇改善加算(Ⅰ)</td><td>13.7%</td><td>キャリアパス要件Ⅰ・Ⅱ・Ⅲ ＋ 職場環境等要件</td></tr>
+    <tr><td>処遇改善加算(Ⅱ)</td><td>10.0%</td><td>キャリアパス要件Ⅰ・Ⅱ ＋ 職場環境等要件</td></tr>
+    <tr><td>処遇改善加算(Ⅲ)</td><td>5.5%</td><td>キャリアパス要件Ⅰまたは職場環境等要件</td></tr>
+    <tr><td>処遇改善加算(Ⅳ)</td><td>処遇改善加算(Ⅲ)×0.9</td><td>（Ⅲ）の要件の一部のみ</td></tr>
+    <tr><td>処遇改善加算(Ⅴ)</td><td>処遇改善加算(Ⅲ)×0.8</td><td>最低限の要件</td></tr>
+  </table></div>
+  <h4>届出・提出スケジュール</h4>
+  <ul>
+    <li>毎年4月15日までに計画書を行政（京都府・京都市）に提出</li>
+    <li>翌年7月31日までに実績報告書を提出</li>
+    <li>国保連・支払基金への体制届：毎年前月末日までに</li>
+  </ul>
+  <div class="rev-chip">月次売上100万円なら最大+13.7万円/月</div>
+<div class="popup-source">📎 出典: 厚生労働省「福祉・介護職員処遇改善加算等に関するQ&A ver.2（令和5年）」</div></div>
+</dialog>
+
+<dialog id="p05-tsukimatsu">
+  <div class="popup-header"><h3>月末処理のポイント</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>計画書・報告書の確認ポイント</h4>
+  <ul>
+    <li>訪問看護計画書：当月の全利用者分が作成・署名済みであることを確認</li>
+    <li>訪問看護報告書：当月の全利用者分を作成し、主治医へ送付</li>
+    <li>指示書の有効期限：翌月以降も有効か確認（切れそうな場合は今月中に更新依頼）</li>
+    <li>サービス提供実績表：全訪問日・訪問者を正確に記録し、利用者署名を取得</li>
+  </ul>
+</div>
+</dialog>
+
+<dialog id="p05-soft">
+  <div class="popup-header"><h3>請求ソフトと国保連への提出方法</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>主な請求ソフト（訪問看護）</h4>
+  <ul>
+    <li>ワイズマン（Wiseの訪問看護支援システム）</li>
+    <li>カナミック（CANAMEC）</li>
+    <li>CareWing（ケアウィング）</li>
+    <li>Nurse Call（ナースコール）</li>
+    <li>その他：HAM-nurse・訪看くん等</li>
+  </ul>
+  <h4>提出方法</h4>
+  <ul>
+    <li><strong>インターネット請求（推奨）：</strong>国保連のオンライン請求システム経由でデータ送信。送受信記録が残り安全。</li>
+    <li><strong>磁気媒体（CD-ROM）：</strong>データを書き込んで郵送または持参。</li>
+    <li>電子証明書（電子署名）の取得が必要（国保連から取得）</li>
+  </ul>
+</div>
+</dialog>
+
+<dialog id="p05-henrei">
+  <div class="popup-header"><h3>返戻・過誤の対応方法</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>返戻（エラー返戻）への対応</h4>
+  <ul>
+    <li>国保連からの「支払い内容に関する通知書」で返戻一覧を確認（毎月10〜20日頃に届く）</li>
+    <li>返戻の理由を確認：利用者番号の誤り・サービスコードの誤り・体制届の未提出等</li>
+    <li>修正して翌月の請求に再請求として提出（同月請求は不可）</li>
+  </ul>
+  <h4>過誤（請求誤り）への対応</h4>
+  <ul>
+    <li>過大請求が判明した場合：「過誤申請」を行い、国保連に返金を申請</li>
+    <li>過誤申請は5年以内であれば遡及して行える</li>
+    <li>自主的に申告することが信頼維持に重要（監査の対象になる前に対処）</li>
+  </ul>
+</div>
+</dialog>
+
+</main>
+<footer>
+  <p>障碍者福祉事業所 運営ガイド｜請求業務ページ</p>
+  <p>※ 法令・制度・報酬は改定されることがあります。最新情報は各官公庁の公式情報をご確認ください。</p>
+</footer>
+<script src="popup.js"></script><script src="table-responsive.js"></script><script src="nav.js"></script>
+</body>
+</html>

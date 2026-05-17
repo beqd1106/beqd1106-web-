@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>就労継続A型 ｜ 障碍者福祉事業所 運営ガイド</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <a href="index.html" class="site-logo">🏥 障碍者福祉 運営ガイド</a>
+  <nav class="site-nav">
+    <a href="index.html">TOP</a>
+    <a href="01_法令・制度.html">⚖️ 法令</a>
+    <a href="02_必要書類.html">📋 書類</a>
+    <a href="03_管理業務.html">📅 管理</a>
+    <a href="04_京都府・手続き.html">🏛️ 京都府</a>
+    <a href="05_請求業務.html">💴 請求</a>
+    <a href="06_就労継続A型.html" class="active">🏢 A型</a>
+    <a href="07_就労継続B型.html">🏭 B型</a>
+    <a href="08_相談支援.html">💬 相談</a>
+    <a href="09_監査対応.html">🔍 監査</a>
+    <a href="10_収入向上.html">📈 収入</a>
+    <a href="11_年間スケジュール.html">📆 年間</a>
+    <a href="12_QA.html">❓ Q&amp;A</a>
+    <a href="フォーマット/index.html" style="background:var(--coral-light);color:var(--coral-dark);border:1px solid var(--coral-mid);">📁 様式DL</a>
+  </nav>
+</header>
+<div class="page-hero-sm">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">🏢 就労継続A型</div>
+      <h1>就労継続支援A型 運営ガイド</h1>
+      <p>雇用契約を結んで就労支援を行う「A型」の人員基準・運営ルール・加算詳細・賃金管理をまとめています。</p>
+    </div><div class="hero-img"><img src="images/care_wheelchair.png" alt=""></div>
+  </div>
+</div>
+<main class="container">
+  <a href="index.html" class="back-link">← TOPに戻る</a>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">🏢</span><h2>就労継続支援A型とは</h2></div>
+    <div class="two-col">
+      <div>
+        <div class="alert alert-info">
+          <strong class="alert-hdr">サービスの特徴</strong>
+          一般企業での就労が困難な障碍者に対し、<strong>雇用契約を結んで</strong>就労機会を提供するサービスです。最低賃金以上の賃金が保障されます。
+        </div>
+        <h4 style="color:var(--coral-dark);margin-bottom:0.75rem;margin-top:1rem;">対象者</h4>
+        <ul style="font-size:0.85rem;color:var(--text-mid);padding-left:1.2rem;">
+          <li style="margin-bottom:0.3rem;">就労移行支援の利用後、一般就労が困難だった者</li>
+          <li style="margin-bottom:0.3rem;">特別支援学校卒業後、就労が見込まれる者</li>
+          <li style="margin-bottom:0.3rem;">就労経験はあるが、障碍等のため雇用継続が困難な者</li>
+          <li>2024年10月〜「就労選択支援」によるアセスメントが前提</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color:var(--coral-dark);margin-bottom:0.75rem;">人員基準</h4>
+        <div class="table-wrap"><table>
+          <tr><th>職種</th><th>配置基準</th></tr>
+          <tr><td>管理者</td><td>常勤1名以上（専任）</td></tr>
+          <tr><td>サービス管理責任者（サビ管）</td><td>利用者60名以下：1名<br>以降60名ごとに+1名</td></tr>
+          <tr><td>職業指導員</td><td>利用者10名に1名以上（常勤換算）</td></tr>
+          <tr><td>生活支援員</td><td>利用者10名に1名以上（常勤換算）</td></tr>
+        </table></div>
+        <p style="font-size:0.8rem;color:var(--text-light);margin-top:0.4rem;">職業指導員＋生活支援員の合計で常勤換算10:1以上必要</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">📋</span><h2>運営の重要ルール</h2></div>
+    <div class="table-wrap"><table>
+      <tr><th>項目</th><th>内容・ポイント</th><th>詳細</th></tr>
+      <tr><td><strong>雇用契約の締結</strong></td><td>利用者全員と<strong>雇用契約</strong>を締結。最低賃金法が適用される（京都府最低賃金：1,058円/時 ※2024年10月時点）。</td><td><button class="popup-btn" onclick="openPopup('p06-koyou')">詳細▼</button></td></tr>
+      <tr><td><strong>平均賃金の公表</strong></td><td>前年度の利用者の平均賃金月額を公表する義務あり（指定基準）。ホームページへの掲載が推奨。</td><td></td></tr>
+      <tr><td><strong>生産活動収支の黒字維持</strong></td><td>生産活動収益が利用者の賃金総額を上回ることが必要。赤字が続くと指定取消のリスク。</td><td><button class="popup-btn" onclick="openPopup('p06-seisan')">詳細▼</button></td></tr>
+      <tr><td><strong>個別支援計画の作成</strong></td><td>サービス管理責任者が6ヶ月ごとにアセスメント・計画作成・モニタリングを実施。担当者署名必須。</td><td><button class="popup-btn" onclick="openPopup('p06-keikaku')">詳細▼</button></td></tr>
+      <tr><td><strong>就労選択支援（2024年10月〜）</strong></td><td>新規利用希望者へのアセスメント機会の提供が必要。ただし強制ではなく「機会の提供」が義務。</td><td></td></tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">➕</span><h2>就労継続支援A型 加算一覧（2024年度）</h2></div>
+    <div class="alert alert-warning">
+      <strong class="alert-hdr">⚠️ 体制届の提出を忘れずに</strong>
+      届出が必要な加算は、算定開始月の前月末日までに国保連への体制届が必要です。
+    </div>
+    <div class="dl-box">
+      <div class="dl-box-title">📥 就労支援記録様式</div>
+      <div class="dl-links">
+        <a href="フォーマット/03_就労支援記録様式/01_個別支援計画書（A型B型共通）.xlsx" class="dl-btn template">個別支援計画書</a>
+        <a href="フォーマット/03_就労支援記録様式/02_アセスメントシート（就労版）.xlsx" class="dl-btn template">アセスメントシート</a>
+        <a href="フォーマット/03_就労支援記録様式/03_モニタリング記録（就労）.xlsx" class="dl-btn template">モニタリング記録</a>
+        <a href="フォーマット/03_就労支援記録様式/04_サービス提供記録（就労日誌）.xlsx" class="dl-btn template">就労日誌</a>
+        <a href="フォーマット/05_処遇改善加算様式/01_処遇改善計画書（R7年度）.xlsx" class="dl-btn official">処遇改善計画書（R7）</a>
+      </div>
+    </div>
+    <div class="table-wrap"><table>
+      <tr><th>加算名</th><th>単位（参考）</th><th>算定要件の概要</th><th>体制届</th><th>詳細</th></tr>
+      <tr>
+        <td><strong>福祉専門職員配置等加算（Ⅰ）</strong></td>
+        <td>15単位/日</td>
+        <td>社会福祉士・介護福祉士・精神保健福祉士等の有資格者が全従業員の35%以上</td>
+        <td><span class="badge badge-danger">届出必要</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p06-fukushi1')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>福祉専門職員配置等加算（Ⅱ）</strong></td>
+        <td>10単位/日</td>
+        <td>有資格者が25%以上配置</td>
+        <td><span class="badge badge-danger">届出必要</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>福祉専門職員配置等加算（Ⅲ）</strong></td>
+        <td>6単位/日</td>
+        <td>常勤職員が75%以上、または勤続3年以上の職員が30%以上</td>
+        <td><span class="badge badge-danger">届出必要</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>就労移行支援体制加算</strong></td>
+        <td>27〜100単位/日</td>
+        <td>前年度に一般就労へ移行した利用者が1名以上。利用定員に対する割合で段階的に加算。</td>
+        <td><span class="badge badge-danger">届出必要</span>（毎年4月上旬に実績届出）</td>
+        <td><button class="popup-btn" onclick="openPopup('p06-iko')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>処遇改善加算（Ⅰ〜Ⅴ）</strong></td>
+        <td>所定単位×率</td>
+        <td>職員の賃金改善計画・実績報告の提出。キャリアパス要件等を満たす区分に応じた加算。</td>
+        <td><span class="badge badge-danger">届出必要</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p06-shoryo')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>食事提供体制加算</strong></td>
+        <td>30単位/日</td>
+        <td>施設内で調理して食事を提供。対象は低所得者（生活保護・市町村民税非課税）。</td>
+        <td><span class="badge badge-danger">届出必要</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p06-shokuji')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>欠席時対応加算</strong></td>
+        <td>94単位/回（月4回限度）</td>
+        <td>利用者の欠席連絡に対して、連絡・相談の対応を行った場合（電話対応等）</td>
+        <td><span class="badge badge-success">届出不要</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p06-kesseki')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>初期加算</strong></td>
+        <td>30単位/日（90日以内）</td>
+        <td>利用開始から90日以内の利用者に加算。初期の支援強化を評価。</td>
+        <td><span class="badge badge-success">届出不要</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>医療連携体制加算（Ⅰ〜Ⅶ）</strong></td>
+        <td>8〜500単位/日</td>
+        <td>医療機関の看護師等が事業所に来所して看護を提供した場合等</td>
+        <td><span class="badge badge-danger">届出必要（Ⅰ〜Ⅲ）</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p06-iryo')">詳細▼</button></td>
+      </tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">📊</span><h2>生産活動の管理と収支</h2></div>
+    <div class="table-wrap"><table>
+      <tr><th>管理項目</th><th>内容・ポイント</th><th>詳細</th></tr>
+      <tr><td><strong>生産活動収支の月次管理</strong></td><td>毎月、生産活動収益（受注収入等）と利用者賃金の支払額を把握。年度末に収支報告。</td><td><button class="popup-btn" onclick="openPopup('p06-seisankan')">詳細▼</button></td></tr>
+      <tr><td><strong>最低賃金の確認</strong></td><td>毎年10月に京都府の最低賃金が改定。利用者全員の時給が最低賃金以上であることを確認・改定。</td><td></td></tr>
+      <tr><td><strong>平均賃金月額の計算・公表</strong></td><td>年度末に利用者への支払賃金総額÷延べ利用者数で計算。翌年度の基本報酬区分の根拠になる。</td><td><button class="popup-btn" onclick="openPopup('p06-heikin')">詳細▼</button></td></tr>
+      <tr><td><strong>利用者との雇用契約書</strong></td><td>労働条件通知書・雇用契約書を各利用者と締結。保管は5年以上。</td><td></td></tr>
+    </table></div>
+    <div class="alert alert-danger" style="margin-top:1rem;">
+      <strong class="alert-hdr">🚨 重要：生産活動収支の赤字は指定取消リスク</strong>
+      生産活動収支が複数年にわたって赤字の場合、行政から改善勧告・指定取消の対象になることがあります。収益性の確認と受注先の開拓・作業効率改善を常に行ってください。
+    </div>
+  </div>
+
+<dialog id="p06-koyou">
+  <div class="popup-header"><h3>雇用契約に関する重要事項</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>雇用契約で定めるべき内容</h4>
+  <ul>
+    <li>業務内容・就業場所</li>
+    <li>所定労働時間・休憩時間・休日</li>
+    <li>賃金（時給または月給）・支払日・支払方法</li>
+    <li>雇用期間（有期または無期）・更新の有無</li>
+    <li>就業規則の適用</li>
+  </ul>
+  <h4>最低賃金法の遵守</h4>
+  <ul>
+    <li>京都府の最低賃金（2024年10月〜）：1,058円/時</li>
+    <li>最低賃金未満での支払いは法律違反（罰則：50万円以下の罰金）</li>
+    <li>毎年10月の改定時に一斉に賃金を引き上げる必要がある</li>
+  </ul>
+  <h4>社会保険・雇用保険の加入</h4>
+  <ul>
+    <li>週30時間以上勤務の場合：健康保険・厚生年金加入が義務</li>
+    <li>週20時間以上かつ月収8.8万円以上の場合：従業員51人以上の事業所では社会保険加入義務（2022年10月〜）</li>
+    <li>週20時間以上勤務の場合：雇用保険加入が義務</li>
+  </ul>
+<div class="popup-source">📎 出典: 最低賃金法・労働基準法・健康保険法・厚生年金保険法</div></div>
+</dialog>
+
+<dialog id="p06-seisan">
+  <div class="popup-header"><h3>生産活動収支の管理方法</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>生産活動収支のルール</h4>
+  <ul>
+    <li>年度単位で、生産活動収益 ≥ 利用者への賃金支払総額 が必要</li>
+    <li>生産活動収益：製品・部品の製造・加工、農作業、清掃・洗濯等の受注収入</li>
+    <li>障害福祉サービス費（行政からの給付費）は生産活動収益に含めない</li>
+  </ul>
+  <h4>収支が赤字になった場合の対応</h4>
+  <ul>
+    <li>行政（京都府・京都市）への相談・報告</li>
+    <li>改善計画書の提出</li>
+    <li>新たな受注先の開拓・作業の多様化</li>
+    <li>生産効率の向上（工程改善・設備投資）</li>
+  </ul>
+<div class="popup-source">📎 出典: 障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービスの事業等の人員、設備及び運営に関する基準 第198条</div></div>
+</dialog>
+
+<dialog id="p06-keikaku">
+  <div class="popup-header"><h3>個別支援計画書 A型の特徴</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>就労継続支援A型の個別支援計画に含めること</h4>
+  <ul>
+    <li>利用者の就労に関する希望・目標（一般就労への移行を含む）</li>
+    <li>現在の就労能力のアセスメント（作業能力・対人関係・生活リズム等）</li>
+    <li>支援内容（職業指導・生活支援・医療連携等）</li>
+    <li>短期目標（3〜6ヶ月）・長期目標（1〜2年）</li>
+    <li>一般就労移行の見通し（移行が可能な場合はその計画を記載）</li>
+  </ul>
+  <h4>作成・更新のスケジュール</h4>
+  <ul>
+    <li>利用開始時に初回計画を作成</li>
+    <li>6ヶ月ごとにモニタリング・計画の見直し</li>
+    <li>状態が変化した場合は随時見直し</li>
+  </ul>
+</div>
+</dialog>
+
+<dialog id="p06-fukushi1">
+  <div class="popup-header"><h3>福祉専門職員配置等加算の対象資格</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>対象資格一覧</h4>
+  <ul>
+    <li>社会福祉士</li>
+    <li>介護福祉士</li>
+    <li>精神保健福祉士</li>
+    <li>公認心理師（2020年〜追加）</li>
+    <li>介護支援専門員（ケアマネジャー）</li>
+    <li>相談支援専門員（相談支援従事者初任者研修修了者）</li>
+    <li>サービス管理責任者（サービス管理責任者研修修了者）</li>
+  </ul>
+  <h4>算定の割合計算</h4>
+  <p>加算(Ⅰ)：有資格者の常勤換算数 ÷ 全従業員の常勤換算数 × 100 ≥ 35%</p>
+  <p>管理者・サビ管も対象資格を持てばカウント可能。</p>
+  <div class="rev-chip">加算(Ⅰ)は15単位/日、利用者20名・月20日で+60,000単位（約6万円）</div>
+<div class="popup-source">📎 出典: 障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービス等及び基準該当障害福祉サービスに要する費用の額の算定に関する基準</div></div>
+</dialog>
+
+<dialog id="p06-iko">
+  <div class="popup-header"><h3>就労移行支援体制加算（A型）の詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>算定要件</h4>
+  <ul>
+    <li>前年度（4月〜3月）に一般就労（企業等への就職）した利用者が1名以上いること</li>
+    <li>利用定員に対する就労移行者数の割合によって加算単位が異なる</li>
+  </ul>
+  <h4>単位の目安（利用定員20名の場合）</h4>
+  <div class="table-wrap"><table>
+    <tr><th>前年度就労移行者数/定員</th><th>加算単位</th></tr>
+    <tr><td>0%（0名）</td><td>算定不可</td></tr>
+    <tr><td>0%超〜5%以下（1名程度）</td><td>27単位/日</td></tr>
+    <tr><td>5%超〜10%以下</td><td>41単位/日</td></tr>
+    <tr><td>10%超〜20%以下</td><td>55単位/日</td></tr>
+    <tr><td>20%超</td><td>100単位/日</td></tr>
+  </table></div>
+  <h4>届出のタイミング</h4>
+  <p>毎年4月上旬（3月末）までに前年度の実績を国保連へ届出。4月1日から算定可能。</p>
+  <div class="rev-chip">前年度1名就労→月20日で+27単位×20日=540単位（約5,400円/月、利用者20名なら×20= 約108,000円増）</div>
+<div class="popup-source">📎 出典: 厚生労働省「障害福祉サービス等及び基準該当障害福祉サービスに要する費用の額の算定に関する基準等の制定に伴う実施上の留意事項」</div></div>
+</dialog>
+
+<dialog id="p06-shoryo">
+  <div class="popup-header"><h3>処遇改善加算（就労継続支援A型）の詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>加算の種類と率（2024年度）</h4>
+  <div class="table-wrap"><table>
+    <tr><th>区分</th><th>加算率（参考）</th><th>主な要件</th></tr>
+    <tr><td>処遇改善加算(Ⅰ)</td><td>所定単位×21.5%</td><td>キャリアパス要件Ⅰ・Ⅱ・Ⅲ ＋ 職場環境等要件</td></tr>
+    <tr><td>処遇改善加算(Ⅱ)</td><td>所定単位×20.0%</td><td>キャリアパス要件Ⅰ・Ⅱ ＋ 職場環境等要件</td></tr>
+    <tr><td>処遇改善加算(Ⅲ)</td><td>所定単位×14.5%</td><td>キャリアパス要件Ⅰ ＋ 職場環境等要件</td></tr>
+    <tr><td>処遇改善加算(Ⅳ)</td><td>所定単位×11.5%</td><td>（Ⅲ）の要件の一部</td></tr>
+  </table></div>
+  <h4>注意点</h4>
+  <ul>
+    <li>処遇改善加算の対象：職業指導員・生活支援員等の直接支援職員が主な対象</li>
+    <li>管理者・事務員は対象外（ただし間接的な処遇改善は可）</li>
+    <li>加算額は全額を職員の賃金改善に充てることが条件</li>
+  </ul>
+<div class="popup-source">📎 出典: 厚生労働省「福祉・介護職員処遇改善加算等に関するQ&A ver.2」</div></div>
+</dialog>
+
+<dialog id="p06-shokuji">
+  <div class="popup-header"><h3>食事提供体制加算の詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>算定要件</h4>
+  <ul>
+    <li>事業所内で調理して（または委託して）食事を提供すること</li>
+    <li>対象は「低所得者」：生活保護世帯・市町村民税非課税世帯の利用者</li>
+    <li>施設外での購入（弁当持参等）は算定不可</li>
+  </ul>
+  <h4>実施のポイント</h4>
+  <ul>
+    <li>栄養管理・食中毒対策（調理担当者の衛生管理）が必要</li>
+    <li>食材費は利用者から実費徴収可能</li>
+    <li>配達弁当（ケータリング）も委託として算定可能</li>
+  </ul>
+  <div class="rev-chip">30単位×20日×対象利用者数。対象者10名なら月6,000単位（約6万円）増</div>
+</div>
+</dialog>
+
+<dialog id="p06-kesseki">
+  <div class="popup-header"><h3>欠席時対応加算の詳細と活用</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>算定要件</h4>
+  <ul>
+    <li>利用者が欠席した場合に連絡・相談対応を行った場合に算定</li>
+    <li>月4回（日）を限度</li>
+    <li>94単位/回（約940円）</li>
+  </ul>
+  <h4>対応の記録</h4>
+  <ul>
+    <li>欠席の連絡を受けた日時</li>
+    <li>欠席の理由（健康状態等）</li>
+    <li>対応した内容（声かけ・状態確認・次回訪問の約束等）</li>
+    <li>対応した職員名</li>
+  </ul>
+  <p>欠席者への丁寧なフォローは退所防止・利用者の状態把握にもつながる。</p>
+</div>
+</dialog>
+
+<dialog id="p06-iryo">
+  <div class="popup-header"><h3>医療連携体制加算の詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>医療連携体制加算の種類</h4>
+  <div class="table-wrap"><table>
+    <tr><th>区分</th><th>算定額（参考）</th><th>内容</th></tr>
+    <tr><td>医療連携体制加算(Ⅰ)</td><td>32単位/日</td><td>医療機関の看護師等が事業所に来所して医療的ケアを提供（週1回以上）</td></tr>
+    <tr><td>医療連携体制加算(Ⅱ)</td><td>63単位/日</td><td>同（週2回以上または重度障碍者対応）</td></tr>
+    <tr><td>医療連携体制加算(Ⅲ)</td><td>125単位/日</td><td>同（週3回以上）</td></tr>
+    <tr><td>医療連携体制加算(Ⅳ)</td><td>500単位/月/利用者</td><td>重症心身障碍者や医療的ケア判定スコア16点以上の者に対するケア</td></tr>
+  </table></div>
+  <h4>活用のポイント</h4>
+  <ul>
+    <li>訪問看護ステーションと連携することで算定可能（外部医療機関との連携契約が必要）</li>
+    <li>医療的ケアが必要な利用者（吸引・経管栄養等）を受け入れることで算定できる</li>
+  </ul>
+<div class="popup-source">📎 出典: 障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービス等及び基準該当障害福祉サービスに要する費用の額の算定に関する基準</div></div>
+</dialog>
+
+<dialog id="p06-seisankan">
+  <div class="popup-header"><h3>生産活動収支の月次管理方法</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>月次で把握すべき数値</h4>
+  <ul>
+    <li>生産活動収益：月の受注額・売上合計</li>
+    <li>生産活動費用：原材料費・外注費（賃金以外）</li>
+    <li>利用者賃金支払総額：全利用者への支払額合計</li>
+    <li>生産活動収支差額：収益−費用−賃金支払額</li>
+  </ul>
+  <h4>年度末の収支報告</h4>
+  <ul>
+    <li>4月〜3月の年度単位で集計</li>
+    <li>京都府・京都市への報告が義務（書式は行政指定）</li>
+    <li>赤字の場合は改善計画書の提出を求められる</li>
+  </ul>
+</div>
+</dialog>
+
+<dialog id="p06-heikin">
+  <div class="popup-header"><h3>平均賃金月額の計算と基本報酬への影響</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>計算方法</h4>
+  <p>平均賃金月額 ＝ 利用者への賃金支払総額（年度） ÷ 利用者の延べ月数</p>
+  <h4>基本報酬の区分（A型・2024年度）</h4>
+  <div class="table-wrap"><table>
+    <tr><th>平均賃金月額</th><th>基本報酬の区分</th></tr>
+    <tr><td>90,000円以上</td><td>最高区分（最も高い単位）</td></tr>
+    <tr><td>80,000円以上90,000円未満</td><td>2区分</td></tr>
+    <tr><td>70,000円以上80,000円未満</td><td>3区分</td></tr>
+    <tr><td>60,000円以上70,000円未満</td><td>4区分</td></tr>
+    <tr><td>60,000円未満</td><td>最低区分</td></tr>
+  </table></div>
+  <p>平均賃金を高めることで基本報酬も上がる。生産活動の強化が経営改善の鍵。</p>
+<div class="popup-source">📎 出典: 厚生労働省「指定障害福祉サービス等に要する費用の額の算定に関する基準」令和6年度改定</div></div>
+</dialog>
+
+</main>
+<footer>
+  <p>障碍者福祉事業所 運営ガイド｜就労継続A型ページ</p>
+  <p>※ 法令・制度・報酬は改定されることがあります。最新情報は各官公庁の公式情報をご確認ください。</p>
+</footer>
+<script src="popup.js"></script><script src="table-responsive.js"></script><script src="nav.js"></script>
+</body>
+</html>

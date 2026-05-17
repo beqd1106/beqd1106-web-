@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>収入向上 ｜ 障碍者福祉事業所 運営ガイド</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <a href="index.html" class="site-logo">🏥 障碍者福祉 運営ガイド</a>
+  <nav class="site-nav">
+    <a href="index.html">TOP</a>
+    <a href="01_法令・制度.html">⚖️ 法令</a>
+    <a href="02_必要書類.html">📋 書類</a>
+    <a href="03_管理業務.html">📅 管理</a>
+    <a href="04_京都府・手続き.html">🏛️ 京都府</a>
+    <a href="05_請求業務.html">💴 請求</a>
+    <a href="06_就労継続A型.html">🏢 A型</a>
+    <a href="07_就労継続B型.html">🏭 B型</a>
+    <a href="08_相談支援.html">💬 相談</a>
+    <a href="09_監査対応.html">🔍 監査</a>
+    <a href="10_収入向上.html" class="active">📈 収入</a>
+    <a href="11_年間スケジュール.html">📆 年間</a>
+    <a href="12_QA.html">❓ Q&amp;A</a>
+    <a href="フォーマット/index.html" style="background:var(--coral-light);color:var(--coral-dark);border:1px solid var(--coral-mid);">📁 様式DL</a>
+  </nav>
+</header>
+<div class="page-hero-sm">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">📈 収入向上</div>
+      <h1>収入向上 戦略ガイド</h1>
+      <p>加算算定・利用者増加・業務効率改善の3軸で、具体的な収益向上策と収益シミュレーションをまとめています。</p>
+    </div><div class="hero-img"><img src="images/care_meal.png" alt=""></div>
+  </div>
+</div>
+<main class="container">
+  <a href="index.html" class="back-link">← TOPに戻る</a>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">📊</span><h2>収入向上の3つの軸</h2></div>
+    <div class="two-col">
+      <div>
+        <div class="alert alert-info">
+          <strong class="alert-hdr">収入 ＝ 単価 × 件数 × 稼働率</strong>
+          ①加算算定による単価UP ②利用者数（件数）の増加 ③稼働率・業務効率の向上 の3軸で収入向上を考えます。
+        </div>
+      </div>
+      <div>
+        <div class="alert alert-warning">
+          <strong class="alert-hdr">⚠️ コスト管理も同時に</strong>
+          収入を増やすと同時に、人件費率（目安：売上の65〜70%以内）・車両費・消耗品等のコスト管理も経営安定の鍵です。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">➕</span><h2>① 加算算定で単価アップ（最優先取組）</h2></div>
+    <div class="table-wrap"><table>
+      <tr><th>施策</th><th>収益効果（目安）</th><th>取り組み方</th><th>詳細</th></tr>
+      <tr>
+        <td><strong>24時間対応体制加算の算定</strong></td>
+        <td class="rev-chip">+6,520円/利用者/月<br>10名で月+65,200円</td>
+        <td>オンコール体制を整備し、体制届を国保連・支払基金に提出。ほぼ全利用者に算定できる最重要加算。</td>
+        <td><button class="popup-btn" onclick="openPopup('p10-24h')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>特別管理加算の適切な算定</strong></td>
+        <td class="rev-chip">+2,550〜5,100円/人/月<br>対象者3名で月+7,650〜15,300円</td>
+        <td>全利用者のアセスメントで算定要件（留置カテーテル・点滴・褥瘡等）を確認。体制届を提出。</td>
+        <td><button class="popup-btn" onclick="openPopup('p10-tokuseikan')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>処遇改善加算の上位区分算定</strong></td>
+        <td class="rev-chip">月次売上100万円で+13.7万円</td>
+        <td>キャリアパス要件・職場環境等要件を整備して上位区分（Ⅰ）を算定。計画書・実績報告の提出が必須。</td>
+        <td><button class="popup-btn" onclick="openPopup('p10-shoryo')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>退院時共同指導加算の積極算定</strong></td>
+        <td class="rev-chip">+8,000〜16,000円/回</td>
+        <td>病院MSW・病棟看護師へのアプローチで退院前カンファレンスへの参加を増やす。</td>
+        <td><button class="popup-btn" onclick="openPopup('p10-taiin')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>就労移行支援体制加算（A型・B型）</strong></td>
+        <td class="rev-chip">1名就労→+27〜100単位/日</td>
+        <td>一般就労支援に注力し、前年度の就労実績を毎年4月に届出。利用者のスキルアップ支援が鍵。</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>目標工賃達成加算（B型）</strong></td>
+        <td class="rev-chip">+109単位/日<br>利用者20名・月20日で月+約43.6万円</td>
+        <td>前年度の平均工賃月額が計画目標を達成した場合に算定。工賃向上の取り組みと連動。</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>ターミナルケア加算の対応準備</strong></td>
+        <td class="rev-chip">+25,000円/人（死亡月）</td>
+        <td>在宅でのターミナルケア（看取り）に対応できる体制を整備。主治医・家族との連携が必須。</td>
+        <td><button class="popup-btn" onclick="openPopup('p10-terminal')">詳細▼</button></td>
+      </tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">👥</span><h2>② 利用者数の増加（マーケティング戦略）</h2></div>
+    <div class="table-wrap"><table>
+      <tr><th>施策</th><th>効果</th><th>取り組み方</th><th>詳細</th></tr>
+      <tr>
+        <td><strong>医療機関・病院との連携強化</strong></td>
+        <td>★★★ 最重要</td>
+        <td>精神科病院・総合病院の地域連携室・MSWへの定期的な訪問営業。「退院後の受け皿」としてPR。パンフレット・名刺を持参。</td>
+        <td><button class="popup-btn" onclick="openPopup('p10-byoin')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>相談支援事業所との関係構築</strong></td>
+        <td>★★★ 最重要</td>
+        <td>相談支援専門員はサービス等利用計画を作成する立場。信頼関係が利用者紹介につながる。事例検討会・研修への参加も有効。</td>
+        <td><button class="popup-btn" onclick="openPopup('p10-sodan')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>Webサイト・SNSの活用</strong></td>
+        <td>★★ 効果大</td>
+        <td>「訪問看護 京都 精神科」等のキーワードで検索上位を目指す。Googleビジネスプロフィールへの登録も有効。</td>
+        <td><button class="popup-btn" onclick="openPopup('p10-web')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>精神科訪問看護の専門性発揮</strong></td>
+        <td>★★ 差別化</td>
+        <td>精神障碍者の訪問看護は対応できる事業所が限られる。精神科経験のある看護師の採用・育成でニッチ市場を押さえる。</td>
+        <td><button class="popup-btn" onclick="openPopup('p10-seishin')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>地域連絡会・地域ケア会議への参加</strong></td>
+        <td>★ 認知度向上</td>
+        <td>行政・関係機関が集まる会議に積極的に参加。事業所の認知度向上と情報収集に役立つ。</td>
+        <td></td>
+      </tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">📈</span><h2>③ 稼働率・業務効率の向上</h2></div>
+    <div class="table-wrap"><table>
+      <tr><th>施策</th><th>効果</th><th>取り組み方</th><th>詳細</th></tr>
+      <tr>
+        <td><strong>訪問スケジュールの最適化</strong></td>
+        <td>移動コスト削減</td>
+        <td>同一エリアの利用者を同じ日・同じスタッフが担当する「担当エリア制」を検討。移動時間の短縮で訪問件数UP。</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>ICT・訪問看護ソフトの活用</strong></td>
+        <td>事務時間短縮</td>
+        <td>電子記録システム導入で記録時間を短縮。訪問先でタブレット入力→事務所でのPC打ち直しをなくす。月次請求の自動化。</td>
+        <td><button class="popup-btn" onclick="openPopup('p10-ict')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>スタッフの離職防止</strong></td>
+        <td>採用コスト削減</td>
+        <td>採用コスト（求人広告・紹介料）は既存スタッフの定着に比べてはるかに高い。処遇改善加算を活用した賃金アップ・キャリアパス整備が重要。</td>
+        <td><button class="popup-btn" onclick="openPopup('p10-staff')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>欠席時対応加算の確実な算定</strong></td>
+        <td>機会損失防止</td>
+        <td>利用者の欠席連絡に対して電話・声かけを行い記録する。月4回まで算定可能（94単位/回）。</td>
+        <td></td>
+      </tr>
+    </table></div>
+  </div>
+
+<dialog id="p10-24h">
+  <div class="popup-header"><h3>24時間対応体制加算 導入の手順</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>ステップ1：オンコール体制の整備</h4>
+  <ul>
+    <li>担当看護師のオンコールシフトを作成（週〇日ずつ交替等）</li>
+    <li>緊急連絡先（専用の携帯電話番号等）を設定</li>
+    <li>緊急時の対応マニュアルを作成・スタッフに周知</li>
+  </ul>
+  <h4>ステップ2：届出</h4>
+  <ul>
+    <li>「24時間対応体制に係る届出書」を国保連・支払基金に提出</li>
+    <li>提出は算定開始月の前月末日まで</li>
+  </ul>
+  <h4>ステップ3：利用者への案内</h4>
+  <ul>
+    <li>全利用者に緊急連絡先を記載した書面を交付</li>
+    <li>重要事項説明書の「24時間対応体制あり」の記載を確認</li>
+  </ul>
+  <div class="rev-chip">導入後すぐに利用者全員に算定可能→最大の収益改善策</div>
+</div>
+</dialog>
+
+<dialog id="p10-tokuseikan">
+  <div class="popup-header"><h3>特別管理加算の漏れを防ぐチェック方法</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>全利用者を対象にしたアセスメント</h4>
+  <ul>
+    <li>新規利用者の初回訪問時に、特別管理加算の対象状態チェックリストを使用</li>
+    <li>加算(Ⅰ)対象：人工呼吸器・気管切開・悪性腫瘍末期・真皮超える褥瘡・週3日以上点滴</li>
+    <li>加算(Ⅱ)対象：留置カテーテル・人工肛門・疼痛コントロール・真皮超えない褥瘡</li>
+  </ul>
+  <h4>状態変化時の再評価</h4>
+  <ul>
+    <li>処置内容が変わった場合（例：膀胱留置カテーテル挿入）は加算の追加を検討</li>
+    <li>逆に状態が改善して対象外になった場合は算定を停止する（過大請求防止）</li>
+  </ul>
+</div>
+</dialog>
+
+<dialog id="p10-shoryo">
+  <div class="popup-header"><h3>処遇改善加算(Ⅰ)取得への道筋</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>現在の区分を確認する</h4>
+  <ul>
+    <li>キャリアパス要件Ⅰ：職位別賃金体系を文書化して全職員に周知</li>
+    <li>キャリアパス要件Ⅱ：年間研修計画を策定し、研修を実施</li>
+    <li>キャリアパス要件Ⅲ：経験・資格等に応じた昇給の仕組みを文書化</li>
+    <li>職場環境等要件：休暇制度・ICT活用・メンタルヘルス対策等の実施</li>
+  </ul>
+  <h4>ロードマップ</h4>
+  <ul>
+    <li>現在(Ⅲ)→(Ⅱ)：キャリアパス要件Ⅱ（研修計画）を整備</li>
+    <li>現在(Ⅱ)→(Ⅰ)：キャリアパス要件Ⅲ（昇給仕組み）を整備</li>
+    <li>(Ⅰ)取得で月次売上100万円なら+13.7万円の増収</li>
+  </ul>
+<div class="popup-source">📎 出典: 厚生労働省「福祉・介護職員処遇改善加算等に関するQ&A ver.2」</div></div>
+</dialog>
+
+<dialog id="p10-taiin">
+  <div class="popup-header"><h3>退院時共同指導加算 病院開拓の方法</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>アプローチ先（優先順位）</h4>
+  <ul>
+    <li>精神科病院のMSW（医療ソーシャルワーカー）・地域連携室</li>
+    <li>総合病院の退院調整看護師・地域連携室</li>
+    <li>訪問診療を行っている診療所の在宅医</li>
+  </ul>
+  <h4>アプローチ方法</h4>
+  <ul>
+    <li>電話でアポイントを取り、パンフレットを持参して訪問</li>
+    <li>「精神障碍者の訪問看護が得意」「24時間対応している」等の強みをアピール</li>
+    <li>退院前カンファレンスへの参加意欲を伝える</li>
+    <li>定期的にお礼のあいさつ・近況報告を続けることが信頼構築に重要</li>
+  </ul>
+  <div class="rev-chip">病院との関係構築→退院前カンファ参加→+8,000〜16,000円/回</div>
+</div>
+</dialog>
+
+<dialog id="p10-byoin">
+  <div class="popup-header"><h3>医療機関との連携強化 具体策</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>精神科病院・クリニックとの連携</h4>
+  <ul>
+    <li>精神科を標榜する病院・クリニックへの定期的な訪問営業（月1回程度）</li>
+    <li>「精神科訪問看護指示書」の発行をお願いする医師・看護師との関係構築</li>
+    <li>退院支援カンファレンスへの積極参加</li>
+    <li>患者の状態変化の報告を密にして信頼を得る</li>
+  </ul>
+  <h4>総合病院との連携</h4>
+  <ul>
+    <li>地域連携室・退院調整看護師へのアプローチ</li>
+    <li>「退院後に特別管理（点滴・気管切開等）が必要な患者」の受け入れをPR</li>
+    <li>退院前カンファレンスの参加実績を積み重ねる</li>
+  </ul>
+</div>
+</dialog>
+
+<dialog id="p10-sodan">
+  <div class="popup-header"><h3>相談支援専門員との関係構築</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>相談支援専門員が紹介者になる理由</h4>
+  <ul>
+    <li>サービス等利用計画を作成する立場であり、どのサービス事業所を提案するかを決める</li>
+    <li>利用者から「どの訪問看護を使えばいいですか？」と聞かれた際の推薦者になる</li>
+  </ul>
+  <h4>関係構築の方法</h4>
+  <ul>
+    <li>サービス担当者会議に毎回参加し、情報共有を密にする</li>
+    <li>利用者の状態変化を相談支援専門員にこまめに報告する</li>
+    <li>地域の相談支援事業所に挨拶訪問・パンフレットを届ける</li>
+    <li>研修・勉強会・事例検討会への参加で顔を覚えてもらう</li>
+  </ul>
+</div>
+</dialog>
+
+<dialog id="p10-web">
+  <div class="popup-header"><h3>Webサイト・SNS活用の具体策</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>Webサイトで必ず掲載すること</h4>
+  <ul>
+    <li>対応エリア（○○市・○○区）</li>
+    <li>対応できるサービス（精神科訪問看護・24時間対応等）</li>
+    <li>スタッフの資格・経験（精神科経験○年等）</li>
+    <li>連絡先・受付時間</li>
+    <li>よくある質問（FAQ）</li>
+  </ul>
+  <h4>Googleビジネスプロフィール（旧Googleマイビジネス）</h4>
+  <ul>
+    <li>無料で登録できる。「訪問看護 ○○市」で検索した時に地図表示される</li>
+    <li>営業時間・電話番号・口コミが表示される→問い合わせ増加に直結</li>
+  </ul>
+  <h4>SNSの活用（任意）</h4>
+  <ul>
+    <li>Instagram・Facebook：スタッフの日常・勉強会の様子を発信→求人にも有効</li>
+    <li>個人情報に注意：利用者の情報は絶対に投稿しない</li>
+  </ul>
+</div>
+</dialog>
+
+<dialog id="p10-seishin">
+  <div class="popup-header"><h3>精神科訪問看護の専門性強化</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>精神科訪問看護の特徴</h4>
+  <ul>
+    <li>精神疾患（統合失調症・うつ病・双極性障碍・発達障碍等）の特性に応じたケアが必要</li>
+    <li>対応できる事業所が少なく、ニーズが高い（特に重症の方・服薬管理が必要な方）</li>
+    <li>医療保険で優先算定できる（65歳以上でも）</li>
+  </ul>
+  <h4>専門性向上のための取り組み</h4>
+  <ul>
+    <li>精神科認定看護師の採用・育成</li>
+    <li>精神科訪問看護に関する研修への参加（日本精神科看護協会等）</li>
+    <li>ACT（積極的地域生活支援プログラム）の考え方を取り入れる</li>
+  </ul>
+<div class="popup-source">📎 出典: 日本精神科看護協会・精神科訪問看護認定看護師教育課程</div></div>
+</dialog>
+
+<dialog id="p10-ict">
+  <div class="popup-header"><h3>ICT活用による業務効率化</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>訪問看護向けシステムの導入効果</h4>
+  <ul>
+    <li>タブレット入力：訪問中にリアルタイム入力→事務所への戻り作業が不要</li>
+    <li>自動請求：サービス記録から自動的にレセプトデータを生成</li>
+    <li>スケジュール管理：スタッフ全員のスケジュールをリアルタイム共有</li>
+    <li>情報共有：利用者の状態変化をスタッフ間でリアルタイム共有</li>
+  </ul>
+  <h4>コスト目安と費用対効果</h4>
+  <ul>
+    <li>月額5,000〜30,000円程度（利用者数・機能による）</li>
+    <li>事務時間を月20時間削減できれば（時給2,000円として）月4万円の費用削減に相当</li>
+    <li>ICT活用加算（就労継続支援）の算定可能性も検討</li>
+  </ul>
+</div>
+</dialog>
+
+<dialog id="p10-staff">
+  <div class="popup-header"><h3>スタッフ定着のための施策</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>なぜスタッフ定着が最重要か</h4>
+  <ul>
+    <li>訪問看護師の採用費（紹介会社経由）は年収の15〜30%（150〜300万円）</li>
+    <li>離職→採用→育成のコストは既存スタッフの給与改善より高い</li>
+    <li>利用者との信頼関係が崩れ、利用者の離れにつながる</li>
+  </ul>
+  <h4>定着のための取り組み</h4>
+  <ul>
+    <li>処遇改善加算を最大限活用した賃金アップ（区分Ⅰを目指す）</li>
+    <li>柔軟な勤務形態（週3日勤務・時短勤務・WFH等）の導入</li>
+    <li>定期的な個人面談（3ヶ月に1回）でキャリア・悩みを把握</li>
+    <li>訪問看護の専門研修費用の事業所負担（自己成長機会の提供）</li>
+    <li>利用者からのハラスメント対応方針の明確化（スタッフを守る）</li>
+  </ul>
+</div>
+</dialog>
+
+<dialog id="p10-terminal">
+  <div class="popup-header"><h3>ターミナルケア（看取り）の準備</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>看取りに対応するための準備</h4>
+  <ul>
+    <li>主治医との密な連携体制（24時間連絡可能な体制）</li>
+    <li>家族への看取りに関する事前説明（意向確認・急変時の対応確認）</li>
+    <li>死亡前14日間の訪問記録の充実（ターミナルケア加算の算定根拠）</li>
+    <li>グリーフケア（遺族へのケア）の実施と記録</li>
+  </ul>
+  <h4>算定のポイント</h4>
+  <ul>
+    <li>死亡月に1回、25,000円を算定可能</li>
+    <li>在宅での看取りは病院より費用負担が少なく、家族のニーズも高い</li>
+    <li>「看取りに対応できる訪問看護」を売りにすることで差別化できる</li>
+  </ul>
+  <div class="rev-chip">年間5件の看取り対応で+125,000円</div>
+</div>
+</dialog>
+
+</main>
+<footer>
+  <p>障碍者福祉事業所 運営ガイド｜収入向上ページ</p>
+  <p>※ 法令・制度・報酬は改定されることがあります。最新情報は各官公庁の公式情報をご確認ください。</p>
+</footer>
+<script src="popup.js"></script><script src="table-responsive.js"></script><script src="nav.js"></script>
+</body>
+</html>

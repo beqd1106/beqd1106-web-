@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>法令・制度 ｜ 障碍者福祉事業所 運営ガイド</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <a href="index.html" class="site-logo">🏥 障碍者福祉 運営ガイド</a>
+  <nav class="site-nav">
+    <a href="index.html">TOP</a>
+    <a href="01_法令・制度.html" class="active">⚖️ 法令</a>
+    <a href="02_必要書類.html">📋 書類</a>
+    <a href="03_管理業務.html">📅 管理</a>
+    <a href="04_京都府・手続き.html">🏛️ 京都府</a>
+    <a href="05_請求業務.html">💴 請求</a>
+    <a href="06_就労継続A型.html">🏢 A型</a>
+    <a href="07_就労継続B型.html">🏭 B型</a>
+    <a href="08_相談支援.html">💬 相談</a>
+    <a href="09_監査対応.html">🔍 監査</a>
+    <a href="10_収入向上.html">📈 収入</a>
+    <a href="11_年間スケジュール.html">📆 年間</a>
+    <a href="12_QA.html">❓ Q&amp;A</a>
+    <a href="フォーマット/index.html" style="background:var(--coral-light);color:var(--coral-dark);border:1px solid var(--coral-mid);">📁 様式DL</a>
+  </nav>
+</header>
+<div class="page-hero-sm">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">⚖️ 法令・制度</div>
+      <h1>関連法令・制度まとめ</h1>
+      <p>障碍者対象の訪問看護・福祉事業所が遵守すべき法令と、利用者に関わる福祉制度の一覧です。各行の「詳細▼」で詳しい要件・罰則・改正内容が確認できます。</p>
+    </div><div class="hero-img"><img src="images/nursing_woman_ty.png" alt=""></div>
+  </div>
+</div>
+<main class="container">
+  <a href="index.html" class="back-link">← TOPに戻る</a>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">🏥</span><h2>医療・看護系 主要法令</h2></div>
+    <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:0.75rem;">各行の「詳細▼」をクリックすると遵守ポイント・罰則・改正履歴が確認できます。</p>
+    <div class="table-wrap"><table>
+      <tr><th>法令名</th><th>施行</th><th>主な内容</th><th>詳細</th></tr>
+      <tr>
+        <td><strong>保健師助産師看護師法</strong><span class="src-badge">厚労省</span></td>
+        <td>1948年</td>
+        <td>看護師・准看護師・保健師・助産師の資格要件・業務範囲を規定</td>
+        <td><button class="popup-btn" onclick="openPopup('p01-hojo')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>医療法</strong><span class="src-badge">厚労省</span></td>
+        <td>1948年</td>
+        <td>医療機関の開設・管理・広告規制・安全管理体制を定める</td>
+        <td><button class="popup-btn" onclick="openPopup('p01-iryoho')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>健康保険法・国民健康保険法</strong></td>
+        <td>1922/1958年</td>
+        <td>訪問看護療養費の根拠法。保険適用・給付の仕組みを定める</td>
+        <td><button class="popup-btn" onclick="openPopup('p01-kenpo')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>介護保険法</strong><span class="src-badge">厚労省</span></td>
+        <td>2000年</td>
+        <td>65歳以上・40〜64歳特定疾病者への介護給付を定める</td>
+        <td><button class="popup-btn" onclick="openPopup('p01-kaigo')">詳細▼</button></td>
+      </tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">♿</span><h2>障碍者福祉系 主要法令</h2></div>
+    <div class="table-wrap"><table>
+      <tr><th>法令名</th><th>施行/改正</th><th>主な内容・訪問看護との関係</th><th>詳細</th></tr>
+      <tr>
+        <td><strong>障害者総合支援法</strong><span class="src-badge">最重要</span></td>
+        <td>2013年<br><small>改正2024年</small></td>
+        <td>身体・精神・知的・難病の障碍者へのサービスを一元的に定める根幹法。介護給付・訓練等給付・相談支援等を規定。</td>
+        <td><button class="popup-btn" onclick="openPopup('p01-sougou')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>精神保健福祉法</strong></td>
+        <td>1950年<br><small>改正2024年</small></td>
+        <td>精神障碍者の医療・保護・保健・福祉を定める。精神科訪問看護の根拠法。</td>
+        <td><button class="popup-btn" onclick="openPopup('p01-seishin')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>身体障害者福祉法</strong></td>
+        <td>1949年</td>
+        <td>身体障害者手帳の交付・更生援護を定める。利用者の等級（1〜6級）がサービス量に影響。</td>
+        <td><button class="popup-btn" onclick="openPopup('p01-shintai')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>知的障害者福祉法</strong></td>
+        <td>1960年</td>
+        <td>療育手帳の根拠法。判定は知的障害者更生相談所（京都府心身障害者福祉センター）が担当。</td>
+        <td><button class="popup-btn" onclick="openPopup('p01-chiteki')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>障害者虐待防止法</strong><span class="src-badge">通報義務</span></td>
+        <td>2012年</td>
+        <td>通報義務・支援体制。従業員への虐待防止研修が義務（年1回以上）。</td>
+        <td><button class="popup-btn" onclick="openPopup('p01-gyakutai')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>障害者差別解消法</strong><span class="src-badge">2024年改正</span></td>
+        <td>2016年<br><small>改正2024年4月</small></td>
+        <td>2024年4月より事業者の合理的配慮の提供が<strong>義務化</strong>（従来は努力義務）。</td>
+        <td><button class="popup-btn" onclick="openPopup('p01-sabetsu')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>個人情報保護法</strong></td>
+        <td>2003年<br><small>改正2022年</small></td>
+        <td>医療情報は要配慮個人情報。漏洩時の報告義務。第三者提供には本人同意が必要。</td>
+        <td><button class="popup-btn" onclick="openPopup('p01-kojin')">詳細▼</button></td>
+      </tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">🌸</span><h2>京都府・京都市の条例・施策</h2></div>
+    <div class="two-col">
+      <div>
+        <h4 style="color:var(--coral-dark);margin-bottom:0.75rem;">京都府共生社会条例（2018年施行）</h4>
+        <div class="alert alert-info">
+          <strong class="alert-hdr">正式名称：</strong>京都府障害のある人もない人も共に安心して暮らせる共生社会条例
+        </div>
+        <ul style="font-size:0.85rem;color:var(--text-mid);padding-left:1.2rem;">
+          <li style="margin-bottom:0.3rem;">不当な差別的取扱いの禁止（義務）</li>
+          <li style="margin-bottom:0.3rem;">合理的配慮の提供（義務）</li>
+          <li style="margin-bottom:0.3rem;">相談窓口の設置・周知</li>
+          <li>差別解消に向けた取組・研修の実施</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color:var(--coral-dark);margin-bottom:0.75rem;">主な改正・制度変更（直近）</h4>
+        <div class="table-wrap"><table>
+          <tr><th>内容</th><th>施行</th></tr>
+          <tr><td>就労選択支援（新サービス）の創設</td><td><span class="badge badge-danger">2024年10月</span></td></tr>
+          <tr><td>障害者差別解消法改正（合理的配慮義務化）</td><td><span class="badge badge-danger">2024年4月</span></td></tr>
+          <tr><td>診療報酬改定（訪問看護基本療養費等）</td><td><span class="badge badge-danger">2024年6月</span></td></tr>
+          <tr><td>精神保健福祉法改正（医療保護入院見直し）</td><td><span class="badge badge-warning">2024年4月</span></td></tr>
+          <tr><td>障害者総合支援法改正（グループホーム外部サービス拡充等）</td><td><span class="badge badge-warning">2024年4月</span></td></tr>
+        </table></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">✅</span><h2>法令遵守チェックリスト</h2></div>
+    <div class="two-col">
+      <div>
+        <h4 style="color:var(--coral-dark);margin-bottom:0.75rem;">事業所設置・体制</h4>
+        <ul class="checklist">
+          <li>管理者は看護師・保健師の資格を有している</li>
+          <li>常勤換算2.5人以上の看護師等が配置されている</li>
+          <li>24時間対応体制の連絡先が整備されている</li>
+          <li>運営規程が整備・掲示されている</li>
+          <li>重要事項説明書が最新版に更新されている</li>
+          <li>苦情受付窓口が設置・周知されている</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color:var(--coral-dark);margin-bottom:0.75rem;">記録・研修・安全管理</h4>
+        <ul class="checklist">
+          <li>虐待防止研修を年1回以上実施し、記録がある</li>
+          <li>感染症対策委員会・指針・研修（年2回）を整備</li>
+          <li>事業継続計画（BCP）を策定している</li>
+          <li>個人情報保護研修を年1回以上実施している</li>
+          <li>合理的配慮の対応方針を明文化している</li>
+          <li>訪問看護計画書・記録書を漏れなく作成・保管している</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+<dialog id="p01-hojo">
+  <div class="popup-header"><h3>保健師助産師看護師法 詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>訪問看護師に必要な資格</h4>
+  <ul>
+    <li>訪問看護師：看護師または准看護師（保健師・助産師も可）</li>
+    <li>管理者：看護師または保健師が望ましい（准看護師でも可だが指導的立場には看護師が必要）</li>
+    <li>精神科訪問看護：精神科の経験を有する看護師等 が算定要件</li>
+  </ul>
+  <h4>業務範囲と注意事項</h4>
+  <ul>
+    <li>診療の補助行為（採血・注射等）は医師の指示の下でのみ実施可能</li>
+    <li>特定行為（気管切開管理・人工呼吸器設定変更等）は「特定行為研修修了看護師」のみ実施可能</li>
+    <li>業務範囲外の医療行為は「無資格医業」として刑事罰の対象（3年以下の懲役・100万円以下の罰金）</li>
+  </ul>
+  <h4>罰則</h4>
+  <p>資格なしで業務を行った場合：3年以下の懲役または100万円以下の罰金（法第43条）</p>
+<div class="popup-source">📎 出典: 厚生労働省「保健師助産師看護師法」e-Gov法令検索</div></div>
+</dialog>
+
+<dialog id="p01-iryoho">
+  <div class="popup-header"><h3>医療法 詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>訪問看護ステーションへの影響</h4>
+  <ul>
+    <li>訪問看護ステーションは医療機関ではないが、医療安全管理体制の整備が求められる（第6条の12）</li>
+    <li>院内感染防止対策（感染対策指針・委員会・研修）の整備義務</li>
+    <li>広告規制：虚偽・誇大広告の禁止（ウェブサイトも対象）</li>
+  </ul>
+  <h4>2021年改正（感染症対策強化）</h4>
+  <ul>
+    <li>感染症予防・まん延防止指針の策定義務</li>
+    <li>感染症研修・訓練 年2回以上の実施義務</li>
+    <li>感染対策委員会の設置義務</li>
+  </ul>
+<div class="popup-source">📎 出典: 厚生労働省「医療法」e-Gov法令検索</div></div>
+</dialog>
+
+<dialog id="p01-kenpo">
+  <div class="popup-header"><h3>健康保険法・国民健康保険法 詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>訪問看護療養費の仕組み</h4>
+  <ul>
+    <li>医療保険による訪問看護は「訪問看護療養費」として給付（健康保険法第88条・国民健康保険法第54条の3）</li>
+    <li>費用の算定は「訪問看護療養費に係る指定訪問看護の費用の額の算定方法」（厚生労働省告示）で定められる</li>
+    <li>不正請求は返還命令（最大10倍返還）・指定取消の対象</li>
+  </ul>
+  <h4>障碍者への医療保険適用の特例</h4>
+  <ul>
+    <li>精神科訪問看護：年齢・疾患に関わらず医療保険が優先適用</li>
+    <li>65歳以上でも精神疾患がある場合は医療保険の訪問看護基本療養費が算定可能</li>
+  </ul>
+<div class="popup-source">📎 出典: 厚生労働省「訪問看護療養費に係る指定訪問看護の費用の額の算定方法」（令和6年告示）</div></div>
+</dialog>
+
+<dialog id="p01-kaigo">
+  <div class="popup-header"><h3>介護保険法と障碍者 詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>介護保険優先の原則</h4>
+  <ul>
+    <li>障碍者が65歳になると、原則として介護保険サービスが障害福祉サービスより優先される（障害者総合支援法第7条）</li>
+    <li>ただし、介護保険サービスにない内容・より適切な支援がある場合は障害福祉サービスの利用が認められる</li>
+  </ul>
+  <h4>精神科訪問看護の特例</h4>
+  <ul>
+    <li>精神疾患の利用者は65歳以降も医療保険による精神科訪問看護基本療養費を算定可能（年齢問わず）</li>
+    <li>2018年度の改定で精神科以外の訪問看護との併用も可能になった</li>
+  </ul>
+  <h4>65歳問題（いわゆる「65歳の壁」）</h4>
+  <p>支援の継続性のために相談支援専門員・行政と連携し、介護認定申請と並行して障害福祉サービスの継続可否を確認することが重要。</p>
+<div class="popup-source">📎 出典: 厚生労働省「障害者の日常生活及び社会生活を総合的に支援するための法律」第7条</div></div>
+</dialog>
+
+<dialog id="p01-sougou">
+  <div class="popup-header"><h3>障害者総合支援法 詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>サービスの種類</h4>
+  <ul>
+    <li><strong>介護給付：</strong>居宅介護（ホームヘルプ）・重度訪問介護・行動援護・生活介護・施設入所支援等</li>
+    <li><strong>訓練等給付：</strong>就労移行支援・就労継続支援A型・B型・就労定着支援・共同生活援助（グループホーム）等</li>
+    <li><strong>相談支援：</strong>計画相談支援・地域移行支援・地域定着支援・就労選択支援（2024年10月〜）</li>
+  </ul>
+  <h4>障害支援区分</h4>
+  <ul>
+    <li>区分1〜6（6が最重度）で認定。介護給付サービスの利用に必要。</li>
+    <li>認定調査（80項目）＋医師意見書→審査判定→市区町村が認定</li>
+    <li>訓練等給付（就労継続支援等）は区分認定不要の場合もある</li>
+  </ul>
+  <h4>2024年改正の主なポイント</h4>
+  <ul>
+    <li>就労選択支援の創設（2024年10月）：就労継続支援A/B型の利用前にアセスメントを実施</li>
+    <li>グループホームの外部サービス利用型の拡充</li>
+    <li>障碍者の意思決定支援の強化</li>
+  </ul>
+<div class="popup-source">📎 出典: 厚生労働省「障害者の日常生活及び社会生活を総合的に支援するための法律」・令和6年改正</div></div>
+</dialog>
+
+<dialog id="p01-seishin">
+  <div class="popup-header"><h3>精神保健福祉法 詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>精神科訪問看護との関係</h4>
+  <ul>
+    <li>精神科訪問看護基本療養費の算定根拠（精神保健福祉法第2条の精神障碍者が対象）</li>
+    <li>精神保健福祉士（PSW）が訪問看護チームに加わることができる</li>
+    <li>精神障碍者保健福祉手帳（1〜3級）の確認が利用者支援に役立つ</li>
+  </ul>
+  <h4>2024年改正（医療保護入院の見直し）</h4>
+  <ul>
+    <li>入院期間の上限設定（最長3ヶ月、更新可能）</li>
+    <li>退院促進措置の強化：退院後生活環境相談員の選任義務</li>
+    <li>訪問看護ステーションへの影響：退院後の地域支援ニーズが高まる可能性</li>
+  </ul>
+<div class="popup-source">📎 出典: 厚生労働省「精神保健及び精神障害者福祉に関する法律」・令和6年改正</div></div>
+</dialog>
+
+<dialog id="p01-shintai">
+  <div class="popup-header"><h3>身体障害者福祉法 詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>身体障害者手帳の等級</h4>
+  <ul>
+    <li>1〜6級（1級が最重度、7級は手帳なし）</li>
+    <li>1・2級：重度障害者；障害支援区分の認定に優位性</li>
+    <li>手帳の更新：更新が必要な場合と永続認定の場合がある</li>
+  </ul>
+  <h4>訪問看護との関係</h4>
+  <ul>
+    <li>手帳の等級と医療保険の特別管理加算の対象（気管切開・人工呼吸器等）が重なるケースが多い</li>
+    <li>判定機関：京都府心身障害者福祉センター（TEL: 075-312-6639）</li>
+  </ul>
+<div class="popup-source">📎 出典: 厚生労働省「身体障害者福祉法」e-Gov法令検索</div></div>
+</dialog>
+
+<dialog id="p01-chiteki">
+  <div class="popup-header"><h3>知的障害者福祉法 詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>療育手帳の等級</h4>
+  <ul>
+    <li>都道府県によって表記が異なる：「A」（重度）・「B」（中・軽度）が多い</li>
+    <li>京都府・京都市：A1（最重度）、A2（重度）、B1（中度）、B2（軽度）</li>
+    <li>18歳未満は児童相談所、18歳以上は知的障害者更生相談所（京都府心身障害者福祉センター）が判定</li>
+  </ul>
+  <h4>更新・手続き</h4>
+  <ul>
+    <li>療育手帳には更新年齢が設定されている場合がある</li>
+    <li>有効期限がある場合は自動的に更新案内が来るが、確認が大切</li>
+  </ul>
+<div class="popup-source">📎 出典: 厚生労働省「知的障害者福祉法」e-Gov法令検索</div></div>
+</dialog>
+
+<dialog id="p01-gyakutai">
+  <div class="popup-header"><h3>障害者虐待防止法 詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>虐待の種類（法第2条）</h4>
+  <ul>
+    <li>身体的虐待・性的虐待・心理的虐待・放棄・放置（ネグレクト）・経済的虐待</li>
+  </ul>
+  <h4>通報義務（発見者）</h4>
+  <ul>
+    <li>虐待（またはその疑い）を発見した者は市区町村に<strong>速やかに通報</strong>（義務）</li>
+    <li>通報者の秘密は守られる（守秘義務違反にならない）</li>
+    <li>通報を怠った場合：行政指導の対象になり得る</li>
+  </ul>
+  <h4>事業所として義務付けられる対応</h4>
+  <ul>
+    <li>虐待防止委員会の設置</li>
+    <li>虐待防止のための指針の整備</li>
+    <li>従業員への研修 年1回以上の実施（記録必要）</li>
+    <li>虐待防止担当者（責任者）の選定</li>
+  </ul>
+<div class="popup-source">📎 出典: 厚生労働省「障害者虐待の防止、障害者の養護者に対する支援等に関する法律」</div></div>
+</dialog>
+
+<dialog id="p01-sabetsu">
+  <div class="popup-header"><h3>障害者差別解消法 詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>2024年4月改正の主なポイント</h4>
+  <ul>
+    <li>事業者（民間含む）の<strong>合理的配慮の提供が義務化</strong>（改正前は努力義務）</li>
+    <li>違反しても直接的な罰則規定はないが、行政指導・公表の対象になり得る</li>
+  </ul>
+  <h4>合理的配慮の例（訪問看護・福祉事業所）</h4>
+  <ul>
+    <li>コミュニケーション支援：文字・絵カード・ゆっくり話す・手話通訳の手配</li>
+    <li>移動・施設利用：車椅子対応・段差解消</li>
+    <li>書類：ルビ付き・大きい文字・音声読み上げ対応</li>
+  </ul>
+  <h4>「過重な負担」があれば拒否可能</h4>
+  <p>合理的配慮の提供が事業者にとって「過重な負担」となる場合は提供を断ることができる。その場合は代替手段を検討し、理由を説明することが重要。</p>
+<div class="popup-source">📎 出典: 内閣府「障害を理由とする差別の解消の推進に関する法律」令和6年4月施行</div></div>
+</dialog>
+
+<dialog id="p01-kojin">
+  <div class="popup-header"><h3>個人情報保護法 詳細（医療分野）</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>医療情報の取扱い</h4>
+  <ul>
+    <li>病歴・障碍・処方薬情報は「要配慮個人情報」（法第2条第3項）</li>
+    <li>取得時に本人同意が必要（緊急時例外あり）</li>
+    <li>第三者提供（医師・他事業所等）も原則本人同意が必要（例外：治療に必要な連携等）</li>
+  </ul>
+  <h4>2022年改正の主なポイント</h4>
+  <ul>
+    <li>漏洩時の報告義務：個人情報保護委員会への報告（速報72時間以内、確報30日以内）</li>
+    <li>本人通知も原則必要</li>
+    <li>不正利用された場合：1億円以下の罰金（法人）、1年以下の懲役（個人）</li>
+  </ul>
+  <h4>事業所での対策</h4>
+  <ul>
+    <li>利用者情報の持ち出し（USBメモリ・紙資料）は最小限に</li>
+    <li>訪問時のメモ・スマートフォンの紛失対策</li>
+    <li>年1回の個人情報研修実施と記録保管</li>
+  </ul>
+<div class="popup-source">📎 出典: 個人情報保護委員会「個人情報の保護に関する法律」令和4年改正</div></div>
+</dialog>
+
+</main>
+<footer>
+  <p>障碍者福祉事業所 運営ガイド｜法令・制度ページ</p>
+  <p>※ 法令・制度・報酬は改定されることがあります。最新情報は各官公庁の公式情報をご確認ください。</p>
+</footer>
+<script src="popup.js"></script><script src="table-responsive.js"></script><script src="nav.js"></script>
+</body>
+</html>

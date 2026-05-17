@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>監査対応 ｜ 障碍者福祉事業所 運営ガイド</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <a href="index.html" class="site-logo">🏥 障碍者福祉 運営ガイド</a>
+  <nav class="site-nav">
+    <a href="index.html">TOP</a>
+    <a href="01_法令・制度.html">⚖️ 法令</a>
+    <a href="02_必要書類.html">📋 書類</a>
+    <a href="03_管理業務.html">📅 管理</a>
+    <a href="04_京都府・手続き.html">🏛️ 京都府</a>
+    <a href="05_請求業務.html">💴 請求</a>
+    <a href="06_就労継続A型.html">🏢 A型</a>
+    <a href="07_就労継続B型.html">🏭 B型</a>
+    <a href="08_相談支援.html">💬 相談</a>
+    <a href="09_監査対応.html" class="active">🔍 監査</a>
+    <a href="10_収入向上.html">📈 収入</a>
+    <a href="11_年間スケジュール.html">📆 年間</a>
+    <a href="12_QA.html">❓ Q&amp;A</a>
+    <a href="フォーマット/index.html" style="background:var(--coral-light);color:var(--coral-dark);border:1px solid var(--coral-mid);">📁 様式DL</a>
+  </nav>
+</header>
+<div class="page-hero-sm">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">🔍 監査対応</div>
+      <h1>実地指導・監査 対応ガイド</h1>
+      <p>実地指導の準備チェックリスト・よくある指摘事項と対応策・不正請求防止・監査に発展させないための予防策をまとめています。</p>
+    </div><div class="hero-img"><img src="images/law_document.png" alt=""></div>
+  </div>
+</div>
+<main class="container">
+  <a href="index.html" class="back-link">← TOPに戻る</a>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">🔍</span><h2>指導・監査の種類と違い</h2></div>
+    <div class="table-wrap"><table>
+      <tr><th>種類</th><th>性質</th><th>頻度</th><th>対応の重要度</th><th>詳細</th></tr>
+      <tr>
+        <td><strong>実地指導</strong></td>
+        <td>行政が事業所の運営状況を確認するための行政指導。処分ではない。</td>
+        <td>おおむね3〜5年に1回</td>
+        <td><span class="badge badge-warning">重要</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p09-jichi')">詳細▼</button></td>
+      </tr>
+      <tr>
+        <td><strong>集団指導</strong></td>
+        <td>複数事業所を一堂に集め、制度改正・よくある指摘事項等を説明する研修型の指導。</td>
+        <td>年1〜2回（通知あり）</td>
+        <td><span class="badge badge-primary">参加必須</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>監査</strong></td>
+        <td>不正・重大な基準違反が疑われる場合に行う行政処分の前段。指定取消の可能性あり。</td>
+        <td>不定期（問題発覚時）</td>
+        <td><span class="badge badge-danger">最重要</span></td>
+        <td><button class="popup-btn" onclick="openPopup('p09-kansa')">詳細▼</button></td>
+      </tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">📋</span><h2>実地指導でよく指摘される事項</h2></div>
+    <div class="two-col">
+      <div>
+        <h4 style="color:var(--coral-dark);margin-bottom:0.75rem;">書類・記録関係</h4>
+        <ul style="font-size:0.85rem;color:var(--text-mid);padding-left:1.2rem;">
+          <li style="margin-bottom:0.4rem;">訪問看護計画書・報告書の作成漏れ・遅延</li>
+          <li style="margin-bottom:0.4rem;">利用者への説明・署名取得漏れ</li>
+          <li style="margin-bottom:0.4rem;">訪問看護指示書の期限切れ・取得漏れ</li>
+          <li style="margin-bottom:0.4rem;">記録書の修正（修正液使用・遡及修正）</li>
+          <li style="margin-bottom:0.4rem;">個別支援計画書の未作成・担当者未署名</li>
+          <li style="margin-bottom:0.4rem;">ヒヤリハット・事故報告書の未作成</li>
+          <li>サービス提供記録と請求データの不一致</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color:var(--coral-dark);margin-bottom:0.75rem;">人員・体制関係</h4>
+        <ul style="font-size:0.85rem;color:var(--text-mid);padding-left:1.2rem;">
+          <li style="margin-bottom:0.4rem;">常勤換算2.5人以上の維持不足</li>
+          <li style="margin-bottom:0.4rem;">管理者の兼務・不在（専任要件）</li>
+          <li style="margin-bottom:0.4rem;">サービス管理責任者の未配置・資格更新漏れ</li>
+          <li style="margin-bottom:0.4rem;">研修実施記録の未整備（虐待防止・感染症）</li>
+          <li style="margin-bottom:0.4rem;">勤務表と実際の勤務実態の不一致</li>
+          <li style="margin-bottom:0.4rem;">社会保険・労働保険の未加入</li>
+          <li>BCP（事業継続計画）の未策定</li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:0.75rem;text-align:center;"><button class="popup-btn" onclick="openPopup('p09-shiteki')">指摘別の対応策を見る▼</button></div>
+  </div>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">✅</span><h2>実地指導 準備チェックリスト</h2></div>
+    <div class="dl-box">
+      <div class="dl-box-title">📥 監査対応に役立つ様式</div>
+      <div class="dl-links">
+        <a href="フォーマット/06_事故苦情ヒヤリ様式/01_事故報告書.xlsx" class="dl-btn template">事故報告書</a>
+        <a href="フォーマット/06_事故苦情ヒヤリ様式/02_ヒヤリハット報告書.xlsx" class="dl-btn template">ヒヤリハット報告書</a>
+        <a href="フォーマット/06_事故苦情ヒヤリ様式/03_苦情受付記録.xlsx" class="dl-btn template">苦情受付記録</a>
+        <a href="フォーマット/02_訪問看護記録様式/08_研修実施記録.xlsx" class="dl-btn template">研修実施記録</a>
+        <a href="フォーマット/07_運営規程ひな形/05_身体拘束禁止・虐待防止方針.docx" class="dl-btn word">虐待防止方針</a>
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <h4 style="color:var(--coral-dark);margin-bottom:0.75rem;">書類カテゴリ別チェック</h4>
+        <ul class="checklist">
+          <li>訪問看護計画書・報告書（直近12ヶ月分・全利用者）</li>
+          <li>訪問看護指示書（有効期限内か全利用者分を確認）</li>
+          <li>訪問看護記録書Ⅰ・Ⅱ（修正液使用がないか）</li>
+          <li>サービス提供実績記録と請求書の一致確認</li>
+          <li>個別支援計画書（担当者署名入り・最新版）</li>
+          <li>契約書・重要事項説明書（全利用者・最新版）</li>
+          <li>苦情受付記録・事故・ヒヤリハット報告書（0件でも記録）</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color:var(--coral-dark);margin-bottom:0.75rem;">体制・管理カテゴリ別チェック</h4>
+        <ul class="checklist">
+          <li>従業員勤務表（過去1年分）と実態の一致</li>
+          <li>研修実施記録（虐待防止・感染症・個人情報）</li>
+          <li>カンファレンス議事録（月1回以上）</li>
+          <li>社会保険・労働保険の加入確認書類</li>
+          <li>管理者・サビ管の資格証コピー（更新後最新）</li>
+          <li>指定通知書・各種変更届のコピー</li>
+          <li>BCP（事業継続計画）の文書・訓練記録</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-header"><span class="icon">🚨</span><h2>不正請求・指定取消を防ぐために</h2></div>
+    <div class="alert alert-danger">
+      <strong class="alert-hdr">🚨 指定取消・業務停止の主な原因</strong>
+      不正請求（架空請求・水増し請求）・著しい人員基準違反・重大な事故の隠ぺいが発覚した場合、指定の取消・業務の全部/一部停止となります。
+    </div>
+    <div class="table-wrap"><table>
+      <tr><th>リスク項目</th><th>防止策</th><th>詳細</th></tr>
+      <tr><td><strong>訪問記録と請求の不一致</strong></td><td>毎月、訪問記録書の訪問日・時間・サービス内容と請求データを照合する。管理者が最終確認。</td><td><button class="popup-btn" onclick="openPopup('p09-fusei1')">詳細▼</button></td></tr>
+      <tr><td><strong>加算の要件未充足での算定</strong></td><td>加算を算定する前に、要件（訪問回数・人員・届出）を確認。要件を満たさない月の請求は取り下げる。</td><td><button class="popup-btn" onclick="openPopup('p09-fusei2')">詳細▼</button></td></tr>
+      <tr><td><strong>人員基準の違反</strong></td><td>看護師等が退職した場合は直ちに採用活動を開始。基準を満たせない期間は行政に相談。</td><td></td></tr>
+      <tr><td><strong>事故の未報告・隠ぺい</strong></td><td>重大な事故は行政への速報（24時間以内）が必要。誠実な報告と改善策の提示が信頼回復の鍵。</td><td></td></tr>
+    </table></div>
+  </div>
+
+<dialog id="p09-jichi">
+  <div class="popup-header"><h3>実地指導 一般的な流れの詳細</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>事前通知から当日まで</h4>
+  <ul>
+    <li><strong>事前通知（1〜2ヶ月前）：</strong>書面で指導日程・持参書類リストが届く。すぐに準備を開始。</li>
+    <li><strong>書類整理（通知後〜2週間前）：</strong>持参書類リストに沿って書類を確認・整理。不備がある場合は速やかに補完。</li>
+    <li><strong>当日準備（前日まで）：</strong>書類をカテゴリ別にファイリング。指導員が見やすいように整理して陳列。</li>
+    <li><strong>当日対応：</strong>管理者が中心になって対応。正直・誠実に回答。不明な点は「後日確認してお答えします」。</li>
+    <li><strong>指導後（2〜4週間後）：</strong>指導結果の文書が届く。指摘事項に対して改善計画書を作成・提出。</li>
+  </ul>
+  <h4>実地指導で見られる主なポイント</h4>
+  <ul>
+    <li>記録・書類の整備状況（作成漏れ・保管状況）</li>
+    <li>人員配置の実態（常勤換算・資格証の有効性）</li>
+    <li>利用者の処遇（虐待・身体拘束の有無）</li>
+    <li>感染症・BCP対策の整備状況</li>
+    <li>請求の適正性（記録との照合）</li>
+  </ul>
+</div>
+</dialog>
+
+<dialog id="p09-kansa">
+  <div class="popup-header"><h3>監査に発展しないための予防策</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>監査が始まる主な原因</h4>
+  <ul>
+    <li>実地指導の指摘事項を繰り返し改善しない</li>
+    <li>利用者・家族・従業員からの苦情・内部告発</li>
+    <li>不正請求の疑いが持たれる（返戻・過誤の異常な多さ等）</li>
+    <li>重大な事故・虐待事案の発覚</li>
+    <li>業界内の情報・メディア報道</li>
+  </ul>
+  <h4>監査が始まった場合の対応</h4>
+  <ul>
+    <li>弁護士・社会保険労務士等の専門家に相談することを強く推奨</li>
+    <li>調査員の質問に対して、メモを取り、確認できないことは後日回答する</li>
+    <li>書類の破棄・改ざんは絶対にしない（証拠隠滅で罪が重くなる）</li>
+    <li>誠実な対応と自主的な改善が最善の策</li>
+  </ul>
+  <h4>処分の種類（軽い順）</h4>
+  <ul>
+    <li>文書指導・改善勧告（一番軽い）</li>
+    <li>業務の一部停止（特定のサービス・加算の停止）</li>
+    <li>指定の全部取消（最も重い）</li>
+  </ul>
+<div class="popup-source">📎 出典: 障害者の日常生活及び社会生活を総合的に支援するための法律 第50条（指定の取消）</div></div>
+</dialog>
+
+<dialog id="p09-shiteki">
+  <div class="popup-header"><h3>よくある指摘事項別の対応策</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>① 訪問看護計画書・報告書の未作成・遅延</h4>
+  <ul>
+    <li>対応：毎月の業務カレンダーに「計画書作成締切日」を設定し、担当者に周知</li>
+    <li>翌月訪問前に前月分の計画書・報告書が完成しているか管理者がチェック</li>
+  </ul>
+  <h4>② 指示書の期限切れ</h4>
+  <ul>
+    <li>対応：全利用者の指示書有効期限を一覧表で管理（Excelで色分け）</li>
+    <li>期限の2ヶ月前に主治医への更新依頼をルール化する</li>
+  </ul>
+  <h4>③ 勤務表と実態の不一致</h4>
+  <ul>
+    <li>対応：勤務表は実際に出勤した日・時間を正確に記録（予定表ではない）</li>
+    <li>タイムカード・出退勤システムの導入で客観的な記録を残す</li>
+  </ul>
+  <h4>④ 研修記録の未整備</h4>
+  <ul>
+    <li>対応：研修実施記録様式（日付・参加者・内容・署名）を定型化</li>
+    <li>欠席者への周知記録も残す</li>
+  </ul>
+</div>
+</dialog>
+
+<dialog id="p09-fusei1">
+  <div class="popup-header"><h3>訪問記録と請求の照合方法</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>月次照合のポイント</h4>
+  <ul>
+    <li>全利用者のサービス提供実績記録（利用者署名入り）と請求データを1件ずつ照合</li>
+    <li>確認項目：訪問日・訪問時間・訪問者名・サービス内容・加算の算定根拠</li>
+    <li>照合完了後に管理者が最終確認のサインをする</li>
+  </ul>
+  <h4>よくある不一致のケース</h4>
+  <ul>
+    <li>訪問日が記録と請求でずれている（訂正記録漏れ）</li>
+    <li>加算（緊急訪問看護加算等）が記録に明記されていない</li>
+    <li>利用者が欠席したのに請求してしまっている</li>
+  </ul>
+</div>
+</dialog>
+
+<dialog id="p09-fusei2">
+  <div class="popup-header"><h3>加算算定前の確認チェック</h3><button class="popup-close" onclick="this.closest('dialog').close()">✕</button></div>
+  <div class="popup-body">
+  <h4>算定前に必ず確認すること</h4>
+  <div class="table-wrap"><table>
+    <tr><th>加算名</th><th>確認ポイント</th></tr>
+    <tr><td>24時間対応体制加算</td><td>体制届出済みか・オンコール担当が毎日決まっているか</td></tr>
+    <tr><td>特別管理加算(Ⅰ/Ⅱ)</td><td>体制届出済みか・対象者の状態が要件を満たしているか・月1回のみか</td></tr>
+    <tr><td>緊急訪問看護加算</td><td>計画外の緊急訪問か・24時間対応体制加算の届出があるか・記録に「緊急」の理由があるか</td></tr>
+    <tr><td>退院時共同指導加算</td><td>共同指導の記録があるか・同一入院につき2回以内か</td></tr>
+    <tr><td>処遇改善加算</td><td>体制届出済みか・計画書の対象期間か</td></tr>
+  </table></div>
+</div>
+</dialog>
+
+</main>
+<footer>
+  <p>障碍者福祉事業所 運営ガイド｜監査対応ページ</p>
+  <p>※ 法令・制度・報酬は改定されることがあります。最新情報は各官公庁の公式情報をご確認ください。</p>
+</footer>
+<script src="popup.js"></script><script src="table-responsive.js"></script><script src="nav.js"></script>
+</body>
+</html>
