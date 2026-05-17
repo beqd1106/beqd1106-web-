@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "beqd1106-web",
+  "compatibility_date": "2026-05-17",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "訪問看護事業所_運営ガイド"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}
