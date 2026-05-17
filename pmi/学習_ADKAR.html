@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADKARモデル 学習教材｜変革を「人」から成功させる技術</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','BIZ UDGothic','Meiryo',sans-serif;background:#FAFAF8;color:#1A1A1A;line-height:1.75;font-size:15px;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}img{max-width:100%;height:auto;display:block;}
+.site-header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 32px;height:56px;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid #E8E5E0;}
+.header-logo{font-size:12px;font-weight:700;}.header-logo span{color:#999;font-weight:400;}
+.header-back{font-size:12px;color:#666;}.header-back:hover{color:#1A1A1A;}
+.hero{min-height:28vh;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;padding:76px 48px 36px;background:#F5F3EE;border-bottom:1px solid #E8E5E0;position:relative;overflow:hidden;}
+@media(max-width:768px){.hero{grid-template-columns:1fr;padding:72px 16px 20px;}.hero-illust{display:none;}}
+.hero-left{position:relative;z-index:1;}
+.hero-bg-num{position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:clamp(120px,18vw,220px);font-weight:900;color:rgba(0,0,0,.04);line-height:1;pointer-events:none;letter-spacing:-10px;}
+.hero-meta{display:flex;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+.hero-step{font-size:10px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;}
+.hero-phase{font-size:10px;font-weight:700;letter-spacing:1px;border:1px solid #7c3aed;color:#7c3aed;padding:2px 10px;border-radius:100px;}
+.hero-title{font-size:clamp(20px,3vw,36px);font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:16px;}
+.hero-title em{font-style:normal;color:#0f766e;}
+.hero-desc{font-size:14px;color:#666;max-width:440px;line-height:1.8;}
+.hero-illust{width:clamp(160px,20vw,260px);opacity:.85;flex-shrink:0;}
+.hero-divider{width:40px;height:2px;background:#1A1A1A;margin-top:28px;}
+.ch-nav{background:#fff;position:sticky;top:56px;z-index:50;border-bottom:1px solid #E8E5E0;overflow-x:auto;white-space:nowrap;}
+.ch-nav ul{display:inline-flex;list-style:none;padding:0 32px;}
+.ch-nav li a{display:block;font-size:11px;font-weight:600;color:#999;padding:12px 14px;border-bottom:2px solid transparent;transition:all .15s;}
+.ch-nav li a:hover{color:#1A1A1A;border-bottom-color:#1A1A1A;}
+.chapter{padding:56px 48px;}.chapter:nth-child(odd){background:#fff;}.chapter:nth-child(even){background:#FAFAF8;}
+@media(max-width:768px){.chapter{padding:28px 16px;}}
+.ch-inner{max-width:720px;margin:0 auto;}
+.ch-head{margin-bottom:28px;display:flex;align-items:baseline;gap:16px;}
+.ch-num-label{font-size:10px;font-weight:700;letter-spacing:2px;color:#BBBBBB;text-transform:uppercase;white-space:nowrap;}
+.ch-line{flex:1;height:1px;background:#E8E5E0;}
+.ch-head-content{margin-top:12px;}
+.ch-head-content h2{font-size:clamp(18px,3vw,24px);font-weight:800;letter-spacing:-.3px;margin-bottom:5px;}
+.ch-head-content p{font-size:13px;color:#888;}
+.key{background:#F5F3EE;border-left:3px solid #1A1A1A;padding:20px 24px;margin:20px 0;}
+.key-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;margin-bottom:8px;}
+.key p{font-size:14px;line-height:1.8;}
+/* ADKAR flow */
+.adkar-flow{display:flex;gap:2px;margin:16px 0;overflow-x:auto;}
+.adkar-box{flex:1;min-width:78px;border-radius:2px;padding:14px 8px;text-align:center;color:#fff;}
+.aa{background:#1D4ED8;}.ad{background:#059669;}.ak{background:#D97706;}.aab{background:#7C3AED;}.ar{background:#DC2626;}
+.adkar-box .ab-l{font-size:20px;font-weight:900;line-height:1;}
+.adkar-box .ab-w{font-size:10px;font-weight:700;margin:4px 0;}
+.adkar-box .ab-j{font-size:9px;opacity:.85;}
+/* ADKAR detail cards */
+.adkar-detail{display:flex;flex-direction:column;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+.ad-card{display:grid;grid-template-columns:56px 1fr;background:#fff;}
+.ad-badge{display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-weight:900;border-right:1px solid #E8E5E0;padding:14px;}
+.adb-a1{background:#1D4ED8;}.adb-d{background:#059669;}.adb-k{background:#D97706;}.adb-ab{background:#7C3AED;}.adb-r{background:#DC2626;}
+.ad-badge .adb-l{font-size:18px;line-height:1;}
+.ad-badge .adb-s{font-size:8px;font-weight:400;opacity:.85;margin-top:2px;text-align:center;}
+.ad-body{padding:14px 18px;}
+.ad-body h4{font-size:12px;font-weight:700;margin-bottom:4px;}
+.ad-body p{font-size:11px;color:#888;margin-bottom:6px;line-height:1.7;}
+.ad-action{font-size:10px;font-weight:600;padding:3px 10px;border-radius:100px;display:inline-block;}
+.act-a{background:#DBEAFE;color:#1E40AF;}.act-d{background:#DCFCE7;color:#166534;}
+.act-k{background:#FEF3C7;color:#92400E;}.act-ab{background:#F3E8FF;color:#5B21B6;}.act-r{background:#FEF2F2;color:#991B1B;}
+/* Order compare */
+.order-compare{display:grid;grid-template-columns:1fr 40px 1fr;gap:8px;align-items:center;margin:14px 0;}
+.oc-wrong{background:#FEF2F2;border:1px solid #FCA5A5;border-radius:2px;padding:14px;}
+.oc-right{background:#F0FDF4;border:1px solid #86EFAC;border-radius:2px;padding:14px;}
+.oc-label{font-size:10px;font-weight:700;margin-bottom:5px;}
+.oc-wrong .oc-label{color:#991B1B;}.oc-right .oc-label{color:#166534;}
+.oc-content{font-size:11px;color:#888;}
+.oc-vs{text-align:center;font-size:16px;color:#BBBBBB;}
+/* 100day */
+.day-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:14px 0;}
+.day-card{background:#fff;padding:14px;}
+.dc-1{border-top:2px solid #1D4ED8;}.dc-30{border-top:2px solid #059669;}.dc-100{border-top:2px solid #DC2626;}
+.day-card h4{font-size:11px;font-weight:700;margin-bottom:6px;}
+.dc-1 h4{color:#1E40AF;}.dc-30 h4{color:#166534;}.dc-100 h4{color:#991B1B;}
+.day-card ul{padding-left:14px;font-size:11px;color:#888;}.day-card li{margin-bottom:3px;}
+.callout{padding:14px 18px;margin:14px 0;font-size:13px;border-left:3px solid;border-radius:0 2px 2px 0;}
+.callout-warn{background:#FFFBEB;border-color:#D97706;}.callout-warn strong{color:#92400E;display:block;margin-bottom:3px;}
+.callout-tip{background:#F0FDFA;border-color:#0F766E;}.callout-tip strong{color:#0F766E;display:block;margin-bottom:3px;}
+.src{border:1px solid #E8E5E0;border-radius:2px;padding:16px 20px;margin-top:28px;display:flex;gap:12px;background:#FAFAF8;}
+.src-icon{font-size:14px;flex-shrink:0;margin-top:2px;}
+.src-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:5px;}
+.src-list{list-style:none;font-size:11px;color:#888;}.src-list li{margin-bottom:3px;line-height:1.6;}.src-list cite{font-style:normal;}
+.summary{background:#1A1A1A;color:#FAFAF8;padding:28px 32px;border-radius:2px;}
+.summary-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:12px;}
+.summary h3{font-size:15px;font-weight:800;margin-bottom:14px;line-height:1.4;}
+.summary ul{padding-left:16px;font-size:13px;line-height:2.2;color:#CCC;}
+.cta{background:#0f766e;color:#fff;padding:28px 32px;border-radius:2px;text-align:center;margin:20px auto;}
+.cta h3{font-size:15px;font-weight:800;margin-bottom:6px;}
+.cta p{font-size:12px;opacity:.8;margin-bottom:16px;}
+.cta a{display:inline-block;background:#fff;color:#0f766e;font-weight:700;font-size:13px;padding:11px 28px;border-radius:100px;}
+.page-nav{background:#1A1A1A;display:flex;justify-content:space-between;align-items:center;padding:16px 48px;flex-wrap:wrap;gap:8px;}
+.page-nav a{color:#999;font-size:12px;font-weight:600;}.page-nav a:hover{color:#fff;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .site-header{padding:0 14px;}
+  .header-logo{font-size:11px;}
+  .header-back{font-size:11px;}
+  .hero{padding:68px 16px 16px;min-height:auto;}
+  .hero-title{font-size:clamp(18px,5vw,26px);letter-spacing:-.5px;margin-bottom:12px;}
+  .hero-meta{gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+  .hero-desc{font-size:13px;}
+  .hero-divider{margin-top:16px;}
+  .ch-nav ul{padding:0 8px;}
+  .ch-nav li a{padding:10px 8px;font-size:10px;letter-spacing:0;}
+  .chapter{padding:24px 14px;}
+  .ch-inner{max-width:100%;}
+  .ch-head-content h2{font-size:17px;}
+  .ch-head-content p{font-size:12px;}
+  .key{padding:14px 16px;}
+  .key p{font-size:13px;}
+  .card-row{grid-template-columns:1fr;}
+  .mistake-grid{grid-template-columns:1fr;}
+  .d-row{flex-direction:column;}
+  .d-box{width:100%;flex:none;min-width:unset;}
+  .diagram{padding:16px;}
+  .step{grid-template-columns:40px 1fr;}
+  .step-b{padding:14px 14px;}
+  .step-n{font-size:16px;}
+  .src{flex-direction:column;gap:8px;padding:14px 16px;}
+  .callout{font-size:12px;padding:12px 14px;}
+  .summary{padding:20px 18px;border-radius:2px;}
+  .summary h3{font-size:14px;}
+  .summary ul{font-size:12px;line-height:2;}
+  .cta{padding:20px 18px;border-radius:2px;}
+  .cta h3{font-size:14px;}
+  .page-nav{padding:14px 16px;flex-direction:column;align-items:center;gap:12px;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-logo">PMI学習セット</div>
+  <a class="header-back" href="index.html">← 学習一覧に戻る</a>
+</header>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-bg-num" aria-hidden="true">10</div>
+    <div class="hero-meta">
+      <span class="hero-step">Step 10 of 11</span>
+      <span class="hero-phase">ADVANCED</span>
+    </div>
+    <h1 class="hero-title"><em>ADKARモデル</em><br>変革を「人」から成功させる技術</h1>
+    <p class="hero-desc">M&A後の組織統合で最も難しいのは「人の変革」。世界80カ国で使われる変革マネジメントの標準手法で乗り越える。</p>
+    <div class="hero-divider"></div>
+  </div>
+  <img class="hero-illust" src="https://loosedrawing.com/assets/media/illustrations/png/1840.png" alt="円陣のイラスト">
+</section>
+
+<nav class="ch-nav">
+  <ul>
+    <li><a href="#c1">なぜ必要？</a></li>
+    <li><a href="#c2">ADKARとは</a></li>
+    <li><a href="#c3">5ステップ詳細</a></li>
+    <li><a href="#c4">順番が命</a></li>
+    <li><a href="#c5">PMIでの活用</a></li>
+    <li><a href="#c-assess">アセスメント手法</a></li>
+    <li><a href="#c-key">キーパーソン対策</a></li>
+    <li><a href="#c6">まとめ</a></li>
+  </ul>
+</nav>
+
+<div class="chapter" id="c1">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 01</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>なぜ変革マネジメントが必要か</h2></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>「M&Aの7割が期待したシナジーを実現できない」最大の原因は「人の変革の失敗」</strong><br>
+      財務・法務・IT統合は計画できるが、「人が変わる」ことは強制できない。新しいやり方を押し付けると抵抗が生まれ、優秀な人材から離職する。ADKARは「人が自然に変わっていくプロセス」に寄り添う方法論。</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:14px 0;">
+      <div style="background:#fff;padding:16px;"><h4 style="font-size:12px;font-weight:700;margin-bottom:5px;">😰 典型的な不安①</h4><p style="font-size:12px;color:#888;">「自分の仕事はなくなるの？」→ 情報がないほど最悪のシナリオを想像する。</p></div>
+      <div style="background:#fff;padding:16px;"><h4 style="font-size:12px;font-weight:700;margin-bottom:5px;">😰 典型的な不安②</h4><p style="font-size:12px;color:#888;">「この会社のやり方で仕事したくない」→ 自社文化への誇りと買収側への抵抗感。</p></div>
+      <div style="background:#fff;padding:16px;"><h4 style="font-size:12px;font-weight:700;margin-bottom:5px;">😰 典型的な不安③</h4><p style="font-size:12px;color:#888;">「新しいシステムが使いこなせない」→ 変化への不安・スキル不足への恐れ。</p></div>
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>McKinsey & Company "Most M&As Fail to Deliver" (2015) ― M&Aの70%がシナジー実現に失敗するという調査データ</cite></li>
+          <li><cite>KPMG「M&A統合調査レポート」（各年版）― PMI失敗の主因として「組織・文化統合の失敗」を挙げている</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c2">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 02</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>ADKARとは何か</h2></div>
+    <p style="font-size:13px;color:#888;margin-bottom:14px;">Prosci社（米国の変革マネジメント専門機関）が開発。世界80カ国以上で使われる変革マネジメントの標準。5つの英単語の頭文字。</p>
+    <div class="adkar-flow">
+      <div class="adkar-box aa"><div class="ab-l">A</div><div class="ab-w">Awareness</div><div class="ab-j">認識</div></div>
+      <div class="adkar-box ad"><div class="ab-l">D</div><div class="ab-w">Desire</div><div class="ab-j">意欲</div></div>
+      <div class="adkar-box ak"><div class="ab-l">K</div><div class="ab-w">Knowledge</div><div class="ab-j">知識</div></div>
+      <div class="adkar-box aab"><div class="ab-l">A</div><div class="ab-w">Ability</div><div class="ab-j">能力</div></div>
+      <div class="adkar-box ar"><div class="ab-l">R</div><div class="ab-w">Reinforcement</div><div class="ab-j">定着</div></div>
+    </div>
+    <div class="callout callout-tip">
+      <strong>ADKARの大原則：「個人の変革」の積み重ねが組織の変革になる</strong>一人ひとりがADKARの5ステップを経て変わっていくことで組織が変革する。全員同じペースで進むわけではなく個人差がある。
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>Hiatt, Jeff M. "ADKAR: A Model for Change in Business, Government and our Community" (2006, Prosci Learning Center) ― ADKARモデルの原著</cite></li>
+          <li><cite>Prosci "Best Practices in Change Management" 11th Edition (2023) ― 世界90カ国・2,000以上の変革事例の分析に基づく最新版</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c3">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 03</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>5ステップの詳細</h2></div>
+    <div class="adkar-detail">
+      <div class="ad-card"><div class="ad-badge adb-a1"><div class="adb-l">A</div><div class="adb-s">Awareness</div></div><div class="ad-body"><h4>Awareness（認識）― なぜ変わる必要があるのか理解している状態</h4><p>「今回のM&Aの必要性・目的・なぜこの統合が重要か」を説明できるか。変化の必要性が伝わっていないと全て始まらない。</p><span class="ad-action act-a">施策例：タウンホールミーティング・経営者からの直接ビデオメッセージ</span></div></div>
+      <div class="ad-card"><div class="ad-badge adb-d"><div class="adb-l">D</div><div class="adb-s">Desire</div></div><div class="ad-body"><h4>Desire（意欲）― 変化を自分も支持・参加したいという個人的な意志</h4><p>WIIFM「What's In It For Me?（自分にとって何が良いのか）」を各自が納得している状態。強制では生まれない。</p><span class="ad-action act-d">施策例：1on1面談・WIIFMメッセージの個別伝達・変革チャンピオンの活用</span></div></div>
+      <div class="ad-card"><div class="ad-badge adb-k"><div class="adb-l">K</div><div class="adb-s">Knowledge</div></div><div class="ad-body"><h4>Knowledge（知識）― どう変わればいいかを知っている状態</h4><p>新しい業務フロー・システム操作・評価制度・自分の新しい役割などを理解している。研修・マニュアルで補う。</p><span class="ad-action act-k">施策例：業務研修・役割別マニュアル配布・Q&Aセッション</span></div></div>
+      <div class="ad-card"><div class="ad-badge adb-ab"><div class="adb-l">A</div><div class="adb-s">Ability</div></div><div class="ad-body"><h4>Ability（能力）― 実際にその変化を実行できるスキル・実践力がある状態</h4><p>KとAの違い：Kは「知っている」。Aは「実際にできる」。研修を受けたけど使えない状態はK○・A✗。</p><span class="ad-action act-ab">施策例：OJT・ハンズオン練習会・メンター制度・小さな成功体験の積み重ね</span></div></div>
+      <div class="ad-card"><div class="ad-badge adb-r"><div class="adb-l">R</div><div class="adb-s">Reinforcement</div></div><div class="ad-body"><h4>Reinforcement（定着）― 変化が継続される仕組みがある状態</h4><p>Rがなければ研修後に元の行動に戻る（最も多い失敗）。「続けることが得」な仕組みを評価制度・表彰で作る。</p><span class="ad-action act-r">施策例：月次表彰制度・評価項目への追加・成功事例の全社共有</span></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c4">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 04</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>「順番」が命：なぜA→D→K→A→Rなのか</h2></div>
+    <div class="order-compare">
+      <div class="oc-wrong"><div class="oc-label">❌ よくある失敗：K（研修）から始める</div><div class="oc-content">「なぜやるか分からないまま研修を受けても身につかない」<br>→「また意味のない研修か」と思われ効果ゼロ</div></div>
+      <div class="oc-vs">vs</div>
+      <div class="oc-right"><div class="oc-label">✅ 正しい順番：A→D→K→A→R</div><div class="oc-content">「なぜ」→「やりたい」→「どうやる」→「できる」→「続ける」<br>→ 自然に行動変容が起きる</div></div>
+    </div>
+    <div class="callout callout-warn">
+      <strong>⚠️ 最も多い失敗：「K（研修）だけやって終わり」</strong>PMIで「研修をやったのに現場が変わらない」は典型例。A・Dが育っていない状態でKだけ詰め込んでも定着しない。そしてRがないと研修後に元に戻る。
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c5">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 05</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>PMI 100日プランでのADKAR活用</h2></div>
+    <div class="day-grid">
+      <div class="day-card dc-1"><h4>Day1〜30：A・D フェーズ</h4><ul><li>全社説明会・M&Aの目的共有（A）</li><li>全従業員との1on1ヒアリング（D・不安の傾聴）</li><li>キーパーソンへのWIIFMメッセージ（D）</li></ul></div>
+      <div class="day-card dc-30"><h4>Day30〜60：K・A フェーズ</h4><ul><li>新業務フロー・システム研修実施（K）</li><li>役割別マニュアルの配布（K）</li><li>OJTと練習機会の設置（Ability）</li></ul></div>
+      <div class="day-card dc-100"><h4>Day60〜100：R フェーズ</h4><ul><li>統合推進への月次表彰制度（R）</li><li>成功事例の全社共有（R）</li><li>ADKARアセスメントの再実施</li></ul></div>
+    </div>
+    <div style="background:#F0FDFA;border:1px solid #99F6E4;border-radius:2px;padding:14px;margin-top:8px;font-size:12px;color:#0F766E;">
+      <strong>ADKARアセスメントの方法：</strong>5ステップそれぞれを5点満点でアンケート。「D（意欲）：2点、R（定着）：1.8点」のように弱いステップを特定して、そこに集中して施策を打つ。
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c-assess">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 06</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>ADKARアセスメントの実施方法</h2><p>「どのステップで詰まっているか」を数値で特定する</p></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>感覚で判断するな ― 数値でボトルネックを特定する</strong><br>
+      「なぜ変革が進まないか」を感覚で議論するのは時間の無駄。ADKARアセスメントを実施して弱いステップを特定し、そこだけに資源を集中する。</p>
+    </div>
+    <div style="border:1px solid #E8E5E0;border-radius:2px;padding:20px;background:#fff;margin:14px 0;">
+      <p style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:14px;">アセスメントの実施手順</p>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="background:#1A1A1A;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;white-space:nowrap;flex-shrink:0;">Step 1</div>
+          <p style="font-size:13px;color:#444;">対象者（全従業員 or 部門単位）に5段階評価のアンケートを実施<br><span style="font-size:11px;color:#888;">質問例 A：「今回の統合の必要性を理解していますか？」1〜5点で評価</span></p>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="background:#1A1A1A;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;white-space:nowrap;flex-shrink:0;">Step 2</div>
+          <p style="font-size:13px;color:#444;">ステップ別平均点を算出し「3点未満のステップ」を特定<br><span style="font-size:11px;color:#888;">例）A:4.2 / D:2.1 / K:3.5 / A:3.0 / R:1.8 → D・Rが弱い</span></p>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="background:#1A1A1A;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;white-space:nowrap;flex-shrink:0;">Step 3</div>
+          <p style="font-size:13px;color:#444;">最も低いステップに集中して施策を打ち、4週間後に再計測<br><span style="font-size:11px;color:#888;">D強化例：1on1面談を週1で実施・WIIFMメッセージを個別に作成</span></p>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="background:#1A1A1A;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;white-space:nowrap;flex-shrink:0;">重要</div>
+          <p style="font-size:13px;color:#DC2626;font-weight:600;">A→D→K→A→Rの順番を守る：弱いステップの「前のステップ」が育っているか必ず確認する</p>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:14px 0;">
+      <div style="background:#fff;padding:14px;border-top:3px solid #F59E0B;"><h4 style="font-size:12px;font-weight:700;margin-bottom:6px;color:#92400E;">A が低い場合</h4><p style="font-size:11px;color:#888;">経営トップが直接メッセージ発信。「なぜ今か」の背景説明を繰り返す</p></div>
+      <div style="background:#fff;padding:14px;border-top:3px solid #EF4444;"><h4 style="font-size:12px;font-weight:700;margin-bottom:6px;color:#DC2626;">D が低い場合</h4><p style="font-size:11px;color:#888;">WIIFM（自分にとっての利点）を個別面談で伝える。変革チャンピオンを活用する</p></div>
+      <div style="background:#fff;padding:14px;border-top:3px solid #3B82F6;"><h4 style="font-size:12px;font-weight:700;margin-bottom:6px;color:#1E40AF;">K が低い場合</h4><p style="font-size:11px;color:#888;">研修・マニュアル充実。FAQを作成し不明点を残さない</p></div>
+      <div style="background:#fff;padding:14px;border-top:3px solid #8B5CF6;"><h4 style="font-size:12px;font-weight:700;margin-bottom:6px;color:#5B21B6;">A（能力）が低い場合</h4><p style="font-size:11px;color:#888;">OJT・練習機会の確保。できた時に即座にフィードバック</p></div>
+      <div style="background:#fff;padding:14px;border-top:3px solid #059669;"><h4 style="font-size:12px;font-weight:700;margin-bottom:6px;color:#15803D;">R が低い場合</h4><p style="font-size:11px;color:#888;">評価制度に変革への貢献を組み込む。成功事例を全社共有する</p></div>
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>Prosci "ADKAR Assessment Guide" (2020) ― アセスメント設計・スコアリング・解釈の実務ガイド</cite></li>
+          <li><cite>Prosci "Best Practices in Change Management" 11th Edition (2023) ― アセスメント実施企業の成功率データ</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c-key">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 07</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>キーパーソンのリテンション戦略</h2><p>PMI成否を左右する「人材流出防止」</p></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>M&A後最初の3ヶ月が最も離職リスクが高い</strong><br>
+      「買収された」という不安・不満・将来への不透明感がピークになる時期。この時期にキーパーソンを失うと、シナジーの実現はほぼ不可能になる。ADKARのD（意欲）を個人レベルで徹底強化する。</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:14px 0;">
+      <div style="background:#fff;padding:18px;">
+        <h4 style="font-size:13px;font-weight:700;margin-bottom:10px;">🎯 リテンション対象の特定</h4>
+        <p style="font-size:12px;color:#888;line-height:1.8;">買収後30日以内に「この人が辞めたら困る」人物を特定する。基準：<br>
+        ① 代替不可能なスキル・知識を持つ人<br>
+        ② 現場への影響力が大きい人<br>
+        ③ 顧客・取引先との関係を持つ人<br>
+        → キーパーソンリストを経営陣と共有し、全員1on1を実施</p>
+      </div>
+      <div style="background:#fff;padding:18px;">
+        <h4 style="font-size:13px;font-weight:700;margin-bottom:10px;">💬 個別WIIFMメッセージ</h4>
+        <p style="font-size:12px;color:#888;line-height:1.8;">「なぜあなたが必要か」を直接伝える。一般的なメッセージではなく「あなた個人への期待」を明言する。<br>例：「〇〇さんの製造現場のノウハウは統合後の品質管理の核になる。ぜひリードしてほしい」<br>→ 承認欲求への訴求がD（意欲）を生む</p>
+      </div>
+      <div style="background:#fff;padding:18px;">
+        <h4 style="font-size:13px;font-weight:700;margin-bottom:10px;">💰 リテンションボーナス</h4>
+        <p style="font-size:12px;color:#888;line-height:1.8;">「統合完了まで在籍した場合に支払う」という条件付きボーナス。一般的には6ヶ月〜1年の在籍条件。<br>注意：お金だけでは動機は持続しない。WIIFM・キャリアパスの提示と組み合わせることが重要。</p>
+      </div>
+      <div style="background:#fff;padding:18px;">
+        <h4 style="font-size:13px;font-weight:700;margin-bottom:10px;">🚀 早期のキャリアパス提示</h4>
+        <p style="font-size:12px;color:#888;line-height:1.8;">「統合後にどんなポジション・責任を担うか」を具体的に示す。不透明感が最大の不安源。「あなたの将来のポジションはXです」と早期に明言する。ADKARのA（認識）とD（意欲）の両方に作用する。</p>
+      </div>
+    </div>
+    <div class="callout callout-warn">
+      <strong>⚠️ 「様子を見よう」は最悪の戦略</strong>
+      「しばらく様子を見て、変わらなければ残るだろう」は間違い。情報が不透明なほど人は最悪のシナリオを想像する。Day1から積極的にコミュニケーションを取り、不安を先手で潰す。
+    </div>
+    <div class="callout callout-tip">
+      <strong>複数の変革が同時進行する場合の優先順位付け</strong>
+      PMI中は「組織統合・システム統合・業務フロー統合」が同時進行する。人の負荷を考慮し、「今月はコレだけ」と明確に絞ること。全部同時に変えようとすると全部中途半端になる（PDCA的発想：Plan段階でスコープを絞る）。
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c6">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 08</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>まとめ</h2></div>
+    <div class="summary">
+      <div class="summary-label">Summary</div>
+      <h3>ADKARモデル ― 3行まとめ</h3>
+      <ul>
+        <li>ADKAR ＝ Awareness→Desire→Knowledge→Ability→Reinforcementの5ステップで人を変革する</li>
+        <li>順番が命：A・Dが育っていない状態でKだけ詰めても行動変容しない</li>
+        <li>PMI100日プランでDay1〜30：A/D → Day30〜60：K/A → Day60〜100：R の流れで実施する</li>
+      </ul>
+    </div>
+    <div style="height:20px;"></div>
+    <div class="cta">
+      <h3>変革マネジメントの実践力を身につけよう</h3>
+      <p>各ステップの識別・施策分類・PMI組織変革ケースまで20問。</p>
+      <a href="練習_ADKAR.html">ADKAR 練習問題を解く（20問）→</a>
+    </div>
+  </div>
+</div>
+
+<nav class="page-nav">
+  <a href="学習_5フォース.html">← 5フォース分析</a>
+  <a href="学習_PMI基礎.html">次：PMI基礎 →</a>
+</nav>
+</body>
+</html>

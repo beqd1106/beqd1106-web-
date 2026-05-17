@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWOT分析 練習問題 20問</title>
+<style>
+:root{--primary:#d97706;--accent:#e85d26;--accent2:#2ca8c2;--light:#f4f7fb;--dark:#0f1f30;--gray:#6b7a8d;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--light);color:var(--dark);line-height:1.7;}
+.hero{background:linear-gradient(135deg,#0f1f30,#d97706,#e85d26);color:white;padding:40px 20px 32px;text-align:center;}
+.hero h1{font-size:clamp(20px,4vw,30px);font-weight:800;margin-bottom:8px;}
+.hero p{font-size:13px;opacity:.8;margin-bottom:16px;}
+.progress-wrap{background:rgba(255,255,255,.15);border-radius:20px;height:10px;max-width:400px;margin:0 auto 8px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,#fde68a,#e85d26);border-radius:20px;transition:width .4s;width:0%;}
+.progress-text{font-size:12px;opacity:.8;}
+.stats-row{display:flex;gap:16px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:8px 16px;text-align:center;}
+.stat .v{font-size:20px;font-weight:800;color:#fde68a;line-height:1;}
+.stat .l{font-size:10px;opacity:.75;}
+.container{max-width:800px;margin:0 auto;padding:20px;}
+.lecture{background:white;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.08);border-left:5px solid var(--primary);}
+.lecture h2{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:10px;}
+.lecture p{font-size:13px;color:var(--gray);margin-bottom:8px;}
+.swot-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0;}
+.sw-s{background:#dcfce7;border:2px solid #16a34a;border-radius:10px;padding:12px;font-size:12px;}
+.sw-w{background:#fef2f2;border:2px solid #dc2626;border-radius:10px;padding:12px;font-size:12px;}
+.sw-o{background:#dbeafe;border:2px solid #0369a1;border-radius:10px;padding:12px;font-size:12px;}
+.sw-t{background:#fef3c7;border:2px solid #d97706;border-radius:10px;padding:12px;font-size:12px;}
+.sw-s h4{color:#166534;font-size:13px;font-weight:700;margin-bottom:4px;}
+.sw-w h4{color:#dc2626;font-size:13px;font-weight:700;margin-bottom:4px;}
+.sw-o h4{color:#1e40af;font-size:13px;font-weight:700;margin-bottom:4px;}
+.sw-t h4{color:#92400e;font-size:13px;font-weight:700;margin-bottom:4px;}
+.cross-swot{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0;}
+.cs-so{background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:10px;font-size:11px;}
+.cs-st{background:#fff8f0;border:1px solid #fed7aa;border-radius:10px;padding:10px;font-size:11px;}
+.cs-wo{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px;font-size:11px;}
+.cs-wt{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:10px;font-size:11px;}
+.cs-so h4,.cs-st h4,.cs-wo h4,.cs-wt h4{font-size:11px;font-weight:700;margin-bottom:4px;}
+.cs-so h4{color:#166534;}
+.cs-st h4{color:#c2410c;}
+.cs-wo h4{color:#1d4ed8;}
+.cs-wt h4{color:#b91c1c;}
+.warn{background:#fff8f0;border-left:3px solid #e85d26;border-radius:0 8px 8px 0;padding:10px 14px;font-size:12px;color:#92400e;margin-top:10px;}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2px;color:white;display:inline-block;padding:4px 14px;border-radius:20px;margin:16px 0 12px;}
+.sl-basic{background:#16a34a;}
+.sl-mid{background:#0369a1;}
+.sl-adv{background:#7c3aed;}
+.qcard{background:white;border-radius:14px;padding:20px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);}
+.qtop{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.qnum{background:var(--primary);color:white;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;}
+.qtype{font-size:11px;color:var(--gray);font-weight:600;}
+.qlv{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.qlv.basic{background:#dcfce7;color:#166534;}
+.qlv.mid{background:#dbeafe;color:#1e40af;}
+.qlv.adv{background:#fce7f3;color:#9d174d;}
+.qtext{font-size:14px;font-weight:600;margin-bottom:10px;line-height:1.6;}
+.qsub{font-size:12px;color:var(--gray);margin-bottom:10px;}
+.choices{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.ch{text-align:left;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;background:white;cursor:pointer;font-size:13px;font-family:inherit;transition:all .2s;}
+.ch:hover{border-color:var(--accent2);background:#f0f9ff;}
+.ch.correct{border-color:#16a34a;background:#f0fdf4;color:#166534;font-weight:700;}
+.ch.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626;}
+.ch:disabled{cursor:default;}
+.ans{display:none;margin-top:12px;}
+.ans-inner{background:linear-gradient(135deg,#fffbeb,#fff7ed);border-radius:10px;padding:16px;border:1px solid #fed7aa;}
+.ans-result{font-size:14px;font-weight:700;color:#92400e;margin-bottom:8px;}
+.ans-exp{font-size:13px;color:var(--dark);margin-bottom:10px;line-height:1.6;}
+.tip{background:white;border-radius:8px;padding:10px 14px;font-size:12px;color:#0369a1;border-left:3px solid var(--accent2);}
+.tip strong{display:block;margin-bottom:3px;}
+.revbtn{background:var(--primary);color:white;border:none;border-radius:20px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:10px;}
+.revbtn:hover{background:var(--accent);}
+.revbtn.revealed{background:var(--gray);}
+.score-board{background:white;border-radius:14px;padding:16px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:center;}
+.nav-bar{background:#0f1f30;padding:14px 20px;text-align:center;margin-top:20px;}
+.nav-bar a{color:#a5f3fc;text-decoration:none;font-size:12px;font-weight:600;margin:0 10px;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .hero{padding:28px 14px 20px;}
+  .hero h1{font-size:clamp(18px,5vw,26px);}
+  .container{padding:12px;}
+  .qcard{padding:16px;border-radius:10px;}
+  .qtext{font-size:13px;}
+  .ch{font-size:12px;padding:10px 12px;}
+  .ans-inner{padding:14px;}
+  .ans-exp{font-size:12px;}
+  .tip{font-size:11px;}
+  .lecture{padding:16px;border-radius:10px;}
+  .lecture h2{font-size:14px;}
+  .lecture p,.lecture .warn{font-size:12px;}
+  .nav-bar{padding:12px 14px;}
+  .nav-bar a{font-size:11px;margin:0 6px;}
+  .stats-row{gap:10px;}
+  .stat{padding:6px 12px;}
+  .stat .v{font-size:18px;}
+}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>⚡ SWOT分析 練習問題</h1>
+  <p>強み・弱み・機会・脅威から、クロスSWOTで戦略を生み出す</p>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-text" id="progressText">0 / 20 問 回答済み</div>
+  <div class="stats-row">
+    <div class="stat"><div class="v">20</div><div class="l">問</div></div>
+    <div class="stat"><div class="v">50</div><div class="l">分目安</div></div>
+    <div class="stat"><div class="v" id="scoreDisp">0</div><div class="l">正解（選択問題）</div></div>
+  </div>
+</div>
+
+<div class="container">
+<div class="lecture">
+  <h2>📖 SWOT分析とは？（4分で読む）</h2>
+  <p>Strengths（強み）・Weaknesses（弱み）・Opportunities（機会）・Threats（脅威）の4象限で企業の状況を整理し、戦略を立案するフレームワーク。</p>
+  <div class="swot-grid">
+    <div class="sw-s"><h4>S 強み（内部・プラス）</h4>自社がコントロールできる優位性。競合と比べて優れている点。</div>
+    <div class="sw-w"><h4>W 弱み（内部・マイナス）</h4>自社がコントロールできる課題。競合と比べて劣っている点。</div>
+    <div class="sw-o"><h4>O 機会（外部・プラス）</h4>市場・環境の変化でビジネスにプラスになること。</div>
+    <div class="sw-t"><h4>T 脅威（外部・マイナス）</h4>市場・環境の変化でビジネスにマイナスになること。</div>
+  </div>
+  <p>SWOTだけで終わらず、<strong>クロスSWOT（4戦略）</strong>が本当の価値。</p>
+  <div class="cross-swot">
+    <div class="cs-so"><h4>SO戦略（積極攻勢）</h4>強みを活かして機会をつかむ。最も攻めの戦略。</div>
+    <div class="cs-st"><h4>ST戦略（差別化）</h4>強みを使って脅威を回避・軽減する。</div>
+    <div class="cs-wo"><h4>WO戦略（弱点補強）</h4>弱みを克服して機会を逃さない。</div>
+    <div class="cs-wt"><h4>WT戦略（防衛・撤退）</h4>弱みと脅威が重なる最悪ケースへの対処。</div>
+  </div>
+  <div class="warn">⚠️ よくある失敗：内部要因（S・W）と外部要因（O・T）を混同する。「競合が参入してきた」→ 外部・マイナス＝脅威（T）。「自社の営業力が弱い」→ 内部・マイナス＝弱み（W）。</div>
+</div>
+
+<div class="score-board">
+  <h3 style="font-size:14px;color:var(--gray);margin-bottom:4px;">選択問題スコア</h3>
+  <span style="font-size:40px;font-weight:900;color:var(--primary)" id="scoreVal">0</span><span style="font-size:18px;color:var(--gray);"> / 10点</span>
+</div>
+
+<div class="section-label sl-basic">SECTION A ― 要素の識別（Q1〜Q5）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q1</span><span class="qtype">要素識別</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">以下の情報をS・W・O・Tのどれに分類するか答えよ。（当社の分析）</p>
+  <p class="qsub">①業務改善コンサルの1,000社以上の実績<br>②現在の従業員が12〜15名と少ない<br>③事業承継M&A市場が年間過去最多ペースで拡大<br>④大手コンサル会社がPMI支援市場に参入してくる可能性<br>⑤SES事業の安定したキャッシュフロー</p>
+  <button class="revbtn" onclick="revealAns('a1',this)">答えを見る ▼</button>
+  <div class="ans" id="a1"><div class="ans-inner">
+    <div class="ans-result">📝 分類答え</div>
+    <p class="ans-exp">①S（強み：実績・信頼性）②W（弱み：人員が少なくスケールに課題）③O（機会：外部市場の追い風）④T（脅威：競合参入という外部マイナス要因）⑤S（強み：財務的安定）<br><br>③と④は外部環境（自社ではコントロールできない）。①②⑤は内部要因（自社がコントロールできる）。この内部・外部の区分が最も重要。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>SWOT分析は3C分析の後に実施すると整理しやすい。3CのCustomer/Competitorから→O（機会）・T（脅威）を抽出し、CompanyからS（強み）・W（弱み）を抽出する流れが自然。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q2</span><span class="qtype">選択問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">「PMI Managerの機能が競合（DealRoom）より少ない」はSWOTのどれか？</p>
+  <div class="choices" id="ch2">
+    <button class="ch" onclick="checkMCQ(this,'ch2','a2',false)">A）Strength（強み）</button>
+    <button class="ch" onclick="checkMCQ(this,'ch2','a2',true)">B）Weakness（弱み）</button>
+    <button class="ch" onclick="checkMCQ(this,'ch2','a2',false)">C）Opportunity（機会）</button>
+    <button class="ch" onclick="checkMCQ(this,'ch2','a2',false)">D）Threat（脅威）</button>
+  </div>
+  <div class="ans" id="a2"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B（弱み）</div>
+    <p class="ans-exp">機能が少ない＝自社内部のマイナス要因＝弱み（W）。競合の強さは「T（脅威）」で、自社の機能の劣位は「W（弱み）」。同じ「競合より劣っている」でも、外部環境起因か内部起因かで分類が変わる。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>WO戦略として「弱み（機能不足）を機会（市場拡大）で補う」→ 「機能はMVP（最小限）でスタートし、顧客フィードバックで改善する。機能よりコンサル伴走で差別化」というアプローチが当社の実際の戦略。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q3</span><span class="qtype">選択問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">SWOT分析でSとWを分ける最も正確な基準はどれか？</p>
+  <div class="choices" id="ch3">
+    <button class="ch" onclick="checkMCQ(this,'ch3','a3',false)">A）良いことがS、悪いことがW</button>
+    <button class="ch" onclick="checkMCQ(this,'ch3','a3',true)">B）競合と比較して相対的に優れている点がS、劣っている点がW</button>
+    <button class="ch" onclick="checkMCQ(this,'ch3','a3',false)">C）外部環境がS、内部環境がW</button>
+    <button class="ch" onclick="checkMCQ(this,'ch3','a3',false)">D）昔からある資産がS、最近の課題がW</button>
+  </div>
+  <div class="ans" id="a3"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">SとWは「競合比較の相対評価」が本質。「自社のAI開発能力」は絶対的には普通でも、PMI SaaS競合（多くが非IT系）との比較では強みになる。「何と比べているか」を常に明示することが重要。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>PMI後の買収企業のSWOT分析では、比較対象を「①業界平均」「②直接競合」「③買収側企業」の3軸で整理すると、どのシナジーが生まれるかが明確になる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q4</span><span class="qtype">選択問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">「日本政府が中小企業のDX推進に補助金を拡大している」はSWOTのどれか？</p>
+  <div class="choices" id="ch4">
+    <button class="ch" onclick="checkMCQ(this,'ch4','a4',false)">A）Strength</button>
+    <button class="ch" onclick="checkMCQ(this,'ch4','a4',false)">B）Weakness</button>
+    <button class="ch" onclick="checkMCQ(this,'ch4','a4',true)">C）Opportunity</button>
+    <button class="ch" onclick="checkMCQ(this,'ch4','a4',false)">D）Threat</button>
+  </div>
+  <div class="ans" id="a4"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：C（機会）</div>
+    <p class="ans-exp">政府補助金の拡大は外部環境の変化でビジネスにプラス→ Opportunity（機会）。自社がコントロールできない外部要因であることがポイント。このOに対してSO戦略（強みで機会をつかむ）を考えると：「当社のAI開発能力＋補助金申請サポート」という新サービスが生まれる可能性も。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>PEST分析（Political/Economic/Social/Technological）の各要素がSWOTのOとTに対応する。政策（P）・景気（E）・社会変化（S）・技術（T）の変化を定期的にスキャンしてOとTを更新する習慣をつける。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q5</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">「同じ事象でもSとOの両方に書ける」という状況は起こりうるか？</p>
+  <div class="choices" id="ch5">
+    <button class="ch" onclick="checkMCQ(this,'ch5','a5',false)">A）起こりえない。SWOTはMECEで分類される</button>
+    <button class="ch" onclick="checkMCQ(this,'ch5','a5',true)">B）起こりうる。ただし視点（内部か外部か）を明確にして分けるべき</button>
+    <button class="ch" onclick="checkMCQ(this,'ch5','a5',false)">C）どちらかに書けばいいので気にしなくてよい</button>
+    <button class="ch" onclick="checkMCQ(this,'ch5','a5',false)">D）どちらにも書いてはいけない</button>
+  </div>
+  <div class="ans" id="a5"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">例：「AI技術の進化」→ 外部環境として見れば「O（機会）」、自社がAI開発能力を持っているという内部視点では「S（強み）」にもなる。視点を明確にしながら、それぞれの欄に記載することで戦略検討の幅が広がる。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>SWOT分析は「完璧な4象限への仕分け」が目的ではない。「クロスSWOT戦略を考えるための材料集め」が目的。多少の重複を恐れずに書き出すほうが使いやすいSWOTになる。</div>
+  </div></div>
+</div>
+
+<div class="section-label sl-mid">SECTION B ― SWOT完成（Q6〜Q10）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q6</span><span class="qtype">穴埋め</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">当社のSWOT分析を完成させよ（★の空欄を埋める）。</p>
+  <div class="swot-grid">
+    <div class="sw-s"><h4>S 強み</h4>・業務改善1,000社実績<br>・★①<br>・SES安定キャッシュフロー</div>
+    <div class="sw-w"><h4>W 弱み</h4>・従業員12〜15名（人員不足）<br>・★②<br>・PMI実績がまだゼロ</div>
+    <div class="sw-o"><h4>O 機会</h4>・事業承継M&A市場の急拡大<br>・★③<br>・中小企業庁のPMI政策支援</div>
+    <div class="sw-t"><h4>T 脅威</h4>・大手コンサル会社の参入<br>・★④<br>・景気悪化によるM&A市場縮小</div>
+  </div>
+  <button class="revbtn" onclick="revealAns('a6',this)">答えを見る ▼</button>
+  <div class="ans" id="a6"><div class="ans-inner">
+    <div class="ans-result">📝 解答例</div>
+    <p class="ans-exp">①Claude APIを活用したAI開発能力（バリューアップ社との連携）<br>②PMI SaaSのブランド・実績がまだない（知名度不足）<br>③日本語対応PMI SaaSが存在しない空白市場<br>④資金調達環境の悪化（シードラウンド調達が難しくなる可能性）</p>
+    <div class="tip"><strong>💼 実務メモ</strong>このSWOTを自力で完成できる＝会社の事業状況を深く理解しているということ。入社半年でこれを自分で作れると、先輩から「よく会社を理解している」と評価される。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q7</span><span class="qtype">分析練習</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">【演習】M&Aで買収した地方の「自動車整備工場（売上2億円、従業員15名、創業40年）」のSWOT分析を行え。PMI計画に使えるよう、S・W・O・Tそれぞれ3項目以上挙げること。</p>
+  <button class="revbtn" onclick="revealAns('a7',this)">答えを見る ▼</button>
+  <div class="ans" id="a7"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答</div>
+    <div class="swot-grid">
+      <div class="sw-s"><h4>S 強み</h4>・40年の地域信頼・固定客<br>・熟練整備士の技術力<br>・自前の設備（建物・機器）</div>
+      <div class="sw-w"><h4>W 弱み</h4>・デジタル化の遅れ（紙管理）<br>・後継者・若手整備士不足<br>・EV対応技術が弱い</div>
+      <div class="sw-o"><h4>O 機会</h4>・EV普及で新市場（EV整備）<br>・AI診断ツールの普及<br>・地域の競合整備工場の高齢化</div>
+      <div class="sw-t"><h4>T 脅威</h4>・ディーラー系整備の台頭<br>・若者の車離れによる市場縮小<br>・EV化に乗り遅れると陳腐化</div>
+    </div>
+    <p class="ans-exp" style="margin-top:10px;">PMI戦略メモ：SO（EV整備への設備投資×地域信頼）、WO（デジタル化×AIツール導入でDX）、ST（熟練技術者×ディーラーにない「親身な対応」で差別化）、WT（EV対応投資が遅れた場合の縮小・売却の検討）</p>
+    <div class="tip"><strong>💼 実務メモ</strong>このSWOTはPMI Managerの「シナジー管理」に入力できる形式に近い。「SO戦略（EV整備拡大）」を「シナジー目標：3年以内にEV整備売上を全体の20%に」と数値化すると100日プランに落とし込める。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q8</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">SWOTで「弱み（W）」を発見したとき、最初に考えるべき戦略はどれか？</p>
+  <div class="choices" id="ch8">
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',false)">A）すべての弱みを克服する計画を立てる</button>
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',true)">B）弱みの中で「機会を逃す原因になっているもの（WO）」と「脅威に直結するもの（WT）」を優先して対処する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',false)">C）弱みはすべて無視して強みだけに集中する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',false)">D）弱みがある事業は撤退する</button>
+  </div>
+  <div class="ans" id="a8"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">全ての弱みを克服しようとすると資源が分散する。「この弱みがあるせいで、あのOを逃している」または「この弱みとTが重なると致命的になる」という優先度判断が重要。PMI後の100日プランも同じ——全部やろうとせず「最も重要な課題から着手」が鉄則。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>当社のW「PMI実績ゼロ」は、O「SaaS市場拡大」を逃すリスクがある（WO）。だから「SaaSを先に出して実績を積む」という戦略が選択されている。WOを特定することで「なぜこの戦略か」が説明できる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q9</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">SWOT分析を更新するタイミングとして最も適切なのはどれか？</p>
+  <div class="choices" id="ch9">
+    <button class="ch" onclick="checkMCQ(this,'ch9','a9',false)">A）一度作ったら5年は変えない</button>
+    <button class="ch" onclick="checkMCQ(this,'ch9','a9',true)">B）重大な外部環境の変化（競合参入・新法規制・市場急変）や内部変化（M&A・人員変化）のタイミングで更新する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch9','a9',false)">C）毎週必ず更新する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch9','a9',false)">D）新入社員が入ったら毎回更新する</button>
+  </div>
+  <div class="ans" id="a9"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">SWOT、特にO（機会）とT（脅威）は外部環境次第で変わる。M&Aという大きな内部変化（S・Wが変わる）と市場トレンドの変化（O・Tが変わる）が更新トリガー。PMI後は統合の進捗に合わせてSWOTを四半期ごとに見直すのが実務的。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>PMI Managerの「四半期シナジー追跡」機能は、SWOTのOが実現できているかをモニタリングするツールとして使える。「このOをつかめているか？」を定量的に確認する仕組みを作ることが重要。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q10</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">SWOT分析の最大の弱点として指摘されることはどれか？</p>
+  <div class="choices" id="ch10">
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',false)">A）要素が4つしかなく少ない</button>
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',true)">B）「現状の整理」で終わりがちで、具体的な戦略（クロスSWOT）まで進まない使い方が多い</button>
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',false)">C）コンサルには古すぎて使えない</button>
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',false)">D）企業規模が大きいほど使えない</button>
+  </div>
+  <div class="ans" id="a10"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">「SWOTを作ったが戦略が出なかった」という経験はよく聞かれる。SWOT単体は「現状整理ツール」。本当の価値はクロスSWOT（SO/ST/WO/WT戦略）にある。「整理→戦略導出」まで必ずセットで実施すること。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>クライアントに「SWOTを作りましょう」と言うとき、「クロスSWOT戦略まで一緒に作ります」と伝えるとバリューが高い。「整理だけ」と「戦略まで」の差がコンサルの付加価値。</div>
+  </div></div>
+</div>
+
+<div class="section-label sl-adv">SECTION C ― クロスSWOT戦略（Q11〜Q15）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q11</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">当社のSO戦略（強み×機会）として最も正確なものはどれか？</p>
+  <div class="choices" id="ch11">
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">A）人員不足を解消するため採用を強化する（W×O）</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',true)">B）業務改善ノウハウ×AI開発力（S）で、急拡大するPMI SaaS市場（O）に早期参入する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">C）大手コンサルの参入（T）に対抗するため値下げする（S×T逆）</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">D）PMI実績ゼロ（W）という課題を解消する（W×O）</button>
+  </div>
+  <div class="ans" id="a11"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">S（強み：業務改善ノウハウ＋AI）× O（機会：PMI SaaS市場の空白）の組み合わせがSO戦略。これは当社の事業戦略の根幹であり、「なぜPMI Managerを作るのか」の答えがSO戦略として整理できる。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>SO戦略＝「今すぐ攻める戦略」。当社が2026年にPMI Manager MVPを出すという判断はSO戦略の実行。「市場が拡大している今、強みを持って早期参入する」という意思決定そのもの。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q12</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">WT戦略（弱み×脅威）が必要な状況はどれか？</p>
+  <div class="choices" id="ch12">
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">A）市場が急拡大しているとき</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">B）自社の強みが競合より明確なとき</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',true)">C）弱みが多く、外部環境も悪化しているとき（最悪ケースへの備え）</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">D）新規事業を立ち上げるとき</button>
+  </div>
+  <div class="ans" id="a12"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：C</div>
+    <p class="ans-exp">WT戦略は「守り・縮小・撤退」の戦略。PMI文脈では「買収した企業のSWOTがW×Tに偏っている場合、事業縮小・選択集中・最悪の場合売却を検討する」という判断になる。WT象限に多くの要素が集まる企業買収は慎重になる必要がある。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>M&A DDでSWOTを分析し「W×Tが多すぎる」と判断した場合、買収を見送るか、低い価格での交渉・ターンアラウンド計画を提示するかを判断できる。SWOTは意思決定ツール。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q13</span><span class="qtype">実践</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">以下の状況からクロスSWOT4戦略を1つずつ導け。<br>S：業務改善ノウハウ・AI開発力　W：知名度が低い・PMI実績ゼロ<br>O：PMI SaaS市場空白・政策追い風　T：大手参入・景気悪化リスク</p>
+  <button class="revbtn" onclick="revealAns('a13',this)">答えを見る ▼</button>
+  <div class="ans" id="a13"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答（クロスSWOT4戦略）</div>
+    <div class="cross-swot">
+      <div class="cs-so"><h4>SO戦略（積極攻勢）</h4>AI開発力×業務改善ノウハウを活かし、PMI SaaS空白市場に日本語特化で早期参入。顧客データを独占的に蓄積して参入障壁を作る。</div>
+      <div class="cs-st"><h4>ST戦略（差別化）</h4>大手コンサルが入れない中小企業の「現場密着・コンサル伴走」という独自ポジションで差別化。価格ではなく価値勝負にする。</div>
+      <div class="cs-wo"><h4>WO戦略（弱点補強）</h4>PMI実績ゼロをカバーするため、まずSaaSで顧客を集め実績を作る。中小企業庁のPMIガイドラインに準拠した正統性で知名度不足を補う。</div>
+      <div class="cs-wt"><h4>WT戦略（防衛）</h4>景気悪化でM&A市場が縮小した場合、SES事業の安定収益を活かして投資を継続できる体制を維持する。PMI SaaSに過度な先行投資をしない。</div>
+    </div>
+    <div class="tip"><strong>💼 実務メモ</strong>これが実際の当社の2026〜2030年戦略のロジック。「なぜこの戦略か」を聞かれたとき、このクロスSWOTで答えられると経営陣・投資家に対して非常に説得力がある。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q14</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">PMI後の統合企業でSWOT分析を行う際、特に重要な「T（脅威）」はどれか？</p>
+  <div class="choices" id="ch14">
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">A）競合他社の新製品</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',true)">B）キーパーソン（優秀な人材）の離職リスク</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">C）原材料価格の上昇</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">D）消費税の引き上げ</button>
+  </div>
+  <div class="ans" id="a14"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">M&A後最大の脅威は「人材の流出」。特に中小企業では、売上の80%を生み出す「キーパーソン」が離職するとPMI全体が危機に瀕する。買収を知った優秀な社員が不安で転職するケースが多く、PMI Day1から早急に対処が必要。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>PMI後最初の30日で必ず行うこと：キーパーソンを特定し、1対1で面談し、処遇・役割・将来への期待を明示する。「あなたはこの会社に必要です」というメッセージを早く伝えるほど離職リスクが下がる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q15</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">「3C分析でKSFを特定 → SWOTで現状整理 → クロスSWOTで戦略立案」という流れの次に来るべきステップはどれか？</p>
+  <div class="choices" id="ch15">
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">A）再度3C分析をする</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',true)">B）戦略をロジックツリー（Howツリー）で施策に落とし込み、KPI・担当・期限を設定する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">C）SWOTを上司に報告して承認をもらう</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">D）別のフレームワーク（5フォースなど）を追加する</button>
+  </div>
+  <div class="ans" id="a15"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">フレームワーク分析は「実行計画」に落とし込んで初めて価値になる。「SO戦略：早期参入」→ ロジックツリーで「どうやって早期参入するか（Howツリー）」→ 「いつ誰が何をするか（タスク・KPI化）」→「PMI Managerで管理」の流れがコンサルの仕事の本丸。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>これが「フレームワーク連鎖」の完成形。3C→SWOT→クロスSWOT→ロジックツリー→KPI→実行→モニタリング。この流れを1回でも完走できると、コンサルの基本フローが体に入る。</div>
+  </div></div>
+</div>
+
+<div class="section-label sl-adv">SECTION D ― 実践ケース（Q16〜Q20）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q16</span><span class="qtype">実践ケース</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">【ケース】当社が買収した老舗印刷会社（創業50年・売上4億円・従業員30名）のSWOT分析を行い、最も優先すべきクロスSWOT戦略を1つ選び、その理由を述べよ。</p>
+  <button class="revbtn" onclick="revealAns('a16',this)">答えを見る ▼</button>
+  <div class="ans" id="a16"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答</div>
+    <p class="ans-exp"><strong>SWOT：</strong><br>S：50年の実績・地元法人顧客との強固な関係・高品質印刷技術<br>W：デジタル化の遅れ・若手人材不足・印刷機の老朽化<br>O：企業DXによる「アナログ×デジタル連携」需要・パッケージ印刷の高付加価値化<br>T：印刷業界全体の市場縮小・大手印刷会社との価格競争<br><br><strong>最優先戦略：SO戦略</strong>「50年の顧客関係（S）×高付加価値パッケージ印刷需要（O）」→ 既存の法人顧客にデジタル連携（QRコード印刷・可変データ印刷など）を提案し、単価を上げる。<br><br><strong>理由：</strong>すでに信頼関係がある顧客への追加提案なので成功確率が高く、かつ市場縮小（T）に対抗するための差別化になる。WTの「老朽設備×市場縮小」に対処するより前に、SOで収益を確保することが優先。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>PMI後に「どこから手をつけるか」を問われたとき、SWOTのSO象限から始めると「今すぐ実現できる収益機会」を特定しやすい。成果が出やすい領域から着手することで従業員のモチベーションも上がる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q17</span><span class="qtype">実践ケース</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">PMI後30日が経過したとき、「予想外の脅威（T）」が発覚した（キーパーソンの営業部長が退職意向を表明）。SWOT戦略的にどう対応するか述べよ。</p>
+  <button class="revbtn" onclick="revealAns('a17',this)">答えを見る ▼</button>
+  <div class="ans" id="a17"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答（ST戦略の即時発動）</div>
+    <p class="ans-exp"><strong>ST戦略（強みで脅威を回避）：</strong>S＝買収側の当社の経営支援力・新しいキャリア機会。T＝営業部長の離職という脅威。<br><br><strong>即時アクション：</strong><br>①代表者・上長が即日1on1面談で退職理由を丁寧に聞く（圧迫なく）<br>②「新体制での役割・権限の拡大」「処遇の見直し（昇格・報酬）」「当社本体でのキャリアパス」を具体的に提示<br>③それでも退職意向が変わらない場合：後継者候補の特定と緊急育成計画を30日以内に立案<br><br><strong>ポイント：</strong>「感情的な引き止め」より「具体的な未来の絵」を見せることが効果的。退職理由が「不安・情報不足」ならコミュニケーションで解決できる。「条件不満」なら交渉の余地がある。「他社への転職意向」は最も難しく、後継育成を並行して進める必要。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>PMI後のキーパーソン離職は「最大の脅威」と認識する。PMI Manager の「Day1チェックリスト」にも「キーパーソンの特定・面談スケジュール設定」が必ず入る。事前に特定しておけばこのリスクを最小化できる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q18</span><span class="qtype">実践ケース</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">「PMI Manager のSWOT分析」と「PMI Manager を使う顧客企業のSWOT分析」は何が違うか？それぞれのS・O・Tを1つずつ例示しながら説明せよ。</p>
+  <button class="revbtn" onclick="revealAns('a18',this)">答えを見る ▼</button>
+  <div class="ans" id="a18"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答</div>
+    <p class="ans-exp"><strong>PMI Manager（プロダクト）のSWOT：</strong><br>S：日本語×中小特化×Claude AI統合→競合にない差別化<br>O：PMI SaaSの空白市場→先行者利益が取れる<br>T：大手SIerがPMI SaaSを開発して参入する<br><br><strong>顧客企業（PMI Managerを使う会社）のSWOT：</strong><br>S：PMI Managerを使うことで統合プロセスが体系化→PMI成功率アップ<br>O：M&A後の早期シナジー実現→競合より早く統合が完了する<br>T：PMI失敗（キーパーソン離職・文化衝突）のリスク<br><br>→ 違い：PMI Manager自体のSWOTはプロダクト競争力の分析。顧客企業のSWOTはPMIプロジェクトの成否分析。用途・視点が全く異なる。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>「自社プロダクトのSWOT」と「顧客の課題のSWOT」を混同しないことが重要。顧客への提案では「あなた（顧客）のSWOT」を使って「PMI Managerがどうあなたの強みを活かし弱みを補うか」を説明するのが正しいアプローチ。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q19</span><span class="qtype">実践ケース</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">あなたが新入社員として参加したPMIプロジェクト（製造業・売上3億円・従業員40名）で、先輩から「今週中にこの会社のSWOTを作って」と言われた。どのように情報収集し、どんな手順でSWOTを作るか述べよ。</p>
+  <button class="revbtn" onclick="revealAns('a19',this)">答えを見る ▼</button>
+  <div class="ans" id="a19"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答（新入社員としての実践手順）</div>
+    <p class="ans-exp"><strong>情報収集：</strong><br>①会社の決算書・事業計画書・会社案内を確認（S・W・財務の強弱）<br>②代表者・幹部へのヒアリング（「強みは？」「課題は？」「競合は？」「将来の機会は？」）<br>③業界レポート・帝国データバンクで市場・競合情報収集（O・T）<br>④現場視察・従業員との会話（定量データでは見えないS・Wを発見）<br><br><strong>SWOT作成手順：</strong><br>Step1：収集した情報をS・W・O・T4象限に仮配置<br>Step2：各項目が「内部/外部」「プラス/マイナス」の4分類で正しいか確認<br>Step3：各象限から最重要3〜5項目に絞り込む<br>Step4：クロスSWOT4戦略を1つずつ導出<br>Step5：先輩にドラフトを見せてフィードバックをもらう（1日で完成させる必要はない）</p>
+    <div class="tip"><strong>💼 実務メモ</strong>SWOTドラフトを先輩に見せる際は「★印の部分は情報不足で仮説です」と明示する。「何がわかっていて何がわかっていないか」を整理して伝えられると、先輩からの信頼が高まる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q20</span><span class="qtype">実践ケース</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">【総合】「当社が2030年にIPOを目指す」という経営目標がある。3C分析→SWOT→クロスSWOT→ロジックツリーの「フレームワーク連鎖」を使って、IPO実現のための戦略を整理せよ。</p>
+  <button class="revbtn" onclick="revealAns('a20',this)">答えを見る ▼</button>
+  <div class="ans" id="a20"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答（フレームワーク連鎖）</div>
+    <p class="ans-exp"><strong>3C分析→KSF：</strong>中小PMI SaaS市場空白（C）×競合なし（Comp）×業務改善+AI（Co）→ KSF「日本語×中小特化の早期参入とデータ独占」<br><br><strong>SWOT→クロスSWOT：</strong>SO「AI×市場空白→早期参入」が最重要戦略。WO「実績不足を補うためSaaSで顧客を増やす」が補完戦略。<br><br><strong>ロジックツリー（IPO達成のHowツリー）：</strong><br>IPO（2030年）<br>├ ARR8億円達成←顧客500社×平均160万円<br>│  ├ SaaSで300社（月額10万平均）<br>│  └ コンサルで50社（月額200万）<br>├ 買収企業4社の安定稼働<br>└ 監査法人・主幹事証券との関係構築（2028年から準備）<br><br><strong>KPI設定：</strong>ARR成長率50%/年維持・チャーン3%以下・EBITDA黒字化（2028年）</p>
+    <div class="tip"><strong>💼 実務メモ</strong>このような「フレームワーク連鎖」を使った経営計画整理が、コンサルタントとしての最高アウトプット。これを自力でできるようになることが、入社1〜2年の学習の最終ゴール。</div>
+  </div></div>
+</div>
+
+<div style="background:white;border-radius:14px;padding:20px;margin-top:20px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.07);">
+  <h3 style="font-size:16px;color:var(--dark);margin-bottom:8px;">🎉 SWOT分析 全20問完了！</h3>
+  <p style="font-size:13px;color:var(--gray);">次は「財務基礎」。数字で経営を語る力を身につけよう。</p>
+  <a href="練習_財務基礎.html" style="display:inline-block;margin-top:12px;background:#dc2626;color:white;text-decoration:none;font-weight:700;font-size:13px;padding:10px 24px;border-radius:20px;">財務基礎へ進む →</a>
+</div>
+</div>
+<div class="nav-bar">
+  <a href="練習_3C分析.html">← 3C分析</a>
+  <a href="フレームワーク練習問題_ハブ.html">問題集トップ</a>
+  <a href="練習_財務基礎.html">財務基礎 →</a>
+</div>
+<script>
+let answered=0,score=0,mcqAnswered={};
+function revealAns(id,btn){const el=document.getElementById(id);if(el.style.display==='none'||el.style.display===''){el.style.display='block';btn.textContent='閉じる ▲';btn.classList.add('revealed');if(!btn.dataset.counted){btn.dataset.counted='1';answered++;updateProgress();}}else{el.style.display='none';btn.textContent='答えを見る ▼';btn.classList.remove('revealed');}}
+function checkMCQ(btn,chId,ansId,correct){if(mcqAnswered[chId])return;mcqAnswered[chId]=true;const choices=document.getElementById(chId).querySelectorAll('.ch');choices.forEach(c=>{c.disabled=true;if(c.onclick.toString().includes(',true)'))c.classList.add('correct');});if(!correct)btn.classList.add('wrong');document.getElementById(ansId).style.display='block';if(correct){score++;document.getElementById('scoreVal').textContent=score;document.getElementById('scoreDisp').textContent=score;}answered++;updateProgress();}
+function updateProgress(){const pct=Math.min(Math.round(answered/20*100),100);document.getElementById('progressBar').style.width=pct+'%';document.getElementById('progressText').textContent=answered+' / 20 問 回答済み';}
+</script>
+</body>
+</html>

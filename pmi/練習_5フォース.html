@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ポーターの5フォース分析 練習問題 20問</title>
+<style>
+:root{--primary:#d97706;--accent:#e85d26;--accent2:#2ca8c2;--green:#16a34a;--light:#f4f7fb;--dark:#0f1f30;--gray:#6b7a8d;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--light);color:var(--dark);line-height:1.7;}
+.hero{background:linear-gradient(135deg,#0f1f30,#b45309,#d97706);color:white;padding:40px 20px 32px;text-align:center;}
+.hero h1{font-size:clamp(20px,4vw,30px);font-weight:800;margin-bottom:8px;}
+.hero p{font-size:13px;opacity:.8;margin-bottom:16px;}
+.progress-wrap{background:rgba(255,255,255,.15);border-radius:20px;height:10px;max-width:400px;margin:0 auto 8px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,#fde68a,#fbbf24);border-radius:20px;transition:width .4s;width:0%;}
+.progress-text{font-size:12px;opacity:.8;}
+.stats-row{display:flex;gap:16px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:8px 16px;text-align:center;}
+.stat .v{font-size:20px;font-weight:800;color:#fde68a;line-height:1;}
+.stat .l{font-size:10px;opacity:.75;}
+.container{max-width:800px;margin:0 auto;padding:20px;}
+.lecture{background:white;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.08);border-left:5px solid var(--primary);}
+.lecture h2{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:10px;}
+.lecture p{font-size:13px;color:var(--gray);margin-bottom:8px;}
+.five-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0;}
+@media(max-width:480px){.five-grid{grid-template-columns:1fr;}}
+.f-box{border-radius:10px;padding:12px 14px;}
+.f1{background:#1d4ed8;color:white;}
+.f2{background:#16a34a;color:white;}
+.f3{background:#7c3aed;color:white;}
+.f4{background:#dc2626;color:white;}
+.f5{background:#d97706;color:white;}
+.f-box h4{font-size:12px;font-weight:800;margin-bottom:4px;}
+.f-box p{font-size:11px;opacity:.9;}
+.f-center{grid-column:1/-1;background:#0f1f30;color:white;text-align:center;}
+.warn{background:#fff8f0;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 14px;font-size:12px;color:#92400e;margin-top:10px;}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2px;color:white;display:inline-block;padding:4px 14px;border-radius:20px;margin:16px 0 12px;}
+.sl-basic{background:#16a34a;}
+.sl-mid{background:#0369a1;}
+.sl-adv{background:#7c3aed;}
+.qcard{background:white;border-radius:14px;padding:20px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);}
+.qtop{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.qnum{background:var(--primary);color:white;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;}
+.qtype{font-size:11px;color:var(--gray);font-weight:600;}
+.qlv{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.qlv.basic{background:#dcfce7;color:#166534;}
+.qlv.mid{background:#dbeafe;color:#1e40af;}
+.qlv.adv{background:#fce7f3;color:#9d174d;}
+.qtext{font-size:14px;font-weight:600;margin-bottom:10px;line-height:1.6;}
+.qsub{font-size:12px;color:var(--gray);margin-bottom:10px;line-height:1.7;}
+.choices{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.ch{text-align:left;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;background:white;cursor:pointer;font-size:13px;font-family:inherit;transition:all .2s;}
+.ch:hover{border-color:var(--accent2);background:#f0f9ff;}
+.ch.correct{border-color:#16a34a;background:#f0fdf4;color:#166534;font-weight:700;}
+.ch.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626;}
+.ch:disabled{cursor:default;}
+.ans{display:none;margin-top:12px;}
+.ans-inner{background:linear-gradient(135deg,#fffbeb,#fefce8);border-radius:10px;padding:16px;border:1px solid #fde68a;}
+.ans-result{font-size:14px;font-weight:700;color:#b45309;margin-bottom:8px;}
+.ans-exp{font-size:13px;color:var(--dark);margin-bottom:10px;line-height:1.6;}
+.tip{background:white;border-radius:8px;padding:10px 14px;font-size:12px;color:#0369a1;border-left:3px solid var(--accent2);}
+.tip strong{display:block;margin-bottom:3px;}
+.revbtn{background:var(--primary);color:white;border:none;border-radius:20px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:10px;}
+.revbtn:hover{background:#b45309;}
+.revbtn.revealed{background:var(--gray);}
+.score-board{background:white;border-radius:14px;padding:16px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:center;}
+.score-board h3{font-size:13px;color:var(--gray);margin-bottom:4px;}
+.score-board .score-val{font-size:40px;font-weight:900;color:var(--primary);}
+.score-board .score-max{font-size:18px;color:var(--gray);}
+.nav-bar{background:var(--dark);padding:14px 20px;text-align:center;margin-top:20px;}
+.nav-bar a{color:#a5f3fc;text-decoration:none;font-size:12px;font-weight:600;margin:0 10px;}
+.case-box{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:16px;font-size:13px;margin-bottom:12px;line-height:1.8;}
+.case-box h4{font-weight:700;color:#b45309;margin-bottom:8px;}
+.tag-f1{background:#dbeafe;color:#1d4ed8;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;}
+.tag-f2{background:#dcfce7;color:#166534;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;}
+.tag-f3{background:#f3e8ff;color:#6d28d9;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;}
+.tag-f4{background:#fef2f2;color:#dc2626;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;}
+.tag-f5{background:#fef3c7;color:#b45309;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .hero{padding:28px 14px 20px;}
+  .hero h1{font-size:clamp(18px,5vw,26px);}
+  .container{padding:12px;}
+  .qcard{padding:16px;border-radius:10px;}
+  .qtext{font-size:13px;}
+  .ch{font-size:12px;padding:10px 12px;}
+  .ans-inner{padding:14px;}
+  .ans-exp{font-size:12px;}
+  .tip{font-size:11px;}
+  .lecture{padding:16px;border-radius:10px;}
+  .lecture h2{font-size:14px;}
+  .lecture p,.lecture .warn{font-size:12px;}
+  .nav-bar{padding:12px 14px;}
+  .nav-bar a{font-size:11px;margin:0 6px;}
+  .stats-row{gap:10px;}
+  .stat{padding:6px 12px;}
+  .stat .v{font-size:18px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>⚔️ ポーターの5フォース分析 練習問題</h1>
+  <p>5つの競争要因で業界の収益性と参入価値を見極める力を鍛える</p>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-text" id="progressText">0 / 20 問 回答済み</div>
+  <div class="stats-row">
+    <div class="stat"><div class="v">20</div><div class="l">問</div></div>
+    <div class="stat"><div class="v">50</div><div class="l">分目安</div></div>
+    <div class="stat"><div class="v" id="scoreDisp">0</div><div class="l">正解（選択問題）</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="lecture">
+  <h2>📖 ポーターの5フォース分析とは？（4分で読む）</h2>
+  <p>マイケル・ポーターが提唱した「業界の競争環境を5つの力（フォース）で分析するフレームワーク」。M&Aで買収対象企業の業界が「本当に魅力的か（収益が出るか）」を評価する際に使う。5つの力が強いほど業界の収益性は低い。</p>
+  <div class="five-grid">
+    <div class="f-box f-center"><h4>🏭 業界内競合の激しさ（Rivalry）</h4><p style="font-size:11px;opacity:.9;">競合企業の数・規模・成長性・差別化度・撤退障壁</p></div>
+    <div class="f-box f1"><h4>🚪 新規参入の脅威</h4><p>参入障壁の高さ。規制・資本・ブランド・規模の経済など</p></div>
+    <div class="f-box f2"><h4>🔄 代替品の脅威</h4><p>異業種からの代替品・技術革新による需要代替リスク</p></div>
+    <div class="f-box f3"><h4>🛒 買い手の交渉力</h4><p>顧客の集中度・スイッチングコスト・価格交渉力</p></div>
+    <div class="f-box f4"><h4>🏭 売り手（サプライヤー）の交渉力</h4><p>仕入先の集中度・代替調達先の有無・コスト転嫁力</p></div>
+  </div>
+  <div class="warn">⚠️ M&A文脈での5フォース：「この業界に参入すべきか・今後の収益性はどうか」を判断する材料として使う。5つの力が全体的に弱い（参入障壁高・代替品少・買い手・売り手の交渉力弱・競合少）業界は「魅力的な業界」。</div>
+</div>
+
+<div class="score-board">
+  <h3>選択問題スコア（Q8〜Q14）</h3>
+  <span class="score-val" id="scoreVal">0</span><span class="score-max"> / 7点</span>
+</div>
+
+<div class="section-label sl-basic">SECTION A ― 基礎・分類（Q1〜Q7）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q1</span><span class="qtype">分類</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">以下の要因をポーターの5フォースのどれかに分類せよ。<br>①コンビニ業界で大手3社（セブン・ファミマ・ローソン）が市場の90%を占める<br>②スーパーアプリ（PayPay）が銀行振込の代替になってきた<br>③大手自動車メーカーが鉄鋼価格の交渉力が強く、鉄鋼メーカーの利益を圧迫している<br>④M&Aコンサル市場に新規参入するにはM&A仲介登録が必要</p>
+  <button class="revbtn" onclick="revealAns('a1',this)">答えを見る ▼</button>
+  <div class="ans" id="a1">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答</div>
+      <div class="ans-exp">① <span class="tag-f5">業界内競合</span>：3社で市場を寡占→競合は激しくないが、3社間の競争は熾烈<br>② <span class="tag-f2">代替品の脅威</span>：銀行サービスへのフィンテックによる代替<br>③ <span class="tag-f3">買い手の交渉力</span>：大手メーカー（買い手）が鉄鋼メーカー（売り手）を価格圧迫→実はこれは「買い手の交渉力」の例<br>④ <span class="tag-f1">新規参入の脅威</span>：規制による参入障壁（M&A仲介業の登録義務）</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q2</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">5フォース分析で「業界の魅力度が高い（収益を上げやすい）」状態とはどのような状態か説明せよ。</p>
+  <button class="revbtn" onclick="revealAns('a2',this)">答えを見る ▼</button>
+  <div class="ans" id="a2">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp">5つの力がすべて弱い状態が「魅力的な業界」。具体的には：<br>①<span class="tag-f1">新規参入の脅威が弱い</span>：高い参入障壁（規制・大規模設備・ブランド）で新規参入者が少ない<br>②<span class="tag-f2">代替品の脅威が弱い</span>：この業界の製品・サービスに代わるものがない<br>③<span class="tag-f3">買い手の交渉力が弱い</span>：顧客が分散しており価格を下げにくい<br>④<span class="tag-f4">売り手の交渉力が弱い</span>：調達先が多く仕入れ価格を抑えられる<br>⑤<span class="tag-f5">業界内競合が弱い</span>：競合が少なく差別化ができている</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q3</span><span class="qtype">判定</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">日本のコンビニ業界のうち「買い手（顧客）の交渉力」は強いか弱いか？理由とともに述べよ。</p>
+  <button class="revbtn" onclick="revealAns('a3',this)">答えを見る ▼</button>
+  <div class="ans" id="a3">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答：弱い（コンビニにとって有利）</div>
+      <div class="ans-exp">理由：①顧客（消費者）は分散しており、1顧客の購買量が少ない→個々の価格交渉力がない。②コンビニのサービス（利便性・深夜営業）に代替性が低い→スイッチングコストは低いが習慣的購買行動が多い。③PB（プライベートブランド）商品でさらに買い手の選択肢を限定している。このため、コンビニは価格設定の自由度が高く、高マージン商品を売りやすい。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q4</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">「スイッチングコスト」とは何か説明し、買い手の交渉力との関係を述べよ。</p>
+  <button class="revbtn" onclick="revealAns('a4',this)">答えを見る ▼</button>
+  <div class="ans" id="a4">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答</div>
+      <div class="ans-exp"><strong>スイッチングコスト：</strong>顧客が現在の製品・サービスから競合他社に乗り換える際に発生するコスト（金銭・時間・学習コストなど）。<br><br><strong>買い手の交渉力との関係：</strong>スイッチングコストが高いほど、買い手は「乗り換えにくい」→ 価格を下げろという交渉力が弱まる（売り手に有利）。例：基幹システムのSaaSは導入費・移行費・再教育コストが高いため顧客が乗り換えにくく、価格交渉力が低い。PMI Manager も「使いやすさ・業務定着」でスイッチングコストを高めることが契約継続率向上につながる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q5</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">5フォース分析と3C分析の違いを「目的」の観点から説明せよ。</p>
+  <button class="revbtn" onclick="revealAns('a5',this)">答えを見る ▼</button>
+  <div class="ans" id="a5">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>5フォース分析の目的：</strong>「業界全体の収益性を決める構造的な力」を分析する。「この業界に参入（or投資・買収）すべきか」という判断に使う。<br><br><strong>3C分析の目的：</strong>「特定の市場において自社がどのポジションにあるか」を分析する。「どのKSF（成功要因）で戦うか」という戦略立案に使う。<br><br>使い分け：5フォース（業界構造評価）→ 3C（具体的な市場ポジション分析）→ SWOT（戦略策定）の順で分析するとよい。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q6</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">「売り手（サプライヤー）の交渉力」が高い状況と低い状況の具体例を1つずつ挙げよ。</p>
+  <button class="revbtn" onclick="revealAns('a6',this)">答えを見る ▼</button>
+  <div class="ans" id="a6">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>売り手の交渉力が高い例：</strong>半導体製造装置（EUVリソグラフィ）はオランダのASMLが世界でほぼ唯一の供給者。TSMC・Samsung・Intelなど全ての半導体メーカーがASMLに依存しているため、ASMLの交渉力は極めて強い（価格交渉不可能）。<br><br><strong>売り手の交渉力が低い例：</strong>コンビニのおにぎりの海苔は複数の業者から調達可能で、規格品のため差別化も少ない。コンビニチェーンが交渉力を持ち、仕入れ価格を下げやすい。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q7</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">5フォース分析の「限界」を2つ挙げよ。</p>
+  <button class="revbtn" onclick="revealAns('a7',this)">答えを見る ▼</button>
+  <div class="ans" id="a7">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>①業界の定義が難しい：</strong>何を「業界」とするかで分析結果が変わる。例えば「宅配業」「物流業」「EC物流業」のどこで切るかで5フォースが違う。→ 業界を明確に定義してから分析を始める必要がある。<br><br><strong>②静的な分析で変化を捉えにくい：</strong>5フォースは「今の業界構造」のスナップショット。技術革新や規制変化で業界構造が急変する（例：タクシー業界へのUber参入）ことを捉えにくい。→ PEST分析と組み合わせて将来変化を予測する必要がある。</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label sl-mid">SECTION B ― 選択問題（Q8〜Q14）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q8</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">M&A業界（M&A仲介・アドバイザリー）の5フォース分析で「最も弱い（業界にとって有利な）」フォースはどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'b')">A. 業界内競合（M&A仲介各社の競争）</button>
+    <button class="ch" onclick="checkAns(this,'b')">B. 新規参入の脅威（新規M&A仲介業者の参入）</button>
+    <button class="ch" onclick="checkAns(this,'b')" data-correct="true">C. 代替品の脅威（M&A仲介の代替手段）</button>
+    <button class="ch" onclick="checkAns(this,'b')">D. 買い手の交渉力（経営者・企業オーナーの価格交渉）</button>
+  </div>
+  <div class="ans" id="ab8">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C（代替品の脅威が最も弱い）</div>
+      <div class="ans-exp">M&A仲介の「代替品」＝「仲介なしで直接買い手・売り手がマッチングする方法」。実際には直接交渉は情報格差・交渉経験不足・リスクが大きいため、専門家（M&A仲介）の代替にはなりにくい。一方でA（競合は急増中）・B（参入は容易）・D（売却企業オーナーは複数の仲介会社に相談する）はいずれも業界への脅威。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q9</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">クラウド会計SaaS市場（freee・マネーフォワードなど）で「新規参入の脅威」が低い理由はどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'c')">A. 規制が厳しく新規参入は法律で禁止されている</button>
+    <button class="ch" onclick="checkAns(this,'c')" data-correct="true">B. 既存プレイヤーのブランド認知・顧客データの蓄積とスイッチングコストが参入障壁になっている</button>
+    <button class="ch" onclick="checkAns(this,'c')">C. ソフトウェア開発コストが極めて高い</button>
+    <button class="ch" onclick="checkAns(this,'c')">D. 市場規模が小さく新規参入の旨みがない</button>
+  </div>
+  <div class="ans" id="ac9">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <div class="ans-exp">クラウド会計はソフトウェアなので参入技術的障壁は低い。しかし既存ユーザーの帳簿データが蓄積されているため乗り換えが大変（スイッチングコスト高）。また、freee・マネーフォワードのブランド認知と「税理士との連携エコシステム」が実質的な参入障壁になっている。PMI Manager も早期に「業界標準」を目指すことが戦略的に重要。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q10</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">「代替品の脅威」として正しい例はどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'d')">A. コーヒーチェーンA社 vs コーヒーチェーンB社の価格競争</button>
+    <button class="ch" onclick="checkAns(this,'d')">B. スマートフォンメーカーA社とB社の新製品発表合戦</button>
+    <button class="ch" onclick="checkAns(this,'d')" data-correct="true">C. AIによる翻訳ツールの進化で翻訳者（人間）への需要が減少している</button>
+    <button class="ch" onclick="checkAns(this,'d')">D. タクシー会社が新型車両を大量に購入した</button>
+  </div>
+  <div class="ans" id="ad10">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C</div>
+      <div class="ans-exp">代替品の脅威＝「別の方法・別のカテゴリの製品がニーズを満たすこと」。CはAI翻訳（別カテゴリの技術）が翻訳業（業界）を代替する典型例。A・BはいずれもRivalry（業界内競合）。Dは業界内の設備投資なのでフォースの外。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q11</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">M&Aで対象企業の業界を評価するとき、5フォース分析の結果として「この業界への参入をやめるべき」と判断すべき状況はどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'e')">A. 業界内競合が激しいが成長市場で将来性がある</button>
+    <button class="ch" onclick="checkAns(this,'e')" data-correct="true">B. 参入障壁が低く・代替品脅威が高く・買い手の価格交渉力が強く・競合が激化している</button>
+    <button class="ch" onclick="checkAns(this,'e')">C. サプライヤーの交渉力が強いが、顧客はブランドに忠実で価格交渉しない</button>
+    <button class="ch" onclick="checkAns(this,'e')">D. 業界内競合が強いが、規制により新規参入が難しい</button>
+  </div>
+  <div class="ans" id="ae11">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <div class="ans-exp">B（5フォースが複数同時に強い状態）は業界全体の収益性が構造的に低く、M&Aで参入しても利益を出しにくい。このような業界は「5フォースが全部強い典型的な不魅力業界」（例：航空業・プリント新聞など）。コンサルとして「なぜ5フォースが強いのか・それが変わりそうか」を評価したうえで判断する。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q12</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">PMI Manager（SaaS）が「買い手の交渉力」を下げるために取るべき戦略として最も適切なものはどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'f')">A. 価格を業界最安値に設定して顧客を囲い込む</button>
+    <button class="ch" onclick="checkAns(this,'f')">B. 顧客の数を増やして1社に依存しない</button>
+    <button class="ch" onclick="checkAns(this,'f')" data-correct="true">C. PMI実績・成功事例データ・AIの学習データが蓄積されてスイッチングコストが高まる設計にする</button>
+    <button class="ch" onclick="checkAns(this,'f')">D. 競合SaaSより高機能にする</button>
+  </div>
+  <div class="ans" id="af12">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C</div>
+      <div class="ans-exp">SaaSの「買い手の交渉力」を下げる最強の戦略はスイッチングコストを高めること。PMI Managerでは顧客ごとのPMI案件データ・進捗・AIが学習した業界固有のインサイトが蓄積されるほど「やめると全部失う」状態になり、乗り換え難易度が上がる。これがSaaSの「データネットワーク効果」。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q13</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">事業承継M&Aアドバイザリー業界での「業界内競合の激しさ」を高める要因はどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'g')">A. 案件の成約単価が高く業者の利益率が高い</button>
+    <button class="ch" onclick="checkAns(this,'g')">B. 法律で参入企業数が厳しく制限されている</button>
+    <button class="ch" onclick="checkAns(this,'g')" data-correct="true">C. 仲介業者が急増しており、売り手企業（案件）の取り合いが起きている</button>
+    <button class="ch" onclick="checkAns(this,'g')">D. 買収候補が少なく業界全体の案件数が少ない</button>
+  </div>
+  <div class="ans" id="ag13">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C</div>
+      <div class="ans-exp">M&A業界では2015年以降に仲介業者が急増（2025年時点で数百社以上）。事業売却を検討する経営者は複数の仲介会社に相談するため、「良い案件（売り手）」の獲得競争が激化している。これが業界内競合を高めている主因。当社は「PMI支援」という差別化で競合との直接比較を避ける戦略を採っている。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q14</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">5フォース分析をM&Aのデューデリジェンス（DD）で活用する際の主な目的はどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'h')">A. 買収対象企業の財務諸表の正確性を検証する</button>
+    <button class="ch" onclick="checkAns(this,'h')" data-correct="true">B. 買収対象企業の属する業界の構造的な収益性と将来リスクを評価する</button>
+    <button class="ch" onclick="checkAns(this,'h')">C. 買収価格（バリュエーション）を計算する</button>
+    <button class="ch" onclick="checkAns(this,'h')">D. PMI後の100日プランを作成する</button>
+  </div>
+  <div class="ans" id="ah14">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <div class="ans-exp">DDにおける5フォース分析は「事業DD（ビジネスDD）」の一部として行われ、「この業界に将来性があるか・参入した後に収益が出るか・構造的なリスクは何か」を判断する。財務DDは別途実施し、バリュエーションはDCF法やマルチプル法で算定する。5フォースはBusiness DDの核心ツール。</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label sl-adv">SECTION C ― 実践ケース（Q15〜Q20）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q15</span><span class="qtype">ケース</span><span class="qlv adv">実践</span></div>
+  <div class="case-box">
+    <h4>📋 シナリオ：訪問介護業界のM&A</h4>
+    当社が訪問介護会社A社（年商2億円、従業員40名）の買収を検討している。介護業界の概況：<br>
+    ・介護報酬は国が決定（価格は事業者が自由に設定できない）<br>
+    ・介護ヘルパーの有効求人倍率は15倍超（極度の人手不足）<br>
+    ・競合業者は地域に30社以上<br>
+    ・AI介護記録システムなどの技術代替が一部始まっている<br>
+    ・介護ニーズは少子高齢化で長期的に拡大が確実
+  </div>
+  <p class="qtext">上記情報をもとに訪問介護業界の5フォースを分析し、「この買収は魅力的か」を判断せよ。</p>
+  <button class="revbtn" onclick="revealAns('ai15',this)">答えを見る ▼</button>
+  <div class="ans" id="ai15">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><span class="tag-f1">新規参入の脅威：強</span> 参入規制はあるが実際には多数参入済み。参入障壁は低め。<br><span class="tag-f2">代替品の脅威：中</span> AI記録システムで一部代替可能だが、人的ケアは完全代替困難。<br><span class="tag-f3">買い手の交渉力：弱〜中</span> 利用者は分散。ただし介護報酬は国が決定するため価格設定の自由度は元々低い。<br><span class="tag-f4">売り手の交渉力：強</span> ヘルパー（人材）の供給不足が深刻。人材確保が経営の最大課題。<br><span class="tag-f5">業界内競合：強</span> 30社超の競合。差別化しにくい（サービスが均質化）。<br><br><strong>判断：条件付きで魅力的。</strong> 業界構造は厳しいが、需要の拡大（S要因）は確実。PMIでスケールメリット（人材共有・IT化による生産性向上）を実現できれば収益改善余地あり。買収価格が安ければGOのケース。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q16</span><span class="qtype">分析</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">PMI Manager（SaaS）の5フォース分析を行い、「最大の脅威となるフォース」とその対応策を述べよ。</p>
+  <button class="revbtn" onclick="revealAns('aj16',this)">答えを見る ▼</button>
+  <div class="ans" id="aj16">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>最大の脅威：新規参入の脅威（および業界内競合の激化）</strong><br><br>理由：PMI支援SaaSは参入障壁が低く（SaaS技術は普及している）、M&A市場の拡大で大手IT企業やコンサルファームが類似製品を投入してくるリスクが高い。2025年時点ではBlue Oceanだが、3〜5年後には競合製品が増加すると予測。<br><br><strong>対応策：</strong><br>①<strong>データの壁を作る</strong>：PMI事例データ・業界別100日プランのテンプレートを大量蓄積し、真似できないデータ資産を作る。<br>②<strong>PMIコンサル会社との連携</strong>：コンサルとSaaSの一体提供で「ソフトだけ」の競合と差別化。<br>③<strong>先行者利益を最大化</strong>：今のうちに中小企業庁・M&A仲介会社とパートナーシップを結び、業界標準化を図る。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q17</span><span class="qtype">比較</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">航空業界はなぜ慢性的に利益が出にくいのか？5フォースを使って説明せよ。</p>
+  <button class="revbtn" onclick="revealAns('ak17',this)">答えを見る ▼</button>
+  <div class="ans" id="ak17">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例（有名な5フォースの悪例）</div>
+      <div class="ans-exp"><span class="tag-f1">新規参入の脅威：中</span> 設備投資は巨大だが、LCCの登場で参入が容易になった。<br><span class="tag-f2">代替品の脅威：強</span> 新幹線・オンライン会議（コロナ以降）が代替。<br><span class="tag-f3">買い手の交渉力：強</span> 価格比較サイトで簡単に最安値検索可能。消費者は価格に敏感。<br><span class="tag-f4">売り手の交渉力：強</span> 航空機メーカー（Boeing・Airbus）の寡占。燃料（石油）は価格変動大。パイロット・整備士は専門職で転職容易→人件費上昇圧力。<br><span class="tag-f5">業界内競合：強</span> 多数の航空会社が同一路線で競争。価格競争が激しい。<br><br><strong>結論：</strong>5つのフォースが全部「強」という典型的な不魅力業界。ウォーレン・バフェットが「航空会社株は長期で投資してはいけない」と言ったのはこの構造が理由。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q18</span><span class="qtype">実務</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">コンサルタントとして顧客にM&Aの業界分析を報告するとき、5フォース分析をどのようにスライドに落とすか？構成を提案せよ。</p>
+  <button class="revbtn" onclick="revealAns('al18',this)">答えを見る ▼</button>
+  <div class="ans" id="al18">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>スライド構成（3枚）：</strong><br><br><strong>スライド①：5フォース サマリーマップ</strong><br>5角形ダイアグラムで各フォースを「強・中・弱」で色分け（赤・黄・緑）。中央に「業界収益性スコア」を表示。<br><br><strong>スライド②：各フォースの根拠と事実</strong><br>5フォースそれぞれに「判断根拠（数字・事実）」を記載。例：「新規参入の脅威：中 ← 2020〜2024年の業界参入企業数+87社」<br><br><strong>スライド③：So what？（インプリケーション）</strong><br>「5フォース分析の結果として、この業界への参入は○○という理由で〇。ただし△△という条件を満たせば収益化できる」という経営判断に直結するメッセージを記載。データを出しっぱなしにしない。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q19</span><span class="qtype">総合</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">以下の業界について「5フォースの観点から最も魅力的な業界」を選び、理由を述べよ。<br>①格安スマートフォン販売業<br>②地方の水道工事業（公共インフラ系）<br>③コンビニFCオーナー業</p>
+  <button class="revbtn" onclick="revealAns('am19',this)">答えを見る ▼</button>
+  <div class="ans" id="am19">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例：② 地方の水道工事業</div>
+      <div class="ans-exp"><strong>②が最も魅力的な理由：</strong><br><span class="tag-f1">新規参入の脅威：弱</span> 建設業許可・技術者資格・地域業者との信頼関係が参入障壁<br><span class="tag-f2">代替品の脅威：弱</span> 水道工事の代替手段は存在しない（水道は必需インフラ）<br><span class="tag-f3">買い手の交渉力：弱</span> 地方自治体が発注するが、競合業者が少ない地域では入札競争も限定的<br><span class="tag-f4">売り手の交渉力：中</span> 資材は市場価格の影響あるが複数調達先確保可能<br><span class="tag-f5">業界内競合：弱</span> 地域の水道工事業者は廃業が多く、競合は減少傾向<br><br>①はスマホ業界の競争が激烈。③はFCオーナーはFCチェーン（売り手）の交渉力が極めて強く、利益率が低い。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q20</span><span class="qtype">総合</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">【最終問題】あなたは当社の新入社員として、上司から「PMIコンサル事業（当社の本業）の5フォース分析をやってみて」と言われた。各フォースを分析して「この事業の最大の強みと最大の課題」を述べよ。</p>
+  <button class="revbtn" onclick="revealAns('an20',this)">答えを見る ▼</button>
+  <div class="ans" id="an20">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><span class="tag-f1">新規参入の脅威：強</span> M&Aコンサル市場は参入障壁が比較的低く、大手・中小問わず参入中。コンサルファーム・ITベンダーも類似サービスを提供し始めている。<br><span class="tag-f2">代替品の脅威：中</span> AI・SaaSによる自動化でコンサル業務の一部代替リスクあり。ただし人的判断・現場コンテキストは代替困難。<br><span class="tag-f3">買い手の交渉力：中</span> 中小企業オーナーは複数のコンサルを比較検討。ただしPMI専門特化という差別化がある。<br><span class="tag-f4">売り手の交渉力：弱</span> コンサル業は知識・人材が主なインプット。良いコンサルタントの採用競争はあるが、調達コスト自体は比較的制御可能。<br><span class="tag-f5">業界内競合：強まりつつある</span> M&A件数の増加に伴い、PMI支援を謳う競合が増加中。<br><br><strong>最大の強み：</strong>PMI専門特化＋SaaS（PMI Manager）の組み合わせというユニークなポジション。コンサル＋SaaSの「ハイブリッドモデル」は競合がすぐには真似できない。<br><strong>最大の課題：</strong>新規参入の脅威に対する差別化の維持。PMI Managerのデータ蓄積スピードと実績ブランドの確立が急務。</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="nav-bar">
+  <a href="フレームワーク練習問題_ハブ.html">← ハブに戻る</a>
+  <a href="練習_ADKAR.html">次：ADKAR →</a>
+</div>
+
+<script>
+let answered=0,score=0;
+const total=20;
+function updateProgress(){
+  document.getElementById('progressBar').style.width=(answered/total*100)+'%';
+  document.getElementById('progressText').textContent=answered+' / '+total+' 問 回答済み';
+  document.getElementById('scoreDisp').textContent=score;
+}
+function revealAns(id,btn){
+  document.getElementById(id).style.display='block';
+  btn.textContent='▲ 閉じる';
+  btn.classList.toggle('revealed');
+  if(!btn.dataset.counted){btn.dataset.counted=true;answered++;updateProgress();}
+}
+function checkAns(btn,key){
+  const choices=btn.parentElement.querySelectorAll('.ch');
+  choices.forEach(c=>{c.disabled=true;});
+  const ansDiv=btn.closest('.qcard').querySelector('.ans');
+  ansDiv.style.display='block';
+  if(btn.getAttribute('data-correct')==='true'){
+    btn.classList.add('correct');score++;
+  } else {
+    btn.classList.add('wrong');
+    choices.forEach(c=>{if(c.getAttribute('data-correct')==='true')c.classList.add('correct');});
+  }
+  document.getElementById('scoreVal').textContent=score;
+  answered++;updateProgress();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWOT分析 学習教材｜強み・弱み・機会・脅威で戦略を立てる</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','BIZ UDGothic','Meiryo',sans-serif;background:#FAFAF8;color:#1A1A1A;line-height:1.75;font-size:15px;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}img{max-width:100%;height:auto;display:block;}
+.site-header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 32px;height:56px;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid #E8E5E0;}
+.header-logo{font-size:12px;font-weight:700;}.header-logo span{color:#999;font-weight:400;}
+.header-back{font-size:12px;color:#666;}.header-back:hover{color:#1A1A1A;}
+.hero{min-height:28vh;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;padding:76px 48px 36px;background:#F5F3EE;border-bottom:1px solid #E8E5E0;position:relative;overflow:hidden;}
+@media(max-width:768px){.hero{grid-template-columns:1fr;padding:72px 16px 20px;}.hero-illust{display:none;}}
+.hero-left{position:relative;z-index:1;}
+.hero-bg-num{position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:clamp(120px,18vw,220px);font-weight:900;color:rgba(0,0,0,.04);line-height:1;pointer-events:none;letter-spacing:-10px;}
+.hero-meta{display:flex;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+.hero-step{font-size:10px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;}
+.hero-phase{font-size:10px;font-weight:700;letter-spacing:1px;border:1px solid #2563eb;color:#2563eb;padding:2px 10px;border-radius:100px;}
+.hero-title{font-size:clamp(20px,3vw,36px);font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:16px;}
+.hero-title em{font-style:normal;color:#d97706;}
+.hero-desc{font-size:14px;color:#666;max-width:440px;line-height:1.8;}
+.hero-illust{width:clamp(160px,20vw,260px);opacity:.85;flex-shrink:0;}
+.hero-divider{width:40px;height:2px;background:#1A1A1A;margin-top:28px;}
+.ch-nav{background:#fff;position:sticky;top:56px;z-index:50;border-bottom:1px solid #E8E5E0;overflow-x:auto;white-space:nowrap;}
+.ch-nav ul{display:inline-flex;list-style:none;padding:0 32px;}
+.ch-nav li a{display:block;font-size:11px;font-weight:600;color:#999;padding:12px 14px;border-bottom:2px solid transparent;transition:all .15s;}
+.ch-nav li a:hover{color:#1A1A1A;border-bottom-color:#1A1A1A;}
+.chapter{padding:56px 48px;}.chapter:nth-child(odd){background:#fff;}.chapter:nth-child(even){background:#FAFAF8;}
+@media(max-width:768px){.chapter{padding:28px 16px;}}
+.ch-inner{max-width:720px;margin:0 auto;}
+.ch-head{margin-bottom:28px;display:flex;align-items:baseline;gap:16px;}
+.ch-num-label{font-size:10px;font-weight:700;letter-spacing:2px;color:#BBBBBB;text-transform:uppercase;white-space:nowrap;}
+.ch-line{flex:1;height:1px;background:#E8E5E0;}
+.ch-head-content{margin-top:12px;}
+.ch-head-content h2{font-size:clamp(18px,3vw,24px);font-weight:800;letter-spacing:-.3px;margin-bottom:5px;}
+.ch-head-content p{font-size:13px;color:#888;}
+.key{background:#F5F3EE;border-left:3px solid #1A1A1A;padding:20px 24px;margin:20px 0;}
+.key-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;margin-bottom:8px;}
+.key p{font-size:14px;line-height:1.8;}
+/* SWOT matrix */
+.swot-matrix{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;max-width:560px;}
+.sw-cell{padding:16px;}
+.sw-s{background:#F0FDF4;}.sw-w{background:#FEF2F2;}.sw-o{background:#EFF6FF;}.sw-t{background:#FFFBEB;}
+.sw-ax{font-size:9px;font-weight:700;letter-spacing:1px;padding:2px 8px;border-radius:100px;display:inline-block;margin-bottom:6px;}
+.al-int{background:#E0F2FE;color:#0369A1;}.al-ext{background:#EDE9FE;color:#5B21B6;}
+.sw-cell h4{font-size:13px;font-weight:700;margin-bottom:5px;}
+.sw-s h4{color:#166534;}.sw-w h4{color:#991B1B;}.sw-o h4{color:#1E40AF;}.sw-t h4{color:#92400E;}
+.sw-cell ul{padding-left:14px;font-size:11px;color:#888;}.sw-cell li{margin-bottom:3px;}
+/* Cross SWOT */
+.cross-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+@media(max-width:480px){.cross-grid{grid-template-columns:1fr;}}
+.cross-card{background:#fff;padding:16px;}
+.cross-card h4{font-size:12px;font-weight:700;margin-bottom:5px;}
+.cs-so h4{color:#059669;}.cs-st h4{color:#b45309;}.cs-wo h4{color:#1d4ed8;}.cs-wt h4{color:#dc2626;}
+.cross-card p{font-size:11px;color:#888;}
+.steps{display:flex;flex-direction:column;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+.step{display:grid;grid-template-columns:48px 1fr;background:#fff;}
+.step-n{display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#E8E5E0;border-right:1px solid #E8E5E0;padding:16px;}
+.step-b{padding:18px 20px;}.step-b h4{font-size:13px;font-weight:700;margin-bottom:4px;}.step-b p{font-size:12px;color:#888;line-height:1.7;}
+.callout{padding:14px 18px;margin:14px 0;font-size:13px;border-left:3px solid;border-radius:0 2px 2px 0;}
+.callout-warn{background:#FFFBEB;border-color:#D97706;}.callout-warn strong{color:#92400E;display:block;margin-bottom:3px;}
+.callout-tip{background:#FFFBEB;border-color:#D97706;}.callout-tip strong{color:#92400E;display:block;margin-bottom:3px;}
+.ex-box{border:1px solid #E8E5E0;border-radius:2px;padding:20px;margin:14px 0;background:#fff;}
+.ex-box h4{font-size:10px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:14px;}
+.swot-ex{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#E8E5E0;max-width:600px;}
+.se-s{background:#F0FDF4;padding:12px;}.se-w{background:#FEF2F2;padding:12px;}.se-o{background:#EFF6FF;padding:12px;}.se-t{background:#FFFBEB;padding:12px;}
+.swot-ex h5{font-size:11px;font-weight:700;margin-bottom:5px;}
+.se-s h5{color:#166534;}.se-w h5{color:#991B1B;}.se-o h5{color:#1E40AF;}.se-t h5{color:#92400E;}
+.swot-ex ul{padding-left:12px;font-size:10px;color:#888;}.swot-ex li{margin-bottom:2px;}
+.strategy-result{background:#FFFBEB;border:1px solid #FDE68A;border-radius:2px;padding:12px 14px;margin-top:12px;font-size:12px;color:#92400E;}
+.src{border:1px solid #E8E5E0;border-radius:2px;padding:16px 20px;margin-top:28px;display:flex;gap:12px;background:#FAFAF8;}
+.src-icon{font-size:14px;flex-shrink:0;margin-top:2px;}
+.src-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:5px;}
+.src-list{list-style:none;font-size:11px;color:#888;}.src-list li{margin-bottom:3px;line-height:1.6;}.src-list cite{font-style:normal;}
+.summary{background:#1A1A1A;color:#FAFAF8;padding:28px 32px;border-radius:2px;}
+.summary-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:12px;}
+.summary h3{font-size:15px;font-weight:800;margin-bottom:14px;line-height:1.4;}
+.summary ul{padding-left:16px;font-size:13px;line-height:2.2;color:#CCC;}
+.cta{background:#d97706;color:#fff;padding:28px 32px;border-radius:2px;text-align:center;margin:20px auto;}
+.cta h3{font-size:15px;font-weight:800;margin-bottom:6px;}
+.cta p{font-size:12px;opacity:.8;margin-bottom:16px;}
+.cta a{display:inline-block;background:#fff;color:#d97706;font-weight:700;font-size:13px;padding:11px 28px;border-radius:100px;}
+.page-nav{background:#1A1A1A;display:flex;justify-content:space-between;align-items:center;padding:16px 48px;flex-wrap:wrap;gap:8px;}
+.page-nav a{color:#999;font-size:12px;font-weight:600;}.page-nav a:hover{color:#fff;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .site-header{padding:0 14px;}
+  .header-logo{font-size:11px;}
+  .header-back{font-size:11px;}
+  .hero{padding:68px 16px 16px;min-height:auto;}
+  .hero-title{font-size:clamp(18px,5vw,26px);letter-spacing:-.5px;margin-bottom:12px;}
+  .hero-meta{gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+  .hero-desc{font-size:13px;}
+  .hero-divider{margin-top:16px;}
+  .ch-nav ul{padding:0 8px;}
+  .ch-nav li a{padding:10px 8px;font-size:10px;letter-spacing:0;}
+  .chapter{padding:24px 14px;}
+  .ch-inner{max-width:100%;}
+  .ch-head-content h2{font-size:17px;}
+  .ch-head-content p{font-size:12px;}
+  .key{padding:14px 16px;}
+  .key p{font-size:13px;}
+  .card-row{grid-template-columns:1fr;}
+  .mistake-grid{grid-template-columns:1fr;}
+  .d-row{flex-direction:column;}
+  .d-box{width:100%;flex:none;min-width:unset;}
+  .diagram{padding:16px;}
+  .step{grid-template-columns:40px 1fr;}
+  .step-b{padding:14px 14px;}
+  .step-n{font-size:16px;}
+  .src{flex-direction:column;gap:8px;padding:14px 16px;}
+  .callout{font-size:12px;padding:12px 14px;}
+  .summary{padding:20px 18px;border-radius:2px;}
+  .summary h3{font-size:14px;}
+  .summary ul{font-size:12px;line-height:2;}
+  .cta{padding:20px 18px;border-radius:2px;}
+  .cta h3{font-size:14px;}
+  .page-nav{padding:14px 16px;flex-direction:column;align-items:center;gap:12px;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-logo">PMI学習セット</div>
+  <a class="header-back" href="index.html">← 学習一覧に戻る</a>
+</header>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-bg-num" aria-hidden="true">05</div>
+    <div class="hero-meta">
+      <span class="hero-step">Step 05 of 11</span>
+      <span class="hero-phase">MIDDLE</span>
+    </div>
+    <h1 class="hero-title"><em>SWOT分析</em><br>強み・弱み・機会・脅威で戦略を立てる</h1>
+    <p class="hero-desc">3C分析の結果を4象限に整理し、クロスSWOTで具体的な戦略を導き出す。</p>
+    <div class="hero-divider"></div>
+  </div>
+  <img class="hero-illust" src="https://loosedrawing.com/assets/media/illustrations/png/1414.png" alt="ブレストするチームのイラスト">
+</section>
+
+<nav class="ch-nav">
+  <ul>
+    <li><a href="#c1">概念</a></li>
+    <li><a href="#c2">4つの象限</a></li>
+    <li><a href="#c3">クロスSWOT</a></li>
+    <li><a href="#c4">使い方</a></li>
+    <li><a href="#c5">PMI実例</a></li>
+    <li><a href="#c6">まとめ</a></li>
+  </ul>
+</nav>
+
+<div class="chapter" id="c1">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 01</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>SWOT分析とは何か</h2></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>SWOT ＝ Strength（強み）・Weakness（弱み）・Opportunity（機会）・Threat（脅威）</strong><br>
+      内部環境（S・W）と外部環境（O・T）を4象限で整理し、戦略の方向性を考えるフレームワーク。3C分析やPEST分析の結果をSWOTに落とし込んで使うことが多い。クロスSWOT（4象限の組み合わせ）で戦略を生成するのが最大の価値。</p>
+    </div>
+    <div class="callout callout-tip">
+      <strong>他フレームワークとの連携</strong>PEST分析の外部要因 → O・T（機会・脅威）に。3C分析のCompany分析 → S・W（強み・弱み）に。この順で分析を積み上げるとSWOTの精度が高くなる。
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>Humphrey, Albert S. (1960s-70s) ― スタンフォード研究所（SRI International）での研究プロジェクトでSWOT分析を開発。出典：Humphrey, A. "SWOT Analysis for Management Consulting" SRI Alumni Newsletter (2005)</cite></li>
+          <li><cite>Hill, T. & Westbrook, R. "SWOT Analysis: It's Time for a Product Recall" Long Range Planning, Vol.30 No.1 (1997)</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c2">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 02</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>4つの象限を理解する</h2></div>
+    <div class="swot-matrix">
+      <div class="sw-cell sw-s"><span class="sw-ax al-int">内部・プラス</span><h4>💪 S：Strength（強み）</h4><ul><li>他社より優れている点</li><li>独自技術・ブランド・人材</li><li>競争優位の源泉</li></ul></div>
+      <div class="sw-cell sw-w"><span class="sw-ax al-int">内部・マイナス</span><h4>😓 W：Weakness（弱み）</h4><ul><li>競合より劣っている点</li><li>リスク・課題</li><li>改善すべき領域</li></ul></div>
+      <div class="sw-cell sw-o"><span class="sw-ax al-ext">外部・プラス</span><h4>🌱 O：Opportunity（機会）</h4><ul><li>市場の成長・ニーズ変化</li><li>規制緩和・政策支援</li><li>競合の弱体化</li></ul></div>
+      <div class="sw-cell sw-t"><span class="sw-ax al-ext">外部・マイナス</span><h4>⚡ T：Threat（脅威）</h4><ul><li>市場縮小・競合台頭</li><li>規制強化・経済悪化</li><li>技術革新による代替</li></ul></div>
+    </div>
+    <p style="font-size:12px;color:#888;text-align:center;">S・W は「自社でコントロールできる内部要因」／ O・T は「外部要因」</p>
+  </div>
+</div>
+
+<div class="chapter" id="c3">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 03</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>クロスSWOT：戦略の生成方法</h2><p>SWOTの最大の価値はここにある</p></div>
+    <div class="cross-grid">
+      <div class="cross-card cs-so"><h4>🔥 SO戦略（S × O）</h4><p>強みで機会を活かす。最も攻めの戦略。例：「産直技術（S）× EC宅配需要（O）」→ 宅配サービス展開</p></div>
+      <div class="cross-card cs-st"><h4>🛡️ ST戦略（S × T）</h4><p>強みで脅威を回避する。例：「地域信頼関係（S）× 大型チェーン参入（T）」→ ロイヤル顧客化</p></div>
+      <div class="cross-card cs-wo"><h4>📈 WO戦略（W × O）</h4><p>弱みを機会で補う。例：「IT弱い（W）× DX補助金（O）」→ 補助金でIT強化</p></div>
+      <div class="cross-card cs-wt"><h4>⚠️ WT戦略（W × T）</h4><p>最悪シナリオの回避。例：「資金力弱（W）× 市場縮小（T）」→ 選択と集中</p></div>
+    </div>
+    <div class="callout callout-warn">
+      <strong>⚠️ よくある失敗：「SWOTを作って終わり」にする</strong>
+      クロスSWOTで戦略を生成しないと、SWOTはただの整理表に終わる。「だから何をするのか」まで導くことで初めて価値が生まれる。
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c4">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 04</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>使い方：4ステップ</h2></div>
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><div class="step-b"><h4>PESTの外部要因 → O・Tに振り分ける</h4><p>PEST分析で洗い出した外部要因を「機会（O）」か「脅威（T）」に分類する。同じ要因でも業界によって機会にも脅威にもなりうる。</p></div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-b"><h4>3C分析のCompany → S・Wに振り分ける</h4><p>3C分析で把握した自社の強み・弱みをS・Wに分類する。競合と比較して「優れている点がS、劣っている点がW」。</p></div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-b"><h4>各象限に3〜5項目ずつ書き出す</h4><p>多すぎると焦点が絞れないので各象限3〜5項目に絞る。「これは内部か外部か・プラスかマイナスか」の2軸で分類する。</p></div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-b"><h4>クロスSWOTで戦略を生成・優先度をつける</h4><p>SO・ST・WO・WTの4タイプの戦略を考え、「最もインパクトが大きい1〜2個」に絞り込む。リソースは有限なので「全部やる」はNG。</p></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c5">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 05</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>実例：PMI統合後のSWOT分析</h2></div>
+    <p style="font-size:13px;color:#888;margin-bottom:14px;"><strong>シナリオ：</strong>鶴岡食品（食品メーカー）がエコマート（スーパー）を買収した後、統合会社のSWOT分析でPMI戦略を決める。</p>
+    <div class="ex-box">
+      <h4>鶴岡食品 × エコマート 統合会社のSWOT</h4>
+      <div class="swot-ex">
+        <div class="se-s"><h5>💪 S（強み）</h5><ul><li>庄内産直の独自調達力</li><li>地域住民との深い信頼</li><li>製造〜小売の垂直統合</li></ul></div>
+        <div class="se-w"><h5>😓 W（弱み）</h5><ul><li>EC・デジタル活用が弱い</li><li>酒田市のみの限定商圏</li><li>組織文化のギャップ</li></ul></div>
+        <div class="se-o"><h5>🌱 O（機会）</h5><ul><li>高齢者の宅配需要拡大</li><li>産直食品のプレミアム需要</li><li>同業廃業による市場空白</li></ul></div>
+        <div class="se-t"><h5>⚡ T（脅威）</h5><ul><li>山形県の人口減少</li><li>原材料・物流コスト高騰</li><li>大手チェーンの地方展開</li></ul></div>
+      </div>
+    </div>
+    <div class="strategy-result">
+      → クロスSWOT SO戦略：「庄内産直の調達力（S）× EC宅配需要（O）」 → 山形県全域への産直食材EC宅配サービス展開。
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>中小企業庁「中小PMIガイドライン」（2022年3月）― 統合後の戦略立案におけるSWOT活用の事例</cite></li>
+          <li><cite>経済産業省「電子商取引に関する市場調査」（各年版）― EC市場規模・宅配需要データ</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c-action">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 06</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>SWOT分析の実施手順と実行計画への変換</h2><p>分析して終わりにしない ― 「戦略→タスク」まで落とし込む</p></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>SWOT分析の最大の罠：「分析で終わり」</strong><br>
+      SWOT分析をしても「で、結局何をするのか」が決まらなければ意味がない。分析の目的は「判断・意思決定」。クロスSWOTで戦略を選んだ後、必ずPDCAの「P（計画）」に落とし込む。</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0;">
+      <div style="background:#fff;border:1px solid #E8E5E0;border-radius:2px;padding:14px;border-left:3px solid #1A1A1A;">
+        <h4 style="font-size:12px;font-weight:700;margin-bottom:4px;">Step 1：情報収集（3C・PEST・財務データ）</h4>
+        <p style="font-size:12px;color:#888;line-height:1.7;">外部環境（O・T）は3C・PEST分析から。内部環境（S・W）はバリューチェーン・財務分析から取り出す。主観でなくデータに基づいて埋める。</p>
+      </div>
+      <div style="background:#fff;border:1px solid #E8E5E0;border-radius:2px;padding:14px;border-left:3px solid #1A1A1A;">
+        <h4 style="font-size:12px;font-weight:700;margin-bottom:4px;">Step 2：4象限に整理する</h4>
+        <p style="font-size:12px;color:#888;line-height:1.7;">S・W・O・Tの各象限に要因を書き出す。「同じ要因がSとTに重複している」場合は視点を変えて再分類する。主観が入りやすい「S」と「W」は競合との比較で客観化する。</p>
+      </div>
+      <div style="background:#fff;border:1px solid #E8E5E0;border-radius:2px;padding:14px;border-left:3px solid #1A1A1A;">
+        <h4 style="font-size:12px;font-weight:700;margin-bottom:4px;">Step 3：クロスSWOTで戦略を4つ導く</h4>
+        <p style="font-size:12px;color:#888;line-height:1.7;">SO・ST・WO・WT の4戦略を作る。全部同時にやろうとしない。「今の状況で最も重要な1〜2戦略」に絞り込む。</p>
+      </div>
+      <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:2px;padding:14px;border-left:3px solid #2563EB;">
+        <h4 style="font-size:12px;font-weight:700;margin-bottom:4px;">Step 4：実行計画（タスク）に落とし込む</h4>
+        <p style="font-size:12px;color:#888;line-height:1.7;">選んだ戦略を「誰が・何を・いつまでに・何をもって成功とするか（KPI）」のタスクに分解する。PDCAのPlanがここでできあがる。</p>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:14px 0;">
+      <div style="background:#FEF2F2;padding:14px;">
+        <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;color:#DC2626;">❌ 主観が入るSWOTの罠</h4>
+        <p style="font-size:11px;color:#555;line-height:1.7;">「当社の強みは品質が高い」→ 誰と比べて？どのデータで？<br>「市場の脅威は競争激化」→ どれくらい激しいか数値は？<br>→ データと競合比較で客観化すること</p>
+      </div>
+      <div style="background:#F0FDF4;padding:14px;">
+        <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;color:#15803D;">✅ 良いSWOTの基準</h4>
+        <p style="font-size:11px;color:#555;line-height:1.7;">各要因に「なぜそう言えるか」の根拠（数値・事例）がある<br>ClockSWOT で「何をすべきか」まで言える<br>「1ヶ月後に何が変わるか」を具体的に説明できる</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="chapter" id="c6">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 06</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>まとめ</h2></div>
+    <div class="summary">
+      <div class="summary-label">Summary</div>
+      <h3>SWOT分析 ― 3行まとめ</h3>
+      <ul>
+        <li>S・Wは内部要因、O・Tは外部要因。PESTとの連携でO・Tを、3Cとの連携でS・Wを精度高く作る</li>
+        <li>クロスSWOT（SO・ST・WO・WT）で戦略を生成するのが最重要ステップ</li>
+        <li>PMIでは「統合後の企業」のSWOTを分析して中長期戦略の方向性を決める</li>
+      </ul>
+    </div>
+    <div style="height:20px;"></div>
+    <div class="cta">
+      <h3>SWOT分析をクロスSWOTまでマスターしよう</h3>
+      <p>要素の分類・SWOT完成・クロスSWOT戦略立案・PMI統合戦略への応用まで20問。</p>
+      <a href="練習_SWOT分析.html">SWOT分析 練習問題を解く（20問）→</a>
+    </div>
+  </div>
+</div>
+
+<nav class="page-nav">
+  <a href="学習_3C分析.html">← 3C分析</a>
+  <a href="学習_財務基礎.html">次：財務基礎 →</a>
+</nav>
+</body>
+</html>

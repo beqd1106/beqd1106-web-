@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5フォース分析 学習教材｜業界の競争構造から参入価値を判断する</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','BIZ UDGothic','Meiryo',sans-serif;background:#FAFAF8;color:#1A1A1A;line-height:1.75;font-size:15px;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}img{max-width:100%;height:auto;display:block;}
+.site-header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 32px;height:56px;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid #E8E5E0;}
+.header-logo{font-size:12px;font-weight:700;}.header-logo span{color:#999;font-weight:400;}
+.header-back{font-size:12px;color:#666;}.header-back:hover{color:#1A1A1A;}
+.hero{min-height:28vh;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;padding:76px 48px 36px;background:#F5F3EE;border-bottom:1px solid #E8E5E0;position:relative;overflow:hidden;}
+@media(max-width:768px){.hero{grid-template-columns:1fr;padding:72px 16px 20px;}.hero-illust{display:none;}}
+.hero-left{position:relative;z-index:1;}
+.hero-bg-num{position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:clamp(120px,18vw,220px);font-weight:900;color:rgba(0,0,0,.04);line-height:1;pointer-events:none;letter-spacing:-10px;}
+.hero-meta{display:flex;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+.hero-step{font-size:10px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;}
+.hero-phase{font-size:10px;font-weight:700;letter-spacing:1px;border:1px solid #7c3aed;color:#7c3aed;padding:2px 10px;border-radius:100px;}
+.hero-title{font-size:clamp(20px,3vw,36px);font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:16px;}
+.hero-title em{font-style:normal;color:#ea580c;}
+.hero-desc{font-size:14px;color:#666;max-width:440px;line-height:1.8;}
+.hero-illust{width:clamp(160px,20vw,260px);opacity:.85;flex-shrink:0;}
+.hero-divider{width:40px;height:2px;background:#1A1A1A;margin-top:28px;}
+.ch-nav{background:#fff;position:sticky;top:56px;z-index:50;border-bottom:1px solid #E8E5E0;overflow-x:auto;white-space:nowrap;}
+.ch-nav ul{display:inline-flex;list-style:none;padding:0 32px;}
+.ch-nav li a{display:block;font-size:11px;font-weight:600;color:#999;padding:12px 14px;border-bottom:2px solid transparent;transition:all .15s;}
+.ch-nav li a:hover{color:#1A1A1A;border-bottom-color:#1A1A1A;}
+.chapter{padding:56px 48px;}.chapter:nth-child(odd){background:#fff;}.chapter:nth-child(even){background:#FAFAF8;}
+@media(max-width:768px){.chapter{padding:28px 16px;}}
+.ch-inner{max-width:720px;margin:0 auto;}
+.ch-head{margin-bottom:28px;display:flex;align-items:baseline;gap:16px;}
+.ch-num-label{font-size:10px;font-weight:700;letter-spacing:2px;color:#BBBBBB;text-transform:uppercase;white-space:nowrap;}
+.ch-line{flex:1;height:1px;background:#E8E5E0;}
+.ch-head-content{margin-top:12px;}
+.ch-head-content h2{font-size:clamp(18px,3vw,24px);font-weight:800;letter-spacing:-.3px;margin-bottom:5px;}
+.ch-head-content p{font-size:13px;color:#888;}
+.key{background:#F5F3EE;border-left:3px solid #1A1A1A;padding:20px 24px;margin:20px 0;}
+.key-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;margin-bottom:8px;}
+.key p{font-size:14px;line-height:1.8;}
+/* 5 Forces layout */
+.five-layout{display:grid;grid-template-areas:"top top top" "left center right" "bot bot bot";grid-template-columns:1fr 1.2fr 1fr;gap:6px;margin:16px 0;}
+.five-box{border-radius:2px;padding:14px;text-align:center;}
+.fb-center{grid-area:center;background:#1A1A1A;color:#fff;}
+.fb-top{grid-area:top;background:#EFF6FF;border:1px solid #BFDBFE;}
+.fb-left{grid-area:left;background:#F0FDF4;border:1px solid #86EFAC;}
+.fb-right{grid-area:right;background:#FEF2F2;border:1px solid #FCA5A5;}
+.fb-bot{grid-area:bot;background:#F5F3FF;border:1px solid #C4B5FD;}
+.five-box h4{font-size:12px;font-weight:700;margin-bottom:3px;}
+.fb-center h4{color:#A5B4FC;font-size:13px;}
+.fb-top h4{color:#1E40AF;}.fb-left h4,.fb-bot h4{color:#166534;}.fb-right h4{color:#991B1B;}
+.five-box p{font-size:10px;color:#888;}
+.fb-center p{color:rgba(255,255,255,.6);}
+.force-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+.force-card{background:#fff;padding:16px;border-top:2px solid;}
+.fc-1{border-top-color:#1D4ED8;}.fc-2{border-top-color:#059669;}.fc-3{border-top-color:#7C3AED;}.fc-4{border-top-color:#DC2626;}.fc-5{border-top-color:#EA580C;}
+.force-tag{font-size:9px;font-weight:700;letter-spacing:1px;margin-bottom:6px;display:block;}
+.ft-1{color:#1D4ED8;}.ft-2{color:#059669;}.ft-3{color:#7C3AED;}.ft-4{color:#DC2626;}.ft-5{color:#EA580C;}
+.force-card h4{font-size:12px;font-weight:700;margin-bottom:6px;}
+.force-card ul{padding-left:14px;font-size:11px;color:#888;}.force-card li{margin-bottom:3px;}
+.force-card .fc-note{font-size:11px;font-weight:600;margin-top:8px;padding-top:6px;border-top:1px solid #E8E5E0;}
+/* Score bars */
+.score-table{border:1px solid #E8E5E0;border-radius:2px;padding:18px;margin:14px 0;background:#fff;}
+.score-table h4{font-size:10px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:12px;}
+.score-row{display:grid;grid-template-columns:160px 1fr 76px;gap:8px;align-items:center;margin-bottom:8px;}
+.sc-label{font-size:12px;font-weight:600;}
+.sc-bar{height:7px;background:#E8E5E0;border-radius:100px;overflow:hidden;}
+.sc-fill{height:100%;border-radius:100px;}
+.sb-hi{background:#DC2626;}.sb-mid{background:#D97706;}.sb-lo{background:#059669;}
+.sc-text{font-size:10px;font-weight:700;text-align:right;}
+.st-hi{color:#DC2626;}.st-mid{color:#D97706;}.st-lo{color:#059669;}
+.callout{padding:14px 18px;margin:14px 0;font-size:13px;border-left:3px solid;border-radius:0 2px 2px 0;}
+.callout-warn{background:#FFFBEB;border-color:#D97706;}.callout-warn strong{color:#92400E;display:block;margin-bottom:3px;}
+.callout-tip{background:#FFF7ED;border-color:#EA580C;}.callout-tip strong{color:#9A3412;display:block;margin-bottom:3px;}
+.src{border:1px solid #E8E5E0;border-radius:2px;padding:16px 20px;margin-top:28px;display:flex;gap:12px;background:#FAFAF8;}
+.src-icon{font-size:14px;flex-shrink:0;margin-top:2px;}
+.src-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:5px;}
+.src-list{list-style:none;font-size:11px;color:#888;}.src-list li{margin-bottom:3px;line-height:1.6;}.src-list cite{font-style:normal;}
+.summary{background:#1A1A1A;color:#FAFAF8;padding:28px 32px;border-radius:2px;}
+.summary-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:12px;}
+.summary h3{font-size:15px;font-weight:800;margin-bottom:14px;line-height:1.4;}
+.summary ul{padding-left:16px;font-size:13px;line-height:2.2;color:#CCC;}
+.cta{background:#ea580c;color:#fff;padding:28px 32px;border-radius:2px;text-align:center;margin:20px auto;}
+.cta h3{font-size:15px;font-weight:800;margin-bottom:6px;}
+.cta p{font-size:12px;opacity:.8;margin-bottom:16px;}
+.cta a{display:inline-block;background:#fff;color:#ea580c;font-weight:700;font-size:13px;padding:11px 28px;border-radius:100px;}
+.page-nav{background:#1A1A1A;display:flex;justify-content:space-between;align-items:center;padding:16px 48px;flex-wrap:wrap;gap:8px;}
+.page-nav a{color:#999;font-size:12px;font-weight:600;}.page-nav a:hover{color:#fff;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .site-header{padding:0 14px;}
+  .header-logo{font-size:11px;}
+  .header-back{font-size:11px;}
+  .hero{padding:68px 16px 16px;min-height:auto;}
+  .hero-title{font-size:clamp(18px,5vw,26px);letter-spacing:-.5px;margin-bottom:12px;}
+  .hero-meta{gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+  .hero-desc{font-size:13px;}
+  .hero-divider{margin-top:16px;}
+  .ch-nav ul{padding:0 8px;}
+  .ch-nav li a{padding:10px 8px;font-size:10px;letter-spacing:0;}
+  .chapter{padding:24px 14px;}
+  .ch-inner{max-width:100%;}
+  .ch-head-content h2{font-size:17px;}
+  .ch-head-content p{font-size:12px;}
+  .key{padding:14px 16px;}
+  .key p{font-size:13px;}
+  .card-row{grid-template-columns:1fr;}
+  .mistake-grid{grid-template-columns:1fr;}
+  .d-row{flex-direction:column;}
+  .d-box{width:100%;flex:none;min-width:unset;}
+  .diagram{padding:16px;}
+  .step{grid-template-columns:40px 1fr;}
+  .step-b{padding:14px 14px;}
+  .step-n{font-size:16px;}
+  .src{flex-direction:column;gap:8px;padding:14px 16px;}
+  .callout{font-size:12px;padding:12px 14px;}
+  .summary{padding:20px 18px;border-radius:2px;}
+  .summary h3{font-size:14px;}
+  .summary ul{font-size:12px;line-height:2;}
+  .cta{padding:20px 18px;border-radius:2px;}
+  .cta h3{font-size:14px;}
+  .page-nav{padding:14px 16px;flex-direction:column;align-items:center;gap:12px;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-logo">PMI学習セット</div>
+  <a class="header-back" href="index.html">← 学習一覧に戻る</a>
+</header>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-bg-num" aria-hidden="true">09</div>
+    <div class="hero-meta">
+      <span class="hero-step">Step 09 of 11</span>
+      <span class="hero-phase">ADVANCED</span>
+    </div>
+    <h1 class="hero-title">ポーターの<em>5フォース分析</em><br>業界の競争構造から<br>参入価値を判断する</h1>
+    <p class="hero-desc">M&Aで「この業界は儲かるか・参入すべきか」を5つの力で科学的に評価するフレームワーク。</p>
+    <div class="hero-divider"></div>
+  </div>
+  <img class="hero-illust" src="https://loosedrawing.com/assets/media/illustrations/png/1498.png" alt="握手するビジネスマンのイラスト">
+</section>
+
+<nav class="ch-nav">
+  <ul>
+    <li><a href="#c1">概念</a></li>
+    <li><a href="#c2">5つのフォース</a></li>
+    <li><a href="#c3">魅力度評価</a></li>
+    <li><a href="#c4">PMI実例</a></li>
+    <li><a href="#c5">注意点</a></li>
+    <li><a href="#c-time">時間軸分析</a></li>
+    <li><a href="#c6">まとめ</a></li>
+  </ul>
+</nav>
+
+<div class="chapter" id="c1">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 01</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>5フォース分析とは何か</h2></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>5フォース ＝ 業界の収益性を決める「5つの競争要因」を分析するフレームワーク</strong><br>
+      マイケル・ポーター（ハーバード・ビジネス・スクール）が1980年に提唱。業界の利益水準は「5つの力（フォース）」の強さで決まる。5つの力が強いほど収益を出しにくい業界。M&Aで「この業界は本当に魅力的か」を判断する際に使う。</p>
+    </div>
+    <div class="five-layout">
+      <div class="five-box fb-top"><h4>🚪 新規参入の脅威</h4><p>参入障壁の高さ</p></div>
+      <div class="five-box fb-left"><h4>🛒 買い手の交渉力</h4><p>顧客の価格交渉力</p></div>
+      <div class="five-box fb-center"><h4>⚔️ 業界内<br>競合の激しさ</h4><p>既存プレイヤー間の競争</p></div>
+      <div class="five-box fb-right"><h4>🏭 売り手の交渉力</h4><p>サプライヤーの力</p></div>
+      <div class="five-box fb-bot"><h4>🔄 代替品の脅威</h4><p>別カテゴリによる代替</p></div>
+    </div>
+    <p style="font-size:12px;color:#888;text-align:center;margin-top:6px;">5つの力が弱い業界 ＝ 収益を出しやすい「魅力的な業界」</p>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>Porter, Michael E. "Competitive Strategy: Techniques for Analyzing Industries and Competitors" (1980, Free Press) ― 5フォース分析の原著</cite></li>
+          <li><cite>Porter, Michael E. "The Five Competitive Forces That Shape Strategy" Harvard Business Review (January 2008) ― 5フォース分析の現代的解説</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c2">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 02</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>5つのフォースを理解する</h2></div>
+    <div class="force-grid">
+      <div class="force-card fc-1"><span class="force-tag ft-1">フォース①</span><h4>🚪 新規参入の脅威</h4><ul><li>参入障壁を高める：規制・特許・大規模設備・ブランド</li><li>参入障壁を下げる：低コスト・デジタル技術（SaaS等）</li></ul><p class="fc-note" style="color:#1D4ED8;">例：医療業界→参入規制厳しく（業界に有利）</p></div>
+      <div class="force-card fc-2"><span class="force-tag ft-2">フォース②</span><h4>🔄 代替品の脅威</h4><ul><li>全く別のカテゴリの製品・サービスが需要を奪う</li><li>例：タクシー→Uber、ビデオレンタル→Netflix</li></ul><p class="fc-note" style="color:#059669;">ポイント：「競合他社」ではなく「別カテゴリ」を考える</p></div>
+      <div class="force-card fc-3"><span class="force-tag ft-3">フォース③</span><h4>🛒 買い手（顧客）の交渉力</h4><ul><li>力が強い：大口顧客・乗り換え容易・情報豊富</li><li>力が弱い：顧客分散・スイッチングコスト高</li></ul><p class="fc-note" style="color:#7C3AED;">例：自動車メーカー（大口）が部品メーカーに価格圧力</p></div>
+      <div class="force-card fc-4"><span class="force-tag ft-4">フォース④</span><h4>🏭 売り手（サプライヤー）の交渉力</h4><ul><li>力が強い：供給が寡占・代替調達先なし</li><li>力が弱い：仕入先が多数・汎用品で代替容易</li></ul><p class="fc-note" style="color:#DC2626;">例：ASMLの半導体製造装置（世界シェア90%）</p></div>
+      <div class="force-card fc-5" style="grid-column:1/-1;"><span class="force-tag ft-5">フォース⑤（中心）</span><h4>⚔️ 業界内競合の激しさ（Rivalry）</h4><ul style="columns:2;"><li>競争激化：企業数多い・成長鈍化・固定費高い・差別化困難</li><li>競争緩和：少数のリーダー・差別化・高成長市場</li></ul><p class="fc-note" style="color:#EA580C;">例：航空業界は企業数多く・差別化困難・固定費大 → 競争激烈で慢性的低収益</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c3">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 03</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>業界の魅力度評価のやり方</h2></div>
+    <p style="font-size:13px;color:#888;margin-bottom:14px;">M&Aで買収候補業界を評価するとき、5フォースを「強・中・弱」でスコアリングして総合判断する。</p>
+    <div class="score-table">
+      <h4>例：訪問介護業界の5フォース評価</h4>
+      <div class="score-row"><span class="sc-label">🚪 新規参入の脅威</span><div class="sc-bar"><div class="sc-fill sb-hi" style="width:70%;"></div></div><span class="sc-text st-hi">強（不利）</span></div>
+      <div class="score-row"><span class="sc-label">🔄 代替品の脅威</span><div class="sc-bar"><div class="sc-fill sb-mid" style="width:40%;"></div></div><span class="sc-text st-mid">中</span></div>
+      <div class="score-row"><span class="sc-label">🛒 買い手の交渉力</span><div class="sc-bar"><div class="sc-fill sb-lo" style="width:25%;"></div></div><span class="sc-text st-lo">弱（有利）</span></div>
+      <div class="score-row"><span class="sc-label">🏭 売り手の交渉力</span><div class="sc-bar"><div class="sc-fill sb-hi" style="width:75%;"></div></div><span class="sc-text st-hi">強（人材不足）</span></div>
+      <div class="score-row"><span class="sc-label">⚔️ 業界内競合</span><div class="sc-bar"><div class="sc-fill sb-hi" style="width:80%;"></div></div><span class="sc-text st-hi">強（競合多数）</span></div>
+      <p style="font-size:12px;color:#888;margin-top:12px;">→ 業界構造は厳しいが高齢化で需要は確実に拡大（S要因）。PMIでIT効率化・人材共有できれば収益改善余地あり。</p>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c4">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 04</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>PMI Manager業界の5フォース</h2></div>
+    <div class="force-grid" style="grid-template-columns:1fr 1fr;">
+      <div class="force-card fc-1"><h4>🚪 新規参入の脅威：強まりつつある</h4><p style="font-size:12px;color:#888;">SaaS技術は普及しており参入障壁が低い。大手ITベンダーやコンサルファームが類似製品を投入してくるリスク。対策：データ蓄積・業界標準化で参入障壁を自ら作る。</p></div>
+      <div class="force-card fc-2"><h4>🔄 代替品の脅威：中</h4><p style="font-size:12px;color:#888;">汎用プロジェクト管理ツール（Notion・Asana等）による代替リスク。PMI特化の機能・業界知識がある限り完全代替は困難。</p></div>
+      <div class="force-card fc-3"><h4>🛒 買い手の交渉力：中</h4><p style="font-size:12px;color:#888;">顧客は複数のツールを比較検討できる。ただしPMI実績データの蓄積でスイッチングコストが上がる設計が重要。</p></div>
+      <div class="force-card fc-4"><h4>🏭 売り手の交渉力：弱</h4><p style="font-size:12px;color:#888;">コンサル業は知識・人材が主なインプット。比較的コントロール可能。</p></div>
+    </div>
+    <div style="background:#FFF7ED;border:1px solid #FED7AA;border-radius:2px;padding:12px 14px;margin-top:4px;font-size:12px;color:#9A3412;">
+      → PMI Manager の最大の強み：PMI特化＋SaaSの「ハイブリッドモデル」は競合がすぐには真似できない。課題：新規参入の脅威に対する差別化の維持。
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c5">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 05</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>注意点：5フォース分析の限界</h2></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:14px 0;">
+      <div style="background:#fff;padding:16px;"><h4 style="font-size:12px;font-weight:700;margin-bottom:6px;">📌 業界の定義に注意</h4><p style="font-size:12px;color:#888;">「食品業界」ではなく「地方スーパー業界」のように具体的に定義する。範囲が変わると分析結果が変わる。</p></div>
+      <div style="background:#fff;padding:16px;"><h4 style="font-size:12px;font-weight:700;margin-bottom:6px;">📅 現在と将来を両方見る</h4><p style="font-size:12px;color:#888;">5フォースは現時点のスナップショット。「3〜5年後にこの力はどう変化するか」をPESTと組み合わせて予測する。</p></div>
+      <div style="background:#fff;padding:16px;"><h4 style="font-size:12px;font-weight:700;margin-bottom:6px;">💡「だから何？」まで言う</h4><p style="font-size:12px;color:#888;">「新規参入の脅威が強い」で終わらない。「だからブランド力強化・スイッチングコスト設計が必要」と戦略まで出す。</p></div>
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>Porter, Michael E. "Competitive Strategy" (1980, Free Press) ― 5フォース分析の原著</cite></li>
+          <li><cite>経済産業省「DX推進指標」（2023年）― 中小企業のIT投資・SaaS導入動向データ</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c-time">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 06</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>時間軸で5フォースを動的に見る</h2><p>「今」だけでなく「3〜5年後」を予測して投資判断する</p></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>5フォースは「現時点のスナップショット」に過ぎない</strong><br>
+      今は魅力的な業界でも5年後に構造が激変する可能性がある（Uber・Netflixの登場が業界を一変させた例）。M&Aは「将来の価値」に投資するため、現在と将来の5フォースを両方分析することが必須。</p>
+    </div>
+    <div style="border:1px solid #E8E5E0;border-radius:2px;padding:18px;background:#fff;margin:14px 0;">
+      <p style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:14px;">業界定義が変わると5フォースが激変する事例</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+        <div style="background:#FEF2F2;border-radius:2px;padding:14px;">
+          <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;color:#DC2626;">🚕 タクシー業界 → 配車アプリ登場</h4>
+          <p style="font-size:11px;color:#555;line-height:1.7;">「タクシー業界」として定義すれば参入障壁高い（免許制）→ 5フォース有利。しかしUberが「移動のマッチング業界」として参入し、代替品の脅威が爆発的に強まった。業界定義の選び方一つで全く別の分析になる。</p>
+        </div>
+        <div style="background:#FEF2F2;border-radius:2px;padding:14px;">
+          <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;color:#DC2626;">📼 ビデオレンタル → NetflixのOTT登場</h4>
+          <p style="font-size:11px;color:#555;line-height:1.7;">「ビデオレンタル業界」は地域独占・代替品少ない→一見有利な構造。しかしNetflixが「動画コンテンツ視聴業界」として定義を変え代替。Blockbusterは倒産、TSUTAYAも縮小。代替品の脅威を「別業界」と侮った典型例。</p>
+        </div>
+        <div style="background:#F0FDF4;border-radius:2px;padding:14px;">
+          <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;color:#15803D;">✅ 5フォース時間軸分析の手順</h4>
+          <p style="font-size:11px;color:#555;line-height:1.7;">①現在の5フォースを評価<br>②各フォースに影響するPEST要因を特定<br>③3〜5年後の変化方向（強まる/弱まる）を予測<br>④「将来の5フォースが今より悪化するリスク」をM&A判断に組み込む</p>
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #E8E5E0;border-radius:2px;padding:18px;background:#FAFAF8;margin:14px 0;">
+      <p style="font-size:11px;font-weight:700;color:#888;margin-bottom:10px;">5フォース → 投資判断フロー（M&Aでの実際の使い方）</p>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:#fff;border-radius:2px;padding:10px 14px;border-left:3px solid #1A1A1A;">
+          <p style="font-size:12px;"><strong>Step 1：現在の5フォース評価</strong> → 各フォースを「強・中・弱」で評価してスコアリング</p>
+        </div>
+        <div style="background:#fff;border-radius:2px;padding:10px 14px;border-left:3px solid #1A1A1A;">
+          <p style="font-size:12px;"><strong>Step 2：将来の変化予測</strong> → PEST分析と組み合わせて「3年後にどのフォースが変わるか」を特定</p>
+        </div>
+        <div style="background:#fff;border-radius:2px;padding:10px 14px;border-left:3px solid #1A1A1A;">
+          <p style="font-size:12px;"><strong>Step 3：参入/撤退判断</strong> → 現在も将来も「全体的に弱い（有利）」ならGO。「今は良いが将来は悪化」なら慎重に</p>
+        </div>
+        <div style="background:#fff;border-radius:2px;padding:10px 14px;border-left:3px solid #2563EB;">
+          <p style="font-size:12px;"><strong>Step 4：差別化戦略の設計</strong> → 強いフォースに対して「どう差別化するか（スイッチングコスト・ブランド・特許など）」を3Cで設計する</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c6">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 07</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>まとめ</h2></div>
+    <div class="summary">
+      <div class="summary-label">Summary</div>
+      <h3>5フォース分析 ― 3行まとめ</h3>
+      <ul>
+        <li>5つの力（新規参入・代替品・買い手・売り手・業界内競合）が強いほど業界の収益性は低い</li>
+        <li>M&AのBusiness DDで「この業界への参入は妥当か・構造的リスクは何か」を評価するために使う</li>
+        <li>スコアリングして総合判断し「だからどんな戦略を取るべきか」まで導く</li>
+      </ul>
+    </div>
+    <div style="height:20px;"></div>
+    <div class="cta">
+      <h3>業界の収益性を判断する目を養おう</h3>
+      <p>5つの力の識別・業界魅力度評価・M&AのDD実践まで20問。</p>
+      <a href="練習_5フォース.html">5フォース分析 練習問題を解く（20問）→</a>
+    </div>
+  </div>
+</div>
+
+<nav class="page-nav">
+  <a href="学習_バリューチェーン.html">← バリューチェーン</a>
+  <a href="学習_ADKAR.html">次：ADKARモデル →</a>
+</nav>
+</body>
+</html>

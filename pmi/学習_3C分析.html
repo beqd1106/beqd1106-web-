@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3C分析 学習教材｜市場・競合・自社を構造的に捉える</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','BIZ UDGothic','Meiryo',sans-serif;background:#FAFAF8;color:#1A1A1A;line-height:1.75;font-size:15px;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}img{max-width:100%;height:auto;display:block;}
+.site-header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 32px;height:56px;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid #E8E5E0;}
+.header-logo{font-size:12px;font-weight:700;}.header-logo span{color:#999;font-weight:400;}
+.header-back{font-size:12px;color:#666;}.header-back:hover{color:#1A1A1A;}
+.hero{min-height:28vh;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;padding:76px 48px 36px;background:#F5F3EE;border-bottom:1px solid #E8E5E0;position:relative;overflow:hidden;}
+@media(max-width:768px){.hero{grid-template-columns:1fr;padding:72px 16px 20px;}.hero-illust{display:none;}}
+.hero-left{position:relative;z-index:1;}
+.hero-bg-num{position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:clamp(120px,18vw,220px);font-weight:900;color:rgba(0,0,0,.04);line-height:1;pointer-events:none;letter-spacing:-10px;}
+.hero-meta{display:flex;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+.hero-step{font-size:10px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;}
+.hero-phase{font-size:10px;font-weight:700;letter-spacing:1px;border:1px solid #2563eb;color:#2563eb;padding:2px 10px;border-radius:100px;}
+.hero-title{font-size:clamp(20px,3vw,36px);font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:16px;}
+.hero-title em{font-style:normal;color:#0d9488;}
+.hero-desc{font-size:14px;color:#666;max-width:440px;line-height:1.8;}
+.hero-illust{width:clamp(160px,20vw,260px);opacity:.85;flex-shrink:0;}
+.hero-divider{width:40px;height:2px;background:#1A1A1A;margin-top:28px;}
+.ch-nav{background:#fff;position:sticky;top:56px;z-index:50;border-bottom:1px solid #E8E5E0;overflow-x:auto;white-space:nowrap;}
+.ch-nav ul{display:inline-flex;list-style:none;padding:0 32px;}
+.ch-nav li a{display:block;font-size:11px;font-weight:600;color:#999;padding:12px 14px;border-bottom:2px solid transparent;transition:all .15s;}
+.ch-nav li a:hover{color:#1A1A1A;border-bottom-color:#1A1A1A;}
+.chapter{padding:56px 48px;}.chapter:nth-child(odd){background:#fff;}.chapter:nth-child(even){background:#FAFAF8;}
+@media(max-width:768px){.chapter{padding:28px 16px;}}
+.ch-inner{max-width:720px;margin:0 auto;}
+.ch-head{margin-bottom:28px;display:flex;align-items:baseline;gap:16px;}
+.ch-num-label{font-size:10px;font-weight:700;letter-spacing:2px;color:#BBBBBB;text-transform:uppercase;white-space:nowrap;}
+.ch-line{flex:1;height:1px;background:#E8E5E0;}
+.ch-head-content{margin-top:12px;}
+.ch-head-content h2{font-size:clamp(18px,3vw,24px);font-weight:800;letter-spacing:-.3px;margin-bottom:5px;}
+.ch-head-content p{font-size:13px;color:#888;}
+.key{background:#F5F3EE;border-left:3px solid #1A1A1A;padding:20px 24px;margin:20px 0;}
+.key-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;margin-bottom:8px;}
+.key p{font-size:14px;line-height:1.8;}
+.three-c{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+@media(max-width:520px){.three-c{grid-template-columns:1fr;}}
+.c-head{padding:12px 14px;color:#fff;font-weight:800;font-size:13px;text-align:center;}
+.c1{background:#059669;}.c2{background:#DC2626;}.c3{background:#1D4ED8;}
+.c-body{background:#fff;padding:12px 14px;font-size:12px;color:#888;}
+.c-q{font-size:9px;font-weight:700;letter-spacing:.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:6px;}
+.c-body ul{padding-left:14px;}.c-body li{margin-bottom:3px;}
+.steps{display:flex;flex-direction:column;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+.step{display:grid;grid-template-columns:48px 1fr;background:#fff;}
+.step-n{display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#E8E5E0;border-right:1px solid #E8E5E0;padding:16px;}
+.step-b{padding:18px 20px;}
+.step-b h4{font-size:13px;font-weight:700;margin-bottom:4px;}
+.step-b p{font-size:12px;color:#888;line-height:1.7;}
+.ksf-wrap{border:1px solid #E8E5E0;border-radius:2px;padding:20px;margin:14px 0;background:#fff;}
+.ksf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+@media(max-width:480px){.ksf-grid{grid-template-columns:1fr;}}
+.ksf-cell{border-radius:2px;padding:12px;font-size:12px;text-align:center;font-weight:600;}
+.ksf-c1{background:#F0FDF4;border:1px solid #86EFAC;color:#166534;}
+.ksf-c2{background:#FEF2F2;border:1px solid #FCA5A5;color:#991B1B;}
+.ksf-c3{background:#EFF6FF;border:1px solid #BFDBFE;color:#1E40AF;}
+.ksf-arrow{text-align:center;font-size:13px;color:#888;margin:8px 0;}
+.ksf-result{background:#1A1A1A;color:#fff;border-radius:2px;padding:10px 14px;text-align:center;font-weight:700;font-size:13px;}
+.ex-box{border:1px solid #E8E5E0;border-radius:2px;padding:20px;margin:14px 0;background:#fff;}
+.ex-box h4{font-size:10px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:14px;}
+.ex-row{display:grid;grid-template-columns:64px 1fr;gap:10px;margin-bottom:10px;align-items:flex-start;padding-bottom:10px;border-bottom:1px solid #E8E5E0;}
+.ex-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.ex-lbl{font-size:9px;font-weight:700;color:#fff;padding:5px 8px;border-radius:2px;text-align:center;}
+.el-c1{background:#059669;}.el-c2{background:#DC2626;}.el-c3{background:#1D4ED8;}
+.ex-content{font-size:12px;color:#1A1A1A;}
+.ksf-box{background:#F0FDFA;border:1px solid #99F6E4;border-radius:2px;padding:14px;margin-top:12px;}
+.ksf-box strong{color:#0F766E;font-size:13px;}
+.ksf-box p{font-size:12px;margin-top:4px;color:#1A1A1A;}
+.callout{padding:14px 18px;margin:14px 0;font-size:13px;border-left:3px solid;border-radius:0 2px 2px 0;}
+.callout-warn{background:#FFFBEB;border-color:#D97706;}.callout-warn strong{color:#92400E;display:block;margin-bottom:3px;}
+.callout-tip{background:#F0FDF4;border-color:#059669;}.callout-tip strong{color:#15803D;display:block;margin-bottom:3px;}
+.src{border:1px solid #E8E5E0;border-radius:2px;padding:16px 20px;margin-top:28px;display:flex;gap:12px;background:#FAFAF8;}
+.src-icon{font-size:14px;flex-shrink:0;margin-top:2px;}
+.src-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:5px;}
+.src-list{list-style:none;font-size:11px;color:#888;}.src-list li{margin-bottom:3px;line-height:1.6;}.src-list cite{font-style:normal;}
+.summary{background:#1A1A1A;color:#FAFAF8;padding:28px 32px;border-radius:2px;}
+.summary-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:12px;}
+.summary h3{font-size:15px;font-weight:800;margin-bottom:14px;line-height:1.4;}
+.summary ul{padding-left:16px;font-size:13px;line-height:2.2;color:#CCC;}
+.cta{background:#0d9488;color:#fff;padding:28px 32px;border-radius:2px;text-align:center;margin:20px auto;}
+.cta h3{font-size:15px;font-weight:800;margin-bottom:6px;}
+.cta p{font-size:12px;opacity:.8;margin-bottom:16px;}
+.cta a{display:inline-block;background:#fff;color:#0d9488;font-weight:700;font-size:13px;padding:11px 28px;border-radius:100px;}
+.page-nav{background:#1A1A1A;display:flex;justify-content:space-between;align-items:center;padding:16px 48px;flex-wrap:wrap;gap:8px;}
+.page-nav a{color:#999;font-size:12px;font-weight:600;}.page-nav a:hover{color:#fff;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .site-header{padding:0 14px;}
+  .header-logo{font-size:11px;}
+  .header-back{font-size:11px;}
+  .hero{padding:68px 16px 16px;min-height:auto;}
+  .hero-title{font-size:clamp(18px,5vw,26px);letter-spacing:-.5px;margin-bottom:12px;}
+  .hero-meta{gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+  .hero-desc{font-size:13px;}
+  .hero-divider{margin-top:16px;}
+  .ch-nav ul{padding:0 8px;}
+  .ch-nav li a{padding:10px 8px;font-size:10px;letter-spacing:0;}
+  .chapter{padding:24px 14px;}
+  .ch-inner{max-width:100%;}
+  .ch-head-content h2{font-size:17px;}
+  .ch-head-content p{font-size:12px;}
+  .key{padding:14px 16px;}
+  .key p{font-size:13px;}
+  .card-row{grid-template-columns:1fr;}
+  .mistake-grid{grid-template-columns:1fr;}
+  .d-row{flex-direction:column;}
+  .d-box{width:100%;flex:none;min-width:unset;}
+  .diagram{padding:16px;}
+  .step{grid-template-columns:40px 1fr;}
+  .step-b{padding:14px 14px;}
+  .step-n{font-size:16px;}
+  .src{flex-direction:column;gap:8px;padding:14px 16px;}
+  .callout{font-size:12px;padding:12px 14px;}
+  .summary{padding:20px 18px;border-radius:2px;}
+  .summary h3{font-size:14px;}
+  .summary ul{font-size:12px;line-height:2;}
+  .cta{padding:20px 18px;border-radius:2px;}
+  .cta h3{font-size:14px;}
+  .page-nav{padding:14px 16px;flex-direction:column;align-items:center;gap:12px;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-logo">PMI学習セット</div>
+  <a class="header-back" href="index.html">← 学習一覧に戻る</a>
+</header>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-bg-num" aria-hidden="true">04</div>
+    <div class="hero-meta">
+      <span class="hero-step">Step 04 of 11</span>
+      <span class="hero-phase">MIDDLE</span>
+    </div>
+    <h1 class="hero-title"><em>3C分析</em><br>市場・競合・自社を構造的に捉える</h1>
+    <p class="hero-desc">M&A対象企業を評価し、提案書の「現状分析」を書くための必須ツール。</p>
+    <div class="hero-divider"></div>
+  </div>
+  <img class="hero-illust" src="https://loosedrawing.com/assets/media/illustrations/png/1200.png" alt="発表のイラスト">
+</section>
+
+<nav class="ch-nav">
+  <ul>
+    <li><a href="#c1">概念</a></li>
+    <li><a href="#c2">3つのC</a></li>
+    <li><a href="#c3">KSFを導く</a></li>
+    <li><a href="#c4">使い方</a></li>
+    <li><a href="#c5">PMI実例</a></li>
+    <li><a href="#c-ksf">KSF優先度</a></li>
+    <li><a href="#c6">まとめ</a></li>
+  </ul>
+</nav>
+
+<div class="chapter" id="c1">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 01</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>3C分析とは何か</h2></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>3C ＝ Customer（顧客）・Competitor（競合）・Company（自社）の3軸で市場を分析する</strong><br>
+      マッキンゼー出身の大前研一氏が提唱した戦略フレームワーク。「なぜこの市場で勝てるか（負けているか）」を3つの視点で体系的に把握する。M&Aでは「買収候補企業の市場ポジション評価」にそのまま使える。</p>
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>大前研一『企業参謀』プレジデント社（1975年）― 3C分析の原典。大前氏がマッキンゼー在籍中に開発</cite></li>
+          <li><cite>Ohmae, Kenichi "The Mind of the Strategist" (1982, McGraw-Hill) ― 英語版。世界的なロングセラー戦略書</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c2">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 02</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>3つのCを理解する</h2></div>
+    <div class="three-c">
+      <div><div class="c-head c1">🛒 Customer<br><span style="font-size:10px;font-weight:400;">顧客・市場</span></div><div class="c-body"><div class="c-q">「誰が・何を求めているか」</div><ul><li>市場規模・成長率</li><li>顧客のニーズ・課題</li><li>購買行動・意思決定者</li><li>市場の将来性</li></ul></div></div>
+      <div><div class="c-head c2">⚔️ Competitor<br><span style="font-size:10px;font-weight:400;">競合</span></div><div class="c-body"><div class="c-q">「誰と戦い何が違うか」</div><ul><li>競合企業の強み・弱み</li><li>シェア・価格・戦略</li><li>業界内の地位関係</li><li>差別化のポイント</li></ul></div></div>
+      <div><div class="c-head c3">🏢 Company<br><span style="font-size:10px;font-weight:400;">自社</span></div><div class="c-body"><div class="c-q">「自社の強み・弱みは何か」</div><ul><li>強み・差別化要因</li><li>弱点・リスク</li><li>リソース・技術・ブランド</li><li>市場シェア・財務状況</li></ul></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c3">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 03</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>KSF（成功要因）を導く</h2><p>3C分析の最終目的はKSFの特定</p></div>
+    <div class="ksf-wrap">
+      <div class="ksf-grid">
+        <div class="ksf-cell ksf-c1">顧客が求めること<br><span style="font-size:10px;font-weight:400;">（Customer分析から）</span></div>
+        <div class="ksf-cell ksf-c2">競合がまだ<br>できていないこと<br><span style="font-size:10px;font-weight:400;">（Competitor分析から）</span></div>
+        <div class="ksf-cell ksf-c3">自社が<br>得意なこと<br><span style="font-size:10px;font-weight:400;">（Company分析から）</span></div>
+      </div>
+      <div class="ksf-arrow">↓ 3つが重なる部分を探す ↓</div>
+      <div class="ksf-result">🎯 KSF（Key Success Factor）― この市場で勝つために絶対に必要な要素</div>
+    </div>
+    <div class="callout callout-warn">
+      <strong>⚠️ よくある失敗：3Cを羅列して終わる</strong>「C1：〜です、C2：〜です、C3：〜です」と書くだけで終わる人が多い。3C分析の本当の価値はKSFを導き出すこと。「だから何をすべきか」まで踏み込むのがプロのコンサル。
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c4">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 04</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>使い方：3C→KSFの流れ</h2></div>
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><div class="step-b"><h4>Customer分析：誰が何を求めているか</h4><p>市場規模・成長率・主要ユーザー層・購買動機などをデータで把握する。「この市場の顧客は何に困っていて、何を求めているか」。</p></div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-b"><h4>Competitor分析：競合は誰で何が強いか</h4><p>主要競合企業を3〜5社リストアップ。各社の「強み・弱み・シェア・差別化ポイント」を比較する。直接競合と間接競合（代替品）の両方を考える。</p></div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-b"><h4>Company分析：自社の強みは何か</h4><p>分析対象企業の強み・弱みを客観的に評価する。競合と比較して「優れている点・劣っている点」を明確にする。</p></div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-b"><h4>KSFを導く</h4><p>「顧客が求めていて・競合がまだできていないことを・自社が得意とする」交差点がKSF。例：「地域密着 × デジタル対応 × 高齢者向け配達」。</p></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c5">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 05</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>実例：M&A候補企業を3C分析する</h2></div>
+    <p style="font-size:13px;color:#888;margin-bottom:14px;"><strong>シナリオ：</strong>当社が地方スーパー「エコマート」を買収するかどうかを判断するための3C分析。</p>
+    <div class="ex-box">
+      <h4>エコマート（地方スーパー）の3C分析</h4>
+      <div class="ex-row"><span class="ex-lbl el-c1">C1<br>顧客</span><div class="ex-content">酒田市の住民（60代以上が中心）。近所で新鮮な食材を手軽に買いたい。高齢化進行で宅配・近所スーパーへのニーズが増している。</div></div>
+      <div class="ex-row"><span class="ex-lbl el-c2">C2<br>競合</span><div class="ex-content">①ドラッグストア（食品強化中）②ホームセンター内の食品売場③市外の大型イオン。いずれも価格競争力が強い。地域密着の対面サービスが差別化ポイント。</div></div>
+      <div class="ex-row"><span class="ex-lbl el-c3">C3<br>自社</span><div class="ex-content">地域住民との長年の信頼関係・地元農家との仕入れ関係が強み。IT・EC活用が弱い。高齢者には「顔なじみの店」として絶大な信頼がある。</div></div>
+    </div>
+    <div class="ksf-box">
+      <strong>→ KSF（勝ち筋）：</strong>
+      <p>「地域住民の信頼関係（C3強み）」×「高齢者の宅配ニーズ（C1機会）」×「競合が未対応の配達サービス（C2弱点）」= 産直食材の地域密着型EC宅配サービスが差別化戦略になる。</p>
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>中小企業庁「中小企業・小規模事業者の経営環境に関する調査」（各年版）― 地方スーパーの市場動向データ</cite></li>
+          <li><cite>経済産業省「2023年版中小企業白書」― 事業承継・M&A市場の規模と動向</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c-ksf">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 06</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>KSFの優先度付けと3C→SWOT連携</h2><p>複数のKSFが出たとき「どれを最優先するか」の決め方</p></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>KSF（勝ち筋）は1つとは限らない。優先度を付けなければ戦略にならない</strong><br>
+      3C分析で「差別化の方向性」が見えたら、次はKSFに優先順位を付ける。全部を同時にやろうとすると全部中途半端になる。「今、最も重要な1つ」に資源を集中することが競争優位の源泉。</p>
+    </div>
+    <div style="border:1px solid #E8E5E0;border-radius:2px;padding:18px;background:#fff;margin:14px 0;">
+      <p style="font-size:11px;font-weight:700;letter-spacing:1px;color:#BBBBBB;text-transform:uppercase;margin-bottom:12px;">KSF優先度付けの判断軸（2軸マトリクス）</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:2px;padding:14px;">
+          <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;color:#15803D;">① 自社の強みと合致するか</h4>
+          <p style="font-size:11px;color:#555;line-height:1.7;">すでに持っているリソース・能力で実現できるKSFは実行スピードが速い。「強みを活かす方向」のKSFを最優先にする。</p>
+        </div>
+        <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:2px;padding:14px;">
+          <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;color:#1E40AF;">② 市場インパクトが大きいか</h4>
+          <p style="font-size:11px;color:#555;line-height:1.7;">実現した場合に「顧客への価値」と「競合との差別化」の両方に大きく貢献するKSFを優先する。</p>
+        </div>
+        <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:2px;padding:14px;">
+          <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;color:#92400E;">③ 競合が模倣しにくいか</h4>
+          <p style="font-size:11px;color:#555;line-height:1.7;">競合がすぐに真似できるKSFは持続的な優位にならない。「参入障壁・スイッチングコスト・独自技術」が伴うKSFを選ぶ。</p>
+        </div>
+        <div style="background:#FAF5FF;border:1px solid #D8B4FE;border-radius:2px;padding:14px;">
+          <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;color:#7C3AED;">④ 短期に成果が出るか</h4>
+          <p style="font-size:11px;color:#555;line-height:1.7;">PMIでは「クイックウィン（早期成果）」が組織の信頼とモメンタムを生む。3〜6ヶ月以内に成果が見えるKSFも優先度が上がる。</p>
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #E8E5E0;border-radius:2px;padding:16px;background:#FAFAF8;margin:14px 0;">
+      <p style="font-size:11px;font-weight:700;letter-spacing:1px;color:#BBBBBB;text-transform:uppercase;margin-bottom:10px;">3C → SWOT へのつなぎ方</p>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div style="background:#fff;border-radius:2px;padding:10px 14px;border-left:3px solid #1A1A1A;">
+          <p style="font-size:12px;"><strong>Customer（顧客ニーズ・市場動向）</strong>→ SWOTの「機会（O）・脅威（T）」の外部環境として活用</p>
+        </div>
+        <div style="background:#fff;border-radius:2px;padding:10px 14px;border-left:3px solid #1A1A1A;">
+          <p style="font-size:12px;"><strong>Competitor（競合の強み・弱み）</strong>→ 自社の相対的な「強み（S）・弱み（W）」の評価基準になる</p>
+        </div>
+        <div style="background:#fff;border-radius:2px;padding:10px 14px;border-left:3px solid #1A1A1A;">
+          <p style="font-size:12px;"><strong>Company（自社の現状）</strong>→ SWOTの「強み（S）・弱み（W）」の内部環境として整理</p>
+        </div>
+        <div style="background:#EFF6FF;border-radius:2px;padding:10px 14px;border-left:3px solid #2563EB;">
+          <p style="font-size:12px;"><strong>実務の流れ：</strong>3Cでデータを集める → SWOTで整理する → クロスSWOTで戦略を立てる → KSFが戦略の根拠になる</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="chapter" id="c6">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 06</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>まとめ</h2></div>
+    <div class="summary">
+      <div class="summary-label">Summary</div>
+      <h3>3C分析 ― 3行まとめ</h3>
+      <ul>
+        <li>Customer・Competitor・Companyの3軸で市場を分析する</li>
+        <li>分析の目的はKSF（成功要因）の特定。「誰が・何を求めていて・自社がどう差別化するか」</li>
+        <li>M&Aでは買収候補企業の市場ポジション評価にそのまま使える</li>
+      </ul>
+    </div>
+    <div style="height:20px;"></div>
+    <div class="cta">
+      <h3>3C分析を実務で使えるようになろう</h3>
+      <p>要素識別・事例分析・KSF導出・PMI文脈での応用まで20問。</p>
+      <a href="練習_3C分析.html">3C分析 練習問題を解く（20問）→</a>
+    </div>
+  </div>
+</div>
+
+<nav class="page-nav">
+  <a href="学習_PDCA.html">← PDCA</a>
+  <a href="学習_SWOT分析.html">次：SWOT分析 →</a>
+</nav>
+</body>
+</html>

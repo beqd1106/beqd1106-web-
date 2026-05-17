@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PEST分析 練習問題 20問｜フレームワーク練習</title>
+<style>
+:root{--primary:#7c3aed;--accent:#e85d26;--accent2:#2ca8c2;--green:#16a34a;--light:#f4f7fb;--dark:#0f1f30;--gray:#6b7a8d;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--light);color:var(--dark);line-height:1.7;}
+.hero{background:linear-gradient(135deg,#0f1f30,#5b21b6,#7c3aed);color:white;padding:40px 20px 32px;text-align:center;}
+.hero h1{font-size:clamp(20px,4vw,30px);font-weight:800;margin-bottom:8px;}
+.hero p{font-size:13px;opacity:.8;margin-bottom:16px;}
+.progress-wrap{background:rgba(255,255,255,.15);border-radius:20px;height:10px;max-width:400px;margin:0 auto 8px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,#c4b5fd,#2ca8c2);border-radius:20px;transition:width .4s;width:0%;}
+.progress-text{font-size:12px;opacity:.8;}
+.stats-row{display:flex;gap:16px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:8px 16px;text-align:center;}
+.stat .v{font-size:20px;font-weight:800;color:#fde68a;line-height:1;}
+.stat .l{font-size:10px;opacity:.75;}
+.container{max-width:800px;margin:0 auto;padding:20px;}
+.lecture{background:white;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.08);border-left:5px solid var(--primary);}
+.lecture h2{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:10px;}
+.lecture p{font-size:13px;color:var(--gray);margin-bottom:8px;}
+.pest-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;}
+@media(max-width:480px){.pest-grid{grid-template-columns:1fr;}}
+.pest-box{border-radius:12px;padding:14px 16px;color:white;}
+.pp{background:#1d4ed8;}
+.pe{background:#16a34a;}
+.ps{background:#d97706;}
+.pt{background:#7c3aed;}
+.pest-box h4{font-size:13px;font-weight:800;margin-bottom:4px;}
+.pest-box ul{padding-left:14px;font-size:11px;opacity:.9;}
+.warn{background:#fff8f0;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 14px;font-size:12px;color:#92400e;margin-top:10px;}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2px;color:white;display:inline-block;padding:4px 14px;border-radius:20px;margin:16px 0 12px;}
+.sl-basic{background:#16a34a;}
+.sl-mid{background:#0369a1;}
+.sl-adv{background:#7c3aed;}
+.qcard{background:white;border-radius:14px;padding:20px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);}
+.qtop{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.qnum{background:var(--primary);color:white;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;}
+.qtype{font-size:11px;color:var(--gray);font-weight:600;}
+.qlv{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.qlv.basic{background:#dcfce7;color:#166534;}
+.qlv.mid{background:#dbeafe;color:#1e40af;}
+.qlv.adv{background:#fce7f3;color:#9d174d;}
+.qtext{font-size:14px;font-weight:600;margin-bottom:10px;line-height:1.6;}
+.qsub{font-size:12px;color:var(--gray);margin-bottom:10px;line-height:1.7;}
+.choices{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.ch{text-align:left;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;background:white;cursor:pointer;font-size:13px;font-family:inherit;transition:all .2s;}
+.ch:hover{border-color:var(--accent2);background:#f0f9ff;}
+.ch.correct{border-color:#16a34a;background:#f0fdf4;color:#166534;font-weight:700;}
+.ch.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626;}
+.ch:disabled{cursor:default;}
+.ans{display:none;margin-top:12px;}
+.ans-inner{background:linear-gradient(135deg,#faf5ff,#f0f9ff);border-radius:10px;padding:16px;border:1px solid #e9d5ff;}
+.ans-result{font-size:14px;font-weight:700;color:var(--primary);margin-bottom:8px;}
+.ans-exp{font-size:13px;color:var(--dark);margin-bottom:10px;line-height:1.6;}
+.tip{background:white;border-radius:8px;padding:10px 14px;font-size:12px;color:#0369a1;border-left:3px solid var(--accent2);}
+.tip strong{display:block;margin-bottom:3px;}
+.revbtn{background:var(--primary);color:white;border:none;border-radius:20px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:10px;}
+.revbtn:hover{background:#5b21b6;}
+.revbtn.revealed{background:var(--gray);}
+.score-board{background:white;border-radius:14px;padding:16px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:center;}
+.score-board h3{font-size:13px;color:var(--gray);margin-bottom:4px;}
+.score-board .score-val{font-size:40px;font-weight:900;color:var(--primary);}
+.score-board .score-max{font-size:18px;color:var(--gray);}
+.nav-bar{background:var(--dark);padding:14px 20px;text-align:center;margin-top:20px;}
+.nav-bar a{color:#a5f3fc;text-decoration:none;font-size:12px;font-weight:600;margin:0 10px;}
+.case-box{background:#faf5ff;border:1px solid #e9d5ff;border-radius:10px;padding:16px;font-size:13px;margin-bottom:12px;line-height:1.8;}
+.case-box h4{font-weight:700;color:#5b21b6;margin-bottom:8px;}
+.tag-p{background:#dbeafe;color:#1d4ed8;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;}
+.tag-e{background:#dcfce7;color:#166534;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;}
+.tag-s{background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;}
+.tag-t{background:#f3e8ff;color:#6d28d9;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .hero{padding:28px 14px 20px;}
+  .hero h1{font-size:clamp(18px,5vw,26px);}
+  .container{padding:12px;}
+  .qcard{padding:16px;border-radius:10px;}
+  .qtext{font-size:13px;}
+  .ch{font-size:12px;padding:10px 12px;}
+  .ans-inner{padding:14px;}
+  .ans-exp{font-size:12px;}
+  .tip{font-size:11px;}
+  .lecture{padding:16px;border-radius:10px;}
+  .lecture h2{font-size:14px;}
+  .lecture p,.lecture .warn{font-size:12px;}
+  .nav-bar{padding:12px 14px;}
+  .nav-bar a{font-size:11px;margin:0 6px;}
+  .stats-row{gap:10px;}
+  .stat{padding:6px 12px;}
+  .stat .v{font-size:18px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🌐 PEST分析 練習問題</h1>
+  <p>Political・Economic・Social・Technological — 外部環境を4軸で読む力を鍛える</p>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-text" id="progressText">0 / 20 問 回答済み</div>
+  <div class="stats-row">
+    <div class="stat"><div class="v">20</div><div class="l">問</div></div>
+    <div class="stat"><div class="v">50</div><div class="l">分目安</div></div>
+    <div class="stat"><div class="v" id="scoreDisp">0</div><div class="l">正解（選択問題）</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="lecture">
+  <h2>📖 PEST分析とは？（4分で読む）</h2>
+  <p>PEST分析は企業の外部環境を4つのカテゴリで分析するフレームワーク。M&Aで買収対象企業の業界を評価したり、新規事業の市場環境を分析する際に使う。</p>
+  <div class="pest-grid">
+    <div class="pest-box pp">
+      <h4>P ― Political（政治）</h4>
+      <ul>
+        <li>法規制・規制緩和</li>
+        <li>税制・補助金制度</li>
+        <li>政権・政策方針</li>
+        <li>事業承継税制など</li>
+      </ul>
+    </div>
+    <div class="pest-box pe">
+      <h4>E ― Economic（経済）</h4>
+      <ul>
+        <li>GDP・景気動向</li>
+        <li>金利・為替・物価</li>
+        <li>業界の市場規模推移</li>
+        <li>消費動向・購買力</li>
+      </ul>
+    </div>
+    <div class="pest-box ps">
+      <h4>S ― Social（社会）</h4>
+      <ul>
+        <li>人口動態・少子高齢化</li>
+        <li>ライフスタイルの変化</li>
+        <li>労働力・後継者不足</li>
+        <li>消費者価値観の変化</li>
+      </ul>
+    </div>
+    <div class="pest-box pt">
+      <h4>T ― Technological（技術）</h4>
+      <ul>
+        <li>DX・AI・クラウド普及</li>
+        <li>新技術の登場・破壊的革新</li>
+        <li>特許・知的財産</li>
+        <li>SaaSツールの普及</li>
+      </ul>
+    </div>
+  </div>
+  <div class="warn">⚠️ M&A文脈でのPEST：買収対象企業の業界のPEST要因をDDで分析することで、「この業界は今後成長するか・リスクは何か」を判断できる。事業承継M&Aでは特にSocial（後継者不足・高齢化）とTechnological（DX対応遅れ）が重要な論点になる。</div>
+</div>
+
+<div class="score-board">
+  <h3>選択問題スコア（Q8〜Q14）</h3>
+  <span class="score-val" id="scoreVal">0</span><span class="score-max"> / 7点</span>
+</div>
+
+<!-- SECTION A: 基礎 -->
+<div class="section-label sl-basic">SECTION A ― 基礎・分類（Q1〜Q7）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q1</span><span class="qtype">分類</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">以下の要因をP・E・S・Tのいずれかに分類せよ。<br>①中小企業の事業承継促進のための税制優遇措置<br>②日銀の金利上昇による中小企業の借入コスト増加<br>③日本の65歳以上人口が29%を超えた（2023年）<br>④ChatGPTなどの生成AIが業務効率化に活用されている</p>
+  <button class="revbtn" onclick="revealAns('a1',this)">答えを見る ▼</button>
+  <div class="ans" id="a1">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答</div>
+      <div class="ans-exp">① <span class="tag-p">P（政治）</span> 税制優遇は政府の政策・法制度<br>② <span class="tag-e">E（経済）</span> 金利は経済環境要因<br>③ <span class="tag-s">S（社会）</span> 人口動態は社会環境要因<br>④ <span class="tag-t">T（技術）</span> 生成AI普及は技術環境要因</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q2</span><span class="qtype">分類</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">事業承継M&A市場を分析する際のPEST要因を各カテゴリ1つずつ挙げよ。</p>
+  <button class="revbtn" onclick="revealAns('a2',this)">答えを見る ▼</button>
+  <div class="ans" id="a2">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><span class="tag-p">P</span> 中小企業庁の「事業承継5ヶ年計画」・事業承継税制（自社株猶予制度）<br><span class="tag-e">E</span> 後継者不在企業の約127万社が廃業リスク（経済損失22兆円・失業650万人の推計）<br><span class="tag-s">S</span> 経営者の高齢化（平均年齢62歳超）・若年層の起業より就職志向<br><span class="tag-t">T</span> M&Aマッチングプラットフォームの普及（バトンズ・M&A総合研究所など）・AIによるDD効率化</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q3</span><span class="qtype">判定</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">「競合他社が新製品を出した」という情報はPEST分析に含めるべきか？理由も述べよ。</p>
+  <button class="revbtn" onclick="revealAns('a3',this)">答えを見る ▼</button>
+  <div class="ans" id="a3">
+    <div class="ans-inner">
+      <div class="ans-result">❌ 含めない（3C分析またはポーターの5フォースで扱う）</div>
+      <div class="ans-exp">PESTは「マクロ（外部環境）」の分析であり、企業がコントロールできない要因を扱う。競合他社の動向は「ミクロ（業界内）」の話であり、3C分析のCompetitorや5フォースの「競合の脅威」で分析する。PEST→3C/5フォースの順で外部分析を行うのが正しい順序。</div>
+      <div class="tip"><strong>フレームワークの使い分け：</strong>PEST（マクロ外部）→ 5フォース（ミクロ外部）→ 3C（市場・競合・自社）→ SWOT（総合）の順が基本。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q4</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">PESTのTechnologicalが「機会」になる事例と「脅威」になる事例をそれぞれ1つ挙げよ。（業界は問わない）</p>
+  <button class="revbtn" onclick="revealAns('a4',this)">答えを見る ▼</button>
+  <div class="ans" id="a4">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>機会（Opportunity）：</strong>生成AIの普及により、議事録作成・資料作成・顧客対応の自動化が可能になり、コンサル業務の効率が大幅に上がる。少人数でも高品質なサービスが提供できる。<br><br><strong>脅威（Threat）：</strong>AI・クラウド会計ツールの普及により、従来のルーティン財務業務（記帳・帳票作成）は自動化され、それだけを専門とする中小企業の経理担当者やコンサルの仕事が代替されるリスク。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q5</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">PEST分析はSWOT分析とどのように連携して使うか説明せよ。</p>
+  <button class="revbtn" onclick="revealAns('a5',this)">答えを見る ▼</button>
+  <div class="ans" id="a5">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp">PESTで外部環境を整理したうえで、その要因をSWOTの「O（機会）」と「T（脅威）」に振り分ける。SWOTのO/Tはマクロ環境から来るものがほとんどのため、PEST→SWOTの順で分析すると抜けが減る。<br>例：PEST「高齢化・後継者不足」→ SWOT「O：事業承継M&A市場の拡大」として整理。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q6</span><span class="qtype">分類</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">IT業界（SaaS企業）のPEST分析において、各要因の具体例を1つずつ挙げよ。</p>
+  <button class="revbtn" onclick="revealAns('a6',this)">答えを見る ▼</button>
+  <div class="ans" id="a6">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><span class="tag-p">P</span> 個人情報保護法・サイバーセキュリティ規制の強化・DX推進政策<br><span class="tag-e">E</span> IT投資予算の拡大傾向・スタートアップ向け融資拡充<br><span class="tag-s">S</span> リモートワーク定着によるクラウドツール需要増・IT人材不足<br><span class="tag-t">T</span> 生成AI・LLMの業務統合・API経済の発展・ノーコードツールの普及</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q7</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">PESTをPESTLE（またはPESTEL）に拡張する場合、追加される2つの要因（LとE）は何か？またM&A文脈でどう使われるか説明せよ。</p>
+  <button class="revbtn" onclick="revealAns('a7',this)">答えを見る ▼</button>
+  <div class="ans" id="a7">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答</div>
+      <div class="ans-exp"><strong>L（Legal・法律）</strong>：規制・法律・コンプライアンスを独立して分析。M&Aでは「独占禁止法の審査」「業界固有の許認可（医療・金融など）」が論点になる。Pとは区別してより詳細に検討する場合に使う。<br><br><strong>E（Environmental・環境）</strong>：ESG・気候変動・環境規制。M&A後のESGリスク（環境負荷の高い工場を買収した場合のリピュテーションリスク）などを評価する際に追加される。</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION B: 選択問題 -->
+<div class="section-label sl-mid">SECTION B ― 選択問題（Q8〜Q14）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q8</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">M&Aの対象企業選定（スクリーニング）においてPEST分析を使う主な目的はどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'b')">A. 対象企業の財務状況を詳細に評価するため</button>
+    <button class="ch" onclick="checkAns(this,'b')" data-correct="true">B. 対象企業が属する業界の将来性と外部リスクを評価するため</button>
+    <button class="ch" onclick="checkAns(this,'b')">C. 対象企業の競合他社の動向を把握するため</button>
+    <button class="ch" onclick="checkAns(this,'b')">D. 買収価格の算定（バリュエーション）を行うため</button>
+  </div>
+  <div class="ans" id="ab8">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <div class="ans-exp">PEST分析はマクロ外部環境の分析。「この業界は今後規制で縮小するか」「人口動態で市場が伸びるか」などを評価するために使う。財務評価はDD、競合分析は3C/5フォース、バリュエーションはDCF法。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q9</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">日本の介護・福祉業界をM&Aで買収検討するとき、PEST分析のどの要因が最も「機会」として働くか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'c')">A. P（政治）：規制緩和による新規参入のしやすさ</button>
+    <button class="ch" onclick="checkAns(this,'c')">B. E（経済）：低金利による設備投資の容易さ</button>
+    <button class="ch" onclick="checkAns(this,'c')" data-correct="true">C. S（社会）：高齢化による介護需要の持続的拡大</button>
+    <button class="ch" onclick="checkAns(this,'c')">D. T（技術）：介護ロボットの普及による省人化</button>
+  </div>
+  <div class="ans" id="ac9">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C</div>
+      <div class="ans-exp">日本では2040年に高齢者人口がピークを迎え、介護需要は長期的に拡大が確実。これがこの業界の最大の「機会」。T（介護ロボット）は機会にもなるが、まだ普及途上。P・Eは業界に有利な要因だが、Sが最も強力かつ確実な成長ドライバー。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q10</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">PEST分析の結果をSWOT分析に組み込む際、正しい対応関係はどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'d')">A. PESTの全要因 → SWOT の S（強み）と W（弱み）に振り分ける</button>
+    <button class="ch" onclick="checkAns(this,'d')">B. PESTの全要因 → SWOT の全4象限に均等に振り分ける</button>
+    <button class="ch" onclick="checkAns(this,'d')" data-correct="true">C. PESTの全要因 → SWOT の O（機会）と T（脅威）に振り分ける</button>
+    <button class="ch" onclick="checkAns(this,'d')">D. PESTはSWOTとは独立したフレームワークで連携しない</button>
+  </div>
+  <div class="ans" id="ad10">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C</div>
+      <div class="ans-exp">PESTは外部環境の分析なので、SWOTの外部要因である「O（機会）」と「T（脅威）」に対応する。S（強み）とW（弱み）は内部環境であり、3C分析のCompany分析や自社評価から来る。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q11</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">食品業界の中小メーカーを事業承継M&Aで買収する際、PESTのうち最も「脅威」として検討すべき要因はどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'e')">A. P：食品安全法の強化</button>
+    <button class="ch" onclick="checkAns(this,'e')" data-correct="true">B. E：原材料費の高騰と円安による輸入コスト上昇</button>
+    <button class="ch" onclick="checkAns(this,'e')">C. S：健康志向の高まりによる食品需要の変化</button>
+    <button class="ch" onclick="checkAns(this,'e')">D. T：Eコマースの普及による販売チャネルの多様化</button>
+  </div>
+  <div class="ans" id="ae11">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <div class="ans-exp">2022年以降の急激な物価上昇・円安で食品業界の仕入コストは大幅に上昇。中小メーカーは価格転嫁が難しく、収益が圧迫される。A・C・Dも重要だが、即座に財務インパクトが大きい脅威としてBが最重要。PMIでのシナジーとしてスケールメリットによる調達改善が課題になる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q12</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">PEST分析を実施するうえで「誤り」はどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'f')">A. 同じ要因が「機会」にも「脅威」にもなりうる</button>
+    <button class="ch" onclick="checkAns(this,'f')">B. 分析は現在の環境だけでなく将来予測も含める</button>
+    <button class="ch" onclick="checkAns(this,'f')" data-correct="true">C. PEST要因は必ず4つすべてを均等に重視する必要がある</button>
+    <button class="ch" onclick="checkAns(this,'f')">D. 分析後は経営戦略や意思決定に繋げることが重要</button>
+  </div>
+  <div class="ans" id="af12">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C</div>
+      <div class="ans-exp">PEST分析は業界・企業・タイミングによって重要な要因が異なる。例えば医療業界ではPとLが最重要、テクノロジー企業ではTが最重要になることが多い。「4つ均等に重視しなければならない」というルールはなく、重要度を判断して優先度をつけることが実務では必要。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q13</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">建設業の中小企業をM&Aするとき、PESTのPolitical要因として最も重要なものはどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'g')">A. 建設業界における技術革新（BIMの普及）</button>
+    <button class="ch" onclick="checkAns(this,'g')">B. 建設労働者の高齢化と人手不足</button>
+    <button class="ch" onclick="checkAns(this,'g')" data-correct="true">C. 国土交通省の公共事業予算・インフラ老朽化対策政策</button>
+    <button class="ch" onclick="checkAns(this,'g')">D. 建材・鉄鋼価格の上昇</button>
+  </div>
+  <div class="ans" id="ag13">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C</div>
+      <div class="ans-exp">建設業の売上は公共事業予算に大きく依存する。政府のインフラ老朽化対策・防災投資・国土強靭化計画などの政策がPolitical要因として最重要。A→T（技術）、B→S（社会）、D→E（経済）に分類される。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q14</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">PMI（M&A後統合）においてPEST分析をどのタイミングで使うのが最も適切か？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'h')" data-correct="true">A. M&A検討段階（DD前のスクリーニング）と統合後の中長期戦略策定時</button>
+    <button class="ch" onclick="checkAns(this,'h')">B. クロージング（契約締結）直後の組織統合計画の立案時のみ</button>
+    <button class="ch" onclick="checkAns(this,'h')">C. PMIの100日プランで毎週使う</button>
+    <button class="ch" onclick="checkAns(this,'h')">D. 財務DDの後、バリュエーションの最終確認時のみ</button>
+  </div>
+  <div class="ans" id="ah14">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：A</div>
+      <div class="ans-exp">PEST分析は「中長期の外部環境評価」ツール。①DD前のスクリーニングで業界の将来性チェック、②統合後の中長期戦略（3〜5年計画）策定時に使うのが最適。100日プランは具体的なタスク管理なのでPDCAやガントチャートが主役。</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION C: 実践 -->
+<div class="section-label sl-adv">SECTION C ― 実践ケース（Q15〜Q20）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q15</span><span class="qtype">ケース</span><span class="qlv adv">実践</span></div>
+  <div class="case-box">
+    <h4>📋 シナリオ：地方印刷業者の事業承継M&A</h4>
+    当社は地方の印刷業者X社（従業員30名、売上3億円）の事業承継支援を検討している。X社の社長は70歳で後継者がいない。印刷業界はデジタル化の波にさらされているが、X社は地域の官公庁向け印刷に特化しており、安定した受注がある。
+  </div>
+  <p class="qtext">X社が属する「印刷業界」のPEST分析を行え。各要因で機会・脅威のどちらかも示すこと。</p>
+  <button class="revbtn" onclick="revealAns('ai15',this)">答えを見る ▼</button>
+  <div class="ans" id="ai15">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><span class="tag-p">P（政治）</span><br>・機会：官公庁向け印刷は行政文書の義務的需要で安定。マイナンバーカード普及も印刷物需要に繋がる。<br>・脅威：電子申請推進・行政DXにより将来的に印刷物が減少するリスク。<br><br><span class="tag-e">E（経済）</span><br>・脅威：用紙・インク原材料費の高騰。中小印刷業者は価格転嫁が困難で収益を圧迫。<br>・機会：M&A後のスケールメリットで調達コスト削減が可能。<br><br><span class="tag-s">S（社会）</span><br>・機会：後継者不在で廃業を検討する同業者が多く、統合・買収で市場シェア拡大できる。<br>・脅威：印刷業の技術職人の高齢化・人材確保難。<br><br><span class="tag-t">T（技術）</span><br>・脅威：WEB・PDF化によるチラシ・冊子需要の構造的減少。大手のデジタル印刷対応で競争激化。<br>・機会：ニアショア（地域密着）印刷は大手に取られにくいニッチ領域。デジタル印刷機導入でコスト削減余地あり。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q16</span><span class="qtype">分析</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">Q15のPEST分析の結果を活用して、このM&Aを「進めるべきか・止めるべきか」をPEST観点から判断し、その理由を3つ述べよ。</p>
+  <button class="revbtn" onclick="revealAns('aj16',this)">答えを見る ▼</button>
+  <div class="ans" id="aj16">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例（判断：条件付きで進める）</div>
+      <div class="ans-exp"><strong>根拠①（S・機会）：</strong>後継者不在による廃業リスクのある同業者が多く、X社買収後に更なる同業M&Aでシェア拡大ができる。地域の印刷業「集約プレイヤー」になれる。<br><strong>根拠②（P・安定性）：</strong>X社の官公庁向け特化モデルは行政DXが急激には進まないため5〜10年の売上安定が見込める。短期的な収益基盤として安全。<br><strong>根拠③（T・脅威への対処）：</strong>中長期的には紙媒体需要の縮小が不可避のため、買収後にデジタル印刷・WEBコンテンツ制作への事業転換を計画する必要がある。転換投資を込みで試算してからGO判断すべき。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q17</span><span class="qtype">比較</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">PEST分析と3C分析の違いを「分析範囲」「使うタイミング」「アウトプット」の3点で比較せよ。</p>
+  <button class="revbtn" onclick="revealAns('ak17',this)">答えを見る ▼</button>
+  <div class="ans" id="ak17">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><table style="width:100%;font-size:12px;border-collapse:collapse;"><tr style="background:#f3e8ff;"><th style="padding:6px;text-align:left;">項目</th><th style="padding:6px;">PEST</th><th style="padding:6px;">3C</th></tr><tr><td style="padding:6px;border-top:1px solid #e9d5ff;"><strong>分析範囲</strong></td><td style="padding:6px;border-top:1px solid #e9d5ff;">マクロ環境（社会全体）</td><td style="padding:6px;border-top:1px solid #e9d5ff;">ミクロ環境（市場・業界内）</td></tr><tr><td style="padding:6px;border-top:1px solid #e9d5ff;"><strong>使うタイミング</strong></td><td style="padding:6px;border-top:1px solid #e9d5ff;">中長期戦略・市場参入判断</td><td style="padding:6px;border-top:1px solid #e9d5ff;">事業計画・提案書の現状分析</td></tr><tr><td style="padding:6px;border-top:1px solid #e9d5ff;"><strong>アウトプット</strong></td><td style="padding:6px;border-top:1px solid #e9d5ff;">業界の機会・脅威の特定</td><td style="padding:6px;border-top:1px solid #e9d5ff;">KSF（成功要因）の特定</td></tr></table></div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q18</span><span class="qtype">実務</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">当社の「PMI Manager（SaaS）」のビジネス環境をPEST分析せよ。各要因で機会を中心に述べよ。</p>
+  <button class="revbtn" onclick="revealAns('al18',this)">答えを見る ▼</button>
+  <div class="ans" id="al18">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><span class="tag-p">P</span> 中小企業庁の事業承継推進・M&A促進政策（事業承継5ヶ年計画）がPMI需要を後押し。補助金でPMI支援コストを賄う企業も増加中。<br><br><span class="tag-e">E</span> 事業承継M&A市場は年間3万件超の成約で拡大中。後継者不在企業127万社という潜在需要。景気停滞で中小企業の廃業よりM&Aを選ぶ経営者が増加。<br><br><span class="tag-s">S</span> 経営者高齢化（平均62歳超）・団塊世代の大量引退でPMI需要は今後10年以上確実に増加。<br><br><span class="tag-t">T</span> SaaS普及でクラウドソフトの導入ハードルが下がった。Claude APIなどの生成AIでPMIの100日プラン自動生成・進捗可視化・リスク検知が実現可能。競合SaaSがまだ少ないブルーオーシャン。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q19</span><span class="qtype">総合</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">PEST分析を実施するときの落とし穴（よくある失敗パターン）を3つ挙げ、それぞれの対策を述べよ。</p>
+  <button class="revbtn" onclick="revealAns('am19',this)">答えを見る ▼</button>
+  <div class="ans" id="am19">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>①羅列だけで「だから何？」がない：</strong>PEST要因を列挙するだけで、それが機会か脅威かを判断しない。→ 各要因に必ず「これは機会/脅威であり、戦略上の含意は○○」を付け加える。<br><br><strong>②現在の環境だけを見て将来を見ない：</strong>現在の規制・市場を分析するだけで、今後3〜5年の変化を予測しない。→ 分析に「将来の見通し」（2030年頃はどうなるか）を加える。<br><br><strong>③ミクロ要因をPESTに混入させる：</strong>競合の新製品、自社の強みなどをPESTに入れてしまう。→ PEST（マクロ）と3C/SWOT（ミクロ・内部）の境界線を常に意識する。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q20</span><span class="qtype">総合</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">【最終問題】あなたは当社の営業として、「物流業の中小企業X社（運送会社）を買収してPMIを支援しませんか」という提案をするとした。<br>提案書のPEST分析スライドに書くべき内容を各要因1〜2点でまとめよ。</p>
+  <button class="revbtn" onclick="revealAns('an20',this)">答えを見る ▼</button>
+  <div class="ans" id="an20">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><span class="tag-p">P（政治）</span><br>・「2024年問題」：トラックドライバーの時間外労働規制強化→中小運送会社の人手不足・収益圧迫が深刻化→廃業・売却案件増加が見込まれる<br>・燃料補助金政策の延長・縮小リスク<br><br><span class="tag-e">E（経済）</span><br>・EC（ネット通販）の拡大で宅配・BtoB物流の需要は底堅い<br>・燃油費高騰・軽油サーチャージが収益圧迫<br><br><span class="tag-s">S（社会）</span><br>・ドライバーの高齢化・若者の職業人気低下で採用難<br>・地方の物流網維持は社会インフラとして重要→M&Aで守ることの社会的意義が大きい<br><br><span class="tag-t">T（技術）</span><br>・AI配送ルート最適化・自動運転技術でコスト削減可能性<br>・デジタル運行管理システム（ERP）の導入でDX化による競争力向上</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div class="nav-bar">
+  <a href="フレームワーク練習問題_ハブ.html">← ハブに戻る</a>
+  <a href="練習_バリューチェーン.html">次：バリューチェーン →</a>
+</div>
+
+<script>
+let answered=0,score=0;
+const total=20;
+function updateProgress(){
+  document.getElementById('progressBar').style.width=(answered/total*100)+'%';
+  document.getElementById('progressText').textContent=answered+' / '+total+' 問 回答済み';
+  document.getElementById('scoreDisp').textContent=score;
+}
+function revealAns(id,btn){
+  document.getElementById(id).style.display='block';
+  btn.textContent='▲ 閉じる';
+  btn.classList.toggle('revealed');
+  if(!btn.dataset.counted){btn.dataset.counted=true;answered++;updateProgress();}
+}
+function checkAns(btn,key){
+  const choices=btn.parentElement.querySelectorAll('.ch');
+  choices.forEach(c=>{c.disabled=true;});
+  const ansDiv=btn.closest('.qcard').querySelector('.ans');
+  ansDiv.style.display='block';
+  if(btn.getAttribute('data-correct')==='true'){
+    btn.classList.add('correct');score++;
+  } else {
+    btn.classList.add('wrong');
+    choices.forEach(c=>{if(c.getAttribute('data-correct')==='true')c.classList.add('correct');});
+  }
+  document.getElementById('scoreVal').textContent=score;
+  answered++;updateProgress();
+}
+</script>
+</body>
+</html>

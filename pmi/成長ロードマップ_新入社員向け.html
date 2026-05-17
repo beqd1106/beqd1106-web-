@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新入社員 成長ロードマップ</title>
+<style>
+  :root {
+    --primary: #1a3a5c;
+    --accent: #e85d26;
+    --accent2: #2ca8c2;
+    --green: #16a34a;
+    --purple: #7c3aed;
+    --gold: #d97706;
+    --light: #f4f7fb;
+    --dark: #0f1f30;
+    --gray: #6b7a8d;
+    --card-bg: #ffffff;
+    --phase1: #16a34a;
+    --phase2: #2ca8c2;
+    --phase3: #7c3aed;
+    --phase4: #e85d26;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+    background: var(--light);
+    color: var(--dark);
+    line-height: 1.7;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: linear-gradient(135deg, #0f1f30 0%, #1a3a5c 60%, #7c3aed 100%);
+    color: white;
+    padding: 56px 24px 44px;
+    text-align: center;
+  }
+  .hero .tag {
+    display: inline-block; background: var(--accent); color: white;
+    font-size: 11px; font-weight: bold; letter-spacing: 2px;
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 14px;
+  }
+  .hero h1 { font-size: clamp(20px, 4.5vw, 34px); font-weight: 800; margin-bottom: 10px; line-height: 1.3; }
+  .hero h1 span { color: #a5f3fc; }
+  .hero .subtitle { font-size: 14px; opacity: 0.75; margin-bottom: 24px; }
+  .profile-chip {
+    display: inline-flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+    margin-bottom: 24px;
+  }
+  .chip {
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px; padding: 5px 14px; font-size: 13px;
+  }
+  .chip.good { background: rgba(22,163,74,0.3); border-color: #86efac; }
+  .chip.new  { background: rgba(232,93,38,0.3); border-color: #fdba74; }
+  .hero-note {
+    background: rgba(255,255,255,0.1); border-radius: 12px; padding: 14px 20px;
+    font-size: 13px; max-width: 640px; margin: 0 auto; text-align: left; line-height: 1.8;
+  }
+  .hero-note strong { color: #fde68a; }
+
+  /* ===== STICKY NAV ===== */
+  .sticky-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--primary); border-bottom: 2px solid var(--accent2);
+    overflow-x: auto; white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .sticky-nav ul { display: inline-flex; list-style: none; padding: 0 12px; }
+  .sticky-nav li a {
+    display: block; color: rgba(255,255,255,0.7); font-size: 12px; font-weight: 600;
+    padding: 12px 14px; text-decoration: none; letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+  .sticky-nav li a:hover { color: white; }
+
+  /* ===== LAYOUT ===== */
+  .container { max-width: 980px; margin: 0 auto; padding: 0 20px; }
+  section { padding: 52px 20px; }
+  section:nth-child(even) { background: white; }
+
+  /* ===== SECTION HEADER ===== */
+  .sec-head { text-align: center; margin-bottom: 36px; }
+  .sec-head .num {
+    display: inline-block; background: var(--accent); color: white;
+    font-size: 11px; font-weight: bold; padding: 3px 10px; border-radius: 20px;
+    margin-bottom: 8px; letter-spacing: 1px;
+  }
+  .sec-head h2 { font-size: clamp(18px, 3.5vw, 26px); color: var(--primary); }
+  .sec-head p { color: var(--gray); font-size: 13px; margin-top: 6px; }
+
+  /* ===== TRACK CARDS ===== */
+  .track-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 900px; margin: 0 auto; }
+  @media(max-width:640px) { .track-grid { grid-template-columns: 1fr; } }
+  .track-card { border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+  .track-card .tc-head { padding: 20px 22px 14px; color: white; }
+  .tc-it { background: linear-gradient(135deg, #1a3a5c, #2ca8c2); }
+  .tc-pmi { background: linear-gradient(135deg, #7c3aed, #e85d26); }
+  .track-card .tc-head h3 { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .track-card .tc-head p { font-size: 12px; opacity: 0.85; }
+  .track-card .tc-body { background: white; padding: 18px 22px; }
+  .skill-tag {
+    display: inline-block; margin: 3px 3px 3px 0; padding: 3px 10px;
+    border-radius: 20px; font-size: 11px; font-weight: 600;
+  }
+  .tag-it  { background: #e0f2fe; color: #0369a1; }
+  .tag-pmi { background: #f3e8ff; color: #6d28d9; }
+  .tag-ai  { background: #fef3c7; color: #92400e; }
+  .tag-biz { background: #dcfce7; color: #166534; }
+  .track-card .tc-body ul { padding-left: 16px; font-size: 13px; color: var(--gray); margin-top: 10px; }
+  .track-card .tc-body ul li { margin-bottom: 4px; }
+
+  /* ===== MILESTONE TIMELINE ===== */
+  .milestone-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; max-width: 980px; margin: 0 auto; }
+  .ms-card {
+    border-radius: 14px; overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    background: white;
+  }
+  .ms-head {
+    padding: 14px 18px; color: white; display: flex; align-items: center; gap: 12px;
+  }
+  .ms-month {
+    min-width: 52px; height: 52px; border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 11px; line-height: 1.2; text-align: center; flex-shrink: 0;
+  }
+  .ms-month .mn { font-size: 20px; font-weight: 900; }
+  .ph1 { background: linear-gradient(135deg, #15803d, #16a34a); }
+  .ph2 { background: linear-gradient(135deg, #0369a1, #2ca8c2); }
+  .ph3 { background: linear-gradient(135deg, #6d28d9, #7c3aed); }
+  .ph4 { background: linear-gradient(135deg, #b45309, #e85d26); }
+  .ms-head-text h3 { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .ms-head-text p { font-size: 11px; opacity: 0.85; }
+  .ms-body { padding: 14px 16px; }
+  .ms-item {
+    display: flex; gap: 8px; margin-bottom: 8px; align-items: flex-start; font-size: 13px;
+  }
+  .ms-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .ms-item .label { font-size: 10px; font-weight: 700; color: var(--accent); display: block; }
+  .ms-goal {
+    background: #fffbeb; border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0; padding: 8px 12px;
+    font-size: 12px; color: #92400e; margin-top: 10px; font-weight: 600;
+  }
+
+  /* ===== CERT ROADMAP ===== */
+  .cert-path { max-width: 860px; margin: 0 auto; }
+  .cert-phase { margin-bottom: 28px; }
+  .cert-phase-label {
+    font-size: 12px; font-weight: 700; letter-spacing: 1px; color: white;
+    display: inline-block; padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
+  }
+  .cp1 { background: var(--phase1); }
+  .cp2 { background: var(--phase2); }
+  .cp3 { background: var(--phase3); }
+  .cp4 { background: var(--phase4); }
+  .cert-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .cert-card {
+    background: white; border-radius: 12px; padding: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    border-left: 4px solid var(--phase1);
+    position: relative;
+  }
+  .cert-card.c2 { border-left-color: var(--phase2); }
+  .cert-card.c3 { border-left-color: var(--phase3); }
+  .cert-card.c4 { border-left-color: var(--phase4); }
+  .cert-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .cert-card .c-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .c-badge {
+    font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px;
+  }
+  .cb-cost { background: #dcfce7; color: #166534; }
+  .cb-time { background: #dbeafe; color: #1e40af; }
+  .cb-when { background: #fef3c7; color: #92400e; }
+  .cb-req  { background: #fce7f3; color: #9d174d; }
+  .cert-card p { font-size: 12px; color: var(--gray); line-height: 1.6; }
+  .priority-star {
+    position: absolute; top: 10px; right: 12px;
+    font-size: 14px; color: var(--gold);
+  }
+
+  /* ===== SKILLS TABLE ===== */
+  .skills-matrix { max-width: 900px; margin: 0 auto; }
+  .sm-row {
+    display: grid; grid-template-columns: 180px 1fr; gap: 0;
+    margin-bottom: 10px; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  }
+  @media(max-width:540px) { .sm-row { grid-template-columns: 1fr; } }
+  .sm-label {
+    background: var(--primary); color: white; padding: 12px 16px;
+    font-size: 12px; font-weight: 700; display: flex; align-items: center;
+  }
+  .sm-content { background: white; padding: 12px 16px; font-size: 12px; color: var(--gray); }
+  .sm-content strong { color: var(--dark); }
+  .level-bar { display: flex; gap: 4px; margin-top: 4px; }
+  .lb { width: 20px; height: 6px; border-radius: 3px; }
+  .lb.fill { background: var(--accent2); }
+  .lb.empty { background: #e2e8f0; }
+
+  /* ===== BOOKS ===== */
+  .book-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; max-width: 960px; margin: 0 auto; }
+  .book-card {
+    background: white; border-radius: 12px; padding: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07); border-top: 3px solid var(--accent2);
+    display: flex; flex-direction: column;
+  }
+  .book-card.priority { border-top-color: var(--accent); }
+  .book-card .bk-tag { font-size: 10px; font-weight: 700; color: var(--accent2); margin-bottom: 6px; letter-spacing: 1px; }
+  .book-card.priority .bk-tag { color: var(--accent); }
+  .book-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; line-height: 1.4; }
+  .book-card p { font-size: 11px; color: var(--gray); flex: 1; }
+  .book-card .timing { font-size: 11px; color: var(--green); font-weight: 600; margin-top: 8px; }
+
+  /* ===== AI SECTION ===== */
+  .ai-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; max-width: 960px; margin: 0 auto; }
+  .ai-card {
+    background: linear-gradient(135deg, #0f1f30, #1e3a5f);
+    color: white; border-radius: 14px; padding: 20px 16px;
+  }
+  .ai-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: #a5f3fc; }
+  .ai-card ul { padding-left: 14px; font-size: 12px; color: rgba(255,255,255,0.8); }
+  .ai-card ul li { margin-bottom: 4px; }
+
+  /* ===== ROUTINE ===== */
+  .routine-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; max-width: 880px; margin: 0 auto; }
+  .routine-card {
+    background: white; border-radius: 12px; padding: 16px 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07); text-align: center;
+  }
+  .routine-card .day { font-size: 11px; font-weight: 700; color: var(--accent2); letter-spacing: 1px; margin-bottom: 6px; }
+  .routine-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: var(--primary); }
+  .routine-card p { font-size: 11px; color: var(--gray); }
+
+  /* ===== MINDSET ===== */
+  .mindset-wrap { max-width: 700px; margin: 0 auto; }
+  .mindset-item {
+    display: flex; gap: 16px; background: white; border-radius: 12px;
+    padding: 18px 20px; margin-bottom: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .mi-icon { font-size: 28px; flex-shrink: 0; }
+  .mi-body h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .mi-body p { font-size: 12px; color: var(--gray); }
+
+  /* ===== FRAMEWORK TABLE ===== */
+  .fw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; max-width: 900px; margin: 0 auto; }
+  .fw-card {
+    background: white; border-radius: 10px; padding: 14px 16px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  }
+  .fw-card .fw-level { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; display: inline-block; margin-bottom: 6px; }
+  .fw-basic   { background: #dcfce7; color: #166534; }
+  .fw-mid     { background: #dbeafe; color: #1e40af; }
+  .fw-adv     { background: #f3e8ff; color: #6d28d9; }
+  .fw-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .fw-card p { font-size: 11px; color: var(--gray); }
+
+  /* ===== HIGHLIGHT BOX ===== */
+  .highlight-box {
+    background: linear-gradient(135deg, #fff8f0, #fff0e0);
+    border-left: 4px solid var(--accent); border-radius: 0 12px 12px 0;
+    padding: 14px 18px; margin: 20px auto; max-width: 800px;
+    font-size: 13px;
+  }
+  .highlight-box strong { color: var(--accent); }
+
+  /* ===== BACK LINK ===== */
+  .back-bar {
+    background: var(--dark); padding: 16px 20px; text-align: center;
+  }
+  .back-bar a {
+    color: #a5f3fc; text-decoration: none; font-size: 13px; font-weight: 600;
+  }
+  .back-bar a:hover { text-decoration: underline; }
+
+  footer {
+    background: var(--dark); color: rgba(255,255,255,0.45);
+    text-align: center; padding: 24px; font-size: 11px;
+  }
+
+  /* ===== UTILITY ===== */
+  .tbl-wrap { overflow-x: auto; max-width: 960px; margin: 0 auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th { background: var(--primary); color: white; padding: 10px 12px; text-align: left; }
+  tbody tr:nth-child(even) { background: #f0f5fb; }
+  tbody td { padding: 9px 12px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+  .star { color: var(--accent); font-weight: bold; }
+  .text-center { text-align: center; }
+  .note { font-size: 11px; color: var(--gray); margin-top: 10px; text-align: center; max-width: 720px; margin-left: auto; margin-right: auto; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="tag">新入社員 成長ロードマップ 2026</div>
+  <h1>コンサル未経験から<br><span>PMIプラットフォームの担い手へ</span></h1>
+  <p class="subtitle">当社｜あなた専用の学習・行動計画</p>
+  <div class="profile-chip">
+    <span class="chip good">✅ AI活用スキル：あり</span>
+    <span class="chip good">✅ IT知識：あり</span>
+    <span class="chip new">🔰 コンサル業界：未経験</span>
+    <span class="chip new">🔰 M&A・PMI：未経験</span>
+    <span class="chip new">🔰 財務・法務：未経験</span>
+  </div>
+  <div class="hero-note">
+    <strong>あなたの最大の強み：</strong>AI活用スキルは当社の中核製品「PMI Manager」でそのまま武器になる。Claude APIを使いこなせる人材は社内で即戦力。コンサルの知識は<strong>1〜2年で体系的に習得可能</strong>。焦らず、順番通りに積み上げよう。
+  </div>
+</div>
+
+<!-- STICKY NAV -->
+<nav class="sticky-nav">
+  <ul>
+    <li><a href="#tracks">2つのトラック</a></li>
+    <li><a href="#milestones">月次マイルストーン</a></li>
+    <li><a href="#certs">資格ロードマップ</a></li>
+    <li><a href="#skills">スキルマップ</a></li>
+    <li><a href="#frameworks">フレームワーク</a></li>
+    <li><a href="#books">必読書</a></li>
+    <li><a href="#ai">AI活用ガイド</a></li>
+    <li><a href="#routine">週次ルーティン</a></li>
+    <li><a href="#mindset">マインドセット</a></li>
+  </ul>
+</nav>
+
+<!-- 1. 2つのキャリアトラック -->
+<section id="tracks">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">01 キャリアトラック</div>
+      <h2>あなたが目指す2つの専門性</h2>
+      <p>どちらも並行して習得するが、最初の1年は「ITコンサル基礎」を優先し、2年目以降に「PMIエージェント」へ深化させる</p>
+    </div>
+    <div class="track-grid">
+      <div class="track-card">
+        <div class="tc-head tc-it">
+          <h3>💻 ITコンサルタント</h3>
+          <p>業務改善・DX・SaaS活用を支援するコンサルタント</p>
+        </div>
+        <div class="tc-body">
+          <p style="font-size:12px;color:var(--gray);margin-bottom:8px;"><strong>習得すべきスキル</strong></p>
+          <span class="skill-tag tag-it">ロジカルシンキング</span>
+          <span class="skill-tag tag-it">業務フロー設計</span>
+          <span class="skill-tag tag-it">要件定義</span>
+          <span class="skill-tag tag-it">KPI設計</span>
+          <span class="skill-tag tag-it">データ分析</span>
+          <span class="skill-tag tag-it">スライド作成</span>
+          <span class="skill-tag tag-biz">財務3表読解</span>
+          <span class="skill-tag tag-biz">3C分析</span>
+          <span class="skill-tag tag-biz">SWOT分析</span>
+          <span class="skill-tag tag-ai">AIプロンプト設計</span>
+          <span class="skill-tag tag-ai">Claude API</span>
+          <ul>
+            <li>顧客の業務課題を構造化して可視化できる</li>
+            <li>改善案を論理的に組み立てて提案できる</li>
+            <li>PMI Managerの仕様検討に貢献できる</li>
+            <li>AIを使ったドキュメント自動化ができる</li>
+          </ul>
+        </div>
+      </div>
+      <div class="track-card">
+        <div class="tc-head tc-pmi">
+          <h3>🤝 PMIエージェント</h3>
+          <p>M&A後の統合プロセスを現場で推進する専門家</p>
+        </div>
+        <div class="tc-body">
+          <p style="font-size:12px;color:var(--gray);margin-bottom:8px;"><strong>習得すべきスキル</strong></p>
+          <span class="skill-tag tag-pmi">M&Aプロセス理解</span>
+          <span class="skill-tag tag-pmi">100日プラン設計</span>
+          <span class="skill-tag tag-pmi">シナジー分析</span>
+          <span class="skill-tag tag-pmi">DD基礎知識</span>
+          <span class="skill-tag tag-pmi">変革マネジメント</span>
+          <span class="skill-tag tag-biz">事業承継の法律基礎</span>
+          <span class="skill-tag tag-biz">中小企業財務</span>
+          <span class="skill-tag tag-biz">企業価値評価基礎</span>
+          <span class="skill-tag tag-ai">AI活用PMI支援</span>
+          <ul>
+            <li>買収後のDay1〜100を計画・実行できる</li>
+            <li>買収側・被買収側の橋渡しができる</li>
+            <li>シナジー目標を設定・追跡できる</li>
+            <li>組織融合・文化統合を促進できる</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="highlight-box">
+      <strong>当社でのポジション：</strong>入社直後は「ITコンサル基礎 + PMI Manager仕様検討」からスタート。6ヶ月後のプロダクトリリース（2026年9月）を節目に、実際のPMIコンサル案件にアサインされていく。AIスキルは即日から全業務で活かせる。
+    </div>
+  </div>
+</section>
+
+<!-- 2. 月次マイルストーン -->
+<section id="milestones">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">02 月次マイルストーン</div>
+      <h2>1ヶ月後・2ヶ月後・3ヶ月後…の目標</h2>
+      <p>各月の終わりに「達成チェック」できる具体的なゴールを設定</p>
+    </div>
+
+    <!-- Phase 1: 基礎固め -->
+    <div style="text-align:center;margin-bottom:16px;">
+      <span style="background:var(--phase1);color:white;font-size:11px;font-weight:700;padding:4px 16px;border-radius:20px;letter-spacing:1px;">PHASE 1 ― 基礎固め（1〜3ヶ月目）</span>
+    </div>
+    <div class="milestone-grid" style="margin-bottom:32px;">
+
+      <div class="ms-card">
+        <div class="ms-head ph1">
+          <div class="ms-month"><span class="mn">1</span>ヶ月目</div>
+          <div class="ms-head-text">
+            <h3>入社・全体像の把握</h3>
+            <p>5月〜6月上旬｜会社を丸ごと理解する</p>
+          </div>
+        </div>
+        <div class="ms-body">
+          <div class="ms-item"><span class="ms-icon">📖</span><div><span class="label">学習</span>事業戦略PPTを読み込み、自分の言葉でサービス構造を説明できるようにする</div></div>
+          <div class="ms-item"><span class="ms-icon">🔧</span><div><span class="label">実践</span>PMI Managerのβ版を実際に触り、UXの改善案を3つ出す</div></div>
+          <div class="ms-item"><span class="ms-icon">📚</span><div><span class="label">書籍</span>「ロジカルシンキング」（照屋華子）を読了</div></div>
+          <div class="ms-item"><span class="ms-icon">🎯</span><div><span class="label">資格</span>ITパスポート の申込・勉強開始（年中受験可能）</div></div>
+          <div class="ms-goal">月末チェック：会社のMission・3層サービス・PMI Manager機能を他者に説明できる</div>
+        </div>
+      </div>
+
+      <div class="ms-card">
+        <div class="ms-head ph1">
+          <div class="ms-month"><span class="mn">2</span>ヶ月目</div>
+          <div class="ms-head-text">
+            <h3>財務・コンサル基礎</h3>
+            <p>6月〜7月上旬｜数字と論理を身につける</p>
+          </div>
+        </div>
+        <div class="ms-body">
+          <div class="ms-item"><span class="ms-icon">💰</span><div><span class="label">財務</span>財務3表（BS/PL/CF）の読み方をマスター。中小企業の決算書を1社分読む</div></div>
+          <div class="ms-item"><span class="ms-icon">📊</span><div><span class="label">分析</span>3C分析・SWOT・MECEを使って身近な企業を分析する練習（週1回）</div></div>
+          <div class="ms-item"><span class="ms-icon">📋</span><div><span class="label">PMI</span>中小企業庁「中小PMIガイドライン」（無料PDF）を通読</div></div>
+          <div class="ms-item"><span class="ms-icon">🎯</span><div><span class="label">資格</span>ITパスポート 受験・合格を目指す（費用：¥7,500）</div></div>
+          <div class="ms-goal">月末チェック：PLを見てビジネスの健康状態をコメントできる。MECEでモレなく課題整理できる</div>
+        </div>
+      </div>
+
+      <div class="ms-card">
+        <div class="ms-head ph1">
+          <div class="ms-month"><span class="mn">3</span>ヶ月目</div>
+          <div class="ms-head-text">
+            <h3>M&A・PMIの基礎知識</h3>
+            <p>7月〜8月上旬｜業界知識を身につける</p>
+          </div>
+        </div>
+        <div class="ms-body">
+          <div class="ms-item"><span class="ms-icon">🤝</span><div><span class="label">M&A</span>M&Aの全体フロー（LOI→DD→クロージング→PMI）を理解。仲介会社の役割も把握</div></div>
+          <div class="ms-item"><span class="ms-icon">📝</span><div><span class="label">実践</span>架空企業を使って100日プランのドラフトを1本作成</div></div>
+          <div class="ms-item"><span class="ms-icon">🎯</span><div><span class="label">資格</span>事業承継・M&Aエキスパート検定 申込・勉強開始（費用：¥7,700）</div></div>
+          <div class="ms-item"><span class="ms-icon">🌐</span><div><span class="label">外部</span>JMAAの無料セミナー参加（東京・月次開催）</div></div>
+          <div class="ms-goal">月末チェック：M&A後の100日プランを自力で作成できる。事業承継の社会的意義を語れる</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 2: 実践参加 -->
+    <div style="text-align:center;margin-bottom:16px;">
+      <span style="background:var(--phase2);color:white;font-size:11px;font-weight:700;padding:4px 16px;border-radius:20px;letter-spacing:1px;">PHASE 2 ― 実践参加（4〜6ヶ月目）</span>
+    </div>
+    <div class="milestone-grid" style="margin-bottom:32px;">
+
+      <div class="ms-card">
+        <div class="ms-head ph2">
+          <div class="ms-month"><span class="mn">4</span>ヶ月目</div>
+          <div class="ms-head-text">
+            <h3>プロダクト仕様参加</h3>
+            <p>8月｜PMI Manager開発の当事者になる</p>
+          </div>
+        </div>
+        <div class="ms-body">
+          <div class="ms-item"><span class="ms-icon">💡</span><div><span class="label">提案</span>PMI Manager仕様検討会議に参加。業務改善視点で機能改善案を1つ提案</div></div>
+          <div class="ms-item"><span class="ms-icon">🤖</span><div><span class="label">AI実践</span>Claude APIを使って100日プランの自動生成プロンプトを設計・テスト</div></div>
+          <div class="ms-item"><span class="ms-icon">🎯</span><div><span class="label">資格</span>事業承継・M&Aエキスパート検定 受験・合格（この月までに）</div></div>
+          <div class="ms-item"><span class="ms-icon">📚</span><div><span class="label">書籍</span>「外資系コンサルのスライド作成術」（山口周）を読了</div></div>
+          <div class="ms-goal">月末チェック：PMI Managerの機能仕様に自分のアイデアが1つ以上反映されている</div>
+        </div>
+      </div>
+
+      <div class="ms-card">
+        <div class="ms-head ph2">
+          <div class="ms-month"><span class="mn">5</span>ヶ月目</div>
+          <div class="ms-head-text">
+            <h3>★ リリース・初顧客対応</h3>
+            <p>9月｜PMI Manager正式リリース月</p>
+          </div>
+        </div>
+        <div class="ms-body">
+          <div class="ms-item"><span class="ms-icon">🚀</span><div><span class="label">重要</span>PMI Manager正式リリース。初期顧客5社の導入サポートに参加する</div></div>
+          <div class="ms-item"><span class="ms-icon">🎧</span><div><span class="label">CS</span>顧客ヒアリング同席。「どんな課題があるか」を自分でもメモし先輩にフィードバック</div></div>
+          <div class="ms-item"><span class="ms-icon">📊</span><div><span class="label">分析</span>顧客5社の業種・課題・PMI状況を整理した分析レポートを作成</div></div>
+          <div class="ms-item"><span class="ms-icon">📚</span><div><span class="label">学習</span>ADKAR変革マネジメントの基礎理解（無料リソースで可）</div></div>
+          <div class="ms-goal">月末チェック：顧客のPMI課題を整理したレポートを1本独力で作成できる</div>
+        </div>
+      </div>
+
+      <div class="ms-card">
+        <div class="ms-head ph2">
+          <div class="ms-month"><span class="mn">6</span>ヶ月目</div>
+          <div class="ms-head-text">
+            <h3>コンサル案件アサイン</h3>
+            <p>10月｜PMIコンサルの現場を体験</p>
+          </div>
+        </div>
+        <div class="ms-body">
+          <div class="ms-item"><span class="ms-icon">💼</span><div><span class="label">実務</span>PMIコンサル案件にジュニアメンバーとして初アサイン</div></div>
+          <div class="ms-item"><span class="ms-icon">📋</span><div><span class="label">担当</span>議事録作成・資料整理・データ集計を担当。現場の空気感を学ぶ</div></div>
+          <div class="ms-item"><span class="ms-icon">🎯</span><div><span class="label">資格</span>基本情報技術者 申込・勉強開始（費用：¥7,500）</div></div>
+          <div class="ms-item"><span class="ms-icon">🏦</span><div><span class="label">外部</span>M&A仲介会社（バトンズ等）が開催するセミナーに参加</div></div>
+          <div class="ms-goal">月末チェック：コンサル現場で「気づいたこと・改善できること」を先輩に3つ提案できる</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 3: 専門化 -->
+    <div style="text-align:center;margin-bottom:16px;">
+      <span style="background:var(--phase3);color:white;font-size:11px;font-weight:700;padding:4px 16px;border-radius:20px;letter-spacing:1px;">PHASE 3 ― 専門化（7〜12ヶ月目）</span>
+    </div>
+    <div class="milestone-grid" style="margin-bottom:32px;">
+
+      <div class="ms-card">
+        <div class="ms-head ph3">
+          <div class="ms-month"><span class="mn">7</span><span style="font-size:12px">〜9</span><br>ヶ月目</div>
+          <div class="ms-head-text">
+            <h3>独立タスクを持つ</h3>
+            <p>11月〜1月｜案件で自分のパートを持つ</p>
+          </div>
+        </div>
+        <div class="ms-body">
+          <div class="ms-item"><span class="ms-icon">🏆</span><div><span class="label">実務</span>PMIコンサル案件で特定の業務フロー改善を一人で担当する</div></div>
+          <div class="ms-item"><span class="ms-icon">🎯</span><div><span class="label">資格</span>基本情報技術者 受験・合格（11月or翌年）</div></div>
+          <div class="ms-item"><span class="ms-icon">📚</span><div><span class="label">中小企業診断士</span>一次試験対策を開始（長期目標・2027年8月試験目標）</div></div>
+          <div class="ms-item"><span class="ms-icon">🤖</span><div><span class="label">AI深化</span>AIを使った業務フロー分析ツールを自作し、実案件で使用</div></div>
+          <div class="ms-goal">3ヶ月チェック：PMIコンサルで担当パートの成果を先輩・顧客に報告できる</div>
+        </div>
+      </div>
+
+      <div class="ms-card">
+        <div class="ms-head ph3">
+          <div class="ms-month"><span class="mn">10</span><span style="font-size:12px">〜12</span><br>ヶ月目</div>
+          <div class="ms-head-text">
+            <h3>1年間の総まとめ</h3>
+            <p>2月〜4月｜Track A人材として評価される</p>
+          </div>
+        </div>
+        <div class="ms-body">
+          <div class="ms-item"><span class="ms-icon">📈</span><div><span class="label">実績</span>PMIコンサル1〜2件に主要メンバーとして参画。成果をまとめてアウトプット</div></div>
+          <div class="ms-item"><span class="ms-icon">📊</span><div><span class="label">SaaS貢献</span>PMI Manager顧客30社のデータからインサイトを抽出して報告する</div></div>
+          <div class="ms-item"><span class="ms-icon">🎯</span><div><span class="label">資格</span>ITIL Foundation v4 受験検討（費用：¥54,230）</div></div>
+          <div class="ms-item"><span class="ms-icon">💡</span><div><span class="label">提案</span>来期（Year 2）の自分の成長目標を自分で作成・上司に提案</div></div>
+          <div class="ms-goal">年末チェック：「この1年で自分が作り出した価値」を具体的に数字で語れる</div>
+        </div>
+      </div>
+
+      <div class="ms-card">
+        <div class="ms-head ph4">
+          <div class="ms-month"><span class="mn">2</span>年目<br><span style="font-size:10px">以降</span></div>
+          <div class="ms-head-text">
+            <h3>PMI専門家へ昇化</h3>
+            <p>2027〜2028｜独力でプロジェクトを牽引</p>
+          </div>
+        </div>
+        <div class="ms-body">
+          <div class="ms-item"><span class="ms-icon">🏅</span><div><span class="label">資格</span>中小企業診断士 一次試験（2027年8月）→ 二次試験（10月〜12月）</div></div>
+          <div class="ms-item"><span class="ms-icon">🎓</span><div><span class="label">資格</span>Prosci ADKAR認定（変革マネジメント）受講</div></div>
+          <div class="ms-item"><span class="ms-icon">🏢</span><div><span class="label">M&A実務</span>2028年 1号買収案件のDD・PMI実務に参加する</div></div>
+          <div class="ms-item"><span class="ms-icon">👥</span><div><span class="label">育成</span>後輩Track A人材のメンターとして成長をサポート</div></div>
+          <div class="ms-goal">2年後チェック：PMIプロジェクトのリーダーとして独立して案件を回せる</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. 資格ロードマップ -->
+<section id="certs">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">03 資格ロードマップ</div>
+      <h2>取るべき資格と優先順位</h2>
+      <p>★が多いほど優先度が高い。費用・学習時間・試験時期を確認して計画的に</p>
+    </div>
+    <div class="cert-path">
+
+      <div class="cert-phase">
+        <span class="cert-phase-label cp1">フェーズ1｜最初の3ヶ月以内に取る</span>
+        <div class="cert-cards">
+          <div class="cert-card c1">
+            <div class="priority-star">★★★</div>
+            <h4>🖥️ ITパスポート</h4>
+            <div class="c-meta">
+              <span class="c-badge cb-cost">費用 ¥7,500</span>
+              <span class="c-badge cb-time">学習 約100時間</span>
+              <span class="c-badge cb-when">年中 CBT受験</span>
+              <span class="c-badge cb-req">前提 なし</span>
+            </div>
+            <p>IT・経営・法務の基礎が一通り問われる。コンサルとして最低限の「ITリテラシー証明」になる。まず最初に取ること。</p>
+          </div>
+          <div class="cert-card c1">
+            <div class="priority-star">★★★</div>
+            <h4>🏢 事業承継・M&Aエキスパート検定</h4>
+            <div class="c-meta">
+              <span class="c-badge cb-cost">費用 ¥7,700</span>
+              <span class="c-badge cb-time">学習 約120時間</span>
+              <span class="c-badge cb-when">年中 CBT受験</span>
+              <span class="c-badge cb-req">前提 なし</span>
+            </div>
+            <p>金融財政事情研究会認定。事業承継・M&Aの法務・財務・プロセスを体系学習。会社の事業ドメインに直結する、最も優先度の高い資格のひとつ。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cert-phase">
+        <span class="cert-phase-label cp2">フェーズ2｜6ヶ月以内に取る</span>
+        <div class="cert-cards">
+          <div class="cert-card c2">
+            <div class="priority-star">★★☆</div>
+            <h4>💻 基本情報技術者試験</h4>
+            <div class="c-meta">
+              <span class="c-badge cb-cost">費用 ¥7,500</span>
+              <span class="c-badge cb-time">学習 100〜200時間</span>
+              <span class="c-badge cb-when">年中 CBT受験</span>
+              <span class="c-badge cb-req">前提 なし</span>
+            </div>
+            <p>ITエンジニアリングの基礎（アルゴリズム・DB・ネットワーク）を証明。SaaS仕様検討や開発チームとの会話をスムーズにする。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cert-phase">
+        <span class="cert-phase-label cp3">フェーズ3｜1年以内に取る</span>
+        <div class="cert-cards">
+          <div class="cert-card c3">
+            <div class="priority-star">★★☆</div>
+            <h4>🔄 ITIL Foundation v4</h4>
+            <div class="c-meta">
+              <span class="c-badge cb-cost">費用 ¥54,230</span>
+              <span class="c-badge cb-time">学習 2〜8週間</span>
+              <span class="c-badge cb-when">年中受験可</span>
+              <span class="c-badge cb-req">前提 なし（3年更新）</span>
+            </div>
+            <p>ITサービス管理のグローバル標準。PMI Manager導入後のオペレーション設計や顧客へのIT統合支援に役立つ。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cert-phase">
+        <span class="cert-phase-label cp4">フェーズ4｜長期目標（1〜3年）</span>
+        <div class="cert-cards">
+          <div class="cert-card c4">
+            <div class="priority-star">★★★</div>
+            <h4>🏆 中小企業診断士</h4>
+            <div class="c-meta">
+              <span class="c-badge cb-cost">費用 計 ¥32,300</span>
+              <span class="c-badge cb-time">学習 1,000時間以上</span>
+              <span class="c-badge cb-when">1次：8月｜2次：10月〜12月</span>
+              <span class="c-badge cb-req">前提 なし</span>
+            </div>
+            <p>中小企業向け経営コンサルティングの国家資格。財務・会計・企業経営理論・情報・法務を横断的に学べる。取得すればM&Aシニアエキスパートへの道も開ける。事業承継業界での信用度が圧倒的に上がる最重要資格。</p>
+          </div>
+          <div class="cert-card c4">
+            <div class="priority-star">★★☆</div>
+            <h4>🔀 Prosci ADKAR認定</h4>
+            <div class="c-meta">
+              <span class="c-badge cb-cost">費用 約50〜60万円</span>
+              <span class="c-badge cb-time">3日間集中プログラム</span>
+              <span class="c-badge cb-when">日本語対応あり（アタウェイ社）</span>
+              <span class="c-badge cb-req">前提 なし</span>
+            </div>
+            <p>世界標準の変革マネジメント手法。PMI後の組織融合・文化統合に直結する実践的スキル。2年目以降に会社負担で受講できるよう交渉を。</p>
+          </div>
+          <div class="cert-card c4">
+            <div class="priority-star">★☆☆</div>
+            <h4>📊 PMP（プロジェクトマネジメント専門家）</h4>
+            <div class="c-meta">
+              <span class="c-badge cb-cost">費用 $405〜（PMI会員）</span>
+              <span class="c-badge cb-time">学習 200時間以上</span>
+              <span class="c-badge cb-when">年中受験可（日本語対応）</span>
+              <span class="c-badge cb-req">PM実務経験3年以上が必要</span>
+            </div>
+            <p>国際的なプロジェクト管理資格。実務経験が必要なため3年目以降を目標に。PMIコンサル案件数が積み上がってから取得すると説得力が増す。</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p class="note">※試験費用・日程は2025〜2026年時点の情報。最新情報は各試験機関の公式サイトで確認してください。</p>
+  </div>
+</section>
+
+<!-- 4. スキルマップ -->
+<section id="skills">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">04 スキルマップ詳細</div>
+      <h2>具体的に何をどのレベルまで習得するか</h2>
+      <p>▶が目標レベル（1〜3年での達成イメージ）</p>
+    </div>
+    <div class="skills-matrix">
+      <div style="font-size:11px;color:var(--gray);text-align:right;margin-bottom:8px;">● = 習得済み ○ = 目標</div>
+
+      <div class="sm-row">
+        <div class="sm-label" style="background:#15803d;">財務分析</div>
+        <div class="sm-content">
+          <strong>目標：</strong>中小企業の決算書を見て、健全性・収益性・PMI後のリスクを口頭で説明できる<br>
+          ステップ：BS/PL/CF読解 → 収益性分析 → 企業価値評価の基礎（EV/EBITDA等）
+          <div class="level-bar"><div class="lb fill"></div><div class="lb fill"></div><div class="lb fill"></div><div class="lb empty"></div><div class="lb empty"></div></div>
+        </div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-label" style="background:#0369a1;">ロジカルシンキング</div>
+        <div class="sm-content">
+          <strong>目標：</strong>顧客課題をMECEで構造化し、ロジックツリーで解決策を提案できる<br>
+          ステップ：MECE基礎 → ロジックツリー → ピラミッドストラクチャーでの提案書作成
+          <div class="level-bar"><div class="lb fill"></div><div class="lb fill"></div><div class="lb fill"></div><div class="lb fill"></div><div class="lb empty"></div></div>
+        </div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-label" style="background:#6d28d9;">PMI・M&A知識</div>
+        <div class="sm-content">
+          <strong>目標：</strong>M&AのDay1からDay100まで、フェーズごとに何をすべきかを説明し実行できる<br>
+          ステップ：M&A基本フロー → DD基礎 → 100日プラン設計 → シナジー追跡 → 組織融合
+          <div class="level-bar"><div class="lb fill"></div><div class="lb fill"></div><div class="lb fill"></div><div class="lb empty"></div><div class="lb empty"></div></div>
+        </div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-label" style="background:#b45309;">業務フロー設計</div>
+        <div class="sm-content">
+          <strong>目標：</strong>AS-IS（現状）とTO-BE（理想）の業務フローをBPMN/スイムレーン図で作成できる<br>
+          ステップ：フロー図ツール習得（Draw.io等）→ AS-IS分析 → TO-BE設計 → 実装支援
+          <div class="level-bar"><div class="lb fill"></div><div class="lb fill"></div><div class="lb fill"></div><div class="lb fill"></div><div class="lb empty"></div></div>
+        </div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-label" style="background:#d97706;">変革マネジメント</div>
+        <div class="sm-content">
+          <strong>目標：</strong>ADKARモデルを使って、M&A後の組織変革に対する人材の抵抗を低減できる<br>
+          ステップ：ADKAR理論理解 → ステークホルダー分析 → コミュニケーション計画 → Prosci認定
+          <div class="level-bar"><div class="lb fill"></div><div class="lb fill"></div><div class="lb empty"></div><div class="lb empty"></div><div class="lb empty"></div></div>
+        </div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-label" style="background:#0f766e;">AIプロンプト設計</div>
+        <div class="sm-content">
+          <strong>目標：</strong>PMI Manager上でAI機能（100日プラン提案・リスク検知）のプロンプトを設計・改善できる<br>
+          ステップ：プロンプトエンジニアリング基礎 → Claude API実装 → RAG活用 → 品質評価
+          <div class="level-bar"><div class="lb fill"></div><div class="lb fill"></div><div class="lb fill"></div><div class="lb fill"></div><div class="lb empty"></div></div>
+        </div>
+      </div>
+      <div class="sm-row">
+        <div class="sm-label" style="background:#7c3aed;">スライド・資料作成</div>
+        <div class="sm-content">
+          <strong>目標：</strong>経営層・投資家・顧客それぞれに合わせたプレゼンテーション資料を単独で作れる<br>
+          ステップ：パワポ構成力 → ビジュアル表現 → エグゼクティブ向けサマリー → ピッチ資料
+          <div class="level-bar"><div class="lb fill"></div><div class="lb fill"></div><div class="lb fill"></div><div class="lb empty"></div><div class="lb empty"></div></div>
+        </div>
+      </div>
+    </div>
+    <p class="note">●の数は1〜2年での習得目標レベル（5段階中）。入社時は全て0からスタートで構わない。</p>
+  </div>
+</section>
+
+<!-- 5. フレームワーク -->
+<section id="frameworks">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">05 必修フレームワーク</div>
+      <h2>コンサルタントが使うフレームワーク</h2>
+      <p>まずはBasicを全部使いこなし、Middleへ。Advancedは実案件で自然に身につく</p>
+    </div>
+    <div class="fw-grid">
+      <div class="fw-card"><span class="fw-level fw-basic">Basic</span><h4>MECE</h4><p>「モレなく・ダブりなく」で課題を整理する。全ての分析の土台。最初に習得すべき思考ツール。</p></div>
+      <div class="fw-card"><span class="fw-level fw-basic">Basic</span><h4>ロジックツリー</h4><p>問題を原因ツリー・解決策ツリーに分解。MECEと合わせて使う。提案書の骨格になる。</p></div>
+      <div class="fw-card"><span class="fw-level fw-basic">Basic</span><h4>3C分析</h4><p>Customer（顧客）・Competitor（競合）・Company（自社）の3軸で市場を分析する。</p></div>
+      <div class="fw-card"><span class="fw-level fw-basic">Basic</span><h4>SWOT分析</h4><p>強み・弱み・機会・脅威の4象限。クロスSWOTまで使いこなせるとプロ級。</p></div>
+      <div class="fw-card"><span class="fw-level fw-basic">Basic</span><h4>PDCA</h4><p>Plan-Do-Check-Actの改善サイクル。PMI後の運用フェーズで活用頻度が高い。</p></div>
+      <div class="fw-card"><span class="fw-level fw-mid">Middle</span><h4>PEST分析</h4><p>Political・Economic・Social・Technologicalで外部環境を分析。M&A時の市場調査で使う。</p></div>
+      <div class="fw-card"><span class="fw-level fw-mid">Middle</span><h4>バリューチェーン分析</h4><p>企業活動を主活動・支援活動に分解。PMIでシナジーポイントを特定する際に必須。</p></div>
+      <div class="fw-card"><span class="fw-level fw-mid">Middle</span><h4>ADKAR モデル</h4><p>Awareness-Desire-Knowledge-Ability-Reinforcement。組織変革・文化融合の変革マネジメント手法。</p></div>
+      <div class="fw-card"><span class="fw-level fw-mid">Middle</span><h4>ガントチャート</h4><p>プロジェクト工程管理。100日プランの可視化・進捗追跡に直接使う。PMI Manager内でも中核機能。</p></div>
+      <div class="fw-card"><span class="fw-level fw-adv">Advanced</span><h4>5フォース分析</h4><p>業界の競争環境を5要因で分析（Porter）。買収対象企業の業界分析で使用。</p></div>
+      <div class="fw-card"><span class="fw-level fw-adv">Advanced</span><h4>DCF法（企業価値評価）</h4><p>将来キャッシュフロー割引による企業価値算定。DD・買収価格交渉で必要。</p></div>
+      <div class="fw-card"><span class="fw-level fw-adv">Advanced</span><h4>OKR（目標管理）</h4><p>Objectives & Key Results。PMI後のシナジー目標設定と組織目標管理に活用できる。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. 必読書 -->
+<section id="books">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">06 必読書・学習リソース</div>
+      <h2>最初の1年で読むべき本</h2>
+      <p>★は最優先。まず6冊読めれば基礎は十分。全部読めたら一流のスタート。</p>
+    </div>
+    <div class="book-grid">
+      <div class="book-card priority">
+        <div class="bk-tag">★ 思考法 最優先</div>
+        <h4><a href="https://www.amazon.co.jp/s?k=ロジカルシンキング+照屋華子" target="_blank" style="color:inherit;">ロジカルシンキング</a></h4>
+        <p>照屋華子・岡田恵子著。MECE・ロジックツリーの基礎。コンサル入門書の定番。入社1ヶ月以内に読む。</p>
+        <div class="timing">📅 1ヶ月目 ｜ <a href="https://www.amazon.co.jp/s?k=ロジカルシンキング+照屋華子" target="_blank" style="color:var(--green);">Amazon で探す →</a></div>
+      </div>
+      <div class="book-card priority">
+        <div class="bk-tag">★ M&A 最優先</div>
+        <h4><a href="https://www.chusho.meti.go.jp/zaimu/shoukei/download/pmi_guideline.pdf" target="_blank" style="color:inherit;">中小企業PMIガイドライン</a></h4>
+        <p>中小企業庁が発行した公式ガイド（無料PDF）。当社のサービスそのものが詰まっている。絶対に読むこと。</p>
+        <div class="timing">📅 2〜3ヶ月目 ｜ <a href="https://www.chusho.meti.go.jp/zaimu/shoukei/download/pmi_guideline.pdf" target="_blank" style="color:var(--green);">無料PDF ダウンロード →</a></div>
+      </div>
+      <div class="book-card priority">
+        <div class="bk-tag">★ 財務 最優先</div>
+        <h4><a href="https://www.amazon.co.jp/s?k=財務3表一体理解法" target="_blank" style="color:inherit;">財務3表一体理解法</a></h4>
+        <p>國貞克則著。BS・PL・CFの繋がりを図解でわかりやすく解説。財務未経験者の定番入門書。</p>
+        <div class="timing">📅 2ヶ月目 ｜ <a href="https://www.amazon.co.jp/s?k=財務3表一体理解法" target="_blank" style="color:var(--green);">Amazon で探す →</a></div>
+      </div>
+      <div class="book-card">
+        <div class="bk-tag">プレゼン</div>
+        <h4><a href="https://www.amazon.co.jp/s?k=外資系コンサルのスライド作成術" target="_blank" style="color:inherit;">外資系コンサルのスライド作成術</a></h4>
+        <p>山口周著。23種類の図解表現技法を収録。コンサルらしい「伝わる資料」の作り方。</p>
+        <div class="timing">📅 3〜4ヶ月目 ｜ <a href="https://www.amazon.co.jp/s?k=外資系コンサルのスライド作成術" target="_blank" style="color:var(--green);">Amazon で探す →</a></div>
+      </div>
+      <div class="book-card">
+        <div class="bk-tag">M&A実務</div>
+        <h4><a href="https://www.amazon.co.jp/s?k=M&A財務デューデリジェンス入門" target="_blank" style="color:inherit;">M&A財務デューデリジェンス入門</a></h4>
+        <p>税務経理協会刊。財務DDの基本フローと実際のレポート例が掲載。DD業務参加前に読む。</p>
+        <div class="timing">📅 4〜6ヶ月目 ｜ <a href="https://www.amazon.co.jp/s?k=M&A財務デューデリジェンス入門" target="_blank" style="color:var(--green);">Amazon で探す →</a></div>
+      </div>
+      <div class="book-card">
+        <div class="bk-tag">コンサル実務</div>
+        <h4><a href="https://www.amazon.co.jp/s?k=コンサルタントのフレームワーク" target="_blank" style="color:inherit;">新版 コンサルタントのフレームワーク活用法</a></h4>
+        <p>主要ビジネスフレームワークを網羅した辞典的な一冊。迷ったら引くリファレンス本。</p>
+        <div class="timing">📅 3〜6ヶ月目 ｜ <a href="https://www.amazon.co.jp/s?k=コンサルタントのフレームワーク" target="_blank" style="color:var(--green);">Amazon で探す →</a></div>
+      </div>
+      <div class="book-card">
+        <div class="bk-tag">組織変革</div>
+        <h4><a href="https://www.amazon.co.jp/s?k=コッター+変革のリーダーシップ" target="_blank" style="color:inherit;">コッター「変革のリーダーシップ」</a></h4>
+        <p>組織変革の8ステッププロセス。M&A後の組織統合・文化融合で直接活用できる理論書。</p>
+        <div class="timing">📅 6ヶ月目以降 ｜ <a href="https://www.amazon.co.jp/s?k=コッター+変革のリーダーシップ" target="_blank" style="color:var(--green);">Amazon で探す →</a></div>
+      </div>
+      <div class="book-card">
+        <div class="bk-tag">中小企業経営</div>
+        <h4><a href="https://bookstore.tac-school.co.jp/book/detail/9784813299073/" target="_blank" style="color:inherit;">中小企業診断士 1次試験テキスト（TAC）</a></h4>
+        <p>企業経営理論・財務・情報・法務・経済の7科目。長期目標の中小企業診断士対策兼、実務知識の習得。</p>
+        <div class="timing">📅 4ヶ月目〜（長期） ｜ <a href="https://bookstore.tac-school.co.jp/" target="_blank" style="color:var(--green);">TAC出版で探す →</a></div>
+      </div>
+    </div>
+
+    <!-- 資格公式サイトリンク -->
+    <div style="max-width:900px;margin:28px auto 0;background:white;border-radius:14px;padding:20px 24px;box-shadow:0 2px 10px rgba(0,0,0,0.07);">
+      <h3 style="font-size:14px;font-weight:700;margin-bottom:14px;color:var(--primary);">🏅 資格の公式サイト・申込リンク</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;font-size:12px;">
+        <div style="background:#f0fdf4;border-radius:10px;padding:12px;border-left:3px solid #16a34a;">
+          <strong style="display:block;margin-bottom:4px;">ITパスポート（¥7,500）</strong>年中CBT受験可能<br>
+          <a href="https://www3.jitec.ipa.go.jp/JitesCbt/html/about/about.html" target="_blank" style="color:#16a34a;font-weight:600;">公式サイト・申込 →</a>
+        </div>
+        <div style="background:#f0fdf4;border-radius:10px;padding:12px;border-left:3px solid #16a34a;">
+          <strong style="display:block;margin-bottom:4px;">事業承継・M&Aエキスパート（¥7,700）</strong>年中CBT受験可能<br>
+          <a href="https://www.kinzai.or.jp/kentei/2e3.html" target="_blank" style="color:#16a34a;font-weight:600;">公式サイト・申込 →</a>
+        </div>
+        <div style="background:#dbeafe;border-radius:10px;padding:12px;border-left:3px solid #0369a1;">
+          <strong style="display:block;margin-bottom:4px;">基本情報技術者（¥7,500）</strong>年中CBT受験可能<br>
+          <a href="https://www.ipa.go.jp/shiken/kubun/fe.html" target="_blank" style="color:#0369a1;font-weight:600;">公式サイト・申込 →</a>
+        </div>
+        <div style="background:#dbeafe;border-radius:10px;padding:12px;border-left:3px solid #0369a1;">
+          <strong style="display:block;margin-bottom:4px;">ITIL Foundation v4（¥54,230）</strong>年中受験可能<br>
+          <a href="https://www.peoplecert.org/jp/Browse-Certifications/IT/ITIL/ITIL-4/ITIL-4-Foundation" target="_blank" style="color:#0369a1;font-weight:600;">公式サイト →</a>
+        </div>
+        <div style="background:#fef3c7;border-radius:10px;padding:12px;border-left:3px solid #d97706;">
+          <strong style="display:block;margin-bottom:4px;">中小企業診断士（¥32,300）</strong>1次：毎年8月<br>
+          <a href="https://www.j-smeca.jp/contents/007_c_shindanshiShiken.html" target="_blank" style="color:#d97706;font-weight:600;">J-SMECA 公式 →</a>　<a href="https://studying.jp/shindanshi/" target="_blank" style="color:#d97706;font-weight:600;">スタディング →</a>
+        </div>
+        <div style="background:#fce7f3;border-radius:10px;padding:12px;border-left:3px solid #9333ea;">
+          <strong style="display:block;margin-bottom:4px;">PMP（約6万円〜）</strong>実務経験3年以上必要<br>
+          <a href="https://www.pmi-japan.org/pmp_license/pmp/" target="_blank" style="color:#9333ea;font-weight:600;">PMI Japan 公式 →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- フレームワーク練習問題リンク -->
+    <div style="max-width:900px;margin:28px auto 0;background:linear-gradient(135deg,#0f1f30,#1a3a5c);border-radius:14px;padding:20px 24px;text-align:center;">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:8px;color:white;">🎯 フレームワーク練習問題集</h3>
+      <p style="font-size:12px;color:rgba(255,255,255,.75);margin-bottom:14px;">MECE・ロジックツリー・3C・SWOT・財務・PMI — 6テーマ × 20問 = 120問の実践問題</p>
+      <a href="フレームワーク練習問題_ハブ.html" style="display:inline-block;background:#e85d26;color:white;text-decoration:none;font-weight:700;font-size:13px;padding:10px 28px;border-radius:20px;">練習問題集を開く →</a>
+    </div>
+
+    <div style="max-width:900px;margin:28px auto 0;background:white;border-radius:14px;padding:20px 24px;box-shadow:0 2px 10px rgba(0,0,0,0.07);">
+      <h3 style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--primary);">📱 オンライン学習・コミュニティ</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;font-size:12px;">
+        <div><strong><a href="https://www.udemy.com/ja/" target="_blank">Udemy Japan</a></strong><br>ロジカルシンキング・ビジネス分析講座が豊富。月額制プランなら¥2,292〜</div>
+        <div><strong><a href="https://www.jma-a.org/" target="_blank">JMAA 無料セミナー</a></strong><br>日本M&Aアドバイザー協会。東京・大阪・名古屋で月次開催。実際のM&A事例を学べる</div>
+        <div><strong><a href="https://www.nihon-ma.co.jp/seminar/" target="_blank">日本M&Aセンター セミナー</a></strong><br>年間約1万人の経営者が参加。事業承継・成長戦略の最新動向を学べる</div>
+        <div><strong><a href="https://manabi-dx.ipa.go.jp/" target="_blank">IPA マナビDX</a></strong><br>DX・M&A入門コースが無料。政府が提供する学習プラットフォーム</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. AI活用ガイド -->
+<section id="ai">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">07 AI活用ガイド</div>
+      <h2>あなたの強みをここで活かせ</h2>
+      <p>AI経験は今すぐ当社の競合優位性になる。他の新入社員との最大の差別化ポイント</p>
+    </div>
+    <div class="ai-grid">
+      <div class="ai-card">
+        <h3>🤖 PMI Manager AI機能開発</h3>
+        <ul>
+          <li>Claude APIで100日プラン自動提案プロンプトの設計・改善</li>
+          <li>リスク検知ロジックのプロンプトチューニング</li>
+          <li>月次レポート自動生成の精度向上</li>
+          <li>業種別テンプレートのAI最適化</li>
+        </ul>
+      </div>
+      <div class="ai-card">
+        <h3>📊 コンサル業務への応用</h3>
+        <ul>
+          <li>顧客ヒアリング録音 → AIで議事録・課題整理を自動化</li>
+          <li>財務諸表をAIに読み込ませてリスク分析レポート生成</li>
+          <li>競合他社のDD資料からインサイト抽出</li>
+          <li>100日プランの初稿をAIで生成し、専門家がレビュー</li>
+        </ul>
+      </div>
+      <div class="ai-card">
+        <h3>🔍 M&A ソーシング支援</h3>
+        <ul>
+          <li>後継者不在企業のリサーチ自動化</li>
+          <li>業種・規模・財務条件でのスクリーニング</li>
+          <li>M&A関連ニュース・情報の自動収集・要約</li>
+          <li>対象企業の公開情報からDD事前調査</li>
+        </ul>
+      </div>
+      <div class="ai-card">
+        <h3>📝 ナレッジ蓄積・共有</h3>
+        <ul>
+          <li>PMI案件ごとのノウハウをAIで構造化・データベース化</li>
+          <li>「成功パターン・失敗パターン」の自動分類</li>
+          <li>新メンバーへの研修コンテンツ自動生成</li>
+          <li>社内FAQ・手順書のAI整備</li>
+        </ul>
+      </div>
+    </div>
+    <div class="highlight-box" style="background:linear-gradient(135deg,#0f1f30,#1e3a5f);color:white;border-left-color:#5dd9f5;">
+      <strong style="color:#a5f3fc;">実践アドバイス：</strong>入社初日から「AIを使ってこんな業務改善ができます」という提案を持っていこう。PMI Managerの仕様検討会議では、AI機能の改善案を積極的に出す。これが当社での<strong style="color:#fde68a;">最速の存在証明</strong>になる。
+    </div>
+  </div>
+</section>
+
+<!-- 8. 週次ルーティン -->
+<section id="routine">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">08 週次ルーティン</div>
+      <h2>最初の3ヶ月の「1週間の過ごし方」</h2>
+      <p>毎日コツコツ積み上げる習慣が、1年後に大きな差になる</p>
+    </div>
+    <div class="routine-grid">
+      <div class="routine-card">
+        <div class="day">MON</div>
+        <h4>学習インプット</h4>
+        <p>書籍・テキスト30分読書。今週学ぶテーマを決めて、ToDoに落とす。</p>
+      </div>
+      <div class="routine-card">
+        <div class="day">TUE</div>
+        <h4>フレームワーク練習</h4>
+        <p>ニュースの企業ネタを1つ選び、3C分析orSWOTを手書きで作る（15分）。</p>
+      </div>
+      <div class="routine-card">
+        <div class="day">WED</div>
+        <h4>AI実験・プロト</h4>
+        <p>Claude/ChatGPTに業務プロンプトを1つ試す。使えそうな発見を社内共有。</p>
+      </div>
+      <div class="routine-card">
+        <div class="day">THU</div>
+        <h4>資格勉強</h4>
+        <p>進行中の資格テキストを1時間。過去問を5問解いて解説を確認。</p>
+      </div>
+      <div class="routine-card">
+        <div class="day">FRI</div>
+        <h4>振り返り・アウトプット</h4>
+        <p>今週学んだことを200字でまとめてNotionに記録。来週の学習テーマを設定。</p>
+      </div>
+      <div class="routine-card">
+        <div class="day">SAT</div>
+        <h4>M&A・業界情報収集</h4>
+        <p>日経・M&Aニュースを30分読む。事業承継・中小企業の最新動向を把握。</p>
+      </div>
+      <div class="routine-card">
+        <div class="day">SUN</div>
+        <h4>完全オフ or 読書</h4>
+        <p>無理に勉強しない。ただし興味が出た本は気軽に開く。燃え尽きないことが大切。</p>
+      </div>
+    </div>
+    <div class="highlight-box" style="margin-top:20px;">
+      <strong>累積学習時間の目安：</strong>上記ルーティンを守ると月約40〜50時間の学習時間が確保できる。1年で約500時間。これがあればITパスポート・事業承継エキスパート・基本情報技術者の3資格は十分取得可能。
+    </div>
+  </div>
+</section>
+
+<!-- 9. マインドセット -->
+<section id="mindset">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">09 マインドセット</div>
+      <h2>当社流「ラストマン精神」の実践</h2>
+      <p>スキルより先に、この会社のカルチャーを体に入れる</p>
+    </div>
+    <div class="mindset-wrap">
+      <div class="mindset-item">
+        <div class="mi-icon">🔥</div>
+        <div class="mi-body">
+          <h3>ラストマン精神 ― 「私がやる」が最初の一言</h3>
+          <p>「誰かがやるだろう」はない。議事録、雑用、顧客フォロー、なんでも「私がやります」と手を挙げる。最初のうちは量をこなすことが質への近道。</p>
+        </div>
+      </div>
+      <div class="mindset-item">
+        <div class="mi-icon">🏗️</div>
+        <div class="mi-body">
+          <h3>現場主義 ― 顧客の「現場」に足を運ぶ</h3>
+          <p>資料の中にない情報が現場にある。PMIの本質は「人」と「現場」。顧客の工場・店舗・オフィスに実際に行き、目で見て感じる習慣を作る。</p>
+        </div>
+      </div>
+      <div class="mindset-item">
+        <div class="mi-icon">📊</div>
+        <div class="mi-body">
+          <h3>データ駆動 ― 感覚より数字で話す</h3>
+          <p>「なんとなく課題があります」ではなく「〇〇の作業が週に△時間かかっており、年間□万円のコストになっています」と数字で語る。AIを使えば数字収集も速くなる。</p>
+        </div>
+      </div>
+      <div class="mindset-item">
+        <div class="mi-icon">🚀</div>
+        <div class="mi-body">
+          <h3>「量」の先に「質」がある ― 最初から完璧を求めない</h3>
+          <p>粗くてもいいから毎日アウトプットを出す。フレームワークを100回使えば自然と使いこなせる。資料作成も100枚作れば1枚が速くなる。まず量をこなす。</p>
+        </div>
+      </div>
+      <div class="mindset-item">
+        <div class="mi-icon">🤝</div>
+        <div class="mi-body">
+          <h3>ホスピタリティ ― コンサルの本質は「相手への贈り物」</h3>
+          <p>「本当のコンサルティングとはホスピタリティ」という会社の言葉を胸に刻む。顧客が何に困っていて、何を本当に求めているかを徹底的に想像する。技術より先に人への興味を持つ。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BACK LINK -->
+<div class="back-bar">
+  <a href="事業戦略_解説_当社.html">← 事業戦略解説ページに戻る</a>
+</div>
+
+<footer>
+  © 2026 All Rights Reserved. ｜ 資格費用・試験日程は2025〜2026年時点の情報です。受験前に各機関の公式サイトで最新情報をご確認ください。
+</footer>
+
+</body>
+</html>

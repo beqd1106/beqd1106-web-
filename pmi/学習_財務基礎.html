@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>財務基礎 学習教材｜BS・PL・CFを読んで経営を語る</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','BIZ UDGothic','Meiryo',sans-serif;background:#FAFAF8;color:#1A1A1A;line-height:1.75;font-size:15px;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}img{max-width:100%;height:auto;display:block;}
+.site-header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 32px;height:56px;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid #E8E5E0;}
+.header-logo{font-size:12px;font-weight:700;}.header-logo span{color:#999;font-weight:400;}
+.header-back{font-size:12px;color:#666;}.header-back:hover{color:#1A1A1A;}
+.hero{min-height:28vh;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;padding:76px 48px 36px;background:#F5F3EE;border-bottom:1px solid #E8E5E0;position:relative;overflow:hidden;}
+@media(max-width:768px){.hero{grid-template-columns:1fr;padding:72px 16px 20px;}.hero-illust{display:none;}}
+.hero-left{position:relative;z-index:1;}
+.hero-bg-num{position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:clamp(120px,18vw,220px);font-weight:900;color:rgba(0,0,0,.04);line-height:1;pointer-events:none;letter-spacing:-10px;}
+.hero-meta{display:flex;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+.hero-step{font-size:10px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;}
+.hero-phase{font-size:10px;font-weight:700;letter-spacing:1px;border:1px solid #2563eb;color:#2563eb;padding:2px 10px;border-radius:100px;}
+.hero-title{font-size:clamp(20px,3vw,36px);font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:16px;}
+.hero-title em{font-style:normal;color:#dc2626;}
+.hero-desc{font-size:14px;color:#666;max-width:440px;line-height:1.8;}
+.hero-illust{width:clamp(160px,20vw,260px);opacity:.85;flex-shrink:0;}
+.hero-divider{width:40px;height:2px;background:#1A1A1A;margin-top:28px;}
+.ch-nav{background:#fff;position:sticky;top:56px;z-index:50;border-bottom:1px solid #E8E5E0;overflow-x:auto;white-space:nowrap;}
+.ch-nav ul{display:inline-flex;list-style:none;padding:0 32px;}
+.ch-nav li a{display:block;font-size:11px;font-weight:600;color:#999;padding:12px 14px;border-bottom:2px solid transparent;transition:all .15s;}
+.ch-nav li a:hover{color:#1A1A1A;border-bottom-color:#1A1A1A;}
+.chapter{padding:56px 48px;}.chapter:nth-child(odd){background:#fff;}.chapter:nth-child(even){background:#FAFAF8;}
+@media(max-width:768px){.chapter{padding:28px 16px;}}
+.ch-inner{max-width:720px;margin:0 auto;}
+.ch-head{margin-bottom:28px;display:flex;align-items:baseline;gap:16px;}
+.ch-num-label{font-size:10px;font-weight:700;letter-spacing:2px;color:#BBBBBB;text-transform:uppercase;white-space:nowrap;}
+.ch-line{flex:1;height:1px;background:#E8E5E0;}
+.ch-head-content{margin-top:12px;}
+.ch-head-content h2{font-size:clamp(18px,3vw,24px);font-weight:800;letter-spacing:-.3px;margin-bottom:5px;}
+.ch-head-content p{font-size:13px;color:#888;}
+.key{background:#F5F3EE;border-left:3px solid #1A1A1A;padding:20px 24px;margin:20px 0;}
+.key-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;margin-bottom:8px;}
+.key p{font-size:14px;line-height:1.8;}
+.fin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+.fin-card{background:#fff;}
+.fin-head{padding:12px 14px;color:#fff;font-weight:800;font-size:13px;}
+.fh-bs{background:#1D4ED8;}.fh-pl{background:#059669;}.fh-cf{background:#7C3AED;}
+.fin-body{padding:12px 14px;font-size:12px;color:#888;}
+.fin-body .fin-q{font-size:9px;font-weight:700;letter-spacing:.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:6px;}
+.fin-body p{font-size:11px;line-height:1.7;}
+/* BS layout */
+.bs-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0;}
+.bs-assets{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:2px;padding:14px;}
+.bs-right{display:flex;flex-direction:column;gap:8px;}
+.bs-liab{background:#FEF2F2;border:1px solid #FCA5A5;border-radius:2px;padding:14px;}
+.bs-eq{background:#F0FDF4;border:1px solid #86EFAC;border-radius:2px;padding:14px;}
+.bs-col h5{font-size:11px;font-weight:700;margin-bottom:6px;}
+.bs-assets h5{color:#1E40AF;}.bs-liab h5{color:#991B1B;}.bs-eq h5{color:#166534;}
+.bs-item{display:flex;justify-content:space-between;font-size:11px;color:#888;padding:2px 0;}
+/* PL table */
+.pl-table{border:1px solid #E8E5E0;border-radius:2px;padding:20px;margin:14px 0;background:#fff;}
+.pl-table h4{font-size:10px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:14px;}
+.pl-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #E8E5E0;font-size:13px;}
+.pl-row:last-child{border-bottom:none;}
+.pl-label{color:#888;}.pl-pos{color:#059669;font-weight:700;}.pl-neg{color:#dc2626;font-weight:700;}
+.pl-sub{background:#EFF6FF;border-radius:2px;padding:6px 10px;margin:3px -4px;}.pl-sub .pl-label{color:#1E40AF;font-weight:700;}
+.pl-res{background:#FFFBEB;border-radius:2px;padding:6px 10px;margin:3px -4px;}.pl-res .pl-label{color:#92400E;font-weight:700;}
+.cf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:14px 0;}
+.cf-card{background:#fff;padding:14px;border-top:2px solid;}
+.cf-op{border-top-color:#1D4ED8;}.cf-in{border-top-color:#D97706;}.cf-fi{border-top-color:#7C3AED;}
+.cf-card h4{font-size:12px;font-weight:700;margin-bottom:4px;}
+.cf-op h4{color:#1E40AF;}.cf-in h4{color:#92400E;}.cf-fi h4{color:#5B21B6;}
+.cf-card p{font-size:11px;color:#888;line-height:1.6;}
+.ratio-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:14px 0;}
+.ratio-card{background:#fff;padding:14px;}
+.ratio-card h4{font-size:12px;font-weight:700;margin-bottom:4px;}
+.ratio-formula{font-size:11px;background:#FAFAF8;border-radius:2px;padding:5px 8px;margin:5px 0;font-weight:600;}
+.ratio-card p{font-size:11px;color:#888;}
+.callout{padding:14px 18px;margin:14px 0;font-size:13px;border-left:3px solid;border-radius:0 2px 2px 0;}
+.callout-warn{background:#FFFBEB;border-color:#D97706;}.callout-warn strong{color:#92400E;display:block;margin-bottom:3px;}
+.callout-tip{background:#F0FDF4;border-color:#059669;}.callout-tip strong{color:#15803D;display:block;margin-bottom:3px;}
+.src{border:1px solid #E8E5E0;border-radius:2px;padding:16px 20px;margin-top:28px;display:flex;gap:12px;background:#FAFAF8;}
+.src-icon{font-size:14px;flex-shrink:0;margin-top:2px;}
+.src-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:5px;}
+.src-list{list-style:none;font-size:11px;color:#888;}.src-list li{margin-bottom:3px;line-height:1.6;}.src-list cite{font-style:normal;}
+.summary{background:#1A1A1A;color:#FAFAF8;padding:28px 32px;border-radius:2px;}
+.summary-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:12px;}
+.summary h3{font-size:15px;font-weight:800;margin-bottom:14px;line-height:1.4;}
+.summary ul{padding-left:16px;font-size:13px;line-height:2.2;color:#CCC;}
+.cta{background:#dc2626;color:#fff;padding:28px 32px;border-radius:2px;text-align:center;margin:20px auto;}
+.cta h3{font-size:15px;font-weight:800;margin-bottom:6px;}
+.cta p{font-size:12px;opacity:.8;margin-bottom:16px;}
+.cta a{display:inline-block;background:#fff;color:#dc2626;font-weight:700;font-size:13px;padding:11px 28px;border-radius:100px;}
+.page-nav{background:#1A1A1A;display:flex;justify-content:space-between;align-items:center;padding:16px 48px;flex-wrap:wrap;gap:8px;}
+.page-nav a{color:#999;font-size:12px;font-weight:600;}.page-nav a:hover{color:#fff;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .site-header{padding:0 14px;}
+  .header-logo{font-size:11px;}
+  .header-back{font-size:11px;}
+  .hero{padding:68px 16px 16px;min-height:auto;}
+  .hero-title{font-size:clamp(18px,5vw,26px);letter-spacing:-.5px;margin-bottom:12px;}
+  .hero-meta{gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+  .hero-desc{font-size:13px;}
+  .hero-divider{margin-top:16px;}
+  .ch-nav ul{padding:0 8px;}
+  .ch-nav li a{padding:10px 8px;font-size:10px;letter-spacing:0;}
+  .chapter{padding:24px 14px;}
+  .ch-inner{max-width:100%;}
+  .ch-head-content h2{font-size:17px;}
+  .ch-head-content p{font-size:12px;}
+  .key{padding:14px 16px;}
+  .key p{font-size:13px;}
+  .card-row{grid-template-columns:1fr;}
+  .mistake-grid{grid-template-columns:1fr;}
+  .d-row{flex-direction:column;}
+  .d-box{width:100%;flex:none;min-width:unset;}
+  .diagram{padding:16px;}
+  .step{grid-template-columns:40px 1fr;}
+  .step-b{padding:14px 14px;}
+  .step-n{font-size:16px;}
+  .src{flex-direction:column;gap:8px;padding:14px 16px;}
+  .callout{font-size:12px;padding:12px 14px;}
+  .summary{padding:20px 18px;border-radius:2px;}
+  .summary h3{font-size:14px;}
+  .summary ul{font-size:12px;line-height:2;}
+  .cta{padding:20px 18px;border-radius:2px;}
+  .cta h3{font-size:14px;}
+  .page-nav{padding:14px 16px;flex-direction:column;align-items:center;gap:12px;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-logo">PMI学習セット</div>
+  <a class="header-back" href="index.html">← 学習一覧に戻る</a>
+</header>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-bg-num" aria-hidden="true">06</div>
+    <div class="hero-meta">
+      <span class="hero-step">Step 06 of 11</span>
+      <span class="hero-phase">MIDDLE</span>
+    </div>
+    <h1 class="hero-title"><em>財務基礎</em><br>BS・PL・CFを読んで経営を語る</h1>
+    <p class="hero-desc">M&AのDD（デューデリジェンス）に必須。数字で企業の健康状態を語れるようになろう。</p>
+    <div class="hero-divider"></div>
+  </div>
+  <img class="hero-illust" src="https://loosedrawing.com/assets/media/illustrations/png/795.png" alt="本を読む女性のイラスト">
+</section>
+
+<nav class="ch-nav">
+  <ul>
+    <li><a href="#c1">なぜ必要？</a></li>
+    <li><a href="#c2">BS（貸借対照表）</a></li>
+    <li><a href="#c3">PL（損益計算書）</a></li>
+    <li><a href="#c4">CF（キャッシュフロー）</a></li>
+    <li><a href="#c5">分析指標</a></li>
+    <li><a href="#c-link">3表の連動</a></li>
+    <li><a href="#c-val">企業価値評価</a></li>
+    <li><a href="#c-dd">財務DD</a></li>
+    <li><a href="#c6">まとめ</a></li>
+  </ul>
+</nav>
+
+<div class="chapter" id="c1">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 01</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>なぜ財務を学ぶのか</h2></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>財務3表 ＝ 企業の「健康診断表」を読む技術</strong><br>
+      M&Aで企業を買収するとき、まず「この会社は本当に健全か・買う価値があるか」を財務数字で判断する（財務DD）。財務を読めないと会議でついていけず、提案の根拠も作れない。</p>
+    </div>
+    <div class="fin-grid">
+      <div class="fin-card"><div class="fin-head fh-bs">📊 BS（貸借対照表）</div><div class="fin-body"><div class="fin-q">「ある時点での財産・借金の状態」</div><p>決算日時点で「何を持っていて（資産）」「どこから資金を調達したか（負債＋純資産）」を示す。財産のスナップショット。</p></div></div>
+      <div class="fin-card"><div class="fin-head fh-pl">💰 PL（損益計算書）</div><div class="fin-body"><div class="fin-q">「一定期間の稼ぎと使い方」</div><p>1年間で「いくら売って（売上）」「いくら使って（費用）」「いくら儲けたか（利益）」を示す。会社の成績表。</p></div></div>
+      <div class="fin-card"><div class="fin-head fh-cf">💸 CF（キャッシュフロー）</div><div class="fin-body"><div class="fin-q">「現金がどう動いたか」</div><p>1年間で「現金がいくら入ってきて・出ていったか」を示す。PLの利益と現金は別物。黒字倒産を見抜く鍵。</p></div></div>
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>金融庁「財務諸表等の用語、様式及び作成方法に関する規則」（財規）― 財務諸表の法的定義・様式の根拠</cite></li>
+          <li><cite>企業会計基準委員会（ASBJ）「企業会計基準」― 日本の財務諸表作成基準</cite></li>
+          <li><cite>國貞克則『財務3表一体理解法』朝日新書（2007年）― 財務未経験者向けの定番入門書</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c2">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 02</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>BS（貸借対照表）の読み方</h2></div>
+    <p style="font-size:13px;color:#888;margin-bottom:14px;">BSは「左側（資産）＝ 右側（負債＋純資産）」が必ず一致する。だから Balance Sheet。</p>
+    <div class="bs-grid">
+      <div class="bs-assets">
+        <h5>【左側】資産（Assets）</h5>
+        <div class="bs-item"><span>流動資産（現金・売掛金）</span><span style="color:#1E40AF;font-weight:700;">5,000万</span></div>
+        <div class="bs-item"><span>固定資産（建物・機械）</span><span style="color:#1E40AF;font-weight:700;">8,000万</span></div>
+        <div class="bs-item" style="font-weight:700;border-top:1px solid #BFDBFE;margin-top:4px;padding-top:4px;"><span>資産合計</span><span style="color:#1E40AF;">1.3億</span></div>
+        <p style="font-size:10px;color:#3B82F6;margin-top:6px;">「会社が持っているもの」</p>
+      </div>
+      <div class="bs-right">
+        <div class="bs-liab">
+          <h5>【右上】負債（Liabilities）</h5>
+          <div class="bs-item"><span>流動負債</span><span style="color:#991B1B;font-weight:700;">3,000万</span></div>
+          <div class="bs-item"><span>固定負債</span><span style="color:#991B1B;font-weight:700;">4,000万</span></div>
+          <p style="font-size:10px;color:#DC2626;margin-top:4px;">「他人から借りたお金」</p>
+        </div>
+        <div class="bs-eq">
+          <h5>【右下】純資産（Net Assets）</h5>
+          <div class="bs-item"><span>資本金・利益剰余金</span><span style="color:#166534;font-weight:700;">6,000万</span></div>
+          <p style="font-size:10px;color:#059669;margin-top:4px;">「自己資本（自分のお金）」</p>
+        </div>
+      </div>
+    </div>
+    <div class="callout callout-warn">
+      <strong>⚠️ M&Aで最重要チェックポイント：負債の中身</strong>
+      買収すると負債も引き継ぐ。「隠れた負債（未払残業代・訴訟リスク・保証債務）」がないかDDで徹底確認する。これを見落とすと買収後に大きな損失が発生する。
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c3">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 03</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>PL（損益計算書）の読み方</h2></div>
+    <div class="pl-table">
+      <h4>損益計算書の構造（簡易版）</h4>
+      <div class="pl-row"><span class="pl-label">売上高（Revenue）</span><span class="pl-pos">1億円</span></div>
+      <div class="pl-row"><span class="pl-label">▲ 売上原価（仕入れ・製造コスト）</span><span class="pl-neg">▲6,000万</span></div>
+      <div class="pl-row pl-sub"><span class="pl-label">＝ 売上総利益（粗利）</span><span style="color:#1E40AF;font-weight:700;">4,000万</span></div>
+      <div class="pl-row"><span class="pl-label">▲ 販管費（人件費・広告費など）</span><span class="pl-neg">▲2,500万</span></div>
+      <div class="pl-row pl-sub"><span class="pl-label">＝ 営業利益（本業の稼ぎ）★最重要</span><span style="color:#1E40AF;font-weight:700;">1,500万</span></div>
+      <div class="pl-row"><span class="pl-label">± 営業外損益（利息・為替）</span><span class="pl-neg">▲200万</span></div>
+      <div class="pl-row"><span class="pl-label">▲ 法人税等</span><span class="pl-neg">▲400万</span></div>
+      <div class="pl-row pl-res"><span class="pl-label">＝ 当期純利益（最終利益）</span><span style="color:#92400E;font-weight:700;">900万</span></div>
+    </div>
+    <div class="callout callout-tip">
+      <strong>M&Aで注目する「EBITDA（イービットダー）」</strong>
+      EBITDA ＝ 営業利益 ＋ 減価償却費。企業の「実力ベースの稼ぐ力」を示す最重要指標。M&A総合研究所調査によると、中小企業M&Aでは「EBITDAの5〜8倍」が相場とされる。
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c4">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 04</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>CF（キャッシュフロー）の読み方</h2></div>
+    <p style="font-size:13px;color:#888;margin-bottom:14px;">PLで利益が出ていても手元に現金がなければ倒産する（黒字倒産）。CFは「実際の現金の動き」を示す。</p>
+    <div class="cf-grid">
+      <div class="cf-card cf-op"><h4>営業CF（本業の現金）</h4><p>本業から生まれる現金。<strong>プラスが理想。</strong>「本業で稼げているか」の最重要指標。</p></div>
+      <div class="cf-card cf-in"><h4>投資CF（設備投資）</h4><p>機械・工場・M&Aへの投資。<strong>通常マイナス。</strong>大きなマイナスは積極投資の証。</p></div>
+      <div class="cf-card cf-fi"><h4>財務CF（借入・返済）</h4><p>借入・返済・株式発行。<strong>プラス＝借入増。</strong>健全企業はマイナス（返済中）。</p></div>
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>M&A総合研究所「中小企業M&Aの実態調査」（2023年）― EBITDAバリュエーション倍率の相場データ</cite></li>
+          <li><cite>中小企業庁「中小企業の事業承継に関する調査」（2022年）― 後継者不在企業の財務状況に関するデータ</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c5">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 05</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>M&Aで使う主要分析指標</h2></div>
+    <div class="ratio-grid">
+      <div class="ratio-card"><h4>粗利率（売上総利益率）</h4><div class="ratio-formula">粗利 ÷ 売上高 × 100</div><p>本業の稼ぐ力。30%以上が一般的に良好（業種により異なる）。</p></div>
+      <div class="ratio-card"><h4>営業利益率</h4><div class="ratio-formula">営業利益 ÷ 売上高 × 100</div><p>販管費込みの本業収益力。製造業5%・サービス業10%が目安（出典：中小企業庁）。</p></div>
+      <div class="ratio-card"><h4>自己資本比率</h4><div class="ratio-formula">純資産 ÷ 総資産 × 100</div><p>財務健全性。40%以上が優良。低いほど借金依存で倒産リスク高。</p></div>
+      <div class="ratio-card"><h4>有利子負債倍率（Debt/EBITDA）</h4><div class="ratio-formula">有利子負債 ÷ EBITDA</div><p>借金返済能力。3倍以下が健全。10倍超は過剰債務の警戒域。</p></div>
+      <div class="ratio-card"><h4>EV/EBITDA倍率</h4><div class="ratio-formula">企業価値（EV） ÷ EBITDA</div><p>M&Aの買収価格の目安。中小企業では5〜8倍が多い。低いほど割安。</p></div>
+      <div class="ratio-card"><h4>流動比率</h4><div class="ratio-formula">流動資産 ÷ 流動負債 × 100</div><p>短期の支払い能力。200%以上が理想。100%を下回ると危険シグナル。</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c-link">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 06</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>財務3表の連動を理解する</h2><p>バラバラに読むな ― 「つながり」で読むと企業の全体像が見える</p></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>3表は1つのストーリー</strong><br>
+      BS・PL・CFは別々の表ではなく、同じ会社の1年間を3つの視点で見た表。1つの取引が必ず3表全てに影響する。これを理解すると「粉飾決算」も見抜けるようになる。</p>
+    </div>
+    <div style="border:1px solid #E8E5E0;border-radius:2px;padding:20px;background:#fff;margin:14px 0;">
+      <p style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:16px;">連動の仕組み</p>
+      <div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;align-items:start;overflow-x:auto;">
+        <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:2px;padding:14px;min-width:130px;">
+          <p style="font-size:11px;font-weight:800;color:#1E40AF;margin-bottom:8px;">📊 BS（貸借対照表）</p>
+          <p style="font-size:11px;color:#555;line-height:1.7;">・当期純利益 → 利益剰余金（純資産）を増やす<br>・固定資産 → 減価償却でCFと連動<br>・売掛金・棚卸資産 → 運転資本の変化</p>
+        </div>
+        <div style="display:flex;align-items:center;padding:0 8px;color:#BBBBBB;font-size:20px;">⇄</div>
+        <div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:2px;padding:14px;min-width:130px;">
+          <p style="font-size:11px;font-weight:800;color:#15803D;margin-bottom:8px;">💰 PL（損益計算書）</p>
+          <p style="font-size:11px;color:#555;line-height:1.7;">・純利益 → BSの純資産増加<br>・減価償却費 → PLはマイナスだが現金出ない → CFで加算<br>・売上 → 売掛金（BS流動資産）増加</p>
+        </div>
+        <div style="display:flex;align-items:center;padding:0 8px;color:#BBBBBB;font-size:20px;">⇄</div>
+        <div style="background:#FAF5FF;border:1px solid #D8B4FE;border-radius:2px;padding:14px;min-width:130px;">
+          <p style="font-size:11px;font-weight:800;color:#7C3AED;margin-bottom:8px;">💸 CF（キャッシュフロー）</p>
+          <p style="font-size:11px;color:#555;line-height:1.7;">・営業CF ＝ 純利益 ＋ 減価償却 ± 運転資本変動<br>・投資CF ＝ 設備投資（BS固定資産増）<br>・財務CF ＝ 借入（BS負債増）・返済</p>
+        </div>
+      </div>
+    </div>
+    <div class="callout callout-warn">
+      <strong>⚠️ 「黒字倒産」が起きる理由 ― PLとCFの乖離</strong>
+      PLで利益が出ていても、売上を回収できていない（売掛金が積み上がる）と手元現金がなくなる。「PL黒字・CF赤字」＝黒字倒産の典型パターン。M&AのDDではPLだけでなく必ずCFも確認する。
+    </div>
+    <div class="callout callout-tip">
+      <strong>実務での読み順：PL → CF → BS の順で読む</strong>
+      ①PLで「稼いでいるか」確認 → ②CFで「現金が追いついているか」確認 → ③BSで「財産と借金のバランスは健全か」確認。この順番が最も実態を把握しやすい。
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c-val">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 07</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>企業価値評価の3手法</h2><p>「この会社をいくらで買うか」を決める方法論</p></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>企業価値評価（バリュエーション）＝ M&Aの値付けの根拠</strong><br>
+      「直感や相場感」ではなく、財務データに基づいて論理的に算定する。3つの手法を知り、場面に応じて使い分ける。</p>
+    </div>
+    <div class="ratio-grid">
+      <div class="ratio-card" style="border-top:3px solid #1D4ED8;">
+        <h4>① 純資産法（簿価法）</h4>
+        <div class="ratio-formula">企業価値 ≒ BS上の純資産額</div>
+        <p style="font-size:12px;color:#888;line-height:1.7;margin-top:6px;"><strong>特徴：</strong>計算が最も簡単。資産を時価に修正した「修正純資産法」もある。<br><strong>欠点：</strong>将来の稼ぐ力（収益力）が反映されない。<br><strong>使用場面：</strong>清算・廃業時・会社の解散価値の下限算定</p>
+      </div>
+      <div class="ratio-card" style="border-top:3px solid #059669;">
+        <h4>② 倍数法（マルチプル法）</h4>
+        <div class="ratio-formula">企業価値 ＝ EBITDA × 5〜8倍<br><span style="font-size:10px;color:#888;">（中小M&A相場。業種・成長性で変動）</span></div>
+        <p style="font-size:12px;color:#888;line-height:1.7;margin-top:6px;"><strong>特徴：</strong>市場での取引事例を元にした実績値ベース。実務で最もよく使われる。<br><strong>欠点：</strong>業種・規模・時期の違いで倍率に幅がある。<br><strong>使用場面：</strong>中小M&Aの価格交渉・相場感の確認</p>
+      </div>
+      <div class="ratio-card" style="border-top:3px solid #7C3AED;">
+        <h4>③ DCF法（割引キャッシュフロー法）</h4>
+        <div class="ratio-formula">企業価値 ＝ 将来FCFの現在価値の合計</div>
+        <p style="font-size:12px;color:#888;line-height:1.7;margin-top:6px;"><strong>特徴：</strong>理論的に最も正確。将来の稼ぐ力を今の価値に換算する。<br><strong>欠点：</strong>将来予測の前提次第で結果が大きく変わる（「ゴミin・ゴミout」問題）。<br><strong>使用場面：</strong>上場企業M&A・大型案件・投資判断</p>
+      </div>
+    </div>
+    <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:2px;padding:16px;margin-top:8px;">
+      <p style="font-size:12px;font-weight:700;color:#92400E;margin-bottom:8px;">📌 DCF法の「現在価値」という考え方（基礎）</p>
+      <p style="font-size:12px;color:#555;line-height:1.8;">「今日の100万円」＞「3年後の100万円」。なぜなら今日の100万円は3年間運用できるから。これを「貨幣の時間的価値」という。DCF法では将来のキャッシュフローを「割引率（WACC等）」で割り引いて現在価値に換算する。<br>例：毎年1,000万円のFCFが5年続く会社を割引率10%で評価 → 合計現在価値 ≒ 3,791万円</p>
+    </div>
+    <div class="callout callout-tip">
+      <strong>実務では3手法を「クロスチェック」として使う</strong>
+      倍数法で出た価格をDCF法で検証し、純資産法で下限を確認する。3つが近い値なら信頼性が高い。大きくズレる場合は「なぜズレるか」を分析することで企業の本質が見えてくる。
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>M&A総合研究所「中小企業M&Aのバリュエーション実務」（2023年）― 倍数法の相場データ・業種別EBITDAマルチプルの根拠</cite></li>
+          <li><cite>Damodaran, A. "Investment Valuation" 3rd Ed. (2012, Wiley) ― DCF法の理論的基礎。NYUダモダラン教授の定番テキスト</cite></li>
+          <li><cite>中小企業庁「中小M&Aガイドライン」（2020年）― 中小企業M&Aにおける価格決定の実務フロー</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c-dd">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 08</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>財務DDチェックリスト</h2><p>買収前に「絶対に見落としてはいけない」財務の確認項目</p></div>
+    <div class="callout callout-warn">
+      <strong>⚠️ 財務DDを怠ると「買ってから後悔」する</strong>
+      M&Aで最も多い失敗の1つが「買収後に隠れた問題が発覚」。財務DDで見抜けなかったリスクは全て買収側が引き継ぐ。コンサルとして必ずチェックすべき項目を覚える。
+    </div>
+    <div class="fin-grid" style="grid-template-columns:1fr 1fr;">
+      <div class="fin-card">
+        <div class="fin-head fh-pl">📊 PLで見るべきポイント</div>
+        <div class="fin-body">
+          <p style="font-size:12px;line-height:1.9;color:#444;">
+            ✅ <strong>売上の構造：</strong>特定顧客への依存度が高くないか（上位3社で50%超は要注意）<br>
+            ✅ <strong>一時的な利益：</strong>資産売却益など「本業以外の利益」が混じっていないか<br>
+            ✅ <strong>費用の中身：</strong>役員報酬が異常に高くないか（PMI後に減少する可能性）<br>
+            ✅ <strong>売上の季節性：</strong>特定月に売上が集中していないか<br>
+            ⚠️ <strong>赤信号：</strong>売上は増加しているのに利益率が下がっている
+          </p>
+        </div>
+      </div>
+      <div class="fin-card">
+        <div class="fin-head fh-bs">📋 BSで見るべきポイント</div>
+        <div class="fin-body">
+          <p style="font-size:12px;line-height:1.9;color:#444;">
+            ✅ <strong>売掛金の回収期間：</strong>売上に比べて売掛金が急増していないか<br>
+            ✅ <strong>在庫の回転率：</strong>不良在庫・陳腐化した在庫が積み上がっていないか<br>
+            ✅ <strong>隠れた負債①：</strong>未払残業代・退職給付引当金の計上漏れ<br>
+            ✅ <strong>隠れた負債②：</strong>保証債務・訴訟リスク・連帯保証<br>
+            ⚠️ <strong>赤信号：</strong>固定資産が異常に多い（不稼働資産の可能性）
+          </p>
+        </div>
+      </div>
+      <div class="fin-card">
+        <div class="fin-head fh-cf">💸 CFで見るべきポイント</div>
+        <div class="fin-body">
+          <p style="font-size:12px;line-height:1.9;color:#444;">
+            ✅ <strong>営業CFがプラスか：</strong>3期連続でマイナスなら本業での稼ぎがない<br>
+            ✅ <strong>PLとCFの乖離：</strong>利益が出ているのに現金が減っていないか<br>
+            ✅ <strong>借入への依存：</strong>財務CFのプラスが続く＝借入で資金繰り<br>
+            ⚠️ <strong>赤信号：</strong>営業CF ＜ 0 かつ 財務CF ＞ 0（借りながら経営）
+          </p>
+        </div>
+      </div>
+      <div class="fin-card" style="border-top:3px solid #DC2626;">
+        <div class="fin-head" style="background:#DC2626;">🚨 粉飾・不正のサイン</div>
+        <div class="fin-body">
+          <p style="font-size:12px;line-height:1.9;color:#444;">
+            🚨 <strong>循環取引：</strong>関連会社との取引で売上が水増しされていないか<br>
+            🚨 <strong>在庫の急増：</strong>決算期末に在庫が不自然に増加<br>
+            🚨 <strong>売掛金の急増：</strong>回収できない売上が計上されている可能性<br>
+            🚨 <strong>監査法人交代：</strong>頻繁な交代は財務報告への不信のサイン<br>
+            → 見抜けない場合は<strong>外部の公認会計士を必ず活用する</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>日本公認会計士協会「財務デューデリジェンスの実務指針」― 財務DDの標準チェックリストの根拠</cite></li>
+          <li><cite>中小企業庁「中小PMIガイドライン」（2022年）― PMI後に発覚する財務リスクの類型と対策</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c6">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 09</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>まとめ</h2></div>
+    <div class="summary">
+      <div class="summary-label">Summary</div>
+      <h3>財務基礎 ― 3行まとめ</h3>
+      <ul>
+        <li>財務3表：BS（財産の状態）・PL（稼ぎと費用）・CF（現金の動き）の3セットで企業を診断する</li>
+        <li>M&AのDDでは「PL→営業利益率・粗利率」「BS→自己資本比率・隠れ負債」「CF→営業CFのプラス」をチェック</li>
+        <li>EBITDA＝企業の実力ベースの稼ぐ力。買収価格算定（EV/EBITDA倍率）の基礎数値</li>
+      </ul>
+    </div>
+    <div style="height:20px;"></div>
+    <div class="cta">
+      <h3>財務を数字で語れるようになろう</h3>
+      <p>項目識別・計算問題・財務3表の繋がり・M&A文脈での財務分析まで20問。</p>
+      <a href="練習_財務基礎.html">財務基礎 練習問題を解く（20問）→</a>
+    </div>
+  </div>
+</div>
+
+<nav class="page-nav">
+  <a href="学習_SWOT分析.html">← SWOT分析</a>
+  <a href="学習_PEST分析.html">次：PEST分析 →</a>
+</nav>
+</body>
+</html>

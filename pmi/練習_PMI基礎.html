@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PMI基礎 練習問題 20問</title>
+<style>
+:root{--primary:#0f766e;--accent:#1a3a5c;--accent2:#2ca8c2;--light:#f4f7fb;--dark:#0f1f30;--gray:#6b7a8d;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--light);color:var(--dark);line-height:1.7;}
+.hero{background:linear-gradient(135deg,#0f1f30,#0f766e,#1a3a5c);color:white;padding:40px 20px 32px;text-align:center;}
+.hero h1{font-size:clamp(20px,4vw,30px);font-weight:800;margin-bottom:8px;}
+.hero p{font-size:13px;opacity:.8;margin-bottom:16px;}
+.progress-wrap{background:rgba(255,255,255,.15);border-radius:20px;height:10px;max-width:400px;margin:0 auto 8px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,#5eead4,#2ca8c2);border-radius:20px;transition:width .4s;width:0%;}
+.progress-text{font-size:12px;opacity:.8;}
+.stats-row{display:flex;gap:16px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:8px 16px;text-align:center;}
+.stat .v{font-size:20px;font-weight:800;color:#fde68a;line-height:1;}
+.stat .l{font-size:10px;opacity:.75;}
+.container{max-width:800px;margin:0 auto;padding:20px;}
+.lecture{background:white;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.08);border-left:5px solid var(--primary);}
+.lecture h2{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:10px;}
+.lecture p{font-size:13px;color:var(--gray);margin-bottom:8px;}
+.phase-flow{display:flex;gap:0;margin:12px 0;overflow-x:auto;}
+.phase-box{flex:1;min-width:100px;padding:10px 8px;font-size:11px;text-align:center;border-right:2px solid white;}
+.ph1{background:#1d4ed8;color:white;}
+.ph2{background:#0f766e;color:white;}
+.ph3{background:#7c3aed;color:white;}
+.ph4{background:#d97706;color:white;}
+.phase-box h4{font-size:12px;font-weight:700;margin-bottom:4px;}
+.pmi-100{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0;}
+@media(max-width:500px){.pmi-100{grid-template-columns:1fr;}}
+.d1{background:#dbeafe;border-radius:10px;padding:12px;font-size:11px;}
+.d30{background:#dcfce7;border-radius:10px;padding:12px;font-size:11px;}
+.d100{background:#fef3c7;border-radius:10px;padding:12px;font-size:11px;}
+.d1 h4{color:#1d4ed8;font-size:12px;font-weight:700;margin-bottom:4px;}
+.d30 h4{color:#166534;font-size:12px;font-weight:700;margin-bottom:4px;}
+.d100 h4{color:#92400e;font-size:12px;font-weight:700;margin-bottom:4px;}
+.warn{background:#fff8f0;border-left:3px solid #e85d26;border-radius:0 8px 8px 0;padding:10px 14px;font-size:12px;color:#92400e;margin-top:10px;}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2px;color:white;display:inline-block;padding:4px 14px;border-radius:20px;margin:16px 0 12px;}
+.sl-basic{background:#16a34a;}
+.sl-mid{background:#0369a1;}
+.sl-adv{background:#7c3aed;}
+.qcard{background:white;border-radius:14px;padding:20px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);}
+.qtop{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.qnum{background:var(--primary);color:white;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;}
+.qtype{font-size:11px;color:var(--gray);font-weight:600;}
+.qlv{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.qlv.basic{background:#dcfce7;color:#166534;}
+.qlv.mid{background:#dbeafe;color:#1e40af;}
+.qlv.adv{background:#fce7f3;color:#9d174d;}
+.qtext{font-size:14px;font-weight:600;margin-bottom:10px;line-height:1.6;}
+.qsub{font-size:12px;color:var(--gray);margin-bottom:10px;line-height:1.7;}
+.choices{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.ch{text-align:left;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;background:white;cursor:pointer;font-size:13px;font-family:inherit;transition:all .2s;}
+.ch:hover{border-color:var(--accent2);background:#f0f9ff;}
+.ch.correct{border-color:#16a34a;background:#f0fdf4;color:#166534;font-weight:700;}
+.ch.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626;}
+.ch:disabled{cursor:default;}
+.ans{display:none;margin-top:12px;}
+.ans-inner{background:linear-gradient(135deg,#f0fdfa,#f0f9ff);border-radius:10px;padding:16px;border:1px solid #99f6e4;}
+.ans-result{font-size:14px;font-weight:700;color:#0f766e;margin-bottom:8px;}
+.ans-exp{font-size:13px;color:var(--dark);margin-bottom:10px;line-height:1.6;}
+.tip{background:white;border-radius:8px;padding:10px 14px;font-size:12px;color:#0369a1;border-left:3px solid var(--accent2);}
+.tip strong{display:block;margin-bottom:3px;}
+.revbtn{background:var(--primary);color:white;border:none;border-radius:20px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:10px;}
+.revbtn:hover{background:var(--accent);}
+.revbtn.revealed{background:var(--gray);}
+.score-board{background:white;border-radius:14px;padding:16px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:center;}
+.case-box{background:#f0fdfa;border:1px solid #99f6e4;border-radius:10px;padding:16px;font-size:13px;margin-bottom:12px;line-height:1.8;}
+.case-box h4{font-weight:700;color:#0f766e;margin-bottom:8px;}
+.nav-bar{background:#0f1f30;padding:14px 20px;text-align:center;margin-top:20px;}
+.nav-bar a{color:#a5f3fc;text-decoration:none;font-size:12px;font-weight:600;margin:0 10px;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .hero{padding:28px 14px 20px;}
+  .hero h1{font-size:clamp(18px,5vw,26px);}
+  .container{padding:12px;}
+  .qcard{padding:16px;border-radius:10px;}
+  .qtext{font-size:13px;}
+  .ch{font-size:12px;padding:10px 12px;}
+  .ans-inner{padding:14px;}
+  .ans-exp{font-size:12px;}
+  .tip{font-size:11px;}
+  .lecture{padding:16px;border-radius:10px;}
+  .lecture h2{font-size:14px;}
+  .lecture p,.lecture .warn{font-size:12px;}
+  .nav-bar{padding:12px 14px;}
+  .nav-bar a{font-size:11px;margin:0 6px;}
+  .stats-row{gap:10px;}
+  .stat{padding:6px 12px;}
+  .stat .v{font-size:18px;}
+}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>🤝 PMI基礎 練習問題</h1>
+  <p>M&A後の統合プロセスを動かす実践知識を身につける — 当社の本業</p>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-text" id="progressText">0 / 20 問 回答済み</div>
+  <div class="stats-row">
+    <div class="stat"><div class="v">20</div><div class="l">問</div></div>
+    <div class="stat"><div class="v">60</div><div class="l">分目安</div></div>
+    <div class="stat"><div class="v" id="scoreDisp">0</div><div class="l">正解（選択問題）</div></div>
+  </div>
+</div>
+
+<div class="container">
+<div class="lecture">
+  <h2>📖 PMIとは？（5分で読む）</h2>
+  <p><strong>PMI（Post Merger Integration）</strong>＝ M&A後の統合プロセス。買収契約が締結してからが本当の仕事。「なぜM&Aの7割が期待したシナジーを得られないか」→ PMIの失敗が最大の原因。</p>
+  <div class="phase-flow">
+    <div class="phase-box ph1"><h4>DD前</h4>ソーシング・交渉・LOI</div>
+    <div class="phase-box ph2"><h4>DD</h4>デューデリジェンス（財務・法務・事業）</div>
+    <div class="phase-box ph3"><h4>クロージング</h4>契約締結・所有権移転</div>
+    <div class="phase-box ph4"><h4>★PMI</h4>Day1〜100日〜1年〜3年の統合実行</div>
+  </div>
+  <div class="pmi-100">
+    <div class="d1"><h4>Day 1（初日）</h4>・組織・権限の明確化<br>・全従業員への説明<br>・基本業務の継続確保<br>・キーパーソン面談</div>
+    <div class="d30"><h4>Day 1〜30（安定化）</h4>・資金繰り確認<br>・既存顧客への連絡<br>・人事・給与の継続<br>・課題の洗い出し</div>
+    <div class="d100"><h4>Day 30〜100（実行）</h4>・シナジー施策の着手<br>・システム統合計画<br>・組織・文化の融合<br>・KPIの設定・追跡</div>
+  </div>
+  <div class="warn">⚠️ PMIの鉄則：「守る→変える」の順番を守る。Day1〜30は「壊さない・逃がさない・混乱させない」が最優先。改革・変化はDay31以降。焦って変えすぎると従業員が離職し、顧客が逃げる。</div>
+</div>
+
+<div class="score-board">
+  <h3 style="font-size:14px;color:var(--gray);margin-bottom:4px;">選択問題スコア</h3>
+  <span style="font-size:40px;font-weight:900;color:var(--primary)" id="scoreVal">0</span><span style="font-size:18px;color:var(--gray);"> / 10点</span>
+</div>
+
+<div class="section-label sl-basic">SECTION A ― PMIの基本用語・概念（Q1〜Q5）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q1</span><span class="qtype">用語確認</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">以下のPMI用語の意味を答えよ。</p>
+  <p class="qsub">①LOI（Letter of Intent）　②DD（デューデリジェンス）　③クロージング　④Day1　⑤のれん（goodwill）　⑥シナジー　⑦ディスシナジー　⑧ハードインテグレーション</p>
+  <button class="revbtn" onclick="revealAns('a1',this)">答えを見る ▼</button>
+  <div class="ans" id="a1"><div class="ans-inner">
+    <div class="ans-result">📝 用語解説</div>
+    <p class="ans-exp">①<strong>LOI：</strong>意向表明書。「この価格・条件で買いたい」という意思を書面で示す（法的拘束力は限定的）<br>②<strong>DD：</strong>買収前の詳細調査。財務・法務・事業・人事などを調べてリスクを確認する<br>③<strong>クロージング：</strong>M&A契約の最終締結。株式の引き渡し・代金支払いが完了する瞬間<br>④<strong>Day1：</strong>クロージング翌日（または当日）。新体制の初日。最も重要な日<br>⑤<strong>のれん：</strong>純資産より高い価格で買収した際の差額（ブランド・顧客・技術などの無形価値）<br>⑥<strong>シナジー：</strong>1＋1が3になる効果（コスト削減・売上増加・技術融合など）<br>⑦<strong>ディスシナジー：</strong>1＋1が1.5になる逆効果（文化衝突・混乱・生産性低下など）<br>⑧<strong>ハードインテグレーション：</strong>システム・設備・組織体制など「目に見える」統合（ソフトインテグレーション＝文化・価値観の融合と対になる）</p>
+    <div class="tip"><strong>💼 実務メモ</strong>これらの用語は、PMI Manager の画面・資料・顧客との会話で毎日登場する。「Day1の準備できてますか？」「シナジー目標は設定しましたか？」という会話が自然にできるようになることが最初のゴール。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q2</span><span class="qtype">選択問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">「M&Aの約7割がシナジーを十分に得られない」と言われる最大の理由はどれか？</p>
+  <div class="choices" id="ch2">
+    <button class="ch" onclick="checkMCQ(this,'ch2','a2',false)">A）買収価格が高すぎたから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch2','a2',false)">B）DDが不十分だったから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch2','a2',true)">C）PMI（統合実行）の計画・実行が不十分で、人材・文化・オペレーションの統合が失敗したから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch2','a2',false)">D）市場環境が悪化したから</button>
+  </div>
+  <div class="ans" id="a2"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：C</div>
+    <p class="ans-exp">M&A失敗研究によると、財務・法務のDDは改善されてきたが「人・文化・オペレーション」という「ソフト面の統合（PMI）」が後回しにされることが最大の失敗原因。「契約締結がゴール」という誤解が問題。契約はスタートラインにすぎない。</p>
+    <div class="tip"><strong>💼 当社のビジネス機会</strong>この「7割が失敗」というデータがPMI Manager の存在理由。PMI Manager + コンサル伴走で「失敗率を下げる」ことが当社の社会的使命。これを理解すると仕事への意義が生まれる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q3</span><span class="qtype">選択問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">「ソフトインテグレーション」と「ハードインテグレーション」のうち、PMIで「より難しく時間がかかる」のはどちらか？</p>
+  <div class="choices" id="ch3">
+    <button class="ch" onclick="checkMCQ(this,'ch3','a3',false)">A）ハードインテグレーション（システム・設備の統合）</button>
+    <button class="ch" onclick="checkMCQ(this,'ch3','a3',true)">B）ソフトインテグレーション（文化・価値観・人心の統合）</button>
+    <button class="ch" onclick="checkMCQ(this,'ch3','a3',false)">C）どちらも同じ難しさ</button>
+    <button class="ch" onclick="checkMCQ(this,'ch3','a3',false)">D）ハードは難しいがソフトは自然に解決する</button>
+  </div>
+  <div class="ans" id="a3"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">システム統合は難しいが「予算と時間があれば実現できる」。しかし「文化の融合・従業員の心理的統合」は数年かかり、失敗すると離職・生産性低下・顧客離れという取り返しのつかない損害を生む。PMIの「人」の問題が最も根深い課題。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>ADKARモデルはソフトインテグレーションのための変革マネジメント手法。Awareness（認識）・Desire（意欲）・Knowledge（知識）・Ability（能力）・Reinforcement（定着）の5段階で人の変化を支援する。PMIの「人」課題にはこれを使う。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q4</span><span class="qtype">選択問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">「100日プラン」がPMIで重要視される理由はどれか？</p>
+  <div class="choices" id="ch4">
+    <button class="ch" onclick="checkMCQ(this,'ch4','a4',false)">A）100日は法律で定められた統合期間だから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch4','a4',true)">B）M&A直後の100日間が「統合の成否を決める最重要期間」であり、この期間の行動が長期的なシナジー実現を左右するから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch4','a4',false)">C）100日で全ての統合が完了するから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch4','a4',false)">D）銀行の融資条件に100日計画の提出が必要だから</button>
+  </div>
+  <div class="ans" id="a4"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">買収直後の「100日間」は：①従業員が最も不安で「去るか残るか」を判断する時期、②顧客が「このM&Aで品質が変わるか」を観察する時期、③競合が「M&Aで混乱している間に攻める」チャンスを狙う時期。この3つのリスクを管理するための構造的な計画が「100日プラン」。</p>
+    <div class="tip"><strong>💼 PMI Manager の核心</strong>PMI Managerのメイン機能は「100日プラン管理」。Day1チェックリスト・ガントチャート・進捗ダッシュボードが全てこの100日プランを支援するために設計されている。入社してすぐPMI Managerのβ版を触り、「100日プランの流れ」を体で理解することが最優先課題。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q5</span><span class="qtype">選択問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">中小企業庁が定める「中小PMIガイドライン」が推奨する「PMIを成功させる最重要要素」はどれか？</p>
+  <div class="choices" id="ch5">
+    <button class="ch" onclick="checkMCQ(this,'ch5','a5',false)">A）できる限り早くシステムを統合すること</button>
+    <button class="ch" onclick="checkMCQ(this,'ch5','a5',true)">B）経営者・従業員へのコミュニケーションを丁寧に行い、変化への「納得感」を醸成すること</button>
+    <button class="ch" onclick="checkMCQ(this,'ch5','a5',false)">C）買収後すぐに組織再編を断行すること</button>
+    <button class="ch" onclick="checkMCQ(this,'ch5','a5',false)">D）PMIコンサルタントに全て任せること</button>
+  </div>
+  <div class="ans" id="a5"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">中小企業庁のPMIガイドラインでは「経営者と従業員への丁寧なコミュニケーション」が最重要要素として位置づけられている。特に中小企業は「人との関係性・信頼」が会社の価値の多くを占める。一方的な通告・急激な変化が従業員の不安・反発を招き、PMI失敗の最大要因になる。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>中小PMIガイドラインは無料でダウンロード可能（中小企業庁サイト）。当社のPMI Managerはこのガイドラインに準拠した設計になっている。入社後まず全文読むことを強く推奨。</div>
+  </div></div>
+</div>
+
+<div class="section-label sl-mid">SECTION B ― 100日プランの設計（Q6〜Q10）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q6</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">PMIのDay1（M&A成立初日）に絶対にやるべきことの優先順位として正しいのはどれか？</p>
+  <div class="choices" id="ch6">
+    <button class="ch" onclick="checkMCQ(this,'ch6','a6',false)">A）新しい社名・ロゴへの変更を告知する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch6','a6',true)">B）全従業員への説明（雇用継続・役割・今後の見通し）、キーパーソンの面談、基本業務の継続確認</button>
+    <button class="ch" onclick="checkMCQ(this,'ch6','a6',false)">C）2社のシステムを統合する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch6','a6',false)">D）余剰人員の整理計画を発表する</button>
+  </div>
+  <div class="ans" id="a6"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">Day1の最優先事項は「人の不安を取り除くこと」。「仕事はどうなるか・給料は変わるか・誰が決定権を持つか」を明確にしないまま時間が経つほど、優秀な人材が転職先を探し始める。逆にAやCやDは従業員に「変化への恐怖」を与えるためDay1では避けるべき。</p>
+    <div class="tip"><strong>💼 PMI Manager活用</strong>Day1チェックリスト（PMI Manager機能）の最上位に来る項目はこれら。「全従業員説明会開催」「キーパーソン面談スケジュール確定」「緊急連絡体制の整備」がテンプレートに含まれる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q7</span><span class="qtype">穴埋め</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">建設業を買収した際の100日プランの優先タスクを、フェーズ別に整理せよ（★を埋める）。</p>
+  <p class="qsub">Day1：★①、全従業員説明会<br>Day1〜30：★②、既存顧客への挨拶訪問、資金繰り確認<br>Day30〜60：シナジー計画の確定、★③<br>Day60〜100：システム統合計画策定、★④</p>
+  <button class="revbtn" onclick="revealAns('a7',this)">答えを見る ▼</button>
+  <div class="ans" id="a7"><div class="ans-inner">
+    <div class="ans-result">📝 解答例</div>
+    <p class="ans-exp">①キーパーソン（現場監督・営業担当）の面談・雇用継続確認<br>②施工中案件の状況確認・引き継ぎ（進行中の工事リスト作成）<br>③新会社の営業体制整備（どのルートで案件を獲得するか）<br>④買収側企業とのクロスセル提案開始（建設+PMIコンサルの連携案件探し）<br><br>業種特有ポイント：建設業はDay1〜30で「施工中案件の状況」と「職人・現場監督との関係」を最優先確認。工事の品質が即顧客信頼に直結するため。</p>
+    <div class="tip"><strong>💼 PMI Manager活用</strong>業種別テンプレート（建設業版）にはこれらのタスクが標準搭載されている。入社後、PMI Managerで建設業テンプレートを実際に開いて「どんなタスクが入っているか」を確認することを推奨。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q8</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">100日プランを作成する際、最も適切なアプローチはどれか？</p>
+  <div class="choices" id="ch8">
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',false)">A）汎用テンプレートをそのまま使い、全企業に同じ計画を適用する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',true)">B）業種・規模・買収目的・DDで判明した課題に応じてカスタマイズした計画を作る</button>
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',false)">C）100日プランは買収後に作成すれば十分</button>
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',false)">D）計画は作らず、現場判断で進める</button>
+  </div>
+  <div class="ans" id="a8"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">製造業・建設業・IT・小売業ではDay1に確認すべき項目が全く異なる。また「コスト削減目的のM&A」と「売上拡大目的のM&A」では優先施策が違う。DDで把握したリスクへの対処も計画に盛り込む必要がある。テンプレートは「出発点」であり、カスタマイズが本質。</p>
+    <div class="tip"><strong>💼 PMI Manager の差別化</strong>業種別テンプレート（製造/建設/IT）が標準提供されていること自体が競合SaaSとの最大の差別化。「汎用テンプレートをカスタマイズする」ことが、コンサルタントとしての付加価値を生む場面でもある。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q9</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">PMI中に「現場の従業員から強い抵抗（反発）」が起きた。最も適切な対処法はどれか？</p>
+  <div class="choices" id="ch9">
+    <button class="ch" onclick="checkMCQ(this,'ch9','a9',false)">A）強権的に決定を押し通す</button>
+    <button class="ch" onclick="checkMCQ(this,'ch9','a9',false)">B）抵抗した従業員を解雇する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch9','a9',true)">C）抵抗の背景にある「不安・懸念・情報不足」を丁寧に聞き取り、それに対して誠実に回答・対処する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch9','a9',false)">D）変化を元に戻して従業員の要求を全部飲む</button>
+  </div>
+  <div class="ans" id="a9"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：C</div>
+    <p class="ans-exp">変革マネジメントの研究では「抵抗は変化への情報不足・不安の表れ」と位置づける。押し通すと地下に潜り（サボタージュ）、解雇すると残った人の恐怖感が増す。「なぜ抵抗しているか」を丁寧に聞いて、ADKARの「Awareness（認識）→Desire（意欲）」のステップを踏むのが正解。</p>
+    <div class="tip"><strong>💼 ADKARの適用</strong>抵抗の種類によって対処が変わる：情報不足なら説明（A/K対応）、利益・損失の懸念なら条件交渉（D対応）、スキル不安なら研修（K/A対応）、過去のトラウマなら継続的な信頼構築（R対応）。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q10</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">「PMIの100日プランで最も見落とされやすい項目」として業界で言われるのはどれか？</p>
+  <div class="choices" id="ch10">
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',false)">A）財務統合（会計システムの統合）</button>
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',true)">B）顧客・取引先へのコミュニケーション（第三者への告知・関係維持）</button>
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',false)">C）組織図の更新</button>
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',false)">D）法人登記の変更</button>
+  </div>
+  <div class="ans" id="a10"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">内部（従業員）への対応に集中するあまり、「顧客・仕入先・取引銀行・地域コミュニティ」への告知・関係維持が後回しになるケースが多い。M&Aを知った顧客が「品質が変わるのでは」と不安になり、競合に流れる「顧客離脱」は最も防ぎにくいリスク。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>PMI Day1〜14で「主要顧客トップ10社への挨拶訪問」を必ず実施する。「変わらない点（サービス品質・担当者）」と「良くなる点（リソース・技術）」を伝えることで顧客離脱を最小化する。これをPMI Managerのタスクとして管理する。</div>
+  </div></div>
+</div>
+
+<div class="section-label sl-adv">SECTION C ― シナジー分析（Q11〜Q15）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q11</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">「コストシナジー」と「売上シナジー」のうち、PMIで「先に着手すべき」はどちらか？その理由も含めて正しい選択肢を選べ。</p>
+  <div class="choices" id="ch11">
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',true)">A）コストシナジーを先に着手する。実現確度が高く、PMI直後の資金効率改善に効果的だから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">B）売上シナジーを先に着手する。こちらの方が金額が大きいから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">C）どちらも同時に着手する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">D）シナジー実現はPMI完了後（1年以降）に考える</button>
+  </div>
+  <div class="ans" id="a11"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：A</div>
+    <p class="ans-exp">コストシナジー（管理部門統合・重複コスト削減）は「何を削減するか」が明確で実現しやすい。売上シナジー（クロスセル・市場拡大）は「顧客の意思決定・信頼構築」が必要で不確実性が高い。PMI後の不安定な時期はまず「確実に達成できるコストシナジー」で早期成果を出し、組織の自信を高めてから売上施策に移行するのがセオリー。</p>
+    <div class="tip"><strong>💼 PMI Manager活用</strong>「コストシナジー先行→売上シナジー後追い」の順番をPMI Managerのシナジー管理タイムラインで設定する。Q1でコスト、Q2〜Q3で売上という計画が標準的。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q12</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">「シナジー目標を数値化する」際に注意すべき点として最も重要なのはどれか？</p>
+  <div class="choices" id="ch12">
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">A）できるだけ大きな数字を設定して意欲を高める</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',true)">B）実現根拠（どのタスクがどう効果をもたらすか）を明示した上で、責任者・期限と合わせて設定する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">C）シナジーは不確実なので数値化しない方がいい</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">D）買収価格の10%という固定値にする</button>
+  </div>
+  <div class="ans" id="a12"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">「3年でシナジー5億円」という抽象的な目標は達成責任が曖昧。「管理部門統合で固定費▲2,000万円（責任：CFO・期限：6ヶ月）」「既存顧客へのクロスセルで売上+1,500万円（責任：営業部長・期限：9ヶ月）」というように「誰が・いつまでに・何をして・いくら」と具体化する。</p>
+    <div class="tip"><strong>💼 PMI Manager活用</strong>シナジー管理機能では「シナジー目標名・金額・期限・担当者・連携タスク」を入力して追跡する。「目標の数値化＋根拠の明示」がPMI Manager入力の基本作法。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q13</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">PMI後にシナジー目標と実績が乖離し始めた。最初に行うべきアクションはどれか？</p>
+  <div class="choices" id="ch13">
+    <button class="ch" onclick="checkMCQ(this,'ch13','a13',false)">A）目標を下方修正して達成可能な数字にする</button>
+    <button class="ch" onclick="checkMCQ(this,'ch13','a13',true)">B）乖離の原因（外部環境変化か・実行問題か・計画の前提が崩れたか）を分析し、対策を打つ</button>
+    <button class="ch" onclick="checkMCQ(this,'ch13','a13',false)">C）担当者を解雇する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch13','a13',false)">D）シナジー管理自体をやめる</button>
+  </div>
+  <div class="ans" id="a13"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">乖離の原因分析がPMIコンサルの腕の見せどころ。原因の分類：①外部要因（市場縮小・競合参入）→ 目標修正が合理的。②実行問題（担当者の力量・リソース不足）→ サポート・追加リソース投入。③計画前提の崩れ（DDで想定した顧客数が違った）→ 計画の根本見直し。どれかを特定してから対処する。</p>
+    <div class="tip"><strong>💼 PMI Manager活用</strong>AIリスク検知機能：KPI目標との乖離が一定以上になると「⚠ シナジー目標の達成リスクが高まっています」というアラートが出る。これが「先回りの打ち手提案」機能として差別化になる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q14</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">「PMIを成功させた」と判断する基準として最も適切なものはどれか？</p>
+  <div class="choices" id="ch14">
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">A）100日プランの全タスクが完了したとき</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">B）システム統合が完了したとき</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',true)">C）当初設定したシナジー目標（財務的・非財務的）が達成され、組織が自立的に動けるようになったとき</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">D）PMIコンサルタントが現場を離れたとき</button>
+  </div>
+  <div class="ans" id="a14"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：C</div>
+    <p class="ans-exp">PMIの最終ゴールは「タスクの完了」ではなく「シナジーの実現」と「組織の自律」。コンサルが抜けても組織が自分で動ける状態になることが真の成功。タスク完了やシステム統合は「手段」であり「目的」ではない。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>当社のPMIコンサルでは「コンサル終了時に組織が自立できているか」を評価する。PMI Manager を顧客が自分で使いこなせるようになることも、コンサル成功の指標の一つ。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q15</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">「文化統合（カルチャーインテグレーション）」を進める際の最大の落とし穴はどれか？</p>
+  <div class="choices" id="ch15">
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">A）統合前に文化分析をしないこと</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',true)">B）買収側の文化を被買収側に一方的に押し付け、被買収側の「良い文化・強み」を消してしまうこと</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">C）統合スピードが遅すぎること</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">D）文化の違いを放置して何もしないこと</button>
+  </div>
+  <div class="ans" id="a15"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">「我が社のやり方に合わせよ」という一方的な押し付けが最大の失敗パターン。被買収企業が長年かけて培った「顧客からの信頼・従業員のチームワーク・独自ノウハウ」は、その企業文化と一体になっていることが多い。文化を壊すと業績の源泉まで失う。「両社の良い文化を合わせた新しい文化を創る」という姿勢が必要。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>特に40〜60年の老舗企業（事業承継M&Aの多くを占める）は「創業者の精神・地域への貢献・職人気質」という独自文化が企業価値の核心。PMIコンサルとして「何を変えてはいけないか」を先に特定することが文化統合の第一歩。</div>
+  </div></div>
+</div>
+
+<div class="section-label sl-adv">SECTION D ― ケーススタディ（Q16〜Q20）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q16</span><span class="qtype">ケーススタディ</span><span class="qlv mid">中級</span></div>
+  <div class="case-box">
+    <h4>ケース：地方の老舗菓子製造会社（創業55年、従業員35名、売上3億円）のPMI</h4>
+    状況：当社が仲介したM&Aで大手食品会社が買収。Day30が経過したが「売上が前年同月比15%減少」「従業員3名が退職」「取引先から不安の声」という報告が入った。
+  </div>
+  <p class="qtext">この状況の「原因分析（Whyツリー）」と「優先すべきPMI対応3つ」を答えよ。</p>
+  <button class="revbtn" onclick="revealAns('a16',this)">答えを見る ▼</button>
+  <div class="ans" id="a16"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答</div>
+    <p class="ans-exp"><strong>原因分析（Whyツリー）：</strong><br>売上15%減↓：①既存顧客の様子見（M&Aで品質が変わるか不安）②営業活動の停滞（M&A対応で営業が後回し）<br>従業員退職：①将来への不安（大手に吸収されて個性が消えるという恐怖）②待遇・役割の変化への懸念<br>取引先不安：①情報開示の遅れ（取引先への説明が不十分）<br><br><strong>優先すべきPMI対応3つ：</strong><br>①<strong>取引先トップ10社に代表者が直接訪問</strong>（1週間以内）：「品質は変わらない・担当者も変わらない・むしろ供給力が向上する」を直接伝える。売上回復の最速手段。<br>②<strong>全従業員との個別面談実施</strong>（2週間以内）：退職理由を聞き「雇用継続・役割・将来のキャリア」を明確に伝える。これ以上の離職を止める。<br>③<strong>老舗ブランドの「変えないもの宣言」を社内外に発信</strong>：「味・製法・地域へのコミットは変えない」というメッセージを明文化して従業員・顧客・地域に発信。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>Day30の時点でこの状況は「早期介入が必要なイエローアラート」。PMI Managerのダッシュボードで「売上KPI：-15%」「離職者数：3名」というアラートが出ていれば、コンサルタントが即座に動ける。これがSaaS×コンサル連携の価値。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q17</span><span class="qtype">ケーススタディ</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">PMI Managerを導入したM&A仲介会社の顧客から「PMI Manager に何を入力すればいいか分からない」というサポート依頼が来た。あなたが初めてカスタマーサクセス（CS）として対応するとき、何から教えるか？順序立てて答えよ。</p>
+  <button class="revbtn" onclick="revealAns('a17',this)">答えを見る ▼</button>
+  <div class="ans" id="a17"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答（CSとしての初回対応）</div>
+    <p class="ans-exp"><strong>Step1：現状把握の質問（5分）</strong><br>「現在M&Aのどのフェーズですか？（クロージング前？後？）」「統合完了まで何ヶ月を想定していますか？」「最も心配している課題は何ですか？（人材？システム？顧客？）」<br><br><strong>Step2：ゴールから逆算（5分）</strong><br>「最終的に達成したいシナジーは何ですか？（数値で）」をまず設定してもらう。ゴールが決まると入力すべき項目が明確になる。<br><br><strong>Step3：業種別テンプレートの案内（10分）</strong><br>「御社の業種はXXですね。XXのテンプレートを使うと、よくある100日プランのタスクが自動で入ります」と案内し、まず1つのワークストリームを一緒に入力する。<br><br><strong>Step4：最初の1週間のタスクだけを設定（10分）</strong><br>完璧に全部入力しようとすると挫折する。「まずDay1〜7のタスクだけ入力しましょう」と範囲を絞って成功体験を作る。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>SaaSのCS（カスタマーサクセス）で最重要なのは「最初の成功体験（First Value）」を作ること。「PMI Manager で100日プランを1本作り終えた」という体験が継続率を高める。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q18</span><span class="qtype">ケーススタディ</span><span class="qlv adv">上級</span></div>
+  <div class="case-box">
+    <h4>ケース：IT系企業（従業員20名、売上2億円）の統合Day60</h4>
+    状況：当社が買収したIT企業のDay60。目標としていた「既存エンジニアの当社SES事業への参画」が進んでいない。エンジニア15名のうち、参画意欲を示しているのは4名のみ。
+  </div>
+  <p class="qtext">ADKARモデルを使って、残り11名の「参画意欲が低い原因」を分析し、対処策を提案せよ。</p>
+  <button class="revbtn" onclick="revealAns('a18',this)">答えを見る ▼</button>
+  <div class="ans" id="a18"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答（ADKAR分析）</div>
+    <p class="ans-exp"><strong>A（Awareness：認識）</strong>：「SES参画で自分にどんなメリットがあるか」を知らない可能性→ 対処：SES事業の案件内容・単価・キャリアアップを具体的に説明する<br><br><strong>D（Desire：意欲）</strong>：知っているが「やりたくない」→ 「今の会社で続けたい」「SESは自分のスタイルと合わない」などの本音がある可能性→ 対処：1on1で本音を聞く。参画形態の柔軟化（副業形式・案件選択権など）を検討<br><br><strong>K（Knowledge：知識）</strong>：「SESでどう働くか」のプロセスを知らない→ 対処：SES案件の具体例・業務内容・先輩エンジニアの話を聞かせる<br><br><strong>A（Ability：能力）</strong>：「自分のスキルでやれるか不安」→ 対処：スキルアセスメント・研修提供・最初はメンター付き案件に参加させる<br><br><strong>R（Reinforcement：定着）</strong>：まず参画した4名の成功体験を発信することで他のメンバーに影響させる</p>
+    <div class="tip"><strong>💼 実務メモ</strong>ADKARは「段階を飛ばせない」モデル。Dが問題なのにKの対策（説明をたくさんする）をしても効果がない。まずヒアリングで「どのステップで詰まっているか」を特定することが先決。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q19</span><span class="qtype">ケーススタディ</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">あなたが担当する製造業（従業員50名）のPMI Day90レビューで、「シナジー目標の達成率：コストシナジー65%・売上シナジー20%」という結果が出た。経営陣へのDay90レポートに何を書くか。①現状評価②原因仮説③残り10日の優先アクションの3点を含めて答えよ。</p>
+  <button class="revbtn" onclick="revealAns('a19',this)">答えを見る ▼</button>
+  <div class="ans" id="a19"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答（Day90レポート）</div>
+    <p class="ans-exp"><strong>①現状評価：</strong>コストシナジー65%は「ほぼ計画通りで軽微な遅延（残りは実行中）」。売上シナジー20%は「計画を大きく下回るレッドアラート」。全体評価：コスト面は概ね順調、売上面は抜本的な対策が必要。<br><br><strong>②原因仮説（売上シナジー20%の要因）：</strong>クロスセル提案が顧客との信頼関係構築前に行われた（早すぎた）可能性。または営業担当者が統合業務で本来の営業活動に割けるリソースが不足している可能性。<br><br><strong>③残り10日の優先アクション：</strong><br>・主要顧客5社への「関係深耕訪問」を即実施し、クロスセルの前段階として信頼関係を確認<br>・営業担当者へのインタビューで「なぜ売上シナジーが遅れているか」の現場声を収集<br>・Day101〜180の売上シナジー計画を修正（現実的な目標・施策に更新）して経営陣に提出</p>
+    <div class="tip"><strong>💼 実務メモ</strong>「悪い結果を正直に報告し、原因と次の手を合わせて伝える」のがコンサルとしてのプロ対応。「問題があった→原因→対策」の3点セットで報告する習慣を入社初日から身につける。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q20</span><span class="qtype">ケーススタディ</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">【最終問題・総合】あなたは当社の新入社員として、初めてPMIコンサル案件（地方の建設会社、売上4億円、従業員60名）にジュニアメンバーとしてアサインされた。先輩から「最初の3ヶ月でどんな価値を出せるか考えてきて」と言われた。MECEとロジックツリーを使いながら、あなたが提供できる価値を整理せよ。</p>
+  <button class="revbtn" onclick="revealAns('a20',this)">答えを見る ▼</button>
+  <div class="ans" id="a20"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答（新入社員としての価値提供）</div>
+    <p class="ans-exp"><strong>MECE整理：自分が提供できる価値の2軸</strong><br>①直接的価値（クライアントへの貢献）<br>②間接的価値（プロジェクト・チームへの貢献）<br><br><strong>Howツリー（直接的価値）：</strong><br>データ・情報収集：業界調査・競合調査・財務データ整理（AIを使って高速化）<br>資料作成：議事録・分析スライド・100日プランのドラフト作成<br>現場観察：顧客へのヒアリング同席で「現場の声」を記録・分析<br>PMI Manager入力：タスク入力・進捗管理・シナジー追跡の日常運用担当<br><br><strong>Howツリー（間接的価値）：</strong><br>AI活用での効率化：Claude APIで業務フロー分析の自動化・議事録要約・レポートドラフト生成<br>新しい視点の提供：コンサル未経験だからこそ「なぜこのやり方か？」という素朴な疑問が、顧客も気づいていない課題を明らかにすることがある<br><br><strong>3ヶ月の成果指標：</strong>担当タスクの完了率100%・AI活用で議事録作成時間を半分に・1つの業務フロー改善提案を自分で行う</p>
+    <div class="tip"><strong>💼 ラストマン精神</strong>「自分は新人だからできることが少ない」という思い込みを捨てる。AIスキルという武器がある。情報収集・資料作成・現場観察という「地味だが重要な作業」を誰よりも丁寧にやることが、チームでの信頼を積み上げる最初のステップ。</div>
+  </div></div>
+</div>
+
+<div style="background:linear-gradient(135deg,#0f1f30,#1a3a5c);border-radius:14px;padding:24px;margin-top:20px;text-align:center;color:white;">
+  <h3 style="font-size:18px;margin-bottom:10px;">🏆 全6フレームワーク 120問 完全制覇！</h3>
+  <p style="font-size:13px;opacity:.85;margin-bottom:16px;">MECE・ロジックツリー・3C・SWOT・財務・PMI — コンサルタントの基礎が全て揃った</p>
+  <a href="フレームワーク練習問題_ハブ.html" style="display:inline-block;background:#e85d26;color:white;text-decoration:none;font-weight:700;font-size:13px;padding:10px 24px;border-radius:20px;margin:4px;">問題集トップへ</a>
+  <a href="成長ロードマップ_新入社員向け.html" style="display:inline-block;background:#16a34a;color:white;text-decoration:none;font-weight:700;font-size:13px;padding:10px 24px;border-radius:20px;margin:4px;">成長ロードマップへ</a>
+</div>
+</div>
+<div class="nav-bar">
+  <a href="練習_財務基礎.html">← 財務基礎</a>
+  <a href="フレームワーク練習問題_ハブ.html">問題集トップ</a>
+  <a href="成長ロードマップ_新入社員向け.html">ロードマップ</a>
+</div>
+<script>
+let answered=0,score=0,mcqAnswered={};
+function revealAns(id,btn){const el=document.getElementById(id);if(el.style.display==='none'||el.style.display===''){el.style.display='block';btn.textContent='閉じる ▲';btn.classList.add('revealed');if(!btn.dataset.counted){btn.dataset.counted='1';answered++;updateProgress();}}else{el.style.display='none';btn.textContent='答えを見る ▼';btn.classList.remove('revealed');}}
+function checkMCQ(btn,chId,ansId,correct){if(mcqAnswered[chId])return;mcqAnswered[chId]=true;const choices=document.getElementById(chId).querySelectorAll('.ch');choices.forEach(c=>{c.disabled=true;if(c.onclick.toString().includes(',true)'))c.classList.add('correct');});if(!correct)btn.classList.add('wrong');document.getElementById(ansId).style.display='block';if(correct){score++;document.getElementById('scoreVal').textContent=score;document.getElementById('scoreDisp').textContent=score;}answered++;updateProgress();}
+function updateProgress(){const pct=Math.min(Math.round(answered/20*100),100);document.getElementById('progressBar').style.width=pct+'%';document.getElementById('progressText').textContent=answered+' / 20 問 回答済み';}
+</script>
+</body>
+</html>

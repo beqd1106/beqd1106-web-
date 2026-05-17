@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ロジックツリー 学習教材｜問題を分解し解決策を設計する</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','BIZ UDGothic','Meiryo',sans-serif;background:#FAFAF8;color:#1A1A1A;line-height:1.75;font-size:15px;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}img{max-width:100%;height:auto;display:block;}
+.site-header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 32px;height:56px;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid #E8E5E0;}
+.header-logo{font-size:12px;font-weight:700;letter-spacing:.5px;}.header-logo span{color:#999;font-weight:400;}
+.header-back{font-size:12px;color:#666;}.header-back:hover{color:#1A1A1A;}
+.hero{min-height:28vh;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;padding:76px 48px 36px;background:#F5F3EE;border-bottom:1px solid #E8E5E0;position:relative;overflow:hidden;}
+@media(max-width:768px){.hero{grid-template-columns:1fr;padding:72px 16px 20px;}.hero-illust{display:none;}}
+.hero-left{position:relative;z-index:1;}
+.hero-bg-num{position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:clamp(120px,18vw,220px);font-weight:900;color:rgba(0,0,0,.04);line-height:1;pointer-events:none;letter-spacing:-10px;}
+.hero-meta{display:flex;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+.hero-step{font-size:10px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;}
+.hero-phase{font-size:10px;font-weight:700;letter-spacing:1px;border:1px solid #16a34a;color:#16a34a;padding:2px 10px;border-radius:100px;}
+.hero-title{font-size:clamp(20px,3vw,36px);font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:16px;}
+.hero-title em{font-style:normal;color:#7c3aed;}
+.hero-desc{font-size:14px;color:#666;max-width:440px;line-height:1.8;}
+.hero-illust{width:clamp(160px,20vw,260px);opacity:.85;flex-shrink:0;}
+.hero-divider{width:40px;height:2px;background:#1A1A1A;margin-top:28px;}
+.ch-nav{background:#fff;position:sticky;top:56px;z-index:50;border-bottom:1px solid #E8E5E0;overflow-x:auto;white-space:nowrap;}
+.ch-nav ul{display:inline-flex;list-style:none;padding:0 32px;}
+.ch-nav li a{display:block;font-size:11px;font-weight:600;color:#999;letter-spacing:.5px;padding:12px 14px;border-bottom:2px solid transparent;transition:all .15s;}
+.ch-nav li a:hover{color:#1A1A1A;border-bottom-color:#1A1A1A;}
+.chapter{padding:56px 48px;}.chapter:nth-child(odd){background:#fff;}.chapter:nth-child(even){background:#FAFAF8;}
+@media(max-width:768px){.chapter{padding:28px 16px;}}
+.ch-inner{max-width:720px;margin:0 auto;}
+.ch-head{margin-bottom:28px;display:flex;align-items:baseline;gap:16px;}
+.ch-num-label{font-size:10px;font-weight:700;letter-spacing:2px;color:#BBBBBB;text-transform:uppercase;white-space:nowrap;}
+.ch-line{flex:1;height:1px;background:#E8E5E0;}
+.ch-head-content{margin-top:12px;}
+.ch-head-content h2{font-size:clamp(18px,3vw,24px);font-weight:800;letter-spacing:-.3px;margin-bottom:5px;}
+.ch-head-content p{font-size:13px;color:#888;}
+.key{background:#F5F3EE;border-left:3px solid #1A1A1A;padding:20px 24px;margin:20px 0;}
+.key-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;margin-bottom:8px;}
+.key p{font-size:14px;line-height:1.8;color:#1A1A1A;}
+.card-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+.card{background:#fff;padding:20px 18px;}
+.card h4{font-size:13px;font-weight:700;margin-bottom:6px;}
+.card p{font-size:12px;color:#888;line-height:1.7;}
+.card ul{padding-left:16px;font-size:12px;color:#888;}.card li{margin-bottom:3px;}
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;overflow:hidden;border-radius:2px;margin:16px 0;}
+@media(max-width:520px){.type-grid{grid-template-columns:1fr;}}
+.type-card-head{padding:14px 18px;color:#fff;font-weight:800;font-size:13px;}
+.th-why{background:#4C1D95;}.th-how{background:#14532D;}
+.type-card-body{background:#fff;padding:14px 18px;font-size:12px;color:#888;}
+.type-card-body ul{padding-left:14px;}.type-card-body li{margin-bottom:4px;}
+.diagram{border:1px solid #E8E5E0;border-radius:2px;padding:24px;margin:16px 0;background:#fff;}
+.diagram-label{font-size:10px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:16px;}
+.tree-root{display:inline-block;background:#1A1A1A;color:#fff;padding:8px 16px;border-radius:2px;font-weight:700;font-size:13px;margin-bottom:16px;}
+.tree-level1{display:flex;gap:8px;flex-wrap:wrap;padding-left:24px;margin-bottom:10px;}
+.tree-node{background:#F5F3FF;border:1px solid #C4B5FD;border-radius:2px;padding:7px 12px;font-size:12px;font-weight:600;color:#4C1D95;}
+.tree-node.green{background:#F0FDF4;border-color:#86EFAC;color:#166534;}
+.tree-sub{padding-left:44px;display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px;}
+.tree-sub-node{background:#FAFAF8;border:1px solid #E8E5E0;border-radius:2px;padding:5px 10px;font-size:11px;color:#888;}
+.steps{display:flex;flex-direction:column;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+.step{display:grid;grid-template-columns:48px 1fr;background:#fff;}
+.step-n{display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#E8E5E0;border-right:1px solid #E8E5E0;padding:16px;}
+.step-b{padding:18px 20px;}
+.step-b h4{font-size:13px;font-weight:700;margin-bottom:4px;}
+.step-b p{font-size:12px;color:#888;line-height:1.7;}
+.callout{padding:14px 18px;margin:14px 0;font-size:13px;border-left:3px solid;border-radius:0 2px 2px 0;}
+.callout-warn{background:#FFFBEB;border-color:#D97706;}.callout-warn strong{color:#92400E;display:block;margin-bottom:3px;}
+.callout-tip{background:#F0FDF4;border-color:#16A34A;}.callout-tip strong{color:#15803D;display:block;margin-bottom:3px;}
+.mistake-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+.mistake{background:#fff;padding:18px;border-top:2px solid #E11D48;}
+.mistake .m-tag{font-size:9px;font-weight:700;letter-spacing:1px;color:#E11D48;margin-bottom:6px;display:block;}
+.mistake h4{font-size:12px;font-weight:700;margin-bottom:5px;}
+.mistake p{font-size:11px;color:#888;}
+.mistake .fix{font-size:11px;color:#16a34a;font-weight:600;margin-top:8px;padding-top:8px;border-top:1px solid #E8E5E0;}
+.src{border:1px solid #E8E5E0;border-radius:2px;padding:16px 20px;margin-top:28px;display:flex;gap:12px;background:#FAFAF8;}
+.src-icon{font-size:14px;flex-shrink:0;margin-top:2px;}
+.src-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:5px;}
+.src-list{list-style:none;font-size:11px;color:#888;}.src-list li{margin-bottom:3px;line-height:1.6;}.src-list cite{font-style:normal;}
+.summary{background:#1A1A1A;color:#FAFAF8;padding:28px 32px;border-radius:2px;margin:0 auto;}
+.summary-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:12px;}
+.summary h3{font-size:15px;font-weight:800;margin-bottom:14px;line-height:1.4;}
+.summary ul{padding-left:16px;font-size:13px;line-height:2.2;color:#CCC;}
+.cta{background:#7c3aed;color:#fff;padding:28px 32px;border-radius:2px;text-align:center;margin:20px auto;}
+.cta h3{font-size:15px;font-weight:800;margin-bottom:6px;}
+.cta p{font-size:12px;opacity:.8;margin-bottom:16px;}
+.cta a{display:inline-block;background:#fff;color:#7c3aed;font-weight:700;font-size:13px;padding:11px 28px;border-radius:100px;letter-spacing:.3px;}
+.page-nav{background:#1A1A1A;display:flex;justify-content:space-between;align-items:center;padding:16px 48px;flex-wrap:wrap;gap:8px;}
+.page-nav a{color:#999;font-size:12px;font-weight:600;}.page-nav a:hover{color:#fff;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .site-header{padding:0 14px;}
+  .header-logo{font-size:11px;}
+  .header-back{font-size:11px;}
+  .hero{padding:68px 16px 16px;min-height:auto;}
+  .hero-title{font-size:clamp(18px,5vw,26px);letter-spacing:-.5px;margin-bottom:12px;}
+  .hero-meta{gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+  .hero-desc{font-size:13px;}
+  .hero-divider{margin-top:16px;}
+  .ch-nav ul{padding:0 8px;}
+  .ch-nav li a{padding:10px 8px;font-size:10px;letter-spacing:0;}
+  .chapter{padding:24px 14px;}
+  .ch-inner{max-width:100%;}
+  .ch-head-content h2{font-size:17px;}
+  .ch-head-content p{font-size:12px;}
+  .key{padding:14px 16px;}
+  .key p{font-size:13px;}
+  .card-row{grid-template-columns:1fr;}
+  .mistake-grid{grid-template-columns:1fr;}
+  .d-row{flex-direction:column;}
+  .d-box{width:100%;flex:none;min-width:unset;}
+  .diagram{padding:16px;}
+  .step{grid-template-columns:40px 1fr;}
+  .step-b{padding:14px 14px;}
+  .step-n{font-size:16px;}
+  .src{flex-direction:column;gap:8px;padding:14px 16px;}
+  .callout{font-size:12px;padding:12px 14px;}
+  .summary{padding:20px 18px;border-radius:2px;}
+  .summary h3{font-size:14px;}
+  .summary ul{font-size:12px;line-height:2;}
+  .cta{padding:20px 18px;border-radius:2px;}
+  .cta h3{font-size:14px;}
+  .page-nav{padding:14px 16px;flex-direction:column;align-items:center;gap:12px;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-logo">PMI学習セット</div>
+  <a class="header-back" href="index.html">← 学習一覧に戻る</a>
+</header>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-bg-num" aria-hidden="true">02</div>
+    <div class="hero-meta">
+      <span class="hero-step">Step 02 of 11</span>
+      <span class="hero-phase">BASIC</span>
+    </div>
+    <h1 class="hero-title"><em>ロジックツリー</em><br>問題を分解し解決策を設計する</h1>
+    <p class="hero-desc">MECEを「縦に深める」道具。問題の根本原因を探り、解決策を体系的に考える技術。</p>
+    <div class="hero-divider"></div>
+  </div>
+  <img class="hero-illust" src="https://loosedrawing.com/assets/media/illustrations/png/1405.png" alt="階層構造のイラスト">
+</section>
+
+<nav class="ch-nav">
+  <ul>
+    <li><a href="#c1">概念</a></li>
+    <li><a href="#c2">2種類のツリー</a></li>
+    <li><a href="#c3">使い方</a></li>
+    <li><a href="#c4">PMI実例</a></li>
+    <li><a href="#c5">失敗パターン</a></li>
+    <li><a href="#c-depth">深さ・切替</a></li>
+    <li><a href="#c6">まとめ</a></li>
+  </ul>
+</nav>
+
+<div class="chapter" id="c1">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 01</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>ロジックツリーとは何か</h2></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>ロジックツリー ＝ 問題・課題を「木」の形にMECEで分解する思考ツール</strong><br>
+      幹（大きなテーマ）から枝（要素）に分解していくことで、問題の構造を見える化する。「なぜこの問題が起きているか（Why）」と「どうすれば解決できるか（How）」の両方に使える。</p>
+    </div>
+    <div class="diagram">
+      <div class="diagram-label">ロジックツリーの基本構造</div>
+      <div class="tree-root">🌳 起点（問題・テーマ）</div>
+      <div class="tree-level1">
+        <div class="tree-node">大カテゴリ A</div>
+        <div class="tree-node">大カテゴリ B</div>
+        <div class="tree-node">大カテゴリ C</div>
+      </div>
+      <div class="tree-sub">
+        <div class="tree-sub-node">A の小要素①</div>
+        <div class="tree-sub-node">A の小要素②</div>
+      </div>
+      <p style="font-size:11px;color:#888;margin-top:10px;">各分岐はMECEを保つ。「A・B・Cを合わせると全体になる（モレなし）」「A・B・Cは重複しない（ダブりなし）」</p>
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>Minto, Barbara "The Pyramid Principle: Logic in Writing and Thinking" (1987, Prentice Hall) ― ロジックツリーを体系化した原著</cite></li>
+          <li><cite>照屋華子・岡田恵子『ロジカルシンキング』東洋経済新報社（2001年）</cite></li>
+          <li><cite>Rasiel, Ethan M. "The McKinsey Way" (1999, McGraw-Hill) ― コンサルタントによる実践的解説</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c2">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 02</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>2種類のロジックツリー</h2><p>場面によって使い分ける</p></div>
+    <div class="type-grid">
+      <div>
+        <div class="type-card-head th-why">🔍 Why ツリー（原因追求型）</div>
+        <div class="type-card-body">
+          <p style="margin-bottom:8px;"><strong>使う場面：</strong>「なぜ問題が起きているか」を探るとき</p>
+          <p style="margin-bottom:6px;"><strong>進み方：</strong>問題 → なぜ？→ なぜ？→ 根本原因</p>
+          <ul>
+            <li>PMI後に離職者が増えた → なぜ？</li>
+            <li>統合後に売上が落ちた → なぜ？</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="type-card-head th-how">💡 How ツリー（解決策設計型）</div>
+        <div class="type-card-body">
+          <p style="margin-bottom:8px;"><strong>使う場面：</strong>「どうすれば達成できるか」を考えるとき</p>
+          <p style="margin-bottom:6px;"><strong>進み方：</strong>目標 → どうやって？→ 具体的な施策</p>
+          <ul>
+            <li>シナジーを実現するには → どうする？</li>
+            <li>100日プランを達成するには</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="callout callout-tip">
+      <strong>使い分けのコツ</strong>「問題がある → Whyツリーで原因特定 → 原因に対してHowツリーで解決策設計」の順番で使うとスムーズ。
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c3">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 03</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>使い方：4ステップ</h2></div>
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><div class="step-b"><h4>起点（幹）を具体的に定義する</h4><p>「PMI後3ヶ月で顧客継続率が10%低下した」のように数字・期間を含めた具体的な起点を設定する。</p></div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-b"><h4>第1層をMECEで分解する</h4><p>起点を「どんな角度から見るか」の切り口を選ぶ。ヒト・モノ・カネ、内部・外部など。この段階でMECEを徹底する。</p></div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-b"><h4>各枝をさらに分解する（縦に深める）</h4><p>各カテゴリを「なぜ？」または「どうやって？」でさらに掘り下げる。実務では3〜4層で十分。</p></div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-b"><h4>末端の葉に「アクション」を設定する</h4><p>Howツリーなら「誰が・いつまでに・何をする」まで落とす。Whyツリーなら最も重要な根本原因を特定する。</p></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c4">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 04</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>実例：PMIのWhyツリー</h2></div>
+    <p style="font-size:13px;color:#888;margin-bottom:16px;"><strong>問題：</strong>A社がB社を買収してから3ヶ月、B社の優秀な従業員が4名離職した。原因を探れ。</p>
+    <div class="diagram">
+      <div class="diagram-label">Whyツリー ―「B社従業員の離職が増えた」</div>
+      <div class="tree-root">😰 B社従業員の離職が増えた</div>
+      <p style="font-size:11px;color:#888;margin:6px 0 12px;">第1層の切り口：「内部要因 / 外部要因」（MECE）</p>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <div>
+          <div class="tree-node" style="margin-bottom:8px;">📌 内部要因（会社側）</div>
+          <div style="padding-left:16px;display:flex;flex-direction:column;gap:4px;">
+            <div class="tree-node" style="font-size:11px;">評価・処遇への不満</div>
+            <div class="tree-node" style="font-size:11px;">A社文化の押し付け</div>
+            <div class="tree-node" style="font-size:11px;">キャリアへの不安 ★根本原因</div>
+          </div>
+        </div>
+        <div>
+          <div class="tree-node" style="margin-bottom:8px;">🌐 外部要因（市場側）</div>
+          <div style="padding-left:16px;display:flex;flex-direction:column;gap:4px;">
+            <div class="tree-node" style="font-size:11px;">同業他社からのヘッドハント</div>
+            <div class="tree-node" style="font-size:11px;">転職市場の活況</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:14px;background:#F0FDF4;border-radius:2px;padding:10px 14px;font-size:12px;color:#166534;">
+        → ヒアリング結果：「キャリアへの不安」と「A社文化の押し付け感」が主因と判明。<br>
+        → 次にHowツリー：「キャリア面談を月1回設置」「B社の良い文化を統合後も維持する施策」を設計する。
+      </div>
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>Minto, Barbara "The Pyramid Principle" (1987) ― Why/Howツリーの概念の出典</cite></li>
+          <li><cite>中小企業庁「中小PMIガイドライン」（2022年3月）― PMIにおける人材リテンションの重要性</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c5">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 05</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>よくある失敗パターン</h2></div>
+    <div class="mistake-grid">
+      <div class="mistake"><span class="m-tag">失敗 ①</span><h4>起点が曖昧</h4><p>「業績が悪い」では広すぎる。数字・期間・場所を含めた具体的な起点を作ること。</p><div class="fix">→ 「PMI後3ヶ月で〇〇が〇%低下した」のように定量化する</div></div>
+      <div class="mistake"><span class="m-tag">失敗 ②</span><h4>MECEが崩れる</h4><p>「コスト問題・調達コスト問題」のように同じ内容が別の枝に入る。各層でMECEチェックが必要。</p><div class="fix">→ 分岐するたびに「これはMECEか？」とセルフチェック</div></div>
+      <div class="mistake"><span class="m-tag">失敗 ③</span><h4>深掘り不足</h4><p>1層で止めてしまい根本原因まで掘り下げない。対策が浅くなり再発する。</p><div class="fix">→ 「なぜ？」を最低3回繰り返す（5Why分析と組み合わせる）</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c-depth">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 06</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>ツリーの「深さ」と「切り替え」の判断基準</h2><p>何層まで展開すべきか・WhyからHowにいつ切り替えるか</p></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>「深すぎる」も「浅すぎる」も失敗。目的に合った深さを選ぶ</strong><br>
+      初心者が陥る罠は「ツリーを無限に深掘りしすぎて分析が終わらない」こと。実務では「この階層まで分解すれば具体的なアクションが出るか」を判断基準にする。</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:14px 0;">
+      <div style="background:#FEF2F2;padding:16px;border-top:3px solid #DC2626;">
+        <h4 style="font-size:12px;font-weight:700;margin-bottom:8px;color:#DC2626;">❌ 浅すぎる（2層で止まる）</h4>
+        <p style="font-size:12px;color:#555;line-height:1.8;">「売上低下」→「商品問題・営業問題」で終わり。<br>施策が具体化できない・誰が何をすれば良いか不明。<br>→ 相手に「で、結局どうするの？」と言われる</p>
+      </div>
+      <div style="background:#FEF2F2;padding:16px;border-top:3px solid #DC2626;">
+        <h4 style="font-size:12px;font-weight:700;margin-bottom:8px;color:#DC2626;">❌ 深すぎる（6層以上）</h4>
+        <p style="font-size:12px;color:#555;line-height:1.8;">分析に時間がかかりすぎ・枝が多すぎて全体が見えなくなる。<br>「木を見て森を見ず」状態。<br>→ 実務では3〜4層が目安</p>
+      </div>
+      <div style="background:#F0FDF4;padding:16px;border-top:3px solid #16a34a;grid-column:1/-1;">
+        <h4 style="font-size:12px;font-weight:700;margin-bottom:8px;color:#15803D;">✅ 適切な深さの判断基準（実務の目安：3〜4層）</h4>
+        <p style="font-size:12px;color:#555;line-height:1.8;">「この枝の先に具体的なタスクと担当者が見えるか？」→ YES なら止める。NO なら続ける。<br>例：「顧客提案数が少ない」→「提案スクリプトが未整備（担当：田中・期限：今月末）」→ここで止める</p>
+      </div>
+    </div>
+    <div style="border:1px solid #E8E5E0;border-radius:2px;padding:16px;background:#fff;margin:14px 0;">
+      <p style="font-size:11px;font-weight:700;letter-spacing:1px;color:#BBBBBB;text-transform:uppercase;margin-bottom:10px;">WhyツリーからHowツリーへの切り替えタイミング</p>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:#EFF6FF;border-radius:2px;padding:10px 14px;">
+          <p style="font-size:12px;"><strong>Whyツリーの完了条件：</strong>「根本原因（これ以上なぜ？が出ない最深部）」が特定できたとき</p>
+        </div>
+        <div style="background:#F0FDF4;border-radius:2px;padding:10px 14px;">
+          <p style="font-size:12px;"><strong>Howツリーへの切り替え：</strong>特定した根本原因に対して「どうすれば解決できるか」を設計するとき</p>
+        </div>
+        <div style="background:#FFFBEB;border-radius:2px;padding:10px 14px;">
+          <p style="font-size:12px;"><strong>実務での鉄則：</strong>WhyとHowを同時に混ぜない。「まず全てのWhyを出し切る → その後Howを考える」の順番を守る</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="chapter" id="c6">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 06</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>まとめ</h2></div>
+    <div class="summary">
+      <div class="summary-label">Summary</div>
+      <h3>ロジックツリー ― 3行まとめ</h3>
+      <ul>
+        <li>ロジックツリーはMECEを保ちながら問題を「木」の形で分解する思考ツール</li>
+        <li>Whyツリー（原因探索）→ Howツリー（解決策設計）の順で使う</li>
+        <li>起点を具体的に定義し、各層でMECEを維持しながら3〜4層まで深掘りする</li>
+      </ul>
+    </div>
+    <div style="height:20px;"></div>
+    <div class="cta">
+      <h3>練習問題で使いこなせるようになろう</h3>
+      <p>Whyツリー・Howツリーを使った20問の演習。</p>
+      <a href="練習_ロジックツリー.html">ロジックツリー 練習問題を解く（20問）→</a>
+    </div>
+  </div>
+</div>
+
+<nav class="page-nav">
+  <a href="学習_MECE.html">← MECE</a>
+  <a href="学習_PDCA.html">次：PDCA →</a>
+</nav>
+</body>
+</html>

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MECE練習問題 20問｜フレームワーク練習</title>
+<style>
+:root{--primary:#1a3a5c;--accent:#e85d26;--accent2:#2ca8c2;--green:#16a34a;--light:#f4f7fb;--dark:#0f1f30;--gray:#6b7a8d;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--light);color:var(--dark);line-height:1.7;}
+.hero{background:linear-gradient(135deg,#0f1f30,#1a3a5c,#2ca8c2);color:white;padding:40px 20px 32px;text-align:center;}
+.hero h1{font-size:clamp(20px,4vw,30px);font-weight:800;margin-bottom:8px;}
+.hero p{font-size:13px;opacity:.8;margin-bottom:16px;}
+.progress-wrap{background:rgba(255,255,255,.15);border-radius:20px;height:10px;max-width:400px;margin:0 auto 8px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,#86efac,#2ca8c2);border-radius:20px;transition:width .4s;width:0%;}
+.progress-text{font-size:12px;opacity:.8;}
+.stats-row{display:flex;gap:16px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:8px 16px;text-align:center;}
+.stat .v{font-size:20px;font-weight:800;color:#fde68a;line-height:1;}
+.stat .l{font-size:10px;opacity:.75;}
+.container{max-width:800px;margin:0 auto;padding:20px;}
+.lecture{background:white;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.08);border-left:5px solid var(--accent2);}
+.lecture h2{font-size:16px;font-weight:800;color:var(--primary);margin-bottom:10px;}
+.lecture p{font-size:13px;color:var(--gray);margin-bottom:8px;}
+.lecture .formula{background:#f0f7ff;border-radius:8px;padding:12px 16px;font-size:14px;font-weight:700;color:var(--primary);text-align:center;margin:10px 0;}
+.lecture .warn{background:#fff8f0;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 14px;font-size:12px;color:#92400e;margin-top:10px;}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2px;color:white;display:inline-block;padding:4px 14px;border-radius:20px;margin:16px 0 12px;}
+.sl-basic{background:var(--green);}
+.sl-mid{background:var(--accent2);}
+.sl-adv{background:var(--accent);}
+.qcard{background:white;border-radius:14px;padding:20px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);}
+.qtop{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.qnum{background:var(--primary);color:white;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;}
+.qtype{font-size:11px;color:var(--gray);font-weight:600;}
+.qlv{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.qlv.basic{background:#dcfce7;color:#166534;}
+.qlv.mid{background:#dbeafe;color:#1e40af;}
+.qlv.adv{background:#fce7f3;color:#9d174d;}
+.qtext{font-size:14px;font-weight:600;margin-bottom:14px;line-height:1.6;}
+.qsub{font-size:12px;color:var(--gray);margin-bottom:12px;}
+.choices{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.ch{text-align:left;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;background:white;cursor:pointer;font-size:13px;font-family:inherit;transition:all .2s;}
+.ch:hover{border-color:var(--accent2);background:#f0f9ff;}
+.ch.correct{border-color:var(--green);background:#f0fdf4;color:#166534;font-weight:700;}
+.ch.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626;}
+.ch:disabled{cursor:default;}
+.ans{display:none;margin-top:12px;}
+.ans-inner{background:linear-gradient(135deg,#f0fdf4,#f0f9ff);border-radius:10px;padding:16px;border:1px solid #bbf7d0;}
+.ans-result{font-size:14px;font-weight:700;color:var(--green);margin-bottom:8px;}
+.ans-exp{font-size:13px;color:var(--dark);margin-bottom:10px;line-height:1.6;}
+.tip{background:white;border-radius:8px;padding:10px 14px;font-size:12px;color:#0369a1;border-left:3px solid var(--accent2);}
+.tip strong{display:block;margin-bottom:3px;}
+.revbtn{background:var(--primary);color:white;border:none;border-radius:20px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:10px;}
+.revbtn:hover{background:var(--accent2);}
+.revbtn.revealed{background:var(--gray);}
+.score-board{background:white;border-radius:14px;padding:20px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:center;}
+.score-board h3{font-size:14px;color:var(--gray);margin-bottom:4px;}
+.score-board .score-val{font-size:40px;font-weight:900;color:var(--primary);}
+.score-board .score-max{font-size:18px;color:var(--gray);}
+.nav-bar{background:var(--dark);padding:14px 20px;text-align:center;margin-top:20px;}
+.nav-bar a{color:#a5f3fc;text-decoration:none;font-size:12px;font-weight:600;margin:0 10px;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .hero{padding:28px 14px 20px;}
+  .hero h1{font-size:clamp(18px,5vw,26px);}
+  .container{padding:12px;}
+  .qcard{padding:16px;border-radius:10px;}
+  .qtext{font-size:13px;}
+  .ch{font-size:12px;padding:10px 12px;}
+  .ans-inner{padding:14px;}
+  .ans-exp{font-size:12px;}
+  .tip{font-size:11px;}
+  .lecture{padding:16px;border-radius:10px;}
+  .lecture h2{font-size:14px;}
+  .lecture p,.lecture .warn{font-size:12px;}
+  .nav-bar{padding:12px 14px;}
+  .nav-bar a{font-size:11px;margin:0 6px;}
+  .stats-row{gap:10px;}
+  .stat{padding:6px 12px;}
+  .stat .v{font-size:18px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🔷 MECE 練習問題</h1>
+  <p>モレなく・ダブりなく — コンサル思考の土台を身につける</p>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-text" id="progressText">0 / 20 問 回答済み</div>
+  <div class="stats-row">
+    <div class="stat"><div class="v">20</div><div class="l">問</div></div>
+    <div class="stat"><div class="v">45</div><div class="l">分目安</div></div>
+    <div class="stat"><div class="v" id="scoreDisp">0</div><div class="l">正解（選択問題）</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="lecture">
+  <h2>📖 MECE とは何か？（3分で読む）</h2>
+  <p>MECEとは <strong>M</strong>utually <strong>E</strong>xclusive, <strong>C</strong>ollectively <strong>E</strong>xhaustive の略。日本語では「モレなく・ダブりなく」。</p>
+  <div class="formula">モレなく = 全体を網羅している　／　ダブりなく = 分類が重複していない</div>
+  <p>コンサルタントが課題を整理したり、解決策を並べたりするとき、常に「この分類はMECEか？」と自問する。MECEでない分析は、「課題を見落とす（モレ）」か「同じ話を2回する（ダブり）」かのどちらかになる。</p>
+  <div class="warn">⚠️ よくある誤解：MECEは「1つの基準で分類すること」ではない。目的に応じて切り口を選ぶ柔軟性が必要。また「MECE＝完璧な分類」ではなく「十分に実用的な分類」でよい。</div>
+</div>
+
+<div class="score-board">
+  <h3>選択問題スコア</h3>
+  <span class="score-val" id="scoreVal">0</span><span class="score-max"> / 10点</span>
+  <p style="font-size:12px;color:var(--gray);margin-top:4px;">選択問題(Q11〜Q15)の正答数</p>
+</div>
+
+<!-- SECTION A -->
+<div class="section-label sl-basic">SECTION A ― 判定問題（Q1〜Q5）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q1</span><span class="qtype">判定問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">ある会社が従業員を「正社員・非正規社員・派遣社員」の3種類に分類した。この分類はMECEか？</p>
+  <button class="revbtn" onclick="revealAns('a1',this)">答えを見る ▼</button>
+  <div class="ans" id="a1">
+    <div class="ans-inner">
+      <div class="ans-result">❌ MECEではない</div>
+      <p class="ans-exp">「派遣社員」は「非正規社員」のカテゴリに含まれるため、<strong>ダブり</strong>がある。正しくはパートタイム・アルバイト・派遣・契約社員などを横並びで分類するか、「正社員・非正社員（非正規）」の二分法にする。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>PMIで「人員整理・統合」を行う際、雇用形態の分類をMECEにしておかないと、施策の対象漏れや二重対応が起きる。まずMECEな分類表を作ることから始める。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q2</span><span class="qtype">判定問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">損益計算書（PL）の費用を「売上原価・販売費及び一般管理費（販管費）」の2つに分類した。この分類はMECEか？</p>
+  <button class="revbtn" onclick="revealAns('a2',this)">答えを見る ▼</button>
+  <div class="ans" id="a2">
+    <div class="ans-inner">
+      <div class="ans-result">✅ MECEである</div>
+      <p class="ans-exp">PLにおける費用の標準区分。「売上原価」と「販管費」は定義上互いに重複せず（独立）、合計で営業費用全体を網羅している（モレなし）。会計の標準フレームワーク自体がMECEに設計されている。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>既存の会計・法律・業界標準のフレームワークは、多くの場合MECE設計されている。ゼロから分類を作る前に、既存のフレームワークが使えないか確認するのが実務の鉄則。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q3</span><span class="qtype">判定問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">PMI（M&A後の統合プロセス）の課題を「ヒト・モノ・カネ・情報」の4つに分類した。MECEか？</p>
+  <button class="revbtn" onclick="revealAns('a3',this)">答えを見る ▼</button>
+  <div class="ans" id="a3">
+    <div class="ans-inner">
+      <div class="ans-result">✅ MECEである（経営資源の4分類）</div>
+      <p class="ans-exp">「ヒト・モノ・カネ・情報」は経営学における経営資源の古典的4分類。互いに重複せず、企業活動に必要なリソースを網羅している。PMIの場面でもほぼすべての統合課題はこの4つのどこかに属する。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>当社のPMIコンサルでは、この4軸で統合課題を整理するのが基本。「ヒト統合（組織・文化）」「モノ統合（設備・ブランド）」「カネ統合（財務・会計）」「情報統合（システム・データ）」と対応させる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q4</span><span class="qtype">判定問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">市場を「国内市場・海外市場・アジア市場」の3つに分類した。何が問題か？</p>
+  <button class="revbtn" onclick="revealAns('a4',this)">答えを見る ▼</button>
+  <div class="ans" id="a4">
+    <div class="ans-inner">
+      <div class="ans-result">❌ MECEではない（ダブりあり）</div>
+      <p class="ans-exp">「アジア市場」は「海外市場」の中に含まれるため、<strong>ダブり</strong>がある。正しくは「国内・海外（非アジア）・海外（アジア）」か、「国内・海外」の2分法にした後でアジアを下位分類にするべき。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>資料作成で「その他」が並ぶ分類は要注意。「国内・海外」のような上位概念と「アジア」のような下位概念が同じ階層に並んでいたらダブりのサイン。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q5</span><span class="qtype">判定問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">中小企業のDX推進を阻む要因として「①予算不足 ②人材不足 ③ノウハウ不足 ④経営者の意識不足」と整理した。このMECEに問題はあるか？</p>
+  <button class="revbtn" onclick="revealAns('a5',this)">答えを見る ▼</button>
+  <div class="ans" id="a5">
+    <div class="ans-inner">
+      <div class="ans-result">⚠️ やや問題あり（因果関係の混在）</div>
+      <p class="ans-exp">①②③は「リソース不足」という結果（症状）で、④「経営者の意識不足」はそれらの<strong>原因</strong>（根本）に当たる。原因と結果が同じ層に並んでいる。改善案：<br>• リソース系：予算・人材・ノウハウ不足<br>• マインド系：経営者の意識・優先度<br>…とレイヤーを分けるか、「内部要因・外部要因」で切り直す。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>コンサルの現場では「原因と症状を同じ階層に並べてしまう」ミスが最も多い。ロジックツリーを使うと、原因→結果の階層が自然と整理できる。</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION B -->
+<div class="section-label sl-basic">SECTION B ― 穴埋め問題（Q6〜Q10）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q6</span><span class="qtype">穴埋め問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">売上高をMECEに数式で分解せよ。</p>
+  <p class="qsub">売上高 ＝ 顧客数 × ___</p>
+  <button class="revbtn" onclick="revealAns('a6',this)">答えを見る ▼</button>
+  <div class="ans" id="a6">
+    <div class="ans-inner">
+      <div class="ans-result">📝 答え：顧客単価（客単価）</div>
+      <p class="ans-exp">「顧客数 × 顧客単価 = 売上高」は最もシンプルで強力なMECE分解。売上を増やすには「顧客を増やす」か「単価を上げる」かしかない。この2軸で施策を整理するだけで思考が劇的に整う。</p>
+      <div class="tip"><strong>💼 応用</strong>PMI Managerの文脈：ARR成長 = 顧客数増加 × プラン単価向上 × 継続率。どのレバーを優先するか戦略が変わる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q7</span><span class="qtype">穴埋め問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">営業利益をMECEに分解せよ。</p>
+  <p class="qsub">営業利益 ＝ 売上総利益（粗利）- ___</p>
+  <button class="revbtn" onclick="revealAns('a7',this)">答えを見る ▼</button>
+  <div class="ans" id="a7">
+    <div class="ans-inner">
+      <div class="ans-result">📝 答え：販売費及び一般管理費（販管費）</div>
+      <p class="ans-exp">PLの基本構造。「粗利（売上 - 売上原価） - 販管費 = 営業利益」。この式はPMI後の統合先企業の業績分析に毎回使う。式を自動的に思い浮かべられるようになると分析スピードが上がる。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>買収候補企業を評価するとき、まず「粗利率が業界平均より高い/低いか」「販管費率の内訳は何か」を見ると、経営課題の仮説が立てやすい。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q8</span><span class="qtype">穴埋め問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">SaaSのチャーン（解約）をMECEに分解せよ。</p>
+  <p class="qsub">解約顧客 ＝ 自発的解約（不満による）＋ ___</p>
+  <button class="revbtn" onclick="revealAns('a8',this)">答えを見る ▼</button>
+  <div class="ans" id="a8">
+    <div class="ans-inner">
+      <div class="ans-result">📝 答え：非自発的解約（支払い失敗・事業終了・PMI完了など）</div>
+      <p class="ans-exp">チャーンを「自発的」と「非自発的」に分けるのはSaaS業界の標準MECE。自発的解約への対策はプロダクト改善やCSだが、非自発的解約への対策は請求フロー改善や顧客の事業継続支援になる。対策が全く異なるため分類が重要。</p>
+      <div class="tip"><strong>💼 PMI Manager文脈</strong>PMI Manager顧客の非自発的解約の大きな原因は「PMI完了による利用終了」。これはむしろプロダクトの成功を意味する。だから「継続利用を促す新機能」や「次の買収案件への再利用提案」が重要になる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q9</span><span class="qtype">穴埋め問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">SaaSのARR（年間経常収益）変化をMECEに分解せよ。4つの要素で表すこと。</p>
+  <p class="qsub">ARR変化 ＝ 新規獲得ARR − 解約ARR ＋ ___ − ダウングレードARR</p>
+  <button class="revbtn" onclick="revealAns('a9',this)">答えを見る ▼</button>
+  <div class="ans" id="a9">
+    <div class="ans-inner">
+      <div class="ans-result">📝 答え：アップセル・拡張ARR（Expansion ARR）</div>
+      <p class="ans-exp">SaaS業界標準の「ARRウォーターフォール」分解。<br>新規 − 解約 + 拡張（アップグレード・追加ユーザー） − 縮小（ダウングレード） = ARR純増。<br>この4要素はMECEかつ網羅的。SaaS経営ダッシュボードで必ず追跡する指標。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>PMI Managerを経営する当社にとって、この4指標のモニタリングが月次の最重要業務になる。どの数字が悪いかで施策が変わる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q10</span><span class="qtype">穴埋め問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">営業パフォーマンスをMECEに数式で分解せよ。</p>
+  <p class="qsub">月次成約売上 ＝ アプローチ数 × 商談化率 × ___ × 平均単価</p>
+  <button class="revbtn" onclick="revealAns('a10',this)">答えを見る ▼</button>
+  <div class="ans" id="a10">
+    <div class="ans-inner">
+      <div class="ans-result">📝 答え：成約率（クロージングレート）</div>
+      <p class="ans-exp">「アプローチ数 → 商談化 → 成約 → 単価」の営業ファネル。各ステップの転換率を掛け合わせて売上が決まる。この分解のどこが低いかを見れば、営業改善の打ち手が明確になる。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>PMI Managerの営業で「アプローチ数は多いのに売上が上がらない」なら、商談化率か成約率のどちらかに問題がある。数式分解があれば問題の場所が特定できる。</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION C -->
+<div class="section-label sl-mid">SECTION C ― 選択問題（Q11〜Q15）※スコアに反映</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q11</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">事業承継の方法をMECEに分類するなら、どれが最も適切か？</p>
+  <div class="choices" id="ch11">
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">A）親族・知人・他人</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',true)">B）親族内承継・役員従業員承継・M&A（第三者承継）・廃業</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">C）安い方法・高い方法</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">D）すぐできる方法・時間がかかる方法</button>
+  </div>
+  <div class="ans" id="a11">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <p class="ans-exp">中小企業庁の公式分類に基づく。親族内承継・役員従業員承継・M&Aは互いに重複せず、日本で取りうる全ての事業承継形態を網羅している（廃業も選択肢として含める）。Aは「誰が承継するか」の視点だが、M&Aによる第三者が含まれず不十分。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>この4分類は当社の営業で必ず話す。「今どの承継方法をお考えですか？」という会話から入り、M&Aが最適な場合にPMI Managerを提案する流れ。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q12</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">M&A後のシナジー効果をMECEに分類するなら？</p>
+  <div class="choices" id="ch12">
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">A）良いシナジー・悪いシナジー（ディスシナジー）</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',true)">B）コストシナジー・売上シナジー・財務シナジー</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">C）短期シナジー・長期シナジー</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">D）人材シナジー・技術シナジー・市場シナジー</button>
+  </div>
+  <div class="ans" id="a12">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <p class="ans-exp">M&A実務での標準分類。コストシナジー（統合によるコスト削減）・売上シナジー（クロスセルや市場拡大）・財務シナジー（資本コスト低下・節税効果）は独立かつ網羅的。CやDは追加の切り口として有用だが単独では網羅性が低い。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>PMI Managerのシナジー管理機能はこの3分類に基づいて設計されている。顧客に「どのシナジーを優先しますか？」と聞く際にこの枠組みを使う。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q13</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">中小企業の経営課題をMECEに整理する「切り口」として、どの考え方が最も正確か？</p>
+  <div class="choices" id="ch13">
+    <button class="ch" onclick="checkMCQ(this,'ch13','a13',false)">A）常にヒト・モノ・カネ・情報の4軸で整理すべき</button>
+    <button class="ch" onclick="checkMCQ(this,'ch13','a13',false)">B）SWOT（強み・弱み・機会・脅威）で整理すべき</button>
+    <button class="ch" onclick="checkMCQ(this,'ch13','a13',false)">C）財務・非財務の2軸で整理すべき</button>
+    <button class="ch" onclick="checkMCQ(this,'ch13','a13',true)">D）「何を解決したいか」によって最適な切り口が変わる</button>
+  </div>
+  <div class="ans" id="a13">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：D</div>
+      <p class="ans-exp">MECEの切り口は目的次第で変わる。「コスト削減策を整理したい」なら「固定費・変動費」が有効。「組織改革課題を整理したい」なら「ヒト・プロセス・文化」が有効。A〜Cはどれも状況次第では優れた切り口だが、常に最適ではない。大切なのは「なぜこの切り口を選んだか」を説明できること。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>コンサルの提案書では、使った切り口を明示すると信頼性が上がる。「今回は課題を〇〇の観点でMECEに整理しました。理由は…」という説明が求められる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q14</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">収益改善の打ち手をMECEで整理するとき、最も強力な切り口はどれか？</p>
+  <div class="choices" id="ch14">
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',true)">A）売上アップ施策・コスト削減施策</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">B）緊急施策・中長期施策</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">C）デジタル施策・非デジタル施策</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">D）社内施策・社外施策</button>
+  </div>
+  <div class="ans" id="a14">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：A</div>
+      <p class="ans-exp">「利益 = 売上 − コスト」という利益の定義式に直結するため、AはMECEかつ数式的に証明可能。「売上を増やすか、コストを減らすか、両方か」という経営の本質を表している。B〜Dは有用な補助軸だが、利益改善の「網羅性」という意味ではAが最強。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>PMI後の買収企業の収益改善を提案するとき、必ずこの2軸で大分類し、その後に各施策を細かくMECE展開する。経営陣への説明もシンプルになる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q15</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">コンサルタントが資料で「課題A・課題B・課題C・その他の課題」と整理した。「その他」があることはMECE的に問題か？</p>
+  <div class="choices" id="ch15">
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">A）問題ない。「その他」があれば網羅性は完璧になる</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">B）問題あり。「その他」は禁止ワード</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',true)">C）状況次第。「その他」が少量なら許容されるが、多ければ分類を見直すべき</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">D）「その他」があると全体がMECEになる</button>
+  </div>
+  <div class="ans" id="a15">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C</div>
+      <p class="ans-exp">「その他」はモレを吸収するための便宜的な箱。小さければ許容されるが、大きくなると「実は主要な分類が抜けている」サイン。一般論として「その他が全体の10〜15%以上を占めたら分類を再設計せよ」と言われる。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>顧客のヒアリングデータを整理するとき、「その他」に多くの意見が集まることがある。それは「新しい重要カテゴリが隠れている」シグナルなので、必ず「その他」の中身を精査する。</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION D -->
+<div class="section-label sl-adv">SECTION D ― 実践ケース（Q16〜Q20）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q16</span><span class="qtype">実践ケース</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">ある中小食品メーカーの売上が前年比15%減少した。原因をMECEで整理せよ。（「内部要因・外部要因」の2軸を出発点に、それぞれ3〜4つ展開すること）</p>
+  <button class="revbtn" onclick="revealAns('a16',this)">答えを見る ▼</button>
+  <div class="ans" id="a16">
+    <div class="ans-inner">
+      <div class="ans-result">📝 模範解答</div>
+      <p class="ans-exp"><strong>外部要因：</strong><br>・市場縮小（その食品カテゴリの需要自体が落ちている）<br>・競合の新商品参入・価格競争激化<br>・原材料費高騰による小売側の棚見直し<br>・法規制変化（成分規制など）<br><strong>内部要因：</strong><br>・商品力の低下（味・パッケージの陳腐化）<br>・営業力の問題（取引先数の減少・営業員の定着率低下）<br>・製造コスト上昇による価格競争力の喪失<br>・物流・在庫管理の問題</p>
+      <div class="tip"><strong>💼 実務メモ</strong>「内部・外部」の2軸はどんな業界にも適用できる汎用MECEフレーム。外部要因は会社がコントロールできない（対策 = 適応・撤退）。内部要因はコントロール可能（対策 = 改善・変革）。この区別が施策立案の出発点。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q17</span><span class="qtype">実践ケース</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">M&A後に「新会社の生産性が上がらない」という問題が報告された。ヒト・モノ・カネ・情報の4軸でMECEに問題を整理せよ。</p>
+  <button class="revbtn" onclick="revealAns('a17',this)">答えを見る ▼</button>
+  <div class="ans" id="a17">
+    <div class="ans-inner">
+      <div class="ans-result">📝 模範解答</div>
+      <p class="ans-exp"><strong>ヒト（組織・人材）：</strong>役割・権限の不明確化 / キーパーソンの離職 / 文化の衝突によるモチベーション低下<br><strong>モノ（業務・設備）：</strong>業務プロセスの二重化・非効率 / 設備・ツールの未統合<br><strong>カネ（財務）：</strong>統合コストの予算超過 / 投資判断の遅れ（意思決定者不在）<br><strong>情報（システム・データ）：</strong>IT系のシステム未統合 / データ・ナレッジの移転未完了 / コミュニケーション手段の混乱</p>
+      <div class="tip"><strong>💼 PMI Manager活用</strong>この4軸の整理はPMI Managerの「統合課題一覧」機能に直接入力できる形式。実案件でもそのまま使えるフォーマット。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q18</span><span class="qtype">実践ケース</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">「PMI Managerの解約率が先月より増加した」という報告が入った。原因をMECEに3層で展開せよ（第1層→第2層→第3層）。</p>
+  <button class="revbtn" onclick="revealAns('a18',this)">答えを見る ▼</button>
+  <div class="ans" id="a18">
+    <div class="ans-inner">
+      <div class="ans-result">📝 模範解答（ロジックツリーのMECE展開）</div>
+      <p class="ans-exp"><strong>第1層：</strong>プロダクト起因 / 顧客起因 / 営業CS起因<br><strong>第2層（プロダクト）：</strong>機能不足 / バグ・障害 / UX悪化<br><strong>第2層（顧客）：</strong>PMI完了（利用終了） / 予算削減 / 担当者交代<br><strong>第2層（営業CS）：</strong>オンボーディング不足 / 継続フォロー不足 / 価値訴求の失敗<br><strong>第3層（例：機能不足）：</strong>ガントチャートの使い勝手 / AI提案精度 / レポート機能の弱さ</p>
+      <div class="tip"><strong>💼 実務メモ</strong>ビジネス課題の分析では「第2層まで展開すれば仮説が立てられる」「第3層まで展開してデータで検証する」のが基本ステップ。深掘りしすぎると迷宮に入るので、第2層で一度立ち止まってデータ確認するのが得策。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q19</span><span class="qtype">実践ケース</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">当社のPMIコンサル事業の「利益改善」を経営陣に提案する。MECEを使って施策を網羅的に整理し、最低8つの施策候補を挙げよ。</p>
+  <button class="revbtn" onclick="revealAns('a19',this)">答えを見る ▼</button>
+  <div class="ans" id="a19">
+    <div class="ans-inner">
+      <div class="ans-result">📝 模範解答（利益 ＝ 売上 − 費用 の2軸）</div>
+      <p class="ans-exp"><strong>売上増加施策：</strong><br>①コンサル顧客数を増やす（SaaSからのアップセル促進）<br>②月額単価の引き上げ（150万→200万への値上げ交渉）<br>③1案件あたりの契約期間を延ばす（12ヶ月→18ヶ月）<br>④リピート・紹介案件の獲得率向上<br><strong>費用削減施策：</strong><br>⑤コンサルタント1人あたりの案件数増加（生産性向上）<br>⑥定型業務のAI自動化（議事録・レポート生成）<br>⑦フリーランサー活用による変動費化<br>⑧交通費・出張費のオンライン化</p>
+      <div class="tip"><strong>💼 実務メモ</strong>この整理を見せれば「網羅的に考えている」と伝わる。その後「①と⑥を最優先にする理由は…」とプライオリティを付けるのが提案書の流れ。MECEで広げてから絞る、これがコンサルの基本型。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q20</span><span class="qtype">実践ケース</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">【最終問題】「演繹的MECE」と「帰納的MECE」の違いを説明し、それぞれをコンサル業務のどの場面で使うか述べよ。</p>
+  <button class="revbtn" onclick="revealAns('a20',this)">答えを見る ▼</button>
+  <div class="ans" id="a20">
+    <div class="ans-inner">
+      <div class="ans-result">📝 模範解答</div>
+      <p class="ans-exp"><strong>演繹的MECE：</strong>既存の理論・公式・フレームワークから出発してMECEな分類を作る。例：「売上=顧客数×単価」「利益=売上-費用」「ヒト・モノ・カネ・情報」。→ 使う場面：問題の構造が既知の場合、提案書の骨格作り、スピードが求められる初期整理。<br><br><strong>帰納的MECE：</strong>まずデータ・事実・ヒアリングを集め、そこから共通点を見つけてカテゴリを抽出する。→ 使う場面：未知の業界・新しい問題、顧客インタビューの整理、前例のない課題への対応。<br><br><strong>使い分けのコツ：</strong>時間があれば帰納で深く、時間がなければ演繹で速く。プロは状況を読んで使い分ける。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>新入社員のうちは「演繹的MECE（フレームワーク活用）」をまず身につけるのが正解。帰納は経験が蓄積されてから自然に使えるようになる。まずは「利益=売上−費用」「ヒト・モノ・カネ・情報」などの鉄板フレームを自在に使えるようになること。</div>
+    </div>
+  </div>
+</div>
+
+<div style="background:white;border-radius:14px;padding:20px;margin-top:20px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.07);">
+  <h3 style="font-size:16px;color:var(--primary);margin-bottom:8px;">🎉 全20問完了！</h3>
+  <p style="font-size:13px;color:var(--gray);">次は「ロジックツリー」へ。MECEを縦に深掘りする技術を身につけよう。</p>
+  <a href="練習_ロジックツリー.html" style="display:inline-block;margin-top:12px;background:var(--accent);color:white;text-decoration:none;font-weight:700;font-size:13px;padding:10px 24px;border-radius:20px;">ロジックツリーへ進む →</a>
+</div>
+
+</div><!-- /container -->
+
+<div class="nav-bar">
+  <a href="フレームワーク練習問題_ハブ.html">← 問題集トップ</a>
+  <a href="成長ロードマップ_新入社員向け.html">成長ロードマップ</a>
+</div>
+
+<script>
+let answered = 0;
+let score = 0;
+let mcqAnswered = {};
+
+function revealAns(id, btn) {
+  const el = document.getElementById(id);
+  if (el.style.display === 'none' || el.style.display === '') {
+    el.style.display = 'block';
+    btn.textContent = '閉じる ▲';
+    btn.classList.add('revealed');
+    if (!btn.dataset.counted) {
+      btn.dataset.counted = '1';
+      answered++;
+      updateProgress();
+    }
+  } else {
+    el.style.display = 'none';
+    btn.textContent = '答えを見る ▼';
+    btn.classList.remove('revealed');
+  }
+}
+
+function checkMCQ(btn, chId, ansId, correct) {
+  if (mcqAnswered[chId]) return;
+  mcqAnswered[chId] = true;
+  const choices = document.getElementById(chId).querySelectorAll('.ch');
+  choices.forEach(c => {
+    c.disabled = true;
+    const isCorrect = c.onclick.toString().includes(',true)');
+    if (isCorrect) c.classList.add('correct');
+  });
+  if (!correct) btn.classList.add('wrong');
+  const ans = document.getElementById(ansId);
+  ans.style.display = 'block';
+  if (correct) {
+    score++;
+    document.getElementById('scoreVal').textContent = score;
+    document.getElementById('scoreDisp').textContent = score;
+  }
+  answered++;
+  updateProgress();
+}
+
+function updateProgress() {
+  const pct = Math.min(Math.round(answered / 20 * 100), 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressText').textContent = answered + ' / 20 問 回答済み';
+}
+</script>
+</body>
+</html>

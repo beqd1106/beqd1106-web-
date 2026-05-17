@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>バリューチェーン分析 練習問題 20問</title>
+<style>
+:root{--primary:#0369a1;--accent:#e85d26;--accent2:#2ca8c2;--green:#16a34a;--light:#f4f7fb;--dark:#0f1f30;--gray:#6b7a8d;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--light);color:var(--dark);line-height:1.7;}
+.hero{background:linear-gradient(135deg,#0f1f30,#0369a1,#0ea5e9);color:white;padding:40px 20px 32px;text-align:center;}
+.hero h1{font-size:clamp(20px,4vw,30px);font-weight:800;margin-bottom:8px;}
+.hero p{font-size:13px;opacity:.8;margin-bottom:16px;}
+.progress-wrap{background:rgba(255,255,255,.15);border-radius:20px;height:10px;max-width:400px;margin:0 auto 8px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,#7dd3fc,#2ca8c2);border-radius:20px;transition:width .4s;width:0%;}
+.progress-text{font-size:12px;opacity:.8;}
+.stats-row{display:flex;gap:16px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:8px 16px;text-align:center;}
+.stat .v{font-size:20px;font-weight:800;color:#fde68a;line-height:1;}
+.stat .l{font-size:10px;opacity:.75;}
+.container{max-width:800px;margin:0 auto;padding:20px;}
+.lecture{background:white;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.08);border-left:5px solid var(--primary);}
+.lecture h2{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:10px;}
+.lecture p{font-size:13px;color:var(--gray);margin-bottom:8px;}
+.vc-diagram{margin:14px 0;overflow-x:auto;}
+.vc-primary{display:flex;gap:2px;margin-bottom:6px;}
+.vc-box{flex:1;min-width:80px;padding:10px 8px;text-align:center;font-size:11px;font-weight:700;color:white;border-radius:6px;}
+.vc-main{background:#0369a1;}
+.vc-support-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+.vc-sup{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:10px 12px;font-size:11px;}
+.vc-sup h5{color:#0369a1;font-weight:700;margin-bottom:4px;}
+.warn{background:#fff8f0;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 14px;font-size:12px;color:#92400e;margin-top:10px;}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2px;color:white;display:inline-block;padding:4px 14px;border-radius:20px;margin:16px 0 12px;}
+.sl-basic{background:#16a34a;}
+.sl-mid{background:#0369a1;}
+.sl-adv{background:#7c3aed;}
+.qcard{background:white;border-radius:14px;padding:20px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);}
+.qtop{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.qnum{background:var(--primary);color:white;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;}
+.qtype{font-size:11px;color:var(--gray);font-weight:600;}
+.qlv{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.qlv.basic{background:#dcfce7;color:#166534;}
+.qlv.mid{background:#dbeafe;color:#1e40af;}
+.qlv.adv{background:#fce7f3;color:#9d174d;}
+.qtext{font-size:14px;font-weight:600;margin-bottom:10px;line-height:1.6;}
+.qsub{font-size:12px;color:var(--gray);margin-bottom:10px;line-height:1.7;}
+.choices{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.ch{text-align:left;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;background:white;cursor:pointer;font-size:13px;font-family:inherit;transition:all .2s;}
+.ch:hover{border-color:var(--accent2);background:#f0f9ff;}
+.ch.correct{border-color:#16a34a;background:#f0fdf4;color:#166534;font-weight:700;}
+.ch.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626;}
+.ch:disabled{cursor:default;}
+.ans{display:none;margin-top:12px;}
+.ans-inner{background:linear-gradient(135deg,#f0f9ff,#eff6ff);border-radius:10px;padding:16px;border:1px solid #bae6fd;}
+.ans-result{font-size:14px;font-weight:700;color:var(--primary);margin-bottom:8px;}
+.ans-exp{font-size:13px;color:var(--dark);margin-bottom:10px;line-height:1.6;}
+.tip{background:white;border-radius:8px;padding:10px 14px;font-size:12px;color:#0369a1;border-left:3px solid var(--accent2);}
+.tip strong{display:block;margin-bottom:3px;}
+.revbtn{background:var(--primary);color:white;border:none;border-radius:20px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:10px;}
+.revbtn:hover{background:#075985;}
+.revbtn.revealed{background:var(--gray);}
+.score-board{background:white;border-radius:14px;padding:16px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:center;}
+.score-board h3{font-size:13px;color:var(--gray);margin-bottom:4px;}
+.score-board .score-val{font-size:40px;font-weight:900;color:var(--primary);}
+.score-board .score-max{font-size:18px;color:var(--gray);}
+.nav-bar{background:var(--dark);padding:14px 20px;text-align:center;margin-top:20px;}
+.nav-bar a{color:#a5f3fc;text-decoration:none;font-size:12px;font-weight:600;margin:0 10px;}
+.case-box{background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:16px;font-size:13px;margin-bottom:12px;line-height:1.8;}
+.case-box h4{font-weight:700;color:#0369a1;margin-bottom:8px;}
+.tag-pri{background:#dbeafe;color:#1e40af;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;}
+.tag-sup{background:#dcfce7;color:#166534;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .hero{padding:28px 14px 20px;}
+  .hero h1{font-size:clamp(18px,5vw,26px);}
+  .container{padding:12px;}
+  .qcard{padding:16px;border-radius:10px;}
+  .qtext{font-size:13px;}
+  .ch{font-size:12px;padding:10px 12px;}
+  .ans-inner{padding:14px;}
+  .ans-exp{font-size:12px;}
+  .tip{font-size:11px;}
+  .lecture{padding:16px;border-radius:10px;}
+  .lecture h2{font-size:14px;}
+  .lecture p,.lecture .warn{font-size:12px;}
+  .nav-bar{padding:12px 14px;}
+  .nav-bar a{font-size:11px;margin:0 6px;}
+  .stats-row{gap:10px;}
+  .stat{padding:6px 12px;}
+  .stat .v{font-size:18px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>⛓️ バリューチェーン分析 練習問題</h1>
+  <p>企業活動を分解し、シナジーとコスト削減ポイントを見つける力を鍛える</p>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-text" id="progressText">0 / 20 問 回答済み</div>
+  <div class="stats-row">
+    <div class="stat"><div class="v">20</div><div class="l">問</div></div>
+    <div class="stat"><div class="v">50</div><div class="l">分目安</div></div>
+    <div class="stat"><div class="v" id="scoreDisp">0</div><div class="l">正解（選択問題）</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="lecture">
+  <h2>📖 バリューチェーン分析とは？（4分で読む）</h2>
+  <p>マイケル・ポーターが提唱。企業の活動を「主活動」と「支援活動」に分解し、どこで価値が生まれ、どこでコストが発生しているかを可視化するフレームワーク。PMIでは2社のバリューチェーンを比較してシナジーを特定する際に必須。</p>
+  <div class="vc-diagram">
+    <p style="font-size:11px;font-weight:700;color:#0369a1;margin-bottom:4px;">▼ 主活動（Primary Activities）</p>
+    <div class="vc-primary">
+      <div class="vc-box vc-main" style="background:#1d4ed8;">購買物流<br><span style="font-size:9px;font-weight:400;">原材料調達・在庫管理</span></div>
+      <div class="vc-box vc-main" style="background:#0369a1;">製造・<br>オペレーション<br><span style="font-size:9px;font-weight:400;">製品製造・加工</span></div>
+      <div class="vc-box vc-main" style="background:#0284c7;">出荷物流<br><span style="font-size:9px;font-weight:400;">配送・倉庫管理</span></div>
+      <div class="vc-box vc-main" style="background:#0369a1;">マーケ&amp;<br>営業<br><span style="font-size:9px;font-weight:400;">販促・販売活動</span></div>
+      <div class="vc-box vc-main" style="background:#1d4ed8;">サービス<br><span style="font-size:9px;font-weight:400;">アフターサービス</span></div>
+    </div>
+    <p style="font-size:11px;font-weight:700;color:#166534;margin:8px 0 4px;">▼ 支援活動（Support Activities）</p>
+    <div class="vc-support-row">
+      <div class="vc-sup"><h5>全般管理（インフラ）</h5>財務・法務・経営企画・情報システム</div>
+      <div class="vc-sup"><h5>人事・労務管理</h5>採用・育成・評価・給与</div>
+      <div class="vc-sup"><h5>技術開発</h5>R&amp;D・IT・プロセス改善・特許</div>
+      <div class="vc-sup"><h5>調達活動</h5>原材料・設備・サービスの購買管理</div>
+    </div>
+  </div>
+  <div class="warn">⚠️ PMIでのバリューチェーン活用：M&A後に買収側・被買収側の2社のバリューチェーンを並べて「重複している活動（コスト削減）」と「補完し合える活動（シナジー）」を特定する。これが100日プランの統合施策の根拠になる。</div>
+</div>
+
+<div class="score-board">
+  <h3>選択問題スコア（Q8〜Q14）</h3>
+  <span class="score-val" id="scoreVal">0</span><span class="score-max"> / 7点</span>
+</div>
+
+<div class="section-label sl-basic">SECTION A ― 基礎・分類（Q1〜Q7）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q1</span><span class="qtype">分類</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">以下の活動を「主活動」か「支援活動」に分類せよ。<br>①工場での製品組立<br>②人事部による採用活動<br>③完成品の顧客への配送<br>④経理部による財務諸表作成<br>⑤顧客からのクレーム対応</p>
+  <button class="revbtn" onclick="revealAns('a1',this)">答えを見る ▼</button>
+  <div class="ans" id="a1">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答</div>
+      <div class="ans-exp">① <span class="tag-pri">主活動</span>：製造・オペレーション<br>② <span class="tag-sup">支援活動</span>：人事・労務管理<br>③ <span class="tag-pri">主活動</span>：出荷物流<br>④ <span class="tag-sup">支援活動</span>：全般管理（インフラ）<br>⑤ <span class="tag-pri">主活動</span>：サービス（アフターサービス）</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q2</span><span class="qtype">分類</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">コンサルティング会社（人材・知識が主な商品）のバリューチェーンにおいて、最も重要な「主活動」はどれか？またその理由を述べよ。</p>
+  <button class="revbtn" onclick="revealAns('a2',this)">答えを見る ▼</button>
+  <div class="ans" id="a2">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>最重要：マーケ&amp;営業</strong>（と<strong>サービス</strong>）。コンサル会社は製造業と異なり、在庫や物流が不要。顧客を獲得するための営業活動（提案書・ネットワーク・ブランド力）と、実際のサービス提供（コンサルティング業務の実行）が価値の源泉。支援活動では<strong>技術開発（知識・ノウハウの蓄積）</strong>と<strong>人事（優秀なコンサルの採用・育成）</strong>が特に重要。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q3</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">バリューチェーン分析において「マージン（利益）」はどこで生まれるか説明せよ。</p>
+  <button class="revbtn" onclick="revealAns('a3',this)">答えを見る ▼</button>
+  <div class="ans" id="a3">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答</div>
+      <div class="ans-exp">マージン = 顧客が支払う価格（Value）から各活動のコストの合計を引いたもの。つまり「顧客が認識する価値（Value）- 活動コストの合計 = マージン」。バリューチェーンを分析することで、①どの活動がコストを食っているか（コスト削減余地）、②どの活動が顧客への価値を高めているか（競争優位の源泉）を特定できる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q4</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">PMIにおいて「コストシナジー」と「売上シナジー」とは何か、それぞれをバリューチェーンの言葉で説明せよ。</p>
+  <button class="revbtn" onclick="revealAns('a4',this)">答えを見る ▼</button>
+  <div class="ans" id="a4">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答</div>
+      <div class="ans-exp"><strong>コストシナジー：</strong>2社のバリューチェーンで重複している活動を統合することによるコスト削減。例：本社機能の統合（支援活動→全般管理の重複排除）、共同調達（支援活動→調達活動の統合）、物流拠点の集約（主活動→出荷物流の効率化）。<br><br><strong>売上シナジー：</strong>2社のバリューチェーンが補完し合うことで生まれる追加収益。例：A社の製品×B社の販売網（主活動→マーケ&amp;営業の相互活用）、クロスセル・アップセル機会の創出。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q5</span><span class="qtype">判定</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">「バリューチェーン分析は製造業専用のフレームワークであり、サービス業には使えない」この記述は正しいか？</p>
+  <button class="revbtn" onclick="revealAns('a5',this)">答えを見る ▼</button>
+  <div class="ans" id="a5">
+    <div class="ans-inner">
+      <div class="ans-result">❌ 誤り</div>
+      <div class="ans-exp">バリューチェーン分析はサービス業・コンサル・SaaS企業など全ての業種に適用可能。サービス業の場合、「製造」は「サービス提供プロセス」に、「購買物流」は「インプット（情報・知識・人材）の調達」に読み替えるだけでよい。例えば飲食店なら：購買物流=食材仕入れ、製造=調理、出荷物流=配膳、マーケ=広告、サービス=接客・リピート施策として分析できる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q6</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">バリューチェーン分析で「競争優位の源泉」を特定する方法を説明せよ。</p>
+  <button class="revbtn" onclick="revealAns('a6',this)">答えを見る ▼</button>
+  <div class="ans" id="a6">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp">①各活動のコストと顧客への貢献度（付加価値）を評価する。②競合他社の同じ活動と比較して、自社が相対的に優位・劣位な点を特定する。③<strong>競合より優れていて、かつ顧客が価値を認めている活動</strong>が競争優位の源泉（コアコンピタンス）。<br>例：Amazonの「出荷物流（配送速度・物流センター）」は最大の競争優位で、この活動への投資が他社に真似できない参入障壁になっている。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q7</span><span class="qtype">比較</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">バリューチェーン分析と3C分析の違いを述べよ。M&A実務でどう使い分けるか説明せよ。</p>
+  <button class="revbtn" onclick="revealAns('a7',this)">答えを見る ▼</button>
+  <div class="ans" id="a7">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>3C分析：</strong>市場・競合・自社の外部環境を俯瞰的に分析。→ M&Aで「この業界に参入すべきか・対象企業は市場でどのポジションか」を判断する際に使う。<br><br><strong>バリューチェーン分析：</strong>対象企業の内部活動を詳細に分解。→ M&AのDD段階で「この企業のどの部分に価値があるか・統合後のシナジーはどこで生まれるか」を具体的に評価する際に使う。<br><br>順番：3C（外部・市場評価）→ バリューチェーン（内部・企業評価）→ SWOT（統合）。</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label sl-mid">SECTION B ― 選択問題（Q8〜Q14）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q8</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">食品メーカーA社（製造）がスーパーチェーンB社（小売）を買収した。バリューチェーン統合で最も期待できるシナジーはどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'b')">A. 両社の人事部を統合して採用コストを削減する（支援活動シナジー）</button>
+    <button class="ch" onclick="checkAns(this,'b')" data-correct="true">B. A社製品をB社の全店舗で優先棚配置し、販売チャネルを直接確保する（主活動シナジー）</button>
+    <button class="ch" onclick="checkAns(this,'b')">C. 両社の特許を共有してR&amp;D費用を削減する</button>
+    <button class="ch" onclick="checkAns(this,'b')">D. 両社の経理システムを統一してコスト削減する</button>
+  </div>
+  <div class="ans" id="ab8">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <div class="ans-exp">製造業×小売業のM&Aの最大の狙いは「垂直統合」による販売チャネル確保と中間マージンの削減。A・C・Dはコストシナジーとして小さくない価値があるが、最大のインパクトはBの売上シナジー（流通の直接支配）。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q9</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">バリューチェーンの「支援活動」の特徴として正しいものはどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'c')">A. 支援活動は主活動に比べてコストがかからない</button>
+    <button class="ch" onclick="checkAns(this,'c')">B. 支援活動は顧客に直接届く価値を生まない無駄なコストである</button>
+    <button class="ch" onclick="checkAns(this,'c')" data-correct="true">C. 支援活動は複数の主活動を支える横断的な機能であり、競争優位の源泉になりうる</button>
+    <button class="ch" onclick="checkAns(this,'c')">D. 支援活動は主活動と独立しており、相互に影響しない</button>
+  </div>
+  <div class="ans" id="ac9">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C</div>
+      <div class="ans-exp">支援活動（人事・IT・技術開発・調達）は複数の主活動を横断的に支える。例えば強力な「人事管理」があれば全ての主活動の質が上がる。また「技術開発（IT）」がバリューチェーン全体をDX化すれば大きな競争優位になる。支援活動は「縁の下の力持ち」であり、PMIでは統合コストを下げながら強化が目指せるかを評価する。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q10</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">PMIで2社のバリューチェーンを比較する際、最初に見るべきポイントはどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'d')">A. 両社の社員数が多いどの活動から削減するか</button>
+    <button class="ch" onclick="checkAns(this,'d')" data-correct="true">B. 同じ活動が重複している部分（コストシナジー）と補完し合える部分（売上シナジー）</button>
+    <button class="ch" onclick="checkAns(this,'d')">C. どちらの会社のバリューチェーンが長いか</button>
+    <button class="ch" onclick="checkAns(this,'d')">D. 支援活動のコストが高い順に削減する</button>
+  </div>
+  <div class="ans" id="ad10">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <div class="ans-exp">PMIでバリューチェーンを使う目的はシナジーの特定。①重複→コスト削減（重複した本社機能・物流拠点など）②補完→売上拡大（一方の商品を他方の販路で売るなど）の2軸で分析するのが正しいアプローチ。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q11</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">地方の食品スーパーA社（地域密着・生鮮食品が強み）が、都市部のECスーパーB社（宅配・IT強い）を買収した場合、バリューチェーンの観点から最大のシナジー領域はどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'e')">A. 両社の採用部門を統合してHRコストを削減する</button>
+    <button class="ch" onclick="checkAns(this,'e')" data-correct="true">B. A社の生鮮食品調達力＋B社のEC・宅配物流を組み合わせた新サービス</button>
+    <button class="ch" onclick="checkAns(this,'e')">C. 両社の店舗をすべて統廃合する</button>
+    <button class="ch" onclick="checkAns(this,'e')">D. B社のITシステムをA社用に全面刷新する</button>
+  </div>
+  <div class="ans" id="ae11">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <div class="ans-exp">A社の「購買物流（生鮮食品の仕入れ力）」+B社の「出荷物流（EC宅配）」の組み合わせが典型的な補完シナジー。「産直・新鮮さを保ったEC食品宅配」という新たな価値提供が生まれる。これが売上シナジーの典型例。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q12</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">バリューチェーン分析で「コスト優位」を狙う場合と「差別化優位」を狙う場合、分析の焦点はどう違うか？正しいものはどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'f')">A. どちらも全活動を均等に分析すれば同じ結果が出る</button>
+    <button class="ch" onclick="checkAns(this,'f')" data-correct="true">B. コスト優位では各活動のコスト削減余地に注目し、差別化では顧客が高く評価する活動の強化に注目する</button>
+    <button class="ch" onclick="checkAns(this,'f')">C. 差別化優位を狙う企業はバリューチェーン分析を使わない</button>
+    <button class="ch" onclick="checkAns(this,'f')">D. コスト優位では支援活動のみ、差別化では主活動のみを分析する</button>
+  </div>
+  <div class="ans" id="af12">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <div class="ans-exp"><strong>コスト優位：</strong>全活動を見渡してどこに無駄なコストがあるかを探す。規模の経済・アウトソーシング・自動化などでコスト削減。<br><strong>差別化優位：</strong>顧客が最も価値を感じる活動（例：アフターサービス・マーケ・製品品質）を特定し、そこに集中投資する。コストより品質・ブランドを優先する判断をする。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q13</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">PMI Manager（SaaS）のバリューチェーン分析で「最も価値を生む主活動」はどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'g')">A. 購買物流（サーバーやライセンスの調達）</button>
+    <button class="ch" onclick="checkAns(this,'g')">B. 製造・オペレーション（ソフトウェア開発）</button>
+    <button class="ch" onclick="checkAns(this,'g')" data-correct="true">C. サービス（顧客へのPMIコンサル支援・カスタマーサクセス）とマーケ&amp;営業</button>
+    <button class="ch" onclick="checkAns(this,'g')">D. 出荷物流（ソフトウェアのデプロイ・配信）</button>
+  </div>
+  <div class="ans" id="ag13">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C</div>
+      <div class="ans-exp">SaaS企業では「製品の提供（D）」よりも「顧客が成果を出せるよう支援するカスタマーサクセス（サービス）」と「新規顧客獲得（マーケ&amp;営業）」が最も直接的に収益に影響する。SaaSはリテンション（継続率）が命で、CSがチャーンレートを下げる。PMI Manager では「顧客が実際にPMIを成功させられるか」がすべて。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q14</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">2社のM&A後にバリューチェーン統合を進める際、「優先して統合すべき活動」の判断基準として最も適切なものはどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'h')" data-correct="true">A. コスト削減効果・リスクの低さ・スピード感の3軸で優先順位をつける</button>
+    <button class="ch" onclick="checkAns(this,'h')">B. 支援活動から先に統合して社員の不安を払拭する</button>
+    <button class="ch" onclick="checkAns(this,'h')">C. 両社で最もコストが高い活動から順番に統合する</button>
+    <button class="ch" onclick="checkAns(this,'h')">D. 統合は主活動からすべて終わらせてから支援活動に着手する</button>
+  </div>
+  <div class="ans" id="ah14">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：A</div>
+      <div class="ans-exp">統合の優先度は「早く・大きく・リスク低く効果が出る活動」から着手するのが原則。例えば「共同調達（調達コスト削減）」は比較的リスクが低くスピードも出やすい。一方「基幹システム統合」は効果は大きいが時間とリスクが高いため後回し。PMIの100日プランではこの優先順位付けが最重要タスク。</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label sl-adv">SECTION C ― 実践ケース（Q15〜Q20）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q15</span><span class="qtype">ケース</span><span class="qlv adv">実践</span></div>
+  <div class="case-box">
+    <h4>📋 シナリオ：機械部品メーカーのM&A</h4>
+    製造業A社（機械部品製造、年商10億円）がB社（同業・機械部品製造、年商5億円）を買収した。<br>A社の強み：高精度な製造技術、大手メーカーとの長期契約<br>B社の強み：低コスト生産体制、地方ネットワーク、若い職人が多い
+  </div>
+  <p class="qtext">A社・B社のバリューチェーンを統合した際に期待できるシナジーを「コストシナジー」と「売上シナジー」に分けて各2つ挙げよ。</p>
+  <button class="revbtn" onclick="revealAns('ai15',this)">答えを見る ▼</button>
+  <div class="ans" id="ai15">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>コストシナジー（重複の排除）：</strong><br>①購買物流の統合：共同調達で原材料の仕入単価を交渉力向上により削減（スケールメリット）<br>②管理部門の集約：経理・総務・法務などの支援活動を統合し管理コスト削減<br><br><strong>売上シナジー（補完の活用）：</strong><br>①A社の高精度技術×B社の低コスト生産体制：品質と価格競争力を両立した製品ラインを新設、新規顧客開拓<br>②A社の大手顧客ネットワーク×B社の製造キャパシティ：A社の既存顧客に対してB社分の生産ラインを活用してより大型受注を取れるようになる</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q16</span><span class="qtype">設計</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">Q15のケースでPMIコンサルタントとして「100日プランでバリューチェーン統合を進める優先順位」を3ステップで設計せよ。（各ステップで対象活動・期間・目標を示すこと）</p>
+  <button class="revbtn" onclick="revealAns('aj16',this)">答えを見る ▼</button>
+  <div class="ans" id="aj16">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>Step1（Day1〜30）：支援活動の統合準備</strong><br>対象：管理部門（経理・人事）の情報共有・役割分担の明確化<br>目標：両社の財務データを一元管理できる状態にする。重複業務のリスト化<br><br><strong>Step2（Day30〜60）：購買物流の統合（コストシナジー先行）</strong><br>対象：原材料の共同調達開始・仕入れ先交渉<br>目標：調達コスト5%削減の達成。100日以内に成果を数字で示す<br><br><strong>Step3（Day60〜100）：売上シナジーのパイロット実行</strong><br>対象：A社既存顧客へB社の生産ラインを活用した新提案の試行<br>目標：パイロット案件1〜2件受注。クロスセルの可能性を実証する</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q17</span><span class="qtype">分析</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">Amazonのバリューチェーンの中で「最強の競争優位」となっている活動はどれか？その理由とともに述べよ。（実際の知識をベースにした自由記述）</p>
+  <button class="revbtn" onclick="revealAns('ak17',this)">答えを見る ▼</button>
+  <div class="ans" id="ak17">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>最強の競争優位：出荷物流（フルフィルメントセンター・配送ネットワーク）＋技術開発（IT・データ）</strong><br><br>Amazonは世界最大の物流インフラ（フルフィルメントセンター・ラストマイル配送）を保有し、翌日・当日配送を低コストで実現している。これが競合（楽天・Yahoo!）が真似できない参入障壁。また購買データを活用したレコメンドエンジン（技術開発）がマーケ活動を強化し、Prime会員の継続率を高めている。さらにAWS（クラウド事業）は支援活動のITインフラが外部事業にまで発展した例。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q18</span><span class="qtype">実務</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">当社がM&A後のPMI支援でバリューチェーン分析を顧客に提供する場合、どのようなアウトプット（成果物）を作ればよいか？形式と内容を提案せよ。</p>
+  <button class="revbtn" onclick="revealAns('al18',this)">答えを見る ▼</button>
+  <div class="ans" id="al18">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>アウトプット形式：</strong>A3サイズのバリューチェーン比較マップ（2社を横並び表示）+ シナジー一覧表<br><br><strong>内容：</strong><br>①両社のバリューチェーン図（主活動5+支援活動4）を横並びで表示<br>②「重複度」を色分け（高重複=赤→コスト削減、補完=緑→売上シナジー）<br>③シナジー一覧表：（例）コスト削減：共同調達で▲500万円/年、売上増：クロスセルで+1,200万円/年<br>④優先度マトリクス：効果×スピードの2軸で統合施策を整理<br><br>AI活用：Claude APIでヒアリングデータからバリューチェーンの初稿を自動生成→人間がレビューするプロセスで品質×スピードを両立できる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q19</span><span class="qtype">批判的思考</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">バリューチェーン分析の限界・弱点を2つ挙げ、それぞれの補完方法を述べよ。</p>
+  <button class="revbtn" onclick="revealAns('am19',this)">答えを見る ▼</button>
+  <div class="ans" id="am19">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>①静的な分析になりがち：</strong>バリューチェーン分析は「今の状態」のスナップショットであり、業界の変化（テクノロジーによる活動の消滅・新活動の登場）を捉えにくい。<br>補完：PEST分析と組み合わせて「将来の外部環境変化がバリューチェーンのどの活動に影響するか」を追加分析する。<br><br><strong>②企業間の「つながり（リンク）」を見落としやすい：</strong>単一企業のバリューチェーンだけ見ると、サプライヤーや顧客との関係性（バリューシステム）を捉えられない。<br>補完：「バリューシステム分析」（サプライヤー→自社→顧客の連鎖を含めた分析）に拡張する。M&Aの場合は買収先企業のサプライヤー関係も評価対象に含める。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q20</span><span class="qtype">総合</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">【最終問題】地方の運送会社A社（物流）とIT企業B社（配送管理SaaS開発）のM&Aを想定して、両社のバリューチェーンを統合した際の「最大のシナジー」と「最大のリスク」を1つずつ述べよ。</p>
+  <button class="revbtn" onclick="revealAns('an20',this)">答えを見る ▼</button>
+  <div class="ans" id="an20">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>最大のシナジー（売上シナジー）：</strong><br>A社の「出荷物流（配送ネットワーク）」×B社の「技術開発（配送管理SaaS）」の融合で、「ITで最適化された物流サービス」として差別化した新サービスを提供できる。A社が自社の物流をB社のシステムで効率化しつつ、そのノウハウをパッケージ化して同業の物流会社にSaaS販売する「物流プラットフォーム事業」への転換が可能。<br><br><strong>最大のリスク（組織・文化の違い）：</strong><br>現場労働者中心の運送会社文化（体力・経験重視）とITエンジニア中心のSaaS企業文化（スキル・自律性重視）は、働き方・評価制度・コミュニケーションスタイルが根本的に異なる。このギャップをPMIで解消しないと、B社のエンジニアが離職してシナジーが実現しないリスクがある。ADKARモデルを活用した変革マネジメントが必須。</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="nav-bar">
+  <a href="フレームワーク練習問題_ハブ.html">← ハブに戻る</a>
+  <a href="練習_5フォース.html">次：5フォース分析 →</a>
+</div>
+
+<script>
+let answered=0,score=0;
+const total=20;
+function updateProgress(){
+  document.getElementById('progressBar').style.width=(answered/total*100)+'%';
+  document.getElementById('progressText').textContent=answered+' / '+total+' 問 回答済み';
+  document.getElementById('scoreDisp').textContent=score;
+}
+function revealAns(id,btn){
+  document.getElementById(id).style.display='block';
+  btn.textContent='▲ 閉じる';
+  btn.classList.toggle('revealed');
+  if(!btn.dataset.counted){btn.dataset.counted=true;answered++;updateProgress();}
+}
+function checkAns(btn,key){
+  const choices=btn.parentElement.querySelectorAll('.ch');
+  choices.forEach(c=>{c.disabled=true;});
+  const ansDiv=btn.closest('.qcard').querySelector('.ans');
+  ansDiv.style.display='block';
+  if(btn.getAttribute('data-correct')==='true'){
+    btn.classList.add('correct');score++;
+  } else {
+    btn.classList.add('wrong');
+    choices.forEach(c=>{if(c.getAttribute('data-correct')==='true')c.classList.add('correct');});
+  }
+  document.getElementById('scoreVal').textContent=score;
+  answered++;updateProgress();
+}
+</script>
+</body>
+</html>

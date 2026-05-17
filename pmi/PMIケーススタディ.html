@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PMI 総合ケーススタディ｜架空M&Aで全フレームワークを実践</title>
+<style>
+:root{--primary:#1a3a5c;--accent:#e85d26;--accent2:#2ca8c2;--green:#16a34a;--purple:#7c3aed;--gold:#d97706;--light:#f4f7fb;--dark:#0f1f30;--gray:#6b7a8d;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--light);color:var(--dark);line-height:1.7;}
+.hero{background:linear-gradient(135deg,#0f1f30,#1a3a5c,#e85d26);color:white;padding:52px 24px 44px;text-align:center;}
+.hero .tag{display:inline-block;background:var(--accent);color:white;font-size:11px;font-weight:bold;letter-spacing:2px;padding:4px 14px;border-radius:20px;margin-bottom:14px;}
+.hero h1{font-size:clamp(20px,4vw,32px);font-weight:800;margin-bottom:10px;line-height:1.3;}
+.hero h1 span{color:#fde68a;}
+.hero p{font-size:13px;opacity:.8;margin-bottom:20px;}
+.hero-stats{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:10px 18px;text-align:center;}
+.stat .val{font-size:22px;font-weight:800;color:#fde68a;}
+.stat .lbl{font-size:10px;opacity:.8;}
+.container{max-width:900px;margin:0 auto;padding:0 20px;}
+section{padding:44px 20px;}
+section:nth-child(even){background:white;}
+.sec-head{text-align:center;margin-bottom:28px;}
+.sec-head .num{display:inline-block;background:var(--accent);color:white;font-size:11px;font-weight:bold;padding:3px 10px;border-radius:20px;margin-bottom:8px;}
+.sec-head h2{font-size:clamp(17px,3vw,24px);color:var(--primary);}
+.sec-head p{color:var(--gray);font-size:13px;margin-top:5px;}
+
+/* Company Profile */
+.company-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:800px;margin:0 auto;}
+@media(max-width:560px){.company-grid{grid-template-columns:1fr;}}
+.company-card{border-radius:14px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.1);}
+.cc-head{padding:16px 18px;color:white;}
+.cc-buyer{background:linear-gradient(135deg,#1a3a5c,#2ca8c2);}
+.cc-target{background:linear-gradient(135deg,#7c3aed,#e85d26);}
+.cc-head h3{font-size:15px;font-weight:800;margin-bottom:2px;}
+.cc-head p{font-size:11px;opacity:.85;}
+.cc-body{background:white;padding:14px 18px;}
+.cc-body table{width:100%;font-size:12px;border-collapse:collapse;}
+.cc-body td{padding:5px 4px;border-bottom:1px solid #f0f5fb;}
+.cc-body td:first-child{font-weight:700;color:var(--gray);width:40%;}
+
+/* Step boxes */
+.step-card{background:white;border-radius:14px;padding:22px 24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.08);}
+.step-num{display:inline-block;background:var(--primary);color:white;font-size:11px;font-weight:700;padding:3px 12px;border-radius:20px;margin-bottom:10px;}
+.step-card h3{font-size:15px;font-weight:800;margin-bottom:10px;color:var(--primary);}
+.step-card p{font-size:13px;color:var(--gray);margin-bottom:12px;}
+.fw-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin:2px;}
+.fw-pest{background:#f3e8ff;color:#6d28d9;}
+.fw-5f{background:#fef3c7;color:#b45309;}
+.fw-vc{background:#dbeafe;color:#1e40af;}
+.fw-3c{background:#dcfce7;color:#166534;}
+.fw-swot{background:#fef2f2;color:#dc2626;}
+.fw-pdca{background:#f0fdfa;color:#0f766e;}
+.fw-adkar{background:#fff0f5;color:#be185d;}
+.fw-100{background:#fffbeb;color:#92400e;}
+
+/* Q&A boxes */
+.qa-box{background:var(--light);border-radius:12px;padding:16px;margin:12px 0;border-left:4px solid var(--accent2);}
+.qa-box.pmi{border-left-color:var(--purple);}
+.qa-question{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:8px;}
+.qa-btn{background:var(--primary);color:white;border:none;border-radius:20px;padding:7px 16px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:6px;}
+.qa-btn:hover{background:var(--accent2);}
+.qa-ans{display:none;margin-top:10px;background:white;border-radius:8px;padding:14px;font-size:12px;color:var(--dark);line-height:1.7;}
+.qa-ans strong{color:var(--primary);}
+
+/* Timeline */
+.timeline{max-width:700px;margin:0 auto;}
+.tl-item{display:flex;gap:14px;margin-bottom:16px;align-items:flex-start;}
+.tl-dot{min-width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:12px;flex-shrink:0;}
+.tl-d1{background:#1d4ed8;}
+.tl-d30{background:#16a34a;}
+.tl-d60{background:#7c3aed;}
+.tl-d100{background:#e85d26;}
+.tl-body{background:white;border-radius:10px;padding:12px 16px;flex:1;box-shadow:0 1px 6px rgba(0,0,0,.06);}
+.tl-body h4{font-size:13px;font-weight:700;margin-bottom:4px;}
+.tl-body p{font-size:12px;color:var(--gray);}
+.tl-body ul{padding-left:14px;font-size:12px;color:var(--gray);margin-top:4px;}
+
+/* Result */
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:800px;margin:0 auto;}
+.result-card{background:white;border-radius:12px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.07);text-align:center;}
+.result-card .rc-val{font-size:24px;font-weight:800;color:var(--primary);}
+.result-card .rc-lbl{font-size:11px;color:var(--gray);}
+.result-card .rc-note{font-size:10px;color:var(--green);font-weight:600;margin-top:3px;}
+
+/* Highlight */
+.hl{background:linear-gradient(135deg,#fff8f0,#fff0e0);border-left:4px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 18px;margin:16px auto;font-size:13px;max-width:800px;}
+.hl strong{color:var(--accent);}
+
+/* Choices */
+.choices{display:flex;flex-direction:column;gap:8px;margin:10px 0;}
+.ch{text-align:left;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;background:white;cursor:pointer;font-size:13px;font-family:inherit;transition:all .2s;}
+.ch:hover{border-color:var(--accent2);background:#f0f9ff;}
+.ch.correct{border-color:#16a34a;background:#f0fdf4;color:#166534;font-weight:700;}
+.ch.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626;}
+.ch:disabled{cursor:default;}
+
+.nav-bar{background:var(--dark);padding:14px 20px;text-align:center;}
+.nav-bar a{color:#a5f3fc;text-decoration:none;font-size:12px;font-weight:600;margin:0 10px;}
+footer{background:var(--dark);color:rgba(255,255,255,.4);text-align:center;padding:18px;font-size:11px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="tag">総合ケーススタディ</div>
+  <h1>架空M&Aで<span>全フレームワークを実践</span></h1>
+  <p>PEST・5フォース・3C・SWOT・バリューチェーン・PDCA・ADKAR・100日プラン — 全てを1つのケースで使い切る</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="val">10+</div><div class="lbl">使用フレームワーク</div></div>
+    <div class="stat"><div class="val">20</div><div class="lbl">演習問題</div></div>
+    <div class="stat"><div class="val">90</div><div class="lbl">分推定所要時間</div></div>
+    <div class="stat"><div class="val">1件</div><div class="lbl">架空M&A事例</div></div>
+  </div>
+</div>
+
+<!-- 概要 -->
+<section id="overview">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">Case Overview</div>
+      <h2>架空M&A事例：「鶴岡食品 × エコマート」統合プロジェクト</h2>
+      <p>山形県の地方食品メーカーと地域スーパーのM&A。これを1つの事例として全フレームワークを適用しながら学ぶ。</p>
+    </div>
+    <div class="company-grid">
+      <div class="company-card">
+        <div class="cc-head cc-buyer">
+          <h3>🏢 鶴岡食品株式会社（買収側）</h3>
+          <p>地方食品メーカー</p>
+        </div>
+        <div class="cc-body">
+          <table>
+            <tr><td>設立</td><td>1972年（創業53年）</td></tr>
+            <tr><td>本社</td><td>山形県鶴岡市</td></tr>
+            <tr><td>従業員</td><td>120名</td></tr>
+            <tr><td>年商</td><td>18億円</td></tr>
+            <tr><td>主力</td><td>庄内産米・地元食材を使ったレトルト食品・惣菜</td></tr>
+            <tr><td>強み</td><td>地元農家との独自調達網・製造技術・地域ブランド</td></tr>
+            <tr><td>課題</td><td>販路がBtoBのみ・消費者向けECが弱い・後継者候補あり（専務）</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="company-card">
+        <div class="cc-head cc-target">
+          <h3>🛒 株式会社エコマート（被買収側）</h3>
+          <p>地域スーパー（事業承継M&A）</p>
+        </div>
+        <div class="cc-body">
+          <table>
+            <tr><td>設立</td><td>1985年</td></tr>
+            <tr><td>本社</td><td>山形県酒田市</td></tr>
+            <tr><td>従業員</td><td>85名（パート含む）</td></tr>
+            <tr><td>年商</td><td>12億円</td></tr>
+            <tr><td>主力</td><td>地域密着型スーパー（2店舗）</td></tr>
+            <tr><td>強み</td><td>地域住民との信頼関係・安定した顧客基盤</td></tr>
+            <tr><td>課題</td><td>社長（68歳）後継者不在・利益率低下・大型チェーンとの競合激化</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="hl">
+      <strong>当社の役割：</strong>鶴岡食品からエコマート買収後のPMI支援を依頼される。コンサルフィー：月150万円×12ヶ月 + PMI Manager SaaS導入（月5万円）。あなたはPMIコンサルの担当者として全フレームワークを活用してPMIを推進する。
+    </div>
+  </div>
+</section>
+
+<!-- STEP1: PEST -->
+<section id="step1">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">STEP 1</div>
+      <h2>買収前：業界環境分析</h2>
+      <p>まず外部環境をPEST・5フォース・3Cで分析し「この買収は妥当か」を判断する</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">PEST分析</div>
+      <h3>食品スーパー業界のPEST環境は？</h3>
+      <p>エコマートが属する「地方食品スーパー業界」のPEST要因を分析しよう。</p>
+      <div class="qa-box">
+        <div class="qa-question">Q1. 食品スーパー業界のPEST要因を各1つずつ挙げよ（機会か脅威かも示すこと）。</div>
+        <button class="qa-btn" onclick="toggleAns('pa1',this)">答えを見る ▼</button>
+        <div class="qa-ans" id="pa1">
+          <strong>P（政治）</strong>：消費税10%への対応・軽減税率制度で生鮮食品は8%→食品スーパーには相対的に有利（機会）<br>
+          <strong>E（経済）</strong>：物価高騰・食材仕入れコスト上昇で利益率が圧迫（脅威）/ 地方経済の縮小で消費者購買力が低下（脅威）<br>
+          <strong>S（社会）</strong>：高齢化で「近所で買える・配達してくれる」への需要増（機会）/ 人口減少で地方の購買市場が縮小（脅威）<br>
+          <strong>T（技術）</strong>：EC・フードデリバリーの台頭で「店舗に来ない消費者」が増加（脅威）/ セルフレジ・在庫管理AIで省人化可能（機会）
+        </div>
+      </div>
+      <div class="qa-box">
+        <div class="qa-question">Q2. このPEST分析から「エコマートを買収するリスク」を3つ挙げよ。</div>
+        <button class="qa-btn" onclick="toggleAns('pa2',this)">答えを見る ▼</button>
+        <div class="qa-ans" id="pa2">
+          ①<strong>市場縮小リスク：</strong>山形県の人口は減少中（S・脅威）。長期的に地域スーパーの顧客基盤が縮小する。<br>
+          ②<strong>コスト上昇リスク：</strong>食材仕入れコストの高騰（E・脅威）が続けば、薄利のスーパービジネスで赤字転落の可能性。<br>
+          ③<strong>デジタル代替リスク：</strong>EC・フードデリバリー（T・脅威）が普及すれば、実店舗型スーパーへの来客が減少する。
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">5フォース分析</div>
+      <h3>地方食品スーパー業界の構造的魅力度は？</h3>
+      <div class="qa-box">
+        <div class="qa-question">Q3. エコマートが属する「地方食品スーパー業界（酒田市周辺）」の5フォース分析を行い、買収の魅力度を評価せよ。</div>
+        <button class="qa-btn" onclick="toggleAns('pa3',this)">答えを見る ▼</button>
+        <div class="qa-ans" id="pa3">
+          <strong>新規参入の脅威：中〜強</strong> 大型チェーン（ヨークベニマル・イオン）の地方展開リスクあり。ただし酒田市の人口規模では採算が難しく、直近では参入なし。<br>
+          <strong>代替品の脅威：中</strong> コンビニ・ドラッグストアの食品強化、ECデリバリーが代替脅威。ただし生鮮食品の即時性はまだ代替困難。<br>
+          <strong>買い手の交渉力：弱</strong> 地域住民は分散・少額購入で交渉力低い。ただし他店への乗り換えは容易。<br>
+          <strong>売り手の交渉力：中</strong> 仕入先は複数あるが、地域農家・仕入業者との長期関係で固定されており急な変更は難しい。<br>
+          <strong>業界内競合：強</strong> 地方では数少ない同業者だが、生活必需品で価格競争になりがち。<br><br>
+          <strong>総合評価：</strong>業界の構造的魅力度は「低〜中」。しかし鶴岡食品の製品（惣菜・レトルト）を独自に販売できる「垂直統合シナジー」があれば買収価値は高い。
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">3C分析</div>
+      <h3>エコマートの市場ポジションは？</h3>
+      <div class="qa-box">
+        <div class="qa-question">Q4. エコマートの3C分析（Customer・Competitor・Company）を行い、KSF（成功要因）を導け。</div>
+        <button class="qa-btn" onclick="toggleAns('pa4',this)">答えを見る ▼</button>
+        <div class="qa-ans" id="pa4">
+          <strong>Customer（顧客）：</strong>酒田市・鶴岡市の60代以上が中心。「近所で新鮮なものを買いたい・顔なじみのお店で安心して買いたい」ニーズが強い。若年層は減少し、EC利用者は増加傾向。<br><br>
+          <strong>Competitor（競合）：</strong>同市内にホームセンター系食品売場・ドラッグストア（食品強化中）が進出。直接競合の地元スーパーは2社。価格訴求では差別化困難。<br><br>
+          <strong>Company（自社）：</strong>2店舗で地域シェア約15%。従業員・地域住民との信頼関係が強み。IT・データ活用は弱い。鮮度管理が課題でロスが多い。<br><br>
+          <strong>KSF（成功要因）：</strong>「地域密着の鮮度管理と品揃え」×「高齢顧客の利便性（配達・対面サービス）」。競合との差別化は「価格」より「人情・サービス・地域食材」にある。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEP2: バリューチェーン・SWOT -->
+<section id="step2">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">STEP 2</div>
+      <h2>買収決定後：シナジーと統合戦略の設計</h2>
+      <p>バリューチェーン分析でシナジーを特定し、SWOTで統合戦略を立案する</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">バリューチェーン分析</div>
+      <h3>鶴岡食品×エコマートのシナジーはどこにあるか？</h3>
+      <div class="qa-box">
+        <div class="qa-question">Q5. 鶴岡食品（製造）とエコマート（小売）のバリューチェーンを比較し、コストシナジーと売上シナジーを各2つ特定せよ。</div>
+        <button class="qa-btn" onclick="toggleAns('pb5',this)">答えを見る ▼</button>
+        <div class="qa-ans" id="pb5">
+          <strong>コストシナジー（重複排除）：</strong><br>
+          ①<strong>調達の一元化：</strong>地元農家・仕入業者への交渉を鶴岡食品が一元管理することでエコマートの仕入れコスト削減（推定年▲1,200万円）<br>
+          ②<strong>管理部門の統合：</strong>経理・総務機能の統合（推定年▲600万円）<br><br>
+          <strong>売上シナジー（補完活用）：</strong><br>
+          ①<strong>鶴岡食品製品のエコマート優先棚配置：</strong>自社製品の惣菜・レトルトをエコマート全店に最優先棚を確保。中間流通マージン（約10%）を排除し、収益性向上<br>
+          ②<strong>「産直プレミアム」ブランドの確立：</strong>「鶴岡食品×エコマート 庄内産直コーナー」を設置。プレミアム価格で地元食材を販売。観光客・産直ファン向け需要を創出
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">SWOT分析</div>
+      <h3>統合後の会社の戦略ポジションは？</h3>
+      <div class="qa-box">
+        <div class="qa-question">Q6. 鶴岡食品＋エコマート統合後の企業のSWOT分析を行い、クロスSWOTで主要戦略を1つ提案せよ。</div>
+        <button class="qa-btn" onclick="toggleAns('pb6',this)">答えを見る ▼</button>
+        <div class="qa-ans" id="pb6">
+          <strong>S（強み）：</strong>庄内産直の独自調達力・地域住民との信頼関係・製造から小売まで一貫した垂直統合<br>
+          <strong>W（弱み）：</strong>IT・EC活用が弱い・酒田市のみの店舗（地域限定）・統合後の組織文化ギャップ<br>
+          <strong>O（機会）：</strong>高齢者の「地域密着スーパー」需要・庄内産直食品への関心高まり・EC・配達サービス需要<br>
+          <strong>T（脅威）：</strong>人口減少・物価高騰・大型チェーンの地方進出<br><br>
+          <strong>クロスSWOT戦略（SO戦略：強みで機会を活かす）：</strong><br>「庄内産直×EC宅配サービス」の展開。強み（産直・製造技術）×機会（EC需要・高齢者宅配ニーズ）を掛け合わせて、山形県全域への宅配サービスを立ち上げる。既存店舗の顧客にとどまらず、山形市・仙台圏の「庄内産直ファン」にも販路を拡大できる。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEP3: 100日プラン -->
+<section id="step3">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">STEP 3</div>
+      <h2>PMI開始：100日プランの設計</h2>
+      <p>クロージング（契約締結）からDay100までの行動計画を策定する</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">100日プラン</div>
+      <h3>鶴岡食品×エコマート 統合100日プラン</h3>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot tl-d1">Day<br>1</div>
+          <div class="tl-body">
+            <h4>Day1：クロージング当日</h4>
+            <p>最重要：従業員・取引先へのコミュニケーション実施</p>
+            <ul>
+              <li>エコマート全従業員への買収発表（社長・鶴岡食品専務が直接挨拶）</li>
+              <li>取引先（農家・問屋）へのご挨拶文送付</li>
+              <li>顧客向け告知（店頭ポスター・SNS）</li>
+              <li>ADKAR A（Awareness）の開始</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot tl-d30">Day<br>30</div>
+          <div class="tl-body">
+            <h4>Day1〜30：現状把握・信頼構築フェーズ</h4>
+            <ul>
+              <li>エコマート全従業員との1on1ヒアリング（ADKARアセスメント）</li>
+              <li>財務・業務の現状把握（POSデータ・在庫・仕入れコスト分析）</li>
+              <li>鶴岡食品製品のエコマート試験販売（産直コーナー設置）</li>
+              <li>KPI設定：売上維持率95%以上・従業員離職率5%以内</li>
+              <li>PMI Manager 導入・ダッシュボード設定</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot tl-d60">Day<br>60</div>
+          <div class="tl-body">
+            <h4>Day30〜60：統合実行フェーズ</h4>
+            <ul>
+              <li>調達の一元化開始（共同仕入れ交渉スタート）</li>
+              <li>新業務フロー研修実施（ADKAR K→A）</li>
+              <li>管理部門の役割整理・重複解消の実行</li>
+              <li>産直コーナーの正式展開（全2店舗）</li>
+              <li>週次PDCA：KPIレビュー会議（15分）開始</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot tl-d100">Day<br>100</div>
+          <div class="tl-body">
+            <h4>Day60〜100：定着・次フェーズ設計</h4>
+            <ul>
+              <li>シナジー達成状況のCheck・Act（PDCA）</li>
+              <li>成功事例の表彰・共有（ADKAR R）</li>
+              <li>EC・宅配サービスの可能性調査レポート作成</li>
+              <li>100日間の成果報告（鶴岡食品経営陣へのプレゼン）</li>
+              <li>Year1の中期計画策定</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">演習問題</div>
+      <h3>100日プランの演習</h3>
+      <div class="qa-box pmi">
+        <div class="qa-question">Q7. Day1のコミュニケーションで「エコマート従業員が最も心配すること」は何か？ADKARのどのステップに相当するか、対応策も述べよ。</div>
+        <button class="qa-btn" onclick="toggleAns('pc7',this)">答えを見る ▼</button>
+        <div class="qa-ans" id="pc7">
+          <strong>最も心配すること：</strong>①自分の仕事がなくなるか（リストラ不安）②給与・処遇が下がるか③会社の文化・雰囲気が変わるか<br><br>
+          <strong>ADKARのステップ：</strong>A（Awareness）の段階。「なぜM&Aしたか・何が変わり何が変わらないか」が伝わっていない状態。<br><br>
+          <strong>対応策：</strong>鶴岡食品専務が直接「①雇用は維持・削減は行わない②給与水準は維持③エコマートの地域密着文化を大切にする」という3点を明言。その後、個別1on1で各従業員の不安を聞き出す機会を作る。言葉だけでなく「行動で示す（すぐに解雇しない）」ことが信頼の基盤。
+        </div>
+      </div>
+      <div class="qa-box pmi">
+        <div class="qa-question">Q8. PMI Manager を使って100日プランをどのように管理するか？具体的な機能活用を3つ述べよ。</div>
+        <button class="qa-btn" onclick="toggleAns('pc8',this)">答えを見る ▼</button>
+        <div class="qa-ans" id="pc8">
+          ①<strong>KPIダッシュボード：</strong>売上維持率・離職率・産直コーナー売上・調達コスト削減率などをリアルタイムで可視化。週次レビュー会議前に自動集計→会議時間を短縮。<br>
+          ②<strong>タスク管理・担当者割当：</strong>「調達一元化の交渉」「従業員1on1の完了率」「研修受講状況」などのタスクをDay別に設定し、担当者ごとに進捗追跡。遅延タスクは自動アラート。<br>
+          ③<strong>AIによる100日プラン提案：</strong>エコマートの業種・規模・課題をインプットすると、Claude APIが類似PMI事例からカスタマイズされた100日プランの初稿を自動生成。コンサルがレビューして精度向上。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEP4: PDCA -->
+<section id="step4">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">STEP 4</div>
+      <h2>PMI実行中：PDCAで軌道修正</h2>
+      <p>Day60のKPIレビューで「計画との差異」が発覚。PDCAで対応する。</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">PDCAサイクル</div>
+      <h3>Day60 中間レビュー：計画との差異が発覚</h3>
+      <div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:10px;padding:16px;margin-bottom:16px;font-size:13px;">
+        <strong style="color:#dc2626;">⚠️ 問題発生：</strong><br>
+        Plan：産直コーナー売上 月150万円（目標）<br>
+        Do：産直コーナー設置・試験販売を実施<br>
+        Check（Day60）：産直コーナー売上 月62万円（計画比41%のみ達成）<br><br>
+        ヒアリングで判明した原因候補：<br>
+        ①商品の認知度が低い（「鶴岡食品の惣菜」と知られていない）<br>
+        ②価格が割高に感じられている（地元産直でも生活に余裕のない高齢者には高い）<br>
+        ③コーナーの場所が悪い（入口から遠い）
+      </div>
+      <div class="qa-box pmi">
+        <div class="qa-question">Q9. 上記の状況を受けてPDCAのActとして取るべき施策を優先度順に3つ提案せよ。</div>
+        <button class="qa-btn" onclick="toggleAns('pd9',this)">答えを見る ▼</button>
+        <div class="qa-ans" id="pd9">
+          <strong>Act（改善）優先順位：</strong><br>
+          <strong>①【即時・高効果】コーナーの移設：</strong>入口近くの高通行量エリアへコーナー移設。視認性改善だけで来客増の可能性が高い。コストも低く即日実施可能。<br>
+          <strong>②【短期・認知向上】店内POP・試食販売：</strong>「鶴岡食品・社長メッセージ付きPOP」の設置。週末限定で試食コーナーを設けて認知度向上。試食で実際に食べてもらうと購入率が大幅に上がる。<br>
+          <strong>③【中期・価格戦略】入門商品の設定：</strong>高齢者でも手が届く価格帯（300円以下）の入門商品（小袋・少量パック）を追加。プレミアム商品と入門商品の2ライン展開。
+        </div>
+      </div>
+      <div class="qa-box pmi">
+        <div class="qa-question">Q10. Day60のActを受けてDay100に向けた新しいPlanを作れ。KPI・施策・期限を含めること。</div>
+        <button class="qa-btn" onclick="toggleAns('pd10',this)">答えを見る ▼</button>
+        <div class="qa-ans" id="pd10">
+          <strong>新Plan（Day60〜Day100）：</strong><br>
+          目標：産直コーナー売上を月100万円（現状比+60%）まで回復させる<br><br>
+          施策①：コーナー移設（Day62完了）<br>
+          施策②：試食販売 週2回（土・日）（Day64開始）<br>
+          施策③：入門価格帯商品3品の開発・投入（Day75まで）<br>
+          施策④：地元新聞・SNSでの「庄内産直コーナー」告知（Day68開始）<br><br>
+          Check：Day80（中間確認）→ 月85万円以上で施策継続 / 未達なら価格戦略の再検討<br>
+          Day100：目標100万円達成の有無を経営陣報告
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEP5: ADKAR -->
+<section id="step5">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">STEP 5</div>
+      <h2>組織統合：ADKARで人の変革を推進</h2>
+      <p>産直コーナーの失敗と同時に、現場従業員の統合への抵抗が顕在化した</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">ADKARアセスメント</div>
+      <h3>Day60のADKARアセスメント結果</h3>
+      <div style="background:#f0f9ff;border-radius:10px;padding:16px;margin-bottom:16px;font-size:13px;">
+        エコマート従業員（n=60）のADKARスコア（5点満点）：<br>
+        A（Awareness）：4.1 ／ D（Desire）：2.4 ／ K（Knowledge）：2.8 ／ A（Ability）：3.0 ／ R（Reinforcement）：1.8<br><br>
+        特に「店長（60代）グループ」のD・Rが低い（D：1.8、R：1.5）
+      </div>
+      <div class="qa-box pmi">
+        <div class="qa-question">Q11. このADKARアセスメント結果から、最優先で対応すべき課題と具体的施策を述べよ。</div>
+        <button class="qa-btn" onclick="toggleAns('pe11',this)">答えを見る ▼</button>
+        <div class="qa-ans" id="pe11">
+          <strong>最優先課題：D（Desire：2.4）とR（Reinforcement：1.8）</strong><br><br>
+          <strong>D向上施策（特に店長層）：</strong><br>
+          ・鶴岡食品専務と各店長の個別ランチ面談を設定。「あなたの経験と地域知識をこれからの統合会社に活かしてほしい」というWIIFMメッセージを直接伝える。<br>
+          ・産直コーナーのある店長をリーダーに任命し、「新事業の立ち上げオーナー」として権限を委譲→変革への当事者意識を高める。<br><br>
+          <strong>R向上施策：</strong><br>
+          ・産直コーナー売上が伸びた店舗・担当者を月次表彰（社内ニュースレター・朝礼で発表）。<br>
+          ・新しい取り組みに協力した従業員の評価シートに「統合への貢献」を項目として追加。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEP6: 総合演習 -->
+<section id="step6">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">STEP 6</div>
+      <h2>総合演習：プレゼン資料の構成</h2>
+      <p>Day100に鶴岡食品の経営陣へPMI成果を報告するプレゼン資料を設計せよ</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">総合演習</div>
+      <h3>Day100 成果報告プレゼンの構成を設計せよ</h3>
+
+      <div class="qa-box pmi">
+        <div class="qa-question">Q12. Day100の経営陣向けプレゼン（30分）の構成を6スライドで提案せよ。各スライドのタイトルと主な内容を示すこと。</div>
+        <button class="qa-btn" onclick="toggleAns('pf12',this)">答えを見る ▼</button>
+        <div class="qa-ans" id="pf12">
+          <strong>スライド①：エグゼクティブサマリー</strong><br>
+          100日間のKPI達成状況を一覧（信号機カラー：赤/黄/緑）。「全体的に△△の達成・○○は課題あり。次の1年に向けて○○に注力」という結論を最初に提示。<br><br>
+          <strong>スライド②：シナジー達成状況</strong><br>
+          コストシナジー実績（調達コスト▲○%・管理費▲○万円）、売上シナジー実績（産直コーナー売上○万円/月）を計画比で表示。<br><br>
+          <strong>スライド③：組織統合の進捗（ADKARスコア推移）</strong><br>
+          Day1→Day60→Day100のADKARスコア変化をグラフで表示。特にDとRの改善状況を強調。従業員離職率（0名退職）の成果。<br><br>
+          <strong>スライド④：課題と学び（Why達成できなかったか）</strong><br>
+          産直コーナーが計画比達成できなかった理由・Act後の改善進捗。「失敗と学び」を正直に報告することで信頼を高める。<br><br>
+          <strong>スライド⑤：Year1計画（PMI第2フェーズ）</strong><br>
+          EC・宅配サービスの立ち上げ計画・産直ブランドの拡大・追加シナジー施策。KPIとマイルストーンを提示。<br><br>
+          <strong>スライド⑥：PMI Managerを活用した継続的モニタリング提案</strong><br>
+          ダッシュボードのデモ・今後の月次レビュー体制・当社のサポート継続提案。
+        </div>
+      </div>
+
+      <div class="qa-box pmi">
+        <div class="qa-question">Q13. このPMI案件で当社が「AI（Claude API）」を使えた場面を3つ挙げよ。</div>
+        <button class="qa-btn" onclick="toggleAns('pf13',this)">答えを見る ▼</button>
+        <div class="qa-ans" id="pf13">
+          ①<strong>100日プラン初稿の自動生成：</strong>「食品スーパー×食品メーカー・85名・山形・事業承継」という条件をClaude APIに入力し、過去類似PMI事例から最適な100日プランの初稿を自動生成。コンサルが1時間のレビューで精度高いプランを完成。<br><br>
+          ②<strong>従業員ヒアリングの議事録・課題整理：</strong>1on1ヒアリングを録音→文字起こし→Claude APIで「ADKARアセスメントに基づく課題分類」と「重要な懸念事項の抽出」を自動化。85名分のヒアリングを3時間で分析完了。<br><br>
+          ③<strong>経営陣向けプレゼン資料の初稿生成：</strong>KPIデータ・施策実施状況をCSVで入力し、「Day100成果報告プレゼンの骨子と各スライドの内容案」をAIが生成。コンサルがストーリー性を加えてブラッシュアップ。
+        </div>
+      </div>
+
+      <div class="qa-box pmi">
+        <div class="qa-question">Q14〜20. 【自由記述・深化演習】以下のうち2つ以上を選んで自分の言葉で答えよ。答えはノートに書いてから「解答を見る」を押すこと。</div>
+        <button class="qa-btn" onclick="toggleAns('pf14',this)">解答例を見る ▼</button>
+        <div class="qa-ans" id="pf14">
+          <strong>Q14：「もし産直コーナーが3ヶ月後も計画の50%に届かなかったら」という最悪シナリオへの対処法を述べよ。</strong><br>
+          → 産直コーナーを縮小し、他の売上シナジー（宅配サービス・学校給食向け）にリソースを転換。「失敗を認めて方向修正できる柔軟性」がPMIコンサルの腕の見せ所。計画変更はAct→新Plan。<br><br>
+          <strong>Q15：鶴岡食品がエコマートの3店舗目を追加買収するとき、今回の100日プランをどう改善するか述べよ。</strong><br>
+          → 今回の失敗（産直コーナー配置・価格設定）を学習データとして次回に活かす。PMI Manager にこの事例を登録しておけば、次回は初期から改善済み計画でスタートできる。<br><br>
+          <strong>Q16：このM&Aで「最大のリスク」だった事象は何だったか？どう対処したか述べよ。</strong><br>
+          → 店長グループの低いDesire（D：1.8）。彼らが離職・サボタージュに動けばPMI全体が失敗する。個別面談・権限委譲という「人への投資」が最重要だった。<br><br>
+          <strong>Q17：あなたがPMIコンサルとして「一番難しかった」と感じる場面はどこか？なぜか。</strong><br>
+          → 自由回答。典型例：「なぜ変わるか（A）は伝えたのにDが上がらない」という場面。マニュアルや理屈では解決できず、一人ひとりの話を聞き「個人への影響」を丁寧に伝える必要があった。<br><br>
+          <strong>Q18：鶴岡食品×エコマートの成功ストーリーを当社の営業で活用するとしたら、どんな提案書を作るか（構成を3スライドで）。</strong><br>
+          → スライド①Before：エコマートの課題（後継者・競合・収益）→ スライド②During：PMI 100日の具体的施策 → スライド③After：シナジー実績（売上+○万円・コスト▲○万円・離職0名）。数字で語る成功事例。<br><br>
+          <strong>Q19：PMI ManagerのSaaS単体と「コンサル＋SaaS」のどちらが顧客により価値を届けられるか？あなたの意見を述べよ。</strong><br>
+          → 初期は「コンサル＋SaaS」が必要。PMIは初めての経験が多く、ツールだけでは「何を入力すれば良いか」もわからない。コンサルが伴走してSaaSの使い方・KPI設定を支援することで初めて価値が出る。ただし3〜5年後はSaaS単体でも使えるように設計を進化させることが重要。<br><br>
+          <strong>Q20【最終】：このケーススタディ全体を通じて「自分が一番身についたフレームワーク」と「まだ自信がないフレームワーク」を1つずつ挙げ、次のアクションを決めよ。</strong><br>
+          → 自己診断の機会。身についたもの・まだ不安なものを正直に書いて、次週の学習計画に繋げる。「メタ認知」もコンサルの重要スキル。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 学習の振り返り -->
+<section id="summary">
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">Summary</div>
+      <h2>このケースで使ったフレームワーク一覧</h2>
+      <p>全てのフレームワークが1つのPMIストーリーの中でどう連携するかを確認しよう</p>
+    </div>
+    <div style="max-width:800px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+      <div style="background:white;border-radius:10px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+        <div class="fw-tag fw-pest">PEST分析</div>
+        <p style="font-size:12px;color:#6b7a8d;margin-top:6px;">買収前の業界外部環境評価→機会・脅威の特定</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+        <div class="fw-tag fw-5f">5フォース</div>
+        <p style="font-size:12px;color:#6b7a8d;margin-top:6px;">業界の収益性構造を評価→参入の妥当性判断</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+        <div class="fw-tag fw-3c">3C分析</div>
+        <p style="font-size:12px;color:#6b7a8d;margin-top:6px;">エコマートの市場ポジション・KSF特定</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+        <div class="fw-tag fw-vc">バリューチェーン</div>
+        <p style="font-size:12px;color:#6b7a8d;margin-top:6px;">2社のシナジー（コスト・売上）を特定</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+        <div class="fw-tag fw-swot">SWOT分析</div>
+        <p style="font-size:12px;color:#6b7a8d;margin-top:6px;">統合後の戦略方向性（SO・ST・WO・WT）</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+        <div class="fw-tag fw-100">100日プラン</div>
+        <p style="font-size:12px;color:#6b7a8d;margin-top:6px;">PMI実行の全体スケジュールとKPI設計</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+        <div class="fw-tag fw-pdca">PDCA</div>
+        <p style="font-size:12px;color:#6b7a8d;margin-top:6px;">Day60の計画差異を発見し軌道修正</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+        <div class="fw-tag fw-adkar">ADKAR</div>
+        <p style="font-size:12px;color:#6b7a8d;margin-top:6px;">従業員の変革定着支援・店長層の抵抗解消</p>
+      </div>
+    </div>
+    <div class="hl" style="margin-top:24px;">
+      <strong>コンサルの本質：</strong>これらのフレームワークは「思考の道具」にすぎない。大切なのは「人（エコマートの従業員・経営者）と向き合い、信頼関係を作りながら変革を推進すること」。フレームワークは正しい問いを立てるためのもの。答えは現場にある。
+    </div>
+  </div>
+</section>
+
+<div class="nav-bar">
+  <a href="フレームワーク練習問題_ハブ.html">← ハブに戻る</a>
+  <a href="成長ロードマップ_新入社員向け.html">成長ロードマップ</a>
+</div>
+<footer>© 2026 All Rights Reserved. このケーススタディは教育目的の架空事例です。</footer>
+
+<script>
+function toggleAns(id,btn){
+  const el=document.getElementById(id);
+  if(el.style.display==='block'){el.style.display='none';btn.textContent='答えを見る ▼';}
+  else{el.style.display='block';btn.textContent='▲ 閉じる';}
+}
+</script>
+</body>
+</html>

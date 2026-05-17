@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PMI基礎 学習教材｜M&A後の統合プロセスを動かす全体像</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','BIZ UDGothic','Meiryo',sans-serif;background:#FAFAF8;color:#1A1A1A;line-height:1.75;font-size:15px;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}img{max-width:100%;height:auto;display:block;}
+.site-header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 32px;height:56px;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid #E8E5E0;}
+.header-logo{font-size:12px;font-weight:700;}.header-logo span{color:#999;font-weight:400;}
+.header-back{font-size:12px;color:#666;}.header-back:hover{color:#1A1A1A;}
+.hero{min-height:28vh;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;padding:76px 48px 36px;background:#F5F3EE;border-bottom:1px solid #E8E5E0;position:relative;overflow:hidden;}
+@media(max-width:768px){.hero{grid-template-columns:1fr;padding:72px 16px 20px;}.hero-illust{display:none;}}
+.hero-left{position:relative;z-index:1;}
+.hero-bg-num{position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:clamp(120px,18vw,220px);font-weight:900;color:rgba(0,0,0,.04);line-height:1;pointer-events:none;letter-spacing:-10px;}
+.hero-meta{display:flex;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+.hero-step{font-size:10px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;}
+.hero-phase{font-size:10px;font-weight:700;letter-spacing:1px;border:1px solid #7c3aed;color:#7c3aed;padding:2px 10px;border-radius:100px;}
+.hero-phase-final{font-size:10px;font-weight:700;letter-spacing:1px;border:1px solid #dc2626;color:#dc2626;padding:2px 10px;border-radius:100px;}
+.hero-title{font-size:clamp(20px,3vw,36px);font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:16px;}
+.hero-title em{font-style:normal;color:#4f46e5;}
+.hero-desc{font-size:14px;color:#666;max-width:440px;line-height:1.8;}
+.hero-illust{width:clamp(160px,20vw,260px);opacity:.85;flex-shrink:0;}
+.hero-divider{width:40px;height:2px;background:#1A1A1A;margin-top:28px;}
+.ch-nav{background:#fff;position:sticky;top:56px;z-index:50;border-bottom:1px solid #E8E5E0;overflow-x:auto;white-space:nowrap;}
+.ch-nav ul{display:inline-flex;list-style:none;padding:0 32px;}
+.ch-nav li a{display:block;font-size:11px;font-weight:600;color:#999;padding:12px 14px;border-bottom:2px solid transparent;transition:all .15s;}
+.ch-nav li a:hover{color:#1A1A1A;border-bottom-color:#1A1A1A;}
+.chapter{padding:56px 48px;}.chapter:nth-child(odd){background:#fff;}.chapter:nth-child(even){background:#FAFAF8;}
+@media(max-width:768px){.chapter{padding:28px 16px;}}
+.ch-inner{max-width:720px;margin:0 auto;}
+.ch-head{margin-bottom:28px;display:flex;align-items:baseline;gap:16px;}
+.ch-num-label{font-size:10px;font-weight:700;letter-spacing:2px;color:#BBBBBB;text-transform:uppercase;white-space:nowrap;}
+.ch-line{flex:1;height:1px;background:#E8E5E0;}
+.ch-head-content{margin-top:12px;}
+.ch-head-content h2{font-size:clamp(18px,3vw,24px);font-weight:800;letter-spacing:-.3px;margin-bottom:5px;}
+.ch-head-content p{font-size:13px;color:#888;}
+.key{background:#F5F3EE;border-left:3px solid #1A1A1A;padding:20px 24px;margin:20px 0;}
+.key-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;margin-bottom:8px;}
+.key p{font-size:14px;line-height:1.8;}
+/* MA flow */
+.ma-flow{display:flex;gap:2px;overflow-x:auto;margin:14px 0;align-items:stretch;}
+.ma-box{flex:1;min-width:80px;padding:10px 8px;color:#fff;font-size:9px;font-weight:700;text-align:center;}
+.ma-box span{display:block;font-size:8px;font-weight:400;opacity:.85;margin-top:2px;}
+.mb-pre{background:#94A3B8;}.mb-loi{background:#94A3B8;}.mb-dd{background:#94A3B8;}.mb-spa{background:#1D4ED8;}.mb-day1{background:#059669;outline:2px solid #FDE68A;outline-offset:2px;}.mb-pmi{background:#4F46E5;outline:2px solid #FDE68A;outline-offset:2px;}.mb-long{background:#DC2626;}
+.compare-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0;}
+@media(max-width:480px){.compare-2col{grid-template-columns:1fr;}}
+.col-dd{background:#FEF2F2;border:1px solid #FCA5A5;border-radius:2px;padding:14px;}
+.col-pmi{background:#F0FDF4;border:1px solid #86EFAC;border-radius:2px;padding:14px;}
+.col-dd h4{color:#991B1B;font-size:12px;font-weight:700;margin-bottom:6px;}
+.col-pmi h4{color:#166534;font-size:12px;font-weight:700;margin-bottom:6px;}
+.compare-2col ul{padding-left:14px;font-size:11px;color:#888;}.compare-2col li{margin-bottom:3px;}
+/* 100 day timeline */
+.timeline{display:flex;flex-direction:column;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:14px 0;}
+.tl-item{display:grid;grid-template-columns:72px 1fr;background:#fff;}
+.tl-badge{border-right:1px solid #E8E5E0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 8px;text-align:center;color:#fff;font-weight:800;font-size:11px;}
+.tb-d1{background:#1D4ED8;}.tb-30{background:#059669;}.tb-60{background:#7C3AED;}.tb-100{background:#DC2626;}
+.tl-content{padding:14px 18px;}
+.tl-content h4{font-size:12px;font-weight:700;margin-bottom:5px;}
+.tl-content ul{padding-left:14px;font-size:11px;color:#888;}.tl-content li{margin-bottom:3px;}
+/* 5 areas */
+.area-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:14px 0;}
+.area-card{background:#fff;border-top:2px solid;}
+.area-head{padding:10px 14px;color:#fff;font-weight:700;font-size:12px;}
+.ah-1{background:#1D4ED8;}.ah-2{background:#059669;}.ah-3{background:#D97706;}.ah-4{background:#7C3AED;}.ah-5{background:#DC2626;}
+.area-body{padding:10px 14px;font-size:11px;color:#888;}
+.area-body ul{padding-left:12px;}.area-body li{margin-bottom:2px;}
+/* KPI table */
+.kpi-table{border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:14px 0;background:#fff;}
+.kpi-row{display:grid;grid-template-columns:1fr 80px 80px 70px;gap:8px;padding:8px 14px;border-bottom:1px solid #E8E5E0;align-items:center;font-size:12px;}
+.kpi-row:last-child{border-bottom:none;}
+.kpi-row.hd{background:#FAFAF8;font-size:9px;font-weight:700;color:#BBBBBB;letter-spacing:.5px;text-transform:uppercase;}
+.status{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:100px;}
+.s-ok{background:#DCFCE7;color:#166534;}.s-warn{background:#FEF3C7;color:#92400E;}.s-ng{background:#FEF2F2;color:#991B1B;}
+/* FW map */
+.fw-map{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:6px;margin:10px 0;}
+.fw-item{border-radius:2px;padding:10px 12px;font-size:11px;}
+.fw-dd{background:#FEF2F2;border:1px solid #FCA5A5;}
+.fw-pp{background:#EFF6FF;border:1px solid #BFDBFE;}
+.fw-org{background:#F5F3FF;border:1px solid #C4B5FD;}
+.fw-item strong{display:block;margin-bottom:3px;font-size:10px;}
+.fw-dd strong{color:#991B1B;}.fw-pp strong{color:#1E40AF;}.fw-org strong{color:#5B21B6;}
+.callout{padding:14px 18px;margin:14px 0;font-size:13px;border-left:3px solid;border-radius:0 2px 2px 0;}
+.callout-warn{background:#FFFBEB;border-color:#D97706;}.callout-warn strong{color:#92400E;display:block;margin-bottom:3px;}
+.callout-tip{background:#EEF2FF;border-color:#4F46E5;}.callout-tip strong{color:#4338CA;display:block;margin-bottom:3px;}
+.src{border:1px solid #E8E5E0;border-radius:2px;padding:16px 20px;margin-top:28px;display:flex;gap:12px;background:#FAFAF8;}
+.src-icon{font-size:14px;flex-shrink:0;margin-top:2px;}
+.src-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:5px;}
+.src-list{list-style:none;font-size:11px;color:#888;}.src-list li{margin-bottom:3px;line-height:1.6;}.src-list cite{font-style:normal;}
+.summary{background:#1A1A1A;color:#FAFAF8;padding:28px 32px;border-radius:2px;}
+.summary-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:12px;}
+.summary h3{font-size:15px;font-weight:800;margin-bottom:14px;line-height:1.4;}
+.summary ul{padding-left:16px;font-size:13px;line-height:2.2;color:#CCC;}
+.cta{background:#4f46e5;color:#fff;padding:28px 32px;border-radius:2px;text-align:center;margin:20px auto;}
+.cta h3{font-size:15px;font-weight:800;margin-bottom:6px;}
+.cta p{font-size:12px;opacity:.8;margin-bottom:16px;}
+.cta a{display:inline-block;background:#fff;color:#4f46e5;font-weight:700;font-size:13px;padding:11px 28px;border-radius:100px;}
+.cta-case{background:#1A1A1A;color:#fff;padding:28px 32px;border-radius:2px;text-align:center;margin:14px auto;}
+.cta-case h3{font-size:15px;font-weight:800;margin-bottom:6px;}
+.cta-case p{font-size:12px;opacity:.7;margin-bottom:16px;}
+.cta-case a{display:inline-block;background:#fff;color:#1A1A1A;font-weight:700;font-size:13px;padding:11px 28px;border-radius:100px;}
+.page-nav{background:#1A1A1A;display:flex;justify-content:space-between;align-items:center;padding:16px 48px;flex-wrap:wrap;gap:8px;}
+.page-nav a{color:#999;font-size:12px;font-weight:600;}.page-nav a:hover{color:#fff;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .site-header{padding:0 14px;}
+  .header-logo{font-size:11px;}
+  .header-back{font-size:11px;}
+  .hero{padding:68px 16px 16px;min-height:auto;}
+  .hero-title{font-size:clamp(18px,5vw,26px);letter-spacing:-.5px;margin-bottom:12px;}
+  .hero-meta{gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+  .hero-desc{font-size:13px;}
+  .hero-divider{margin-top:16px;}
+  .ch-nav ul{padding:0 8px;}
+  .ch-nav li a{padding:10px 8px;font-size:10px;letter-spacing:0;}
+  .chapter{padding:24px 14px;}
+  .ch-inner{max-width:100%;}
+  .ch-head-content h2{font-size:17px;}
+  .ch-head-content p{font-size:12px;}
+  .key{padding:14px 16px;}
+  .key p{font-size:13px;}
+  .card-row{grid-template-columns:1fr;}
+  .mistake-grid{grid-template-columns:1fr;}
+  .d-row{flex-direction:column;}
+  .d-box{width:100%;flex:none;min-width:unset;}
+  .diagram{padding:16px;}
+  .step{grid-template-columns:40px 1fr;}
+  .step-b{padding:14px 14px;}
+  .step-n{font-size:16px;}
+  .src{flex-direction:column;gap:8px;padding:14px 16px;}
+  .callout{font-size:12px;padding:12px 14px;}
+  .summary{padding:20px 18px;border-radius:2px;}
+  .summary h3{font-size:14px;}
+  .summary ul{font-size:12px;line-height:2;}
+  .cta{padding:20px 18px;border-radius:2px;}
+  .cta h3{font-size:14px;}
+  .page-nav{padding:14px 16px;flex-direction:column;align-items:center;gap:12px;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-logo">PMI学習セット</div>
+  <a class="header-back" href="index.html">← 学習一覧に戻る</a>
+</header>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-bg-num" aria-hidden="true">11</div>
+    <div class="hero-meta">
+      <span class="hero-step">Step 11 of 11</span>
+      <span class="hero-phase">ADVANCED</span>
+      <span class="hero-phase-final">FINAL STEP</span>
+    </div>
+    <h1 class="hero-title"><em>PMI基礎</em><br>M&A後の統合プロセスを動かす</h1>
+    <p class="hero-desc">当社の本業。全フレームワークを統合して「PMIを実際に動かす」全体像を学ぶ最終ステップ。</p>
+    <div class="hero-divider"></div>
+  </div>
+  <img class="hero-illust" src="https://loosedrawing.com/assets/media/illustrations/png/1500.png" alt="握手のイラスト">
+</section>
+
+<nav class="ch-nav">
+  <ul>
+    <li><a href="#c1">PMIとは</a></li>
+    <li><a href="#c2">M&Aの全体フロー</a></li>
+    <li><a href="#c3">100日プラン</a></li>
+    <li><a href="#c4">統合の5領域</a></li>
+    <li><a href="#c5">KPI管理</a></li>
+    <li><a href="#c-fail">失敗パターン</a></li>
+    <li><a href="#c-type">業種別PMI</a></li>
+    <li><a href="#c6">まとめ</a></li>
+  </ul>
+</nav>
+
+<div class="chapter" id="c1">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 01</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>PMIとは何か</h2></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>PMI ＝ Post Merger Integration（M&A後統合）</strong><br>
+      M&Aの契約が締結してからが本当の仕事。買収後に2社を1つの会社として機能させるための一連のプロセス全体をPMIと呼ぶ。「M&Aの7割がシナジーを実現できない」最大の原因はPMIの失敗。当社はPMI支援を事業の核としている。</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:14px 0;">
+      <div style="background:#fff;padding:16px;"><h4 style="font-size:12px;font-weight:700;margin-bottom:5px;">🎯 PMIの目的</h4><p style="font-size:12px;color:#888;">買収前に描いたシナジー（コスト削減・売上増加）を実際に実現すること。</p></div>
+      <div style="background:#fff;padding:16px;"><h4 style="font-size:12px;font-weight:700;margin-bottom:5px;">⏱️ PMIの期間</h4><p style="font-size:12px;color:#888;">Day1（クロージング当日）から始まり、100日・1年・3年の節目で進む。</p></div>
+      <div style="background:#fff;padding:16px;"><h4 style="font-size:12px;font-weight:700;margin-bottom:5px;">😰 なぜ失敗するか</h4><p style="font-size:12px;color:#888;">最大の原因は「人の変革の失敗」。計画はあるが組織が動かない・優秀な人材が離職する。</p></div>
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>中小企業庁「中小PMIガイドライン」（2022年3月）― 中小企業のPMI標準フレームワーク。無料PDF：chusho.meti.go.jp</cite></li>
+          <li><cite>Deloitte「M&A Integration Survey」（2022年）― PMI失敗の主因は「文化統合・人材流出」とする調査</cite></li>
+          <li><cite>PwC「Creating Value Beyond the Deal」（2023年）― グローバルM&A統合調査。シナジー実現率と期間のデータ</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c2">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 02</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>M&Aの全体フローとPMIの位置づけ</h2></div>
+    <div class="ma-flow">
+      <div class="ma-box mb-pre">ソーシング<span>対象企業発掘</span></div>
+      <div class="ma-box mb-loi">LOI<span>意向表明書</span></div>
+      <div class="ma-box mb-dd">DD<span>デューデリ</span></div>
+      <div class="ma-box mb-spa">SPA<span>株式譲渡契約</span></div>
+      <div class="ma-box mb-day1">クロージング<span>★ Day1</span></div>
+      <div class="ma-box mb-pmi">PMI<span>★ 100日〜1年</span></div>
+      <div class="ma-box mb-long">統合深化<span>1年〜3年</span></div>
+    </div>
+    <p style="font-size:11px;color:#BBBBBB;text-align:center;margin-top:4px;">★ 当社が支援するのはクロージング以降のPMIフェーズ</p>
+    <div class="compare-2col" style="margin-top:14px;">
+      <div class="col-dd"><h4>DD時にやること（買う前）</h4><ul><li>財務状況の確認（財務DD）</li><li>法務リスクの洗い出し（法務DD）</li><li>業界・事業の評価（事業DD ＝ PEST・5フォース・3C）</li><li>シナジーの試算（バリューチェーン分析）</li></ul></div>
+      <div class="col-pmi"><h4>PMI時にやること（買った後）</h4><ul><li>100日プランの実行</li><li>5つの統合領域の推進</li><li>KPI管理（PDCA）</li><li>組織変革・文化融合（ADKAR）</li></ul></div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c3">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 03</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>最重要：100日プラン</h2><p>最初の100日は「信頼構築と早期成果創出」の勝負</p></div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-badge tb-d1">Day<br>1</div><div class="tl-content"><h4>🚨 クロージング当日（最重要日）</h4><ul><li>全従業員への買収発表・経営者からの直接挨拶（ADKAR A）</li><li>「雇用は維持・何が変わり何が変わらないか」を明言</li><li>取引先・顧客への通知・挨拶文送付</li></ul></div></div>
+      <div class="tl-item"><div class="tl-badge tb-30">Day<br>1〜30</div><div class="tl-content"><h4>🔍 現状把握・信頼構築フェーズ</h4><ul><li>全従業員との1on1ヒアリング（ADKARアセスメント・D育成）</li><li>財務・業務フローの現状把握（As-Is分析）</li><li>シナジー優先度整理・クイックウィン（早期成果）の特定</li></ul></div></div>
+      <div class="tl-item"><div class="tl-badge tb-60">Day<br>30〜60</div><div class="tl-content"><h4>⚙️ 統合実行フェーズ（早期成果を出す）</h4><ul><li>クイックウィン施策の実行（調達コスト削減・共同営業開始）</li><li>新業務フロー・システムの研修実施（ADKAR K）</li><li>週次PDCAサイクルの開始</li></ul></div></div>
+      <div class="tl-item"><div class="tl-badge tb-100">Day<br>60〜100</div><div class="tl-content"><h4>📊 定着・次フェーズ設計</h4><ul><li>100日間のシナジー達成状況を数字でまとめ経営陣へ報告</li><li>ADKAR R（定着）施策の実施</li><li>Year1（1年目）の中期計画策定</li></ul></div></div>
+    </div>
+    <div class="callout callout-warn">
+      <strong>⚠️ 100日プランの最大の落とし穴：「全部中途半端」</strong>「最初の30日で絶対やること・60日で完了すること・100日で成果を出すこと」を明確に優先度付けする。PMI ManagerのKPIダッシュボード・タスク管理で可視化する。
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c4">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 04</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>統合の5つの領域</h2><p>PMIで取り組む5つのテーマ。全てにMECEで計画が必要</p></div>
+    <div class="area-grid">
+      <div class="area-card ac-1"><div class="area-head ah-1">👥 ① 人事・組織</div><div class="area-body"><ul><li>組織図の統合・役割整理</li><li>評価・給与制度の統合</li><li>文化融合・ADKAR実施</li><li>キーパーソンのリテンション</li></ul></div></div>
+      <div class="area-card ac-2"><div class="area-head ah-2">⚙️ ② 業務・オペレーション</div><div class="area-body"><ul><li>業務フロー（AS-IS→TO-BE）統合</li><li>重複業務の排除</li><li>品質管理の統一</li><li>物流・調達の一元化</li></ul></div></div>
+      <div class="area-card ac-3"><div class="area-head ah-3">💰 ③ 財務・管理</div><div class="area-body"><ul><li>決算・会計システムの統合</li><li>予算管理の一本化</li><li>財務KPIの設定と追跡</li><li>コスト構造の最適化</li></ul></div></div>
+      <div class="area-card ac-4"><div class="area-head ah-4">💻 ④ IT・システム</div><div class="area-body"><ul><li>基幹システムの統合計画</li><li>データ移行・セキュリティ</li><li>コミュニケーションツール統一</li><li>PMI Manager 導入・連携</li></ul></div></div>
+      <div class="area-card ac-5"><div class="area-head ah-5">🤝 ⑤ 顧客・販売</div><div class="area-body"><ul><li>顧客への買収通知・関係維持</li><li>クロスセルの推進</li><li>営業チームの統合</li><li>ブランド・マーケ戦略整理</li></ul></div></div>
+    </div>
+    <div class="callout callout-tip">
+      <strong>5領域はMECE</strong>PMIの全ての課題はこの5領域のいずれかに入る（モレなし）・1つの課題が複数領域に属することはない（ダブりなし）。STEP 1で学んだMECEフレームワークとの接続を意識すること。
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c5">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 05</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>KPI設定とPDCAによる進捗管理</h2></div>
+    <div class="kpi-table">
+      <div class="kpi-row hd"><span>KPI指標</span><span>目標</span><span>実績（Day60）</span><span>状態</span></div>
+      <div class="kpi-row"><span>従業員離職率</span><span>5%以内</span><span>2%</span><span class="status s-ok">達成</span></div>
+      <div class="kpi-row"><span>顧客継続率</span><span>95%以上</span><span>91%</span><span class="status s-warn">要注意</span></div>
+      <div class="kpi-row"><span>調達コスト削減率</span><span>10%</span><span>6%</span><span class="status s-warn">遅れ</span></div>
+      <div class="kpi-row"><span>クロスセル提案数</span><span>月100件</span><span>42件</span><span class="status s-ng">未達</span></div>
+      <div class="kpi-row"><span>システム移行完了率</span><span>60%</span><span>65%</span><span class="status s-ok">達成</span></div>
+    </div>
+    <p style="font-size:12px;color:#888;margin-top:8px;">→ PDCAのCheck：顧客継続率とクロスセルが課題。原因分析→Act（施策修正）→次のPlanへ。（STEP3のPDCAと接続）</p>
+    <div style="margin-top:16px;background:#EEF2FF;border:1px solid #C7D2FE;border-radius:2px;padding:14px;">
+      <p style="font-size:12px;font-weight:700;color:#4F46E5;margin-bottom:10px;">全フレームワークとPMIの関係</p>
+      <div class="fw-map">
+        <div class="fw-item fw-dd"><strong>DD前：業界評価</strong>PEST・5フォース・3C・SWOT → 「買うべきか」の判断</div>
+        <div class="fw-item fw-dd"><strong>DD時：価値評価</strong>バリューチェーン・財務基礎 → シナジー試算・リスク把握</div>
+        <div class="fw-item fw-pp"><strong>PMI実行：計画・推進</strong>100日プラン・PDCA・MECE・ロジックツリー → 統合の計画と軌道修正</div>
+        <div class="fw-item fw-org"><strong>PMI実行：人の変革</strong>ADKAR → 組織文化の融合・変革定着</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c-fail">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 06</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>PMI失敗パターンの類型</h2><p>「なぜ7割が失敗するか」― 失敗には必ずパターンがある</p></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>失敗を知ることが最大の予防策</strong><br>
+      M&AのPMIが失敗する理由は「悪い経営者」ではなく「パターン化された罠」にはまることが大半。このパターンを事前に知っておくだけで防げる失敗が多い。</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:14px 0;">
+      <div style="background:#fff;display:grid;grid-template-columns:28px 1fr;gap:0;">
+        <div style="background:#DC2626;display:flex;align-items:flex-start;justify-content:center;padding:14px 0;"><span style="color:#fff;font-size:11px;font-weight:700;">1</span></div>
+        <div style="padding:14px 16px;">
+          <h4 style="font-size:13px;font-weight:700;margin-bottom:4px;">人材流出（最多パターン）</h4>
+          <p style="font-size:12px;color:#888;line-height:1.7;">買収後3ヶ月以内にキーパーソンが離職。「不安な情報空白期間」に優秀な人から先に外に出る。引き止めるには「早期・個別・具体的」なWIIFMコミュニケーションが必要。</p>
+        </div>
+      </div>
+      <div style="background:#FAFAF8;display:grid;grid-template-columns:28px 1fr;gap:0;">
+        <div style="background:#D97706;display:flex;align-items:flex-start;justify-content:center;padding:14px 0;"><span style="color:#fff;font-size:11px;font-weight:700;">2</span></div>
+        <div style="padding:14px 16px;">
+          <h4 style="font-size:13px;font-weight:700;margin-bottom:4px;">シナジー過大評価</h4>
+          <p style="font-size:12px;color:#888;line-height:1.7;">DDで「3億円のコスト削減シナジー」と試算したが、実際は統合コスト（システム・人件費）がシナジーを上回った。シナジーは楽観的に、コストは保守的に試算する訓練が必要。</p>
+        </div>
+      </div>
+      <div style="background:#fff;display:grid;grid-template-columns:28px 1fr;gap:0;">
+        <div style="background:#7C3AED;display:flex;align-items:flex-start;justify-content:center;padding:14px 0;"><span style="color:#fff;font-size:11px;font-weight:700;">3</span></div>
+        <div style="padding:14px 16px;">
+          <h4 style="font-size:13px;font-weight:700;margin-bottom:4px;">文化統合の無視</h4>
+          <p style="font-size:12px;color:#888;line-height:1.7;">「業務フローを統一したのに現場がついてこない」。ルールを変えても「やり方・価値観・誇り」が変わらない。ADKARを使わず制度変更だけ先行した典型的失敗。</p>
+        </div>
+      </div>
+      <div style="background:#FAFAF8;display:grid;grid-template-columns:28px 1fr;gap:0;">
+        <div style="background:#1D4ED8;display:flex;align-items:flex-start;justify-content:center;padding:14px 0;"><span style="color:#fff;font-size:11px;font-weight:700;">4</span></div>
+        <div style="padding:14px 16px;">
+          <h4 style="font-size:13px;font-weight:700;margin-bottom:4px;">統合の先送り・中途半端</h4>
+          <p style="font-size:12px;color:#888;line-height:1.7;">「今は忙しいから統合は来年」と延期を繰り返す。統合コストが発生し続ける一方でシナジーが実現しない。「100日プランで決断する項目」を事前に明確にし、先送りを防ぐ仕組みが必要。</p>
+        </div>
+      </div>
+      <div style="background:#fff;display:grid;grid-template-columns:28px 1fr;gap:0;">
+        <div style="background:#059669;display:flex;align-items:flex-start;justify-content:center;padding:14px 0;"><span style="color:#fff;font-size:11px;font-weight:700;">5</span></div>
+        <div style="padding:14px 16px;">
+          <h4 style="font-size:13px;font-weight:700;margin-bottom:4px;">顧客・取引先の離反</h4>
+          <p style="font-size:12px;color:#888;line-height:1.7;">M&A公表後に取引先が「今後の関係が不安」と競合他社へ切り替え。Day1の顧客向け通知と担当者による訪問が遅れることで起きる。特に中小企業では「社長との個人的関係」で契約を維持している場合が多い。</p>
+        </div>
+      </div>
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>McKinsey & Company "Why so many M&A deals fail to create value — and what to do about it" (2023) ― PMI失敗パターンの定量分析</cite></li>
+          <li><cite>Deloitte「M&A Integration Survey」（2022年）― 失敗の主因ランキング：文化統合38%・人材流出29%・計画不足21%</cite></li>
+          <li><cite>中小企業庁「中小PMIガイドライン」（2022年）― 中小企業特有の失敗パターンと対策</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c-type">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 07</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>業種別PMIの特徴と優先事項</h2><p>同じ100日プランでも「何を最初にやるか」は業種で変わる</p></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>業種によって「最初の30日で絶対にやること」が異なる</strong><br>
+      PMIに「万能な順番」はない。製造業では設備・品質管理が最優先、ITサービスではエンジニア採用・システム統合が優先、飲食・小売では現場スタッフのモラル維持が最優先になる。</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:14px 0;">
+      <div style="background:#fff;padding:18px;border-top:3px solid #1D4ED8;">
+        <h4 style="font-size:13px;font-weight:700;margin-bottom:8px;">🏭 製造業</h4>
+        <p style="font-size:12px;color:#888;line-height:1.8;"><strong>最優先：</strong>品質管理・生産ラインの安定維持<br><strong>次善：</strong>調達コスト一元化・在庫管理統合<br><strong>注意点：</strong>現場技術者の離職が最大リスク。「製造ノウハウが人の頭の中にある」中小では特に慎重に</p>
+      </div>
+      <div style="background:#fff;padding:18px;border-top:3px solid #7C3AED;">
+        <h4 style="font-size:13px;font-weight:700;margin-bottom:8px;">💻 ITサービス・SaaS</h4>
+        <p style="font-size:12px;color:#888;line-height:1.8;"><strong>最優先：</strong>エンジニア・開発者のリテンション<br><strong>次善：</strong>プロダクトロードマップ統合・技術スタック整理<br><strong>注意点：</strong>優秀なエンジニアは「採用市場で即売れる」。競合他社からのヘッドハンティングに特に注意</p>
+      </div>
+      <div style="background:#fff;padding:18px;border-top:3px solid #059669;">
+        <h4 style="font-size:13px;font-weight:700;margin-bottom:8px;">🛒 小売・飲食</h4>
+        <p style="font-size:12px;color:#888;line-height:1.8;"><strong>最優先：</strong>店舗スタッフの不安解消・サービス品質維持<br><strong>次善：</strong>仕入れルートの一元化・POSシステム統合<br><strong>注意点：</strong>顧客は「店舗体験の変化」に敏感。PMI期間中もサービス品質を下げない</p>
+      </div>
+      <div style="background:#fff;padding:18px;border-top:3px solid #D97706;">
+        <h4 style="font-size:13px;font-weight:700;margin-bottom:8px;">🤝 サービス業・コンサル</h4>
+        <p style="font-size:12px;color:#888;line-height:1.8;"><strong>最優先：</strong>顧客関係の継続・担当者の維持<br><strong>次善：</strong>案件管理システム統合・知識共有体制<br><strong>注意点：</strong>「コンサルタント個人との契約」がほとんど。担当者が離職すると顧客もついていく</p>
+      </div>
+    </div>
+    <div class="callout callout-tip">
+      <strong>当社（PMIコンサル）の立ち位置：「業種診断」から入る</strong>
+      当社がPMI支援に入る際は、まず「業種特有のリスク」を特定し、100日プランの優先順位をカスタマイズする。PEST・5フォース・バリューチェーン分析を使って「この業種でのPMIの地雷」を事前に把握することが差別化ポイント。
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c6">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 08</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>まとめ</h2></div>
+    <div class="summary">
+      <div class="summary-label">Summary</div>
+      <h3>PMI基礎 ― 3行まとめ</h3>
+      <ul>
+        <li>PMI ＝ M&A後にシナジーを実現するための統合プロセス全体。最初の100日が最重要</li>
+        <li>人事・業務・財務・IT・顧客の5領域で統合を進め、KPIをPDCAで管理する</li>
+        <li>「人の変革（ADKAR）」を怠るとシナジーは実現しない。計画×実行×変革マネジメントの3つが揃って初めて成功する</li>
+      </ul>
+    </div>
+    <div style="height:20px;"></div>
+    <div class="cta">
+      <h3>PMI基礎の練習問題で知識を定着させよう</h3>
+      <p>PMI用語・100日プラン・シナジー分析・ケーススタディまで20問。</p>
+      <a href="練習_PMI基礎.html">PMI基礎 練習問題を解く（20問）→</a>
+    </div>
+    <div class="cta-case">
+      <h3>🏆 全フレームワークを1つのM&Aで実践する</h3>
+      <p>「鶴岡食品 × エコマート」架空M&A。PEST→5フォース→3C→SWOT→バリューチェーン→100日プラン→PDCA→ADKARの全てを1ケースで使い切る90分演習。</p>
+      <a href="PMIケーススタディ.html">PMI 総合ケーススタディに挑戦する →</a>
+    </div>
+  </div>
+</div>
+
+<nav class="page-nav">
+  <a href="学習_ADKAR.html">← ADKARモデル</a>
+  <a href="index.html">学習一覧に戻る</a>
+</nav>
+</body>
+</html>

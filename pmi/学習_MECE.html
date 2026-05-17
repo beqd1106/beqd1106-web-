@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ja">
+<!-- v3 -->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MECE 学習教材｜モレなく・ダブりなく</title>
+<style>
+/* BASE */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','BIZ UDGothic','Meiryo',sans-serif;background:#FAFAF8;color:#1A1A1A;line-height:1.75;font-size:15px;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;height:auto;display:block;}
+
+/* HEADER */
+.site-header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 32px;height:56px;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid #E8E5E0;}
+.header-logo{font-size:12px;font-weight:700;letter-spacing:.5px;}
+.header-logo span{color:#999;font-weight:400;}
+.header-back{font-size:12px;color:#666;display:flex;align-items:center;gap:6px;}
+.header-back:hover{color:#1A1A1A;}
+
+/* HERO */
+.hero{min-height:28vh;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;padding:76px 48px 36px;background:#F5F3EE;border-bottom:1px solid #E8E5E0;position:relative;overflow:hidden;}
+@media(max-width:768px){.hero{grid-template-columns:1fr;padding:72px 16px 20px;}.hero-illust{display:none;}}
+.hero-left{position:relative;z-index:1;}
+.hero-bg-num{position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:clamp(120px,18vw,220px);font-weight:900;color:rgba(0,0,0,.04);line-height:1;pointer-events:none;letter-spacing:-10px;}
+.hero-meta{display:flex;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+.hero-step{font-size:10px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;}
+.hero-phase{font-size:10px;font-weight:700;letter-spacing:1px;border:1px solid #16a34a;color:#16a34a;padding:2px 10px;border-radius:100px;}
+.hero-title{font-size:clamp(20px,3vw,36px);font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:16px;}
+.hero-title em{font-style:normal;color:#2563EB;}
+.hero-desc{font-size:14px;color:#666;max-width:440px;line-height:1.8;}
+.hero-illust{width:clamp(160px,20vw,260px);opacity:.85;flex-shrink:0;}
+.hero-divider{width:40px;height:2px;background:#1A1A1A;margin-top:28px;}
+
+/* CHAPTER NAV */
+.ch-nav{background:#fff;position:sticky;top:56px;z-index:50;border-bottom:1px solid #E8E5E0;overflow-x:auto;white-space:nowrap;}
+.ch-nav ul{display:inline-flex;list-style:none;padding:0 32px;}
+.ch-nav li a{display:block;font-size:11px;font-weight:600;color:#999;letter-spacing:.5px;padding:12px 14px;border-bottom:2px solid transparent;transition:all .15s;}
+.ch-nav li a:hover{color:#1A1A1A;border-bottom-color:#1A1A1A;}
+
+/* CHAPTERS */
+.chapter{padding:56px 48px;}
+.chapter:nth-child(odd){background:#fff;}
+.chapter:nth-child(even){background:#FAFAF8;}
+@media(max-width:768px){.chapter{padding:28px 16px;}}
+.ch-inner{max-width:720px;margin:0 auto;}
+
+/* CHAPTER HEADER */
+.ch-head{margin-bottom:28px;display:flex;align-items:baseline;gap:16px;}
+.ch-num-label{font-size:10px;font-weight:700;letter-spacing:2px;color:#BBBBBB;text-transform:uppercase;white-space:nowrap;}
+.ch-line{flex:1;height:1px;background:#E8E5E0;}
+.ch-head-content{margin-top:12px;}
+.ch-head-content h2{font-size:clamp(18px,3vw,24px);font-weight:800;letter-spacing:-.3px;margin-bottom:5px;}
+.ch-head-content p{font-size:13px;color:#888;}
+
+/* KEY CONCEPT */
+.key{background:#F5F3EE;border-left:3px solid #1A1A1A;padding:20px 24px;margin:20px 0;}
+.key-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;margin-bottom:8px;}
+.key p{font-size:14px;line-height:1.8;color:#1A1A1A;}
+
+/* CARDS */
+.card-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+.card{background:#fff;padding:20px 18px;}
+.card h4{font-size:13px;font-weight:700;margin-bottom:6px;}
+.card p{font-size:12px;color:#888;line-height:1.7;}
+.card ul{padding-left:16px;font-size:12px;color:#888;}
+.card li{margin-bottom:3px;}
+
+/* DIAGRAM */
+.diagram{border:1px solid #E8E5E0;border-radius:2px;padding:24px;margin:16px 0;background:#fff;}
+.diagram-label{font-size:10px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:16px;}
+.d-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.d-box{flex:1;min-width:80px;padding:10px 12px;border-radius:2px;font-size:12px;font-weight:600;text-align:center;border:1px solid;}
+.d-ok{background:#F0FDF4;border-color:#86EFAC;color:#166534;}
+.d-ng{background:#FEF2F2;border-color:#FCA5A5;color:#991B1B;}
+.d-note{font-size:11px;margin-top:6px;color:#888;}
+.d-note.ok{color:#16a34a;}.d-note.ng{color:#dc2626;}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+.step{display:grid;grid-template-columns:48px 1fr;gap:0;background:#fff;}
+.step-n{display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#E8E5E0;border-right:1px solid #E8E5E0;padding:16px;}
+.step-b{padding:18px 20px;}
+.step-b h4{font-size:13px;font-weight:700;margin-bottom:4px;}
+.step-b p{font-size:12px;color:#888;line-height:1.7;}
+
+/* CALLOUT */
+.callout{padding:14px 18px;margin:14px 0;font-size:13px;border-left:3px solid;border-radius:0 2px 2px 0;}
+.callout-warn{background:#FFFBEB;border-color:#D97706;}
+.callout-warn strong{color:#92400E;display:block;margin-bottom:3px;}
+.callout-tip{background:#F0FDF4;border-color:#16A34A;}
+.callout-tip strong{color:#15803D;display:block;margin-bottom:3px;}
+
+/* MISTAKE GRID */
+.mistake-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+.mistake{background:#fff;padding:18px;border-top:2px solid #E11D48;}
+.mistake .m-tag{font-size:9px;font-weight:700;letter-spacing:1px;color:#E11D48;margin-bottom:6px;display:block;}
+.mistake h4{font-size:12px;font-weight:700;margin-bottom:5px;}
+.mistake p{font-size:11px;color:#888;}
+.mistake .fix{font-size:11px;color:#16a34a;font-weight:600;margin-top:8px;padding-top:8px;border-top:1px solid #E8E5E0;}
+
+/* SOURCE */
+.src{border:1px solid #E8E5E0;border-radius:2px;padding:16px 20px;margin-top:28px;display:flex;gap:12px;background:#FAFAF8;}
+.src-icon{font-size:14px;flex-shrink:0;margin-top:2px;}
+.src-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:5px;}
+.src-list{list-style:none;font-size:11px;color:#888;}
+.src-list li{margin-bottom:3px;line-height:1.6;}
+.src-list cite{font-style:normal;}
+
+/* SUMMARY */
+.summary{background:#1A1A1A;color:#FAFAF8;padding:28px 32px;border-radius:2px;margin:0 auto;}
+.summary-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:12px;}
+.summary h3{font-size:15px;font-weight:800;margin-bottom:14px;line-height:1.4;}
+.summary ul{padding-left:16px;font-size:13px;line-height:2.2;color:#CCC;}
+
+/* CTA */
+.cta{background:#2563EB;color:#fff;padding:28px 32px;border-radius:2px;text-align:center;margin:20px auto;}
+.cta h3{font-size:15px;font-weight:800;margin-bottom:6px;}
+.cta p{font-size:12px;opacity:.8;margin-bottom:16px;}
+.cta a{display:inline-block;background:#fff;color:#2563EB;font-weight:700;font-size:13px;padding:11px 28px;border-radius:100px;letter-spacing:.3px;}
+
+/* PAGE NAV */
+.page-nav{background:#1A1A1A;display:flex;justify-content:space-between;align-items:center;padding:16px 48px;flex-wrap:wrap;gap:8px;}
+.page-nav a{color:#999;font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px;}
+.page-nav a:hover{color:#fff;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .site-header{padding:0 14px;}
+  .header-logo{font-size:11px;}
+  .header-back{font-size:11px;}
+  .hero{padding:68px 16px 16px;min-height:auto;}
+  .hero-title{font-size:clamp(18px,5vw,26px);letter-spacing:-.5px;margin-bottom:12px;}
+  .hero-meta{gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+  .hero-desc{font-size:13px;}
+  .hero-divider{margin-top:16px;}
+  .ch-nav ul{padding:0 8px;}
+  .ch-nav li a{padding:10px 8px;font-size:10px;letter-spacing:0;}
+  .chapter{padding:24px 14px;}
+  .ch-inner{max-width:100%;}
+  .ch-head-content h2{font-size:17px;}
+  .ch-head-content p{font-size:12px;}
+  .key{padding:14px 16px;}
+  .key p{font-size:13px;}
+  .card-row{grid-template-columns:1fr;}
+  .mistake-grid{grid-template-columns:1fr;}
+  .d-row{flex-direction:column;}
+  .d-box{width:100%;flex:none;min-width:unset;}
+  .diagram{padding:16px;}
+  .step{grid-template-columns:40px 1fr;}
+  .step-b{padding:14px 14px;}
+  .step-n{font-size:16px;}
+  .src{flex-direction:column;gap:8px;padding:14px 16px;}
+  .callout{font-size:12px;padding:12px 14px;}
+  .summary{padding:20px 18px;border-radius:2px;}
+  .summary h3{font-size:14px;}
+  .summary ul{font-size:12px;line-height:2;}
+  .cta{padding:20px 18px;border-radius:2px;}
+  .cta h3{font-size:14px;}
+  .page-nav{padding:14px 16px;flex-direction:column;align-items:center;gap:12px;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-logo">PMI学習セット</div>
+  <a class="header-back" href="index.html">← 学習一覧に戻る</a>
+</header>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-bg-num" aria-hidden="true">01</div>
+    <div class="hero-meta">
+      <span class="hero-step">Step 01 of 11</span>
+      <span class="hero-phase">BASIC</span>
+    </div>
+    <h1 class="hero-title"><em>MECE</em><br>モレなく・ダブりなく</h1>
+    <p class="hero-desc">全ての分析の出発点。これを身につけると「整理力」と「説得力」が根本から変わる。</p>
+    <div class="hero-divider"></div>
+  </div>
+  <img class="hero-illust" src="https://loosedrawing.com/assets/media/illustrations/png/1413.png" alt="付箋でブレストするビジネスマン">
+</section>
+
+<nav class="ch-nav">
+  <ul>
+    <li><a href="#c1">概念</a></li>
+    <li><a href="#c2">重要性</a></li>
+    <li><a href="#c3">使い方</a></li>
+    <li><a href="#c4">PMI実例</a></li>
+    <li><a href="#c5">失敗パターン</a></li>
+    <li><a href="#c6">まとめ</a></li>
+  </ul>
+</nav>
+
+<div class="chapter" id="c1">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 01</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>MECEとは何か</h2><p>3分で核心をつかむ</p></div>
+
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>MECE ＝ Mutually Exclusive, Collectively Exhaustive</strong><br>
+      日本語で「モレなく・ダブりなく」。何かを分類・整理するとき、全てのケースがカバーされていて（モレなし）、かつどの分類も重複しない（ダブりなし）状態にすること。</p>
+    </div>
+
+    <p style="font-size:13px;color:#888;margin-bottom:16px;">パズルのピースが全てそろっていて、どのピースも重なっていない状態をイメージしてください。それがMECEです。</p>
+
+    <div class="diagram">
+      <div class="diagram-label">MECEでない分類 vs MECEな分類</div>
+      <p style="font-size:11px;font-weight:700;color:#dc2626;margin-bottom:6px;">❌ MECEでない例：従業員を「20代・30代・正社員」で分類</p>
+      <div class="d-row">
+        <div class="d-box d-ng">20代</div>
+        <div class="d-box d-ng">30代</div>
+        <div class="d-box d-ng">正社員</div>
+      </div>
+      <p class="d-note ng">問題①：40代・50代のモレ ／ 問題②：20代の正社員はどちらに入る？（ダブり）</p>
+      <div style="height:16px;"></div>
+      <p style="font-size:11px;font-weight:700;color:#16a34a;margin-bottom:6px;">✅ MECEな例：従業員を「正社員・契約社員・パート」で分類</p>
+      <div class="d-row">
+        <div class="d-box d-ok">正社員</div>
+        <div class="d-box d-ok">契約社員</div>
+        <div class="d-box d-ok">パート・アルバイト</div>
+      </div>
+      <p class="d-note ok">全員がいずれかに入る（モレなし）・どれか1つにしか入らない（ダブりなし）</p>
+    </div>
+
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>Minto, Barbara "The Pyramid Principle: Logic in Writing and Thinking" (1987, Prentice Hall) ― MECEを体系化した原著</cite></li>
+          <li><cite>照屋華子・岡田恵子『ロジカルシンキング』東洋経済新報社（2001年）― 日本版の定番教科書</cite></li>
+          <li><cite>McKinsey & Company ― MECEはマッキンゼーの社内研修で広まったフレームワーク</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c2">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 02</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>なぜMECEが重要なのか</h2></div>
+    <div class="card-row">
+      <div class="card">
+        <h4>🔍 モレがあると「見落とし」が起きる</h4>
+        <p>PMIの課題整理でモレがあると重要な問題を見逃す。コンサルとして信頼を失う最悪のミス。</p>
+      </div>
+      <div class="card">
+        <h4>🔄 ダブりがあると「話が冗長」になる</h4>
+        <p>同じ話を2回すると聞き手を混乱させる。提案書は「無駄ゼロ・構造的」が命。</p>
+      </div>
+      <div class="card">
+        <h4>💡 MECEがあると「信頼される」</h4>
+        <p>「この人は抜けなく考えている」という印象を与え、提案の説得力が増す。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c3">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 03</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>MECEの使い方：3ステップ</h2></div>
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><div class="step-b"><h4>分析のテーマを決める</h4><p>「PMI後の課題を整理したい」など、何についての分類かを明確にする。</p></div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-b"><h4>切り口（分類軸）を1つ選ぶ</h4><p>時間（短期・中期・長期）、機能（ヒト・モノ・カネ・情報）、立場（内部・外部）など。1テーマ1切り口で。</p></div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-b"><h4>モレ・ダブりをセルフチェック</h4><p>①「全てのケースがいずれかに入るか」②「1つのものが複数に入らないか」を確認。</p></div></div>
+    </div>
+    <div class="callout callout-tip">
+      <strong>よく使うMECEの切り口</strong>
+      ヒト・モノ・カネ・情報 ／ 短期・中期・長期 ／ 内部・外部 ／ プロセス順（調達→製造→販売→サービス）
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c4">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 04</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>実例：PMIでMECEを使う</h2></div>
+    <p style="font-size:13px;color:#888;margin-bottom:16px;"><strong>シナリオ：</strong>A社がB社を買収。PMI開始後、「何から手をつければいいかわからない」状況で課題をMECEで整理することになった。</p>
+    <div class="diagram">
+      <div class="diagram-label">PMI課題の MECE 分類 ― 「統合領域」を切り口に</div>
+      <div class="d-row">
+        <div class="d-box d-ok" style="background:#EFF6FF;border-color:#93C5FD;color:#1E40AF;">👥 人事・組織</div>
+        <div class="d-box d-ok" style="background:#F0FDF4;border-color:#86EFAC;color:#166534;">⚙️ 業務・オペレーション</div>
+        <div class="d-box d-ok" style="background:#FEFCE8;border-color:#FDE68A;color:#854D0E;">💰 財務・経理</div>
+        <div class="d-box d-ok" style="background:#F5F3FF;border-color:#C4B5FD;color:#5B21B6;">💻 IT・システム</div>
+        <div class="d-box d-ok" style="background:#FFF1F2;border-color:#FECDD3;color:#9F1239;">🤝 顧客・販売</div>
+      </div>
+      <p class="d-note ok">全ての統合課題がこの5領域のどれかに入る（モレなし）／ 1つの課題が2領域にまたがることはない（ダブりなし）</p>
+    </div>
+    <div class="callout callout-warn">
+      <strong>⚠️ M&Aで見落としやすいモレ</strong>
+      「法務リスク」「環境負債」「のれんの減損」などは財務DDで把握するが、PMIフェーズでも追跡が必要。5領域に「法務」を独立させるかを事前に決めておくこと。
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c5">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 05</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>よくある失敗パターン</h2></div>
+    <div class="mistake-grid">
+      <div class="mistake">
+        <span class="m-tag">失敗パターン ①</span>
+        <h4>切り口を混ぜる</h4>
+        <p>「若手・ベテラン・技術職」← 年齢と職種が混在。ダブりだらけになる。</p>
+        <div class="fix">→ 切り口を1つに統一。「年齢別」または「職種別」のどちらか</div>
+      </div>
+      <div class="mistake">
+        <span class="m-tag">失敗パターン ②</span>
+        <h4>「その他」を乱用する</h4>
+        <p>「その他30%」は分類が機能していないサイン。</p>
+        <div class="fix">→ 「その他」に多く入るなら分類軸の見直しが必要</div>
+      </div>
+      <div class="mistake">
+        <span class="m-tag">失敗パターン ③</span>
+        <h4>完璧主義で止まる</h4>
+        <p>「完全なMECEでないと使えない」と固まってしまう。</p>
+        <div class="fix">→ 80点のMECEで動き出すことも戦略的に正しい</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c6">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 06</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>まとめ</h2></div>
+    <div class="summary">
+      <div class="summary-label">Summary</div>
+      <h3>MECE ― 3行まとめ</h3>
+      <ul>
+        <li>MECEとは「モレなく・ダブりなく」分類する思考法</li>
+        <li>切り口（分類軸）を1つ決め、モレ・ダブりをセルフチェックする</li>
+        <li>PMIでは「人事・業務・財務・IT・顧客」の5領域がよく使われる切り口</li>
+      </ul>
+    </div>
+    <div style="height:20px;"></div>
+    <div class="cta">
+      <h3>理解できた？練習問題で確かめよう</h3>
+      <p>20問の演習。ノートに答えを書いてから「答えを見る」を押すこと。</p>
+      <a href="練習_MECE.html">MECE 練習問題を解く（20問）→</a>
+    </div>
+  </div>
+</div>
+
+<nav class="page-nav">
+  <a href="index.html">← 学習一覧</a>
+  <a href="学習_ロジックツリー.html">次：ロジックツリー →</a>
+</nav>
+</body>
+</html>

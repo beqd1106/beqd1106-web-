@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>バリューチェーン分析 学習教材｜企業活動を分解しシナジーを発見する</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','BIZ UDGothic','Meiryo',sans-serif;background:#FAFAF8;color:#1A1A1A;line-height:1.75;font-size:15px;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}img{max-width:100%;height:auto;display:block;}
+.site-header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 32px;height:56px;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid #E8E5E0;}
+.header-logo{font-size:12px;font-weight:700;}.header-logo span{color:#999;font-weight:400;}
+.header-back{font-size:12px;color:#666;}.header-back:hover{color:#1A1A1A;}
+.hero{min-height:28vh;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;padding:76px 48px 36px;background:#F5F3EE;border-bottom:1px solid #E8E5E0;position:relative;overflow:hidden;}
+@media(max-width:768px){.hero{grid-template-columns:1fr;padding:72px 16px 20px;}.hero-illust{display:none;}}
+.hero-left{position:relative;z-index:1;}
+.hero-bg-num{position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:clamp(120px,18vw,220px);font-weight:900;color:rgba(0,0,0,.04);line-height:1;pointer-events:none;letter-spacing:-10px;}
+.hero-meta{display:flex;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+.hero-step{font-size:10px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;}
+.hero-phase{font-size:10px;font-weight:700;letter-spacing:1px;border:1px solid #7c3aed;color:#7c3aed;padding:2px 10px;border-radius:100px;}
+.hero-title{font-size:clamp(20px,3vw,36px);font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:16px;}
+.hero-title em{font-style:normal;color:#2563eb;}
+.hero-desc{font-size:14px;color:#666;max-width:440px;line-height:1.8;}
+.hero-illust{width:clamp(160px,20vw,260px);opacity:.85;flex-shrink:0;}
+.hero-divider{width:40px;height:2px;background:#1A1A1A;margin-top:28px;}
+.ch-nav{background:#fff;position:sticky;top:56px;z-index:50;border-bottom:1px solid #E8E5E0;overflow-x:auto;white-space:nowrap;}
+.ch-nav ul{display:inline-flex;list-style:none;padding:0 32px;}
+.ch-nav li a{display:block;font-size:11px;font-weight:600;color:#999;padding:12px 14px;border-bottom:2px solid transparent;transition:all .15s;}
+.ch-nav li a:hover{color:#1A1A1A;border-bottom-color:#1A1A1A;}
+.chapter{padding:56px 48px;}.chapter:nth-child(odd){background:#fff;}.chapter:nth-child(even){background:#FAFAF8;}
+@media(max-width:768px){.chapter{padding:28px 16px;}}
+.ch-inner{max-width:720px;margin:0 auto;}
+.ch-head{margin-bottom:28px;display:flex;align-items:baseline;gap:16px;}
+.ch-num-label{font-size:10px;font-weight:700;letter-spacing:2px;color:#BBBBBB;text-transform:uppercase;white-space:nowrap;}
+.ch-line{flex:1;height:1px;background:#E8E5E0;}
+.ch-head-content{margin-top:12px;}
+.ch-head-content h2{font-size:clamp(18px,3vw,24px);font-weight:800;letter-spacing:-.3px;margin-bottom:5px;}
+.ch-head-content p{font-size:13px;color:#888;}
+.key{background:#F5F3EE;border-left:3px solid #1A1A1A;padding:20px 24px;margin:20px 0;}
+.key-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;margin-bottom:8px;}
+.key p{font-size:14px;line-height:1.8;}
+/* VC diagram */
+.vc-wrap{border:1px solid #E8E5E0;border-radius:2px;padding:20px;margin:16px 0;background:#fff;}
+.vc-wrap h4{font-size:10px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:10px;}
+.vc-primary{display:flex;gap:2px;margin-bottom:12px;overflow-x:auto;}
+.vc-box{flex:1;min-width:80px;padding:11px 8px;color:#fff;font-size:10px;font-weight:700;text-align:center;line-height:1.3;}
+.vb1{background:#1E3A8A;}.vb2{background:#1E40AF;}.vb3{background:#1D4ED8;}.vb4{background:#2563EB;}.vb5{background:#3B82F6;}
+.vc-box span{display:block;font-size:8px;font-weight:400;opacity:.85;margin-top:2px;}
+.vc-support{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;}
+@media(min-width:600px){.vc-support{grid-template-columns:repeat(4,1fr);}}
+.vc-sup{background:#F8FAFC;border:1px solid #DBEAFE;border-radius:2px;padding:8px 10px;}
+.vc-sup h5{font-size:10px;font-weight:700;color:#2563EB;margin-bottom:2px;}
+.vc-sup p{font-size:9px;color:#888;}
+/* Synergy */
+.syn-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+@media(max-width:520px){.syn-grid{grid-template-columns:1fr;}}
+.syn-head{padding:11px 14px;color:#fff;font-weight:800;font-size:12px;}
+.sh-cost{background:#059669;}.sh-rev{background:#E85D26;}
+.syn-body{background:#fff;padding:12px 14px;font-size:12px;color:#888;}
+.syn-body ul{padding-left:14px;}.syn-body li{margin-bottom:4px;}
+.steps{display:flex;flex-direction:column;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+.step{display:grid;grid-template-columns:48px 1fr;background:#fff;}
+.step-n{display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#E8E5E0;border-right:1px solid #E8E5E0;padding:16px;}
+.step-b{padding:18px 20px;}.step-b h4{font-size:13px;font-weight:700;margin-bottom:4px;}.step-b p{font-size:12px;color:#888;line-height:1.7;}
+.compare-wrap{border:1px solid #E8E5E0;border-radius:2px;padding:20px;margin:14px 0;background:#fff;}
+.compare-wrap h4{font-size:10px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:14px;}
+.compare-grid{display:grid;grid-template-columns:1fr 36px 1fr;gap:8px;align-items:center;margin-bottom:10px;}
+.co-box{border-radius:2px;padding:12px;}
+.co-a{background:#EFF6FF;border:1px solid #BFDBFE;}
+.co-b{background:#F0FDF4;border:1px solid #86EFAC;}
+.co-box h5{font-size:11px;font-weight:700;margin-bottom:5px;}
+.co-a h5{color:#1E40AF;}.co-b h5{color:#166534;}
+.co-box ul{padding-left:12px;font-size:10px;color:#888;}.co-box li{margin-bottom:2px;}
+.co-arrow{text-align:center;font-size:16px;color:#888;}
+.syn-result{background:#FFFBEB;border:1px solid #FDE68A;border-radius:2px;padding:10px 14px;font-size:11px;color:#92400E;font-weight:600;margin-top:8px;}
+.callout{padding:14px 18px;margin:14px 0;font-size:13px;border-left:3px solid;border-radius:0 2px 2px 0;}
+.callout-warn{background:#FFFBEB;border-color:#D97706;}.callout-warn strong{color:#92400E;display:block;margin-bottom:3px;}
+.callout-tip{background:#EFF6FF;border-color:#2563EB;}.callout-tip strong{color:#1D4ED8;display:block;margin-bottom:3px;}
+.src{border:1px solid #E8E5E0;border-radius:2px;padding:16px 20px;margin-top:28px;display:flex;gap:12px;background:#FAFAF8;}
+.src-icon{font-size:14px;flex-shrink:0;margin-top:2px;}
+.src-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:5px;}
+.src-list{list-style:none;font-size:11px;color:#888;}.src-list li{margin-bottom:3px;line-height:1.6;}.src-list cite{font-style:normal;}
+.summary{background:#1A1A1A;color:#FAFAF8;padding:28px 32px;border-radius:2px;}
+.summary-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:12px;}
+.summary h3{font-size:15px;font-weight:800;margin-bottom:14px;line-height:1.4;}
+.summary ul{padding-left:16px;font-size:13px;line-height:2.2;color:#CCC;}
+.cta{background:#2563eb;color:#fff;padding:28px 32px;border-radius:2px;text-align:center;margin:20px auto;}
+.cta h3{font-size:15px;font-weight:800;margin-bottom:6px;}
+.cta p{font-size:12px;opacity:.8;margin-bottom:16px;}
+.cta a{display:inline-block;background:#fff;color:#2563eb;font-weight:700;font-size:13px;padding:11px 28px;border-radius:100px;}
+.page-nav{background:#1A1A1A;display:flex;justify-content:space-between;align-items:center;padding:16px 48px;flex-wrap:wrap;gap:8px;}
+.page-nav a{color:#999;font-size:12px;font-weight:600;}.page-nav a:hover{color:#fff;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .site-header{padding:0 14px;}
+  .header-logo{font-size:11px;}
+  .header-back{font-size:11px;}
+  .hero{padding:68px 16px 16px;min-height:auto;}
+  .hero-title{font-size:clamp(18px,5vw,26px);letter-spacing:-.5px;margin-bottom:12px;}
+  .hero-meta{gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+  .hero-desc{font-size:13px;}
+  .hero-divider{margin-top:16px;}
+  .ch-nav ul{padding:0 8px;}
+  .ch-nav li a{padding:10px 8px;font-size:10px;letter-spacing:0;}
+  .chapter{padding:24px 14px;}
+  .ch-inner{max-width:100%;}
+  .ch-head-content h2{font-size:17px;}
+  .ch-head-content p{font-size:12px;}
+  .key{padding:14px 16px;}
+  .key p{font-size:13px;}
+  .card-row{grid-template-columns:1fr;}
+  .mistake-grid{grid-template-columns:1fr;}
+  .d-row{flex-direction:column;}
+  .d-box{width:100%;flex:none;min-width:unset;}
+  .diagram{padding:16px;}
+  .step{grid-template-columns:40px 1fr;}
+  .step-b{padding:14px 14px;}
+  .step-n{font-size:16px;}
+  .src{flex-direction:column;gap:8px;padding:14px 16px;}
+  .callout{font-size:12px;padding:12px 14px;}
+  .summary{padding:20px 18px;border-radius:2px;}
+  .summary h3{font-size:14px;}
+  .summary ul{font-size:12px;line-height:2;}
+  .cta{padding:20px 18px;border-radius:2px;}
+  .cta h3{font-size:14px;}
+  .page-nav{padding:14px 16px;flex-direction:column;align-items:center;gap:12px;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-logo">PMI学習セット</div>
+  <a class="header-back" href="index.html">← 学習一覧に戻る</a>
+</header>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-bg-num" aria-hidden="true">08</div>
+    <div class="hero-meta">
+      <span class="hero-step">Step 08 of 11</span>
+      <span class="hero-phase">ADVANCED</span>
+    </div>
+    <h1 class="hero-title"><em>バリューチェーン分析</em><br>企業活動を分解し<br>シナジーを発見する</h1>
+    <p class="hero-desc">M&A後のシナジー（相乗効果）を特定するPMI必須ツール。2社の活動を比較して「どこで価値が生まれるか」を見える化する。</p>
+    <div class="hero-divider"></div>
+  </div>
+  <img class="hero-illust" src="https://loosedrawing.com/assets/media/illustrations/png/1406.png" alt="組織図のイラスト">
+</section>
+
+<nav class="ch-nav">
+  <ul>
+    <li><a href="#c1">概念</a></li>
+    <li><a href="#c2">基本構造</a></li>
+    <li><a href="#c3">2種類のシナジー</a></li>
+    <li><a href="#c4">使い方</a></li>
+    <li><a href="#c5">PMI実例</a></li>
+    <li><a href="#c-synergy">シナジー数値化</a></li>
+    <li><a href="#c6">まとめ</a></li>
+  </ul>
+</nav>
+
+<div class="chapter" id="c1">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 01</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>バリューチェーン分析とは何か</h2></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>バリューチェーン ＝ 企業活動を「価値（Value）の連鎖（Chain）」として分解するフレームワーク</strong><br>
+      マイケル・ポーター（ハーバード・ビジネス・スクール）が1985年に提唱。製品・サービスが顧客に届くまでの一連の活動を「主活動」と「支援活動」に分類し、どこでコストが生まれ・どこで価値が生まれるかを可視化する。PMIでは2社のバリューチェーンを並べてシナジーを特定する。</p>
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>Porter, Michael E. "Competitive Advantage: Creating and Sustaining Superior Performance" (1985, Free Press) ― バリューチェーン分析の原著</cite></li>
+          <li><cite>ポーター, M.E. 土岐坤訳『競争優位の戦略』ダイヤモンド社（1985年）― 日本語版</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c2">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 02</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>基本構造：主活動と支援活動</h2></div>
+    <div class="vc-wrap">
+      <h4>主活動（Primary Activities）― 直接価値を生む5つの活動</h4>
+      <div class="vc-primary">
+        <div class="vc-box vb1">購買物流<span>原材料調達・在庫管理</span></div>
+        <div class="vc-box vb2">製造・<br>オペレーション<span>製品製造・加工</span></div>
+        <div class="vc-box vb3">出荷物流<span>配送・倉庫管理</span></div>
+        <div class="vc-box vb4">マーケ&amp;営業<span>販促・販売活動</span></div>
+        <div class="vc-box vb5">サービス<span>アフターサービス</span></div>
+      </div>
+      <h4 style="margin-top:12px;">支援活動（Support Activities）― 全ての主活動を横断的に支える</h4>
+      <div class="vc-support">
+        <div class="vc-sup"><h5>全般管理</h5><p>財務・法務・経営企画</p></div>
+        <div class="vc-sup"><h5>人事・労務管理</h5><p>採用・育成・評価</p></div>
+        <div class="vc-sup"><h5>技術開発</h5><p>R&D・IT開発・改善</p></div>
+        <div class="vc-sup"><h5>調達活動</h5><p>原材料・設備の購買</p></div>
+      </div>
+    </div>
+    <div class="callout callout-warn">
+      <strong>⚠️ 「主活動だけ重要」は誤解</strong>支援活動も競争優位の源泉になりうる。Appleの強みは「技術開発（製品設計）」という支援活動。Amazonの強みは「出荷物流（主活動）＋技術開発（支援活動）」の組み合わせ。
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c3">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 03</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>PMIの2種類のシナジー</h2></div>
+    <div class="syn-grid">
+      <div>
+        <div class="syn-head sh-cost">💴 コストシナジー（重複を削る）</div>
+        <div class="syn-body"><p style="margin-bottom:8px;">2社で同じ活動が重複している場合、統合してコストを削減する。</p><ul><li>本社機能の統合（管理コスト削減）</li><li>共同調達で仕入れコスト削減</li><li>物流拠点の集約</li><li>ITシステムの一元化</li></ul></div>
+      </div>
+      <div>
+        <div class="syn-head sh-rev">🚀 売上シナジー（補完で増やす）</div>
+        <div class="syn-body"><p style="margin-bottom:8px;">2社のバリューチェーンが補完し合い、単体では出せない収益を生む。</p><ul><li>A社製品×B社販売網のクロスセル</li><li>技術×販路の組み合わせ</li><li>垂直統合で中間マージン排除</li></ul></div>
+      </div>
+    </div>
+    <div class="callout callout-tip">
+      <strong>PMIでの着手順序</strong>コストシナジーは「重複排除」なので比較的すぐ実現できる。売上シナジーは不確実要素が多い。100日プランでは「まずコストシナジー → 次に売上シナジー」の順で着手するのが定石。
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c4">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 04</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>PMIでの使い方：3ステップ</h2></div>
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><div class="step-b"><h4>両社のバリューチェーンを個別に描く</h4><p>A社とB社それぞれの主活動・支援活動を書き出す。「この会社は何で価値を生み・何でコストをかけているか」を把握。決算書・業務フロー・ヒアリングを活用。</p></div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-b"><h4>重複と補完（ギャップ）を特定する</h4><p>2社を横に並べて「同じ活動をしている部分（重複→コストシナジー候補）」と「一方が得意・他方が苦手な部分（補完→売上シナジー候補）」を色分けする。</p></div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-b"><h4>シナジーを数値化して優先度をつける</h4><p>「共同調達で年間いくら削減できるか」「クロスセルで年間いくら追加できるか」を試算。効果が大きく・実現リスクが小さいシナジーから100日プランに組み込む。</p></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c5">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 05</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>実例：食品メーカー × スーパーのM&A</h2></div>
+    <div class="compare-wrap">
+      <h4>鶴岡食品（製造）とエコマート（小売）のバリューチェーン比較</h4>
+      <div class="compare-grid">
+        <div class="co-box co-a"><h5>🏭 鶴岡食品</h5><ul><li>購買物流：地元農家の独自調達力（強み）</li><li>製造：惣菜・レトルトの製造技術（強み）</li><li>出荷物流：BtoBのみ（弱み）</li><li>マーケ：消費者向けEC弱（弱み）</li></ul></div>
+        <div class="co-arrow">⇌</div>
+        <div class="co-box co-b"><h5>🛒 エコマート</h5><ul><li>購買物流：仕入れコスト高（弱み）</li><li>製造：なし</li><li>出荷物流：2店舗の小売網（強み）</li><li>マーケ：地域顧客との信頼関係（強み）</li></ul></div>
+      </div>
+      <div class="syn-result">
+        💴 コストシナジー：鶴岡食品が仕入れを一元管理 → 年間▲1,200万円<br>
+        🚀 売上シナジー：鶴岡食品製品のエコマート優先棚配置 → 中間流通排除・年間+1,500万円
+      </div>
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>中小企業庁「中小PMIガイドライン」（2022年3月）― コスト・売上シナジーの分類と事例</cite></li>
+          <li><cite>KPMG「Post-Merger Integration研究」（各年版）― M&Aシナジー実現率と主要課題のデータ</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c-synergy">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 06</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>シナジーを数値化する方法</h2><p>「シナジーがある」で終わらせない ― 金額・期間・担当まで落とし込む</p></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>シナジーは「試算→計画→実績」で管理する</strong><br>
+      DDの段階でシナジーを試算し、PMI実行段階で計画に落とし込み、100日後に実績と比較する。「なんとなく効果がありそう」では経営陣も投資家も納得しない。必ず金額で語る。</p>
+    </div>
+    <div style="border:1px solid #E8E5E0;border-radius:2px;padding:18px;background:#fff;margin:14px 0;">
+      <p style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:14px;">シナジー数値化の3ステップ</p>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="background:#F0FDF4;border-radius:2px;padding:14px;border-left:3px solid #16a34a;">
+          <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;">Step 1：バリューチェーン上でシナジーが生まれる活動を特定</h4>
+          <p style="font-size:12px;color:#555;line-height:1.7;">例：A社「購買・調達」とB社「購買・調達」が統合 → 調達量が増加し単価交渉力が上がる。<br>「どの活動」×「コスト削減か・売上増加か」を明確にする。</p>
+        </div>
+        <div style="background:#EFF6FF;border-radius:2px;padding:14px;border-left:3px solid #2563EB;">
+          <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;">Step 2：現在のコスト・売上データから削減額・増加額を試算</h4>
+          <p style="font-size:12px;color:#555;line-height:1.7;">例：現在A社の年間調達費1億円・B社8,000万円 → 合計1.8億円の調達を統一ルートで発注<br>→ 現在平均より10%ディスカウントを交渉できると仮定 → シナジー：1,800万円/年<br>ポイント：楽観的な前提より「保守的な前提」で試算する。</p>
+        </div>
+        <div style="background:#FAF5FF;border-radius:2px;padding:14px;border-left:3px solid #7C3AED;">
+          <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;">Step 3：実現時期と統合コストも含めて「ネットシナジー」を計算</h4>
+          <p style="font-size:12px;color:#555;line-height:1.7;">シナジーが実現するには統合コスト（システム移行費・人件費・研修費）がかかる。<br>ネットシナジー ＝ シナジー効果 ▲ 統合コスト<br>例：シナジー1,800万円/年 ▲ 統合コスト500万円（初年度のみ）＝ 初年度1,300万円・2年目以降1,800万円</p>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:14px 0;">
+      <div style="background:#fff;padding:16px;border-top:3px solid #059669;">
+        <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;">コスト削減シナジーの例</h4>
+        <p style="font-size:11px;color:#555;line-height:1.8;">・調達統合による仕入れコスト削減<br>・重複する管理部門の統廃合<br>・物流・倉庫の共同利用<br>・IT・システムの統合による保守費削減<br>計算例：本社家賃削減 年間600万円</p>
+      </div>
+      <div style="background:#fff;padding:16px;border-top:3px solid #2563EB;">
+        <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;">売上増加シナジーの例</h4>
+        <p style="font-size:11px;color:#555;line-height:1.8;">・クロスセル（A社顧客にB社商品を提案）<br>・新地域への販路拡大<br>・ブランド力向上による客単価アップ<br>・技術組み合わせによる新製品開発<br>計算例：クロスセル成約10件×単価50万円＝500万円/月</p>
+      </div>
+      <div style="background:#fff;padding:16px;border-top:3px solid #DC2626;">
+        <h4 style="font-size:12px;font-weight:700;margin-bottom:6px;">過大評価しやすいシナジー</h4>
+        <p style="font-size:11px;color:#555;line-height:1.8;">・「顧客が自然にクロス購入してくれる」→ 営業の努力なしには起きない<br>・「文化が統合したら生産性が上がる」→ 測定困難で根拠が薄い<br>→ 実現に具体的なアクションが必要なものは保守的に試算する</p>
+      </div>
+    </div>
+    <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:2px;padding:14px;font-size:12px;color:#92400E;line-height:1.8;">
+      <strong>バリューシステム（拡張）：</strong>自社のバリューチェーンだけでなく「サプライヤー → 自社 → 顧客」の全体連鎖（バリューシステム）で見ることで、M&A後のシナジーをより広い視点で発見できる。例：上流の原材料調達会社を買収することで原価を大幅に削減できる（垂直統合）。
+    </div>
+  </div>
+</div>
+<div class="chapter" id="c6">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 06</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>まとめ</h2></div>
+    <div class="summary">
+      <div class="summary-label">Summary</div>
+      <h3>バリューチェーン分析 ― 3行まとめ</h3>
+      <ul>
+        <li>企業活動を「主活動5つ＋支援活動4つ」に分解してコストと価値の源泉を可視化する</li>
+        <li>2社のバリューチェーンを比較し「重複（コストシナジー）」と「補完（売上シナジー）」を特定する</li>
+        <li>PMIの100日プランでは「コストシナジー先行→売上シナジー拡大」の順で着手する</li>
+      </ul>
+    </div>
+    <div style="height:20px;"></div>
+    <div class="cta">
+      <h3>シナジーを発見する目を鍛えよう</h3>
+      <p>活動分類・コスト/売上シナジー識別・PMI統合設計まで20問。</p>
+      <a href="練習_バリューチェーン.html">バリューチェーン 練習問題を解く（20問）→</a>
+    </div>
+  </div>
+</div>
+
+<nav class="page-nav">
+  <a href="学習_PEST分析.html">← PEST分析</a>
+  <a href="学習_5フォース.html">次：5フォース分析 →</a>
+</nav>
+</body>
+</html>

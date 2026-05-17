@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PEST分析 学習教材｜外部マクロ環境を4軸で読む</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','BIZ UDGothic','Meiryo',sans-serif;background:#FAFAF8;color:#1A1A1A;line-height:1.75;font-size:15px;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}img{max-width:100%;height:auto;display:block;}
+.site-header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 32px;height:56px;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid #E8E5E0;}
+.header-logo{font-size:12px;font-weight:700;}.header-logo span{color:#999;font-weight:400;}
+.header-back{font-size:12px;color:#666;}.header-back:hover{color:#1A1A1A;}
+.hero{min-height:28vh;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;padding:76px 48px 36px;background:#F5F3EE;border-bottom:1px solid #E8E5E0;position:relative;overflow:hidden;}
+@media(max-width:768px){.hero{grid-template-columns:1fr;padding:72px 16px 20px;}.hero-illust{display:none;}}
+.hero-left{position:relative;z-index:1;}
+.hero-bg-num{position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:clamp(120px,18vw,220px);font-weight:900;color:rgba(0,0,0,.04);line-height:1;pointer-events:none;letter-spacing:-10px;}
+.hero-meta{display:flex;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+.hero-step{font-size:10px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;}
+.hero-phase{font-size:10px;font-weight:700;letter-spacing:1px;border:1px solid #2563eb;color:#2563eb;padding:2px 10px;border-radius:100px;}
+.hero-title{font-size:clamp(20px,3vw,36px);font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:16px;}
+.hero-title em{font-style:normal;color:#4f46e5;}
+.hero-desc{font-size:14px;color:#666;max-width:440px;line-height:1.8;}
+.hero-illust{width:clamp(160px,20vw,260px);opacity:.85;flex-shrink:0;}
+.hero-divider{width:40px;height:2px;background:#1A1A1A;margin-top:28px;}
+.ch-nav{background:#fff;position:sticky;top:56px;z-index:50;border-bottom:1px solid #E8E5E0;overflow-x:auto;white-space:nowrap;}
+.ch-nav ul{display:inline-flex;list-style:none;padding:0 32px;}
+.ch-nav li a{display:block;font-size:11px;font-weight:600;color:#999;padding:12px 14px;border-bottom:2px solid transparent;transition:all .15s;}
+.ch-nav li a:hover{color:#1A1A1A;border-bottom-color:#1A1A1A;}
+.chapter{padding:56px 48px;}.chapter:nth-child(odd){background:#fff;}.chapter:nth-child(even){background:#FAFAF8;}
+@media(max-width:768px){.chapter{padding:28px 16px;}}
+.ch-inner{max-width:720px;margin:0 auto;}
+.ch-head{margin-bottom:28px;display:flex;align-items:baseline;gap:16px;}
+.ch-num-label{font-size:10px;font-weight:700;letter-spacing:2px;color:#BBBBBB;text-transform:uppercase;white-space:nowrap;}
+.ch-line{flex:1;height:1px;background:#E8E5E0;}
+.ch-head-content{margin-top:12px;}
+.ch-head-content h2{font-size:clamp(18px,3vw,24px);font-weight:800;letter-spacing:-.3px;margin-bottom:5px;}
+.ch-head-content p{font-size:13px;color:#888;}
+.key{background:#F5F3EE;border-left:3px solid #1A1A1A;padding:20px 24px;margin:20px 0;}
+.key-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;margin-bottom:8px;}
+.key p{font-size:14px;line-height:1.8;}
+.pest-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+@media(max-width:520px){.pest-grid{grid-template-columns:1fr;}}
+.pest-box{background:#fff;}
+.pest-head{padding:12px 14px;color:#fff;font-weight:800;font-size:13px;}
+.ph-p{background:#1D4ED8;}.ph-e{background:#059669;}.ph-s{background:#D97706;}.ph-t{background:#7C3AED;}
+.pest-body{padding:12px 14px;}
+.pest-q{font-size:9px;font-weight:700;letter-spacing:.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:6px;}
+.pest-body ul{padding-left:14px;font-size:12px;color:#888;}.pest-body li{margin-bottom:3px;}
+.pest-note{font-size:11px;font-weight:600;margin-top:8px;}
+.nt-p{color:#1D4ED8;}.nt-e{color:#059669;}.nt-s{color:#D97706;}.nt-t{color:#7C3AED;}
+.flow-diagram{border:1px solid #E8E5E0;border-radius:2px;padding:18px;margin:14px 0;background:#fff;}
+.flow-diagram h4{font-size:10px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:12px;}
+.fw-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.fw-item{background:#FAFAF8;border:1px solid #E8E5E0;border-radius:2px;padding:8px 12px;font-size:11px;font-weight:600;text-align:center;}
+.fw-item.active{background:#EEF2FF;border-color:#A5B4FC;color:#4F46E5;}
+.fw-arrow{color:#888;font-size:14px;}
+.steps{display:flex;flex-direction:column;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+.step{display:grid;grid-template-columns:48px 1fr;background:#fff;}
+.step-n{display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#E8E5E0;border-right:1px solid #E8E5E0;padding:16px;}
+.step-b{padding:18px 20px;}.step-b h4{font-size:13px;font-weight:700;margin-bottom:4px;}.step-b p{font-size:12px;color:#888;line-height:1.7;}
+.ex-table{width:100%;border-collapse:collapse;font-size:12px;margin:12px 0;background:#fff;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;}
+.ex-table th{padding:8px 12px;text-align:left;font-size:10px;font-weight:700;color:#fff;letter-spacing:.5px;}
+.th-p{background:#1D4ED8;}.th-e{background:#059669;}.th-s{background:#D97706;}.th-t{background:#7C3AED;}
+.ex-table td{padding:8px 12px;border-bottom:1px solid #E8E5E0;font-size:11px;color:#888;}
+.ex-table tr:last-child td{border-bottom:none;}
+.tag-opp{background:#DCFCE7;color:#166534;font-size:9px;font-weight:700;padding:1px 6px;border-radius:100px;display:inline-block;}
+.tag-thr{background:#FEF2F2;color:#991B1B;font-size:9px;font-weight:700;padding:1px 6px;border-radius:100px;display:inline-block;}
+.callout{padding:14px 18px;margin:14px 0;font-size:13px;border-left:3px solid;border-radius:0 2px 2px 0;}
+.callout-warn{background:#FFFBEB;border-color:#D97706;}.callout-warn strong{color:#92400E;display:block;margin-bottom:3px;}
+.callout-tip{background:#EEF2FF;border-color:#4F46E5;}.callout-tip strong{color:#4338CA;display:block;margin-bottom:3px;}
+.src{border:1px solid #E8E5E0;border-radius:2px;padding:16px 20px;margin-top:28px;display:flex;gap:12px;background:#FAFAF8;}
+.src-icon{font-size:14px;flex-shrink:0;margin-top:2px;}
+.src-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:5px;}
+.src-list{list-style:none;font-size:11px;color:#888;}.src-list li{margin-bottom:3px;line-height:1.6;}.src-list cite{font-style:normal;}
+.summary{background:#1A1A1A;color:#FAFAF8;padding:28px 32px;border-radius:2px;}
+.summary-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:12px;}
+.summary h3{font-size:15px;font-weight:800;margin-bottom:14px;line-height:1.4;}
+.summary ul{padding-left:16px;font-size:13px;line-height:2.2;color:#CCC;}
+.cta{background:#4f46e5;color:#fff;padding:28px 32px;border-radius:2px;text-align:center;margin:20px auto;}
+.cta h3{font-size:15px;font-weight:800;margin-bottom:6px;}
+.cta p{font-size:12px;opacity:.8;margin-bottom:16px;}
+.cta a{display:inline-block;background:#fff;color:#4f46e5;font-weight:700;font-size:13px;padding:11px 28px;border-radius:100px;}
+.page-nav{background:#1A1A1A;display:flex;justify-content:space-between;align-items:center;padding:16px 48px;flex-wrap:wrap;gap:8px;}
+.page-nav a{color:#999;font-size:12px;font-weight:600;}.page-nav a:hover{color:#fff;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .site-header{padding:0 14px;}
+  .header-logo{font-size:11px;}
+  .header-back{font-size:11px;}
+  .hero{padding:68px 16px 16px;min-height:auto;}
+  .hero-title{font-size:clamp(18px,5vw,26px);letter-spacing:-.5px;margin-bottom:12px;}
+  .hero-meta{gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+  .hero-desc{font-size:13px;}
+  .hero-divider{margin-top:16px;}
+  .ch-nav ul{padding:0 8px;}
+  .ch-nav li a{padding:10px 8px;font-size:10px;letter-spacing:0;}
+  .chapter{padding:24px 14px;}
+  .ch-inner{max-width:100%;}
+  .ch-head-content h2{font-size:17px;}
+  .ch-head-content p{font-size:12px;}
+  .key{padding:14px 16px;}
+  .key p{font-size:13px;}
+  .card-row{grid-template-columns:1fr;}
+  .mistake-grid{grid-template-columns:1fr;}
+  .d-row{flex-direction:column;}
+  .d-box{width:100%;flex:none;min-width:unset;}
+  .diagram{padding:16px;}
+  .step{grid-template-columns:40px 1fr;}
+  .step-b{padding:14px 14px;}
+  .step-n{font-size:16px;}
+  .src{flex-direction:column;gap:8px;padding:14px 16px;}
+  .callout{font-size:12px;padding:12px 14px;}
+  .summary{padding:20px 18px;border-radius:2px;}
+  .summary h3{font-size:14px;}
+  .summary ul{font-size:12px;line-height:2;}
+  .cta{padding:20px 18px;border-radius:2px;}
+  .cta h3{font-size:14px;}
+  .page-nav{padding:14px 16px;flex-direction:column;align-items:center;gap:12px;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-logo">PMI学習セット</div>
+  <a class="header-back" href="index.html">← 学習一覧に戻る</a>
+</header>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-bg-num" aria-hidden="true">07</div>
+    <div class="hero-meta">
+      <span class="hero-step">Step 07 of 11</span>
+      <span class="hero-phase">MIDDLE</span>
+    </div>
+    <h1 class="hero-title"><em>PEST分析</em><br>外部マクロ環境を4軸で読む</h1>
+    <p class="hero-desc">M&Aで「この業界は今後成長するか・参入すべきか」を判断するための業界評価ツール。</p>
+    <div class="hero-divider"></div>
+  </div>
+  <img class="hero-illust" src="https://loosedrawing.com/assets/media/illustrations/png/1183.png" alt="パソコンで情報を集める人のイラスト">
+</section>
+
+<nav class="ch-nav">
+  <ul>
+    <li><a href="#c1">概念</a></li>
+    <li><a href="#c2">4つの要因</a></li>
+    <li><a href="#c3">他FWとの連携</a></li>
+    <li><a href="#c4">使い方</a></li>
+    <li><a href="#c5">PMI実例</a></li>
+    <li><a href="#c6">まとめ</a></li>
+  </ul>
+</nav>
+
+<div class="chapter" id="c1">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 01</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>PEST分析とは何か</h2></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>PEST ＝ Political（政治）・Economic（経済）・Social（社会）・Technological（技術）</strong><br>
+      企業が自分ではコントロールできない「マクロ外部環境」を4カテゴリで整理するフレームワーク。フランシス・アギュラー（Harvard Business School）が1967年に提唱。M&Aで買収対象業界の「将来性とリスク」を評価するときに必須。</p>
+    </div>
+    <div class="callout callout-tip">
+      <strong>マクロとミクロの違い</strong>PESTは「社会全体の大きな流れ（マクロ）」を分析する。競合の動向や自社の戦略（ミクロ）はPESTに含めない。「社会全体に起きていることか・この業界・会社だけの話か」で判断する。
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>Aguilar, Francis J. "Scanning the Business Environment" (1967, Macmillan) ― PEST分析の原型「ETPS」を提唱した原著</cite></li>
+          <li><cite>Johnson, G., Scholes, K. & Whittington, R. "Exploring Corporate Strategy" (最新版, FT Prentice Hall) ― PEST分析の体系的解説の標準教科書</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c2">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 02</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>4つの要因を理解する</h2></div>
+    <div class="pest-grid">
+      <div class="pest-box"><div class="pest-head ph-p">🏛️ P：Political（政治）</div><div class="pest-body"><div class="pest-q">「政府・法律が業界に与える影響」</div><ul><li>法律・規制（強化・緩和）</li><li>税制・補助金・助成金</li><li>政策・政府の方針</li><li>事業承継税制・M&A促進政策</li></ul><p class="pest-note nt-p">例：事業承継推進政策 → PMI市場拡大（機会）</p></div></div>
+      <div class="pest-box"><div class="pest-head ph-e">📈 E：Economic（経済）</div><div class="pest-body"><div class="pest-q">「経済環境が業界に与える影響」</div><ul><li>GDP成長率・景気動向</li><li>金利・為替・物価・インフレ</li><li>業界の市場規模・成長率</li><li>消費者の購買力・消費動向</li></ul><p class="pest-note nt-e">例：原材料費高騰 → 食品業界コスト増（脅威）</p></div></div>
+      <div class="pest-box"><div class="pest-head ph-s">👥 S：Social（社会）</div><div class="pest-body"><div class="pest-q">「社会・人口動態が業界に与える影響」</div><ul><li>人口動態・少子高齢化</li><li>ライフスタイルの変化</li><li>労働力不足・後継者問題</li><li>消費者の価値観変化</li></ul><p class="pest-note nt-s">例：経営者高齢化 → 事業承継M&A需要急増（機会）</p></div></div>
+      <div class="pest-box"><div class="pest-head ph-t">💻 T：Technological（技術）</div><div class="pest-body"><div class="pest-q">「技術革新が業界に与える影響」</div><ul><li>AI・DX・クラウドの普及</li><li>新技術の登場・破壊的革新</li><li>オートメーション・省人化</li><li>SaaS・APIの普及</li></ul><p class="pest-note nt-t">例：生成AI普及 → PMI SaaS機能強化（機会）</p></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c3">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 03</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>他フレームワークとの連携位置</h2></div>
+    <div class="flow-diagram">
+      <h4>分析の流れ（外から内へ）</h4>
+      <div class="fw-flow">
+        <div class="fw-item active">🌐 PEST<br><span style="font-size:9px;">マクロ外部</span></div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-item">⚔️ 5フォース<br><span style="font-size:9px;">業界構造</span></div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-item">🔺 3C分析<br><span style="font-size:9px;">市場・競合・自社</span></div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-item">⚡ SWOT<br><span style="font-size:9px;">O・Tに流入</span></div>
+      </div>
+    </div>
+    <p style="font-size:13px;color:#888;">PESTの分析結果はSWOTの「O（機会）」と「T（脅威）」にそのまま流し込める。PESTは「SWOTのO・Tを作るための原材料集め」とも言える。</p>
+    <div class="callout callout-warn">
+      <strong>⚠️ PESTに入れてはいけないもの</strong>競合企業の動向・自社の強みなどのミクロ要因はPESTに入れない。「それは社会全体に起きていることか、この会社だけの話か」で判断する。
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c4">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 04</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>使い方：3ステップ</h2></div>
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><div class="step-b"><h4>分析対象の業界を定義する</h4><p>「どの業界を分析するか」を具体的に定める。「食品スーパー業界」「訪問介護業界」など。曖昧なままだと的外れな要因が入ってくる。</p></div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-b"><h4>P・E・S・Tそれぞれで要因を3〜5個収集する</h4><p>各カテゴリで「この業界に影響しそうな社会全体の変化」を列挙する。現在だけでなく「今後3〜5年の変化予測」も含める。</p></div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-b"><h4>各要因を「機会」か「脅威」かに判断する</h4><p>同じ要因でも業界・企業によって機会にも脅威にもなる。「高齢化」→ 介護業には機会、若者向け商品会社には脅威。業界ごとに判断する。</p></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c5">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 05</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>実例：PMI Manager（SaaS）のPEST分析</h2></div>
+    <p style="font-size:13px;color:#888;margin-bottom:12px;">当社のPMI Managerが属する「PMI支援SaaS業界」を分析してみよう。</p>
+    <table class="ex-table">
+      <tr><th class="th-p">P（政治）</th><th class="th-e">E（経済）</th><th class="th-s">S（社会）</th><th class="th-t">T（技術）</th></tr>
+      <tr>
+        <td>中小企業庁の事業承継推進政策<br><span class="tag-opp">機会</span></td>
+        <td>M&A件数の増加で市場拡大<br><span class="tag-opp">機会</span></td>
+        <td>経営者高齢化・後継者不足<br><span class="tag-opp">機会</span></td>
+        <td>生成AI・Claude APIの普及<br><span class="tag-opp">機会</span></td>
+      </tr>
+      <tr>
+        <td>個人情報保護法の強化<br><span class="tag-thr">脅威</span></td>
+        <td>中小企業のIT投資余力の限界<br><span class="tag-thr">脅威</span></td>
+        <td>PMI専門人材の不足<br><span class="tag-opp">機会（外部委託需要）</span></td>
+        <td>大手ITベンダーの類似SaaS参入<br><span class="tag-thr">脅威</span></td>
+      </tr>
+    </table>
+    <div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:2px;padding:12px 14px;margin-top:8px;font-size:12px;color:#3730A3;">
+      → 結論：全体的に「機会が多い環境」だが大手IT参入（T）が急拡大リスク。先行者利益の最大化と業界標準化が急務。→ SWOTのOとTにそのまま落とし込める。
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>中小企業庁「中小企業の後継者問題に関する調査」（2022年）― 後継者不在企業数・廃業リスクのデータ</cite></li>
+          <li><cite>経済産業省「2023年版中小企業白書」― M&A市場規模・事業承継の現状データ</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c-matrix">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 06</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>影響度×確実性マトリクスと将来予測</h2><p>PESTの要因を「どれが重要か」で優先順位付けする</p></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>PESTで挙がった要因を全て同等に扱うな ― 重要度で絞り込む</strong><br>
+      PESTを実施すると多くの要因が挙がる。全部を戦略に織り込もうとすると焦点が定まらない。「影響度（大きいか）×確実性（起きる可能性が高いか）」の2軸で絞り込む。</p>
+    </div>
+    <div style="border:1px solid #E8E5E0;border-radius:2px;padding:18px;background:#fff;margin:14px 0;">
+      <p style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:12px;">影響度 × 確実性 マトリクス</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;">
+        <div style="background:#F0FDF4;padding:14px;">
+          <h4 style="font-size:11px;font-weight:700;margin-bottom:6px;color:#15803D;">確実性：高 × 影響度：大<br>→ 最優先で戦略に組み込む</h4>
+          <p style="font-size:11px;color:#555;line-height:1.7;">例：少子高齢化（人口統計データで確実）・デジタル化推進（政府方針で確実）。これらは今すぐ戦略に反映する必要がある。</p>
+        </div>
+        <div style="background:#FFF7ED;padding:14px;">
+          <h4 style="font-size:11px;font-weight:700;margin-bottom:6px;color:#92400E;">確実性：低 × 影響度：大<br>→ シナリオ分析・リスク対策</h4>
+          <p style="font-size:11px;color:#555;line-height:1.7;">例：大規模な規制変更・地政学リスク。起きた時の影響が大きいため「もし起きたら」のシナリオを準備する。</p>
+        </div>
+        <div style="background:#EFF6FF;padding:14px;">
+          <h4 style="font-size:11px;font-weight:700;margin-bottom:6px;color:#1E40AF;">確実性：高 × 影響度：小<br>→ モニタリングのみ</h4>
+          <p style="font-size:11px;color:#555;line-height:1.7;">起きることは分かっているが影響が限定的。定期的に監視するが大きなリソースは割かない。</p>
+        </div>
+        <div style="background:#F8FAFC;padding:14px;">
+          <h4 style="font-size:11px;font-weight:700;margin-bottom:6px;color:#888;">確実性：低 × 影響度：小<br>→ 無視してよい</h4>
+          <p style="font-size:11px;color:#555;line-height:1.7;">起きるかどうかも分からず・影響も小さい。PEST分析に含めても戦略的価値は低い。</p>
+        </div>
+      </div>
+    </div>
+    <div style="background:#FAFAF8;border:1px solid #E8E5E0;border-radius:2px;padding:16px;margin:14px 0;">
+      <p style="font-size:11px;font-weight:700;letter-spacing:1px;color:#BBBBBB;text-transform:uppercase;margin-bottom:10px;">3〜5年後のPEST予測の方法</p>
+      <p style="font-size:12px;color:#555;line-height:1.8;margin-bottom:8px;">PEST分析は「現在」だけでなく「3〜5年後の業界環境の変化」を予測するためにも使う。特にM&Aでは「今魅力的な業界が5年後も魅力的か」を見極める必要がある。</p>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div style="background:#fff;border-radius:2px;padding:10px 14px;border-left:2px solid #1A1A1A;"><p style="font-size:12px;"><strong>Political：</strong>政府の長期計画・法改正のスケジュール（例：2030年カーボンニュートラル宣言）</p></div>
+        <div style="background:#fff;border-radius:2px;padding:10px 14px;border-left:2px solid #1A1A1A;"><p style="font-size:12px;"><strong>Economic：</strong>人口動態・GDP成長率トレンド・金利の長期見通し</p></div>
+        <div style="background:#fff;border-radius:2px;padding:10px 14px;border-left:2px solid #1A1A1A;"><p style="font-size:12px;"><strong>Social：</strong>世代交代・ライフスタイル変化・価値観トレンド（例：環境意識の高まり）</p></div>
+        <div style="background:#fff;border-radius:2px;padding:10px 14px;border-left:2px solid #1A1A1A;"><p style="font-size:12px;"><strong>Technological：</strong>AIの実用化速度・業界でのDX進展スピード</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="chapter" id="c6">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 06</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>まとめ</h2></div>
+    <div class="summary">
+      <div class="summary-label">Summary</div>
+      <h3>PEST分析 ― 3行まとめ</h3>
+      <ul>
+        <li>PEST ＝ 企業がコントロールできないマクロ外部環境を4軸で分析するツール</li>
+        <li>各要因が業界にとって「機会（O）」か「脅威（T）」かを判断し、SWOTのO・Tに接続する</li>
+        <li>M&Aでは「この業界は今後成長するか・構造的リスクは何か」を判断するために使う</li>
+      </ul>
+    </div>
+    <div style="height:20px;"></div>
+    <div class="cta">
+      <h3>PEST分析で業界の未来を読む力をつけよう</h3>
+      <p>要因分類・業界分析・機会/脅威の判断・SWOTとの連携まで20問。</p>
+      <a href="練習_PEST分析.html">PEST分析 練習問題を解く（20問）→</a>
+    </div>
+  </div>
+</div>
+
+<nav class="page-nav">
+  <a href="学習_財務基礎.html">← 財務基礎</a>
+  <a href="学習_バリューチェーン.html">次：バリューチェーン →</a>
+</nav>
+</body>
+</html>

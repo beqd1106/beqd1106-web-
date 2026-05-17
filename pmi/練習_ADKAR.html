@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADKARモデル 練習問題 20問｜変革マネジメント</title>
+<style>
+:root{--primary:#0f766e;--accent:#e85d26;--accent2:#2ca8c2;--green:#16a34a;--light:#f4f7fb;--dark:#0f1f30;--gray:#6b7a8d;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--light);color:var(--dark);line-height:1.7;}
+.hero{background:linear-gradient(135deg,#0f1f30,#0f766e,#0d9488);color:white;padding:40px 20px 32px;text-align:center;}
+.hero h1{font-size:clamp(20px,4vw,30px);font-weight:800;margin-bottom:8px;}
+.hero p{font-size:13px;opacity:.8;margin-bottom:16px;}
+.progress-wrap{background:rgba(255,255,255,.15);border-radius:20px;height:10px;max-width:400px;margin:0 auto 8px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,#5eead4,#2ca8c2);border-radius:20px;transition:width .4s;width:0%;}
+.progress-text{font-size:12px;opacity:.8;}
+.stats-row{display:flex;gap:16px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:8px 16px;text-align:center;}
+.stat .v{font-size:20px;font-weight:800;color:#fde68a;line-height:1;}
+.stat .l{font-size:10px;opacity:.75;}
+.container{max-width:800px;margin:0 auto;padding:20px;}
+.lecture{background:white;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.08);border-left:5px solid var(--primary);}
+.lecture h2{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:10px;}
+.lecture p{font-size:13px;color:var(--gray);margin-bottom:8px;}
+.adkar-flow{display:flex;gap:2px;margin:14px 0;overflow-x:auto;}
+.adkar-box{flex:1;min-width:70px;padding:12px 8px;text-align:center;color:white;border-radius:8px;font-weight:800;}
+.aa{background:#1d4ed8;}
+.ad{background:#16a34a;}
+.ak{background:#d97706;}
+.aab{background:#7c3aed;}
+.ar{background:#e85d26;}
+.adkar-box span{display:block;font-size:10px;font-weight:400;opacity:.9;margin-top:3px;}
+.warn{background:#fff8f0;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 14px;font-size:12px;color:#92400e;margin-top:10px;}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2px;color:white;display:inline-block;padding:4px 14px;border-radius:20px;margin:16px 0 12px;}
+.sl-basic{background:#16a34a;}
+.sl-mid{background:#0369a1;}
+.sl-adv{background:#7c3aed;}
+.qcard{background:white;border-radius:14px;padding:20px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);}
+.qtop{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.qnum{background:var(--primary);color:white;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;}
+.qtype{font-size:11px;color:var(--gray);font-weight:600;}
+.qlv{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.qlv.basic{background:#dcfce7;color:#166534;}
+.qlv.mid{background:#dbeafe;color:#1e40af;}
+.qlv.adv{background:#fce7f3;color:#9d174d;}
+.qtext{font-size:14px;font-weight:600;margin-bottom:10px;line-height:1.6;}
+.qsub{font-size:12px;color:var(--gray);margin-bottom:10px;line-height:1.7;}
+.choices{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.ch{text-align:left;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;background:white;cursor:pointer;font-size:13px;font-family:inherit;transition:all .2s;}
+.ch:hover{border-color:var(--accent2);background:#f0f9ff;}
+.ch.correct{border-color:#16a34a;background:#f0fdf4;color:#166534;font-weight:700;}
+.ch.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626;}
+.ch:disabled{cursor:default;}
+.ans{display:none;margin-top:12px;}
+.ans-inner{background:linear-gradient(135deg,#f0fdfa,#f0f9ff);border-radius:10px;padding:16px;border:1px solid #5eead4;}
+.ans-result{font-size:14px;font-weight:700;color:var(--primary);margin-bottom:8px;}
+.ans-exp{font-size:13px;color:var(--dark);margin-bottom:10px;line-height:1.6;}
+.tip{background:white;border-radius:8px;padding:10px 14px;font-size:12px;color:#0369a1;border-left:3px solid var(--accent2);}
+.tip strong{display:block;margin-bottom:3px;}
+.revbtn{background:var(--primary);color:white;border:none;border-radius:20px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:10px;}
+.revbtn:hover{background:#0d9488;}
+.revbtn.revealed{background:var(--gray);}
+.score-board{background:white;border-radius:14px;padding:16px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:center;}
+.score-board h3{font-size:13px;color:var(--gray);margin-bottom:4px;}
+.score-board .score-val{font-size:40px;font-weight:900;color:var(--primary);}
+.score-board .score-max{font-size:18px;color:var(--gray);}
+.nav-bar{background:var(--dark);padding:14px 20px;text-align:center;margin-top:20px;}
+.nav-bar a{color:#a5f3fc;text-decoration:none;font-size:12px;font-weight:600;margin:0 10px;}
+.case-box{background:#f0fdfa;border:1px solid #5eead4;border-radius:10px;padding:16px;font-size:13px;margin-bottom:12px;line-height:1.8;}
+.case-box h4{font-weight:700;color:#0f766e;margin-bottom:8px;}
+.tag-a{background:#dbeafe;color:#1d4ed8;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;}
+.tag-d{background:#dcfce7;color:#166534;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;}
+.tag-k{background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;}
+.tag-ab{background:#f3e8ff;color:#6d28d9;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;}
+.tag-r{background:#fef2f2;color:#dc2626;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin:2px;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .hero{padding:28px 14px 20px;}
+  .hero h1{font-size:clamp(18px,5vw,26px);}
+  .container{padding:12px;}
+  .qcard{padding:16px;border-radius:10px;}
+  .qtext{font-size:13px;}
+  .ch{font-size:12px;padding:10px 12px;}
+  .ans-inner{padding:14px;}
+  .ans-exp{font-size:12px;}
+  .tip{font-size:11px;}
+  .lecture{padding:16px;border-radius:10px;}
+  .lecture h2{font-size:14px;}
+  .lecture p,.lecture .warn{font-size:12px;}
+  .nav-bar{padding:12px 14px;}
+  .nav-bar a{font-size:11px;margin:0 6px;}
+  .stats-row{gap:10px;}
+  .stat{padding:6px 12px;}
+  .stat .v{font-size:18px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🔄 ADKARモデル 練習問題</h1>
+  <p>変革マネジメントの世界標準 — PMI後の組織統合を成功させる変革の技術</p>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-text" id="progressText">0 / 20 問 回答済み</div>
+  <div class="stats-row">
+    <div class="stat"><div class="v">20</div><div class="l">問</div></div>
+    <div class="stat"><div class="v">50</div><div class="l">分目安</div></div>
+    <div class="stat"><div class="v" id="scoreDisp">0</div><div class="l">正解（選択問題）</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="lecture">
+  <h2>📖 ADKARモデルとは？（4分で読む）</h2>
+  <p>ADKARはProsci社が開発した変革マネジメントの世界標準フレームワーク。「個人の変革」に着目し、5つの要素が順番に達成されることで初めて変革が定着するという考え方。M&A後の組織統合・文化融合・新システム導入に直接使える。</p>
+  <div class="adkar-flow">
+    <div class="adkar-box aa">A<span>Awareness<br>認識</span></div>
+    <div class="adkar-box ad">D<span>Desire<br>意欲</span></div>
+    <div class="adkar-box ak">K<span>Knowledge<br>知識</span></div>
+    <div class="adkar-box aab">A<span>Ability<br>能力</span></div>
+    <div class="adkar-box ar">R<span>Reinforcement<br>定着</span></div>
+  </div>
+  <p><strong>A（Awareness）</strong>：変化の必要性を認識している「なぜ変わる必要があるのか」が理解されているか。<br>
+  <strong>D（Desire）</strong>：変化を支持・参加しようとする意欲がある「変わりたい・協力したい」という個人の意志。<br>
+  <strong>K（Knowledge）</strong>：どう変わればいいか知っている「変化後の状態・スキル・プロセス」の知識。<br>
+  <strong>A（Ability）</strong>：実際にその変化を実行できる能力がある知識を実践に変換するスキル・実務力。<br>
+  <strong>R（Reinforcement）</strong>：変化が定着・強化される仕組みがある評価制度・フィードバック・インセンティブ。</p>
+  <div class="warn">⚠️ PMIでの落とし穴：ADKARは順番通りに進めることが重要。「K（研修）だけやって終わり」は最も多い失敗パターン。A→D→K→A→Rの順番を意識し、前のステップが不完全なまま次に進んでも変革は定着しない。「なぜ変わるか（A）」を腹落ちさせてから「どう変わるか（K）」を教える。</div>
+</div>
+
+<div class="score-board">
+  <h3>選択問題スコア（Q8〜Q14）</h3>
+  <span class="score-val" id="scoreVal">0</span><span class="score-max"> / 7点</span>
+</div>
+
+<div class="section-label sl-basic">SECTION A ― 基礎理解（Q1〜Q7）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q1</span><span class="qtype">穴埋め</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">ADKARの各文字が何の略かを答えよ。また、なぜこの順番でなければならないかを説明せよ。</p>
+  <button class="revbtn" onclick="revealAns('a1',this)">答えを見る ▼</button>
+  <div class="ans" id="a1">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答</div>
+      <div class="ans-exp"><span class="tag-a">A</span> Awareness（認識）<span class="tag-d">D</span> Desire（意欲）<span class="tag-k">K</span> Knowledge（知識）<span class="tag-ab">A</span> Ability（能力）<span class="tag-r">R</span> Reinforcement（定着）<br><br>順番の理由：変革は「個人の心理的な変化のプロセス」に沿う必要がある。まず「なぜ変わるか」を理解（A）してから「変わりたい」と思う（D）→「どう変わるか」を学ぶ（K）→「実際にやってみる」（A）→「続ける仕組みを整える」（R）という人間の変化の自然な順番。前のステップが不完全だと後のステップが機能しない（例：AなしのK＝「なぜやるか分からないまま研修受けても身につかない」）。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q2</span><span class="qtype">分類</span><span class="qlv basic">施策分類</span></div>
+  <p class="qtext">以下のPMI施策をADKARのどのステップに対応するか分類せよ。<br>①M&A後の統合説明会で「なぜ合併するのか」を経営者が直接説明する<br>②新しい業務フロー研修を実施する<br>③「統合後に何が変わるか」の役割別マニュアルを配布する<br>④新しいシステムで実際に業務をやってみる練習会（OJT）を開催<br>⑤新評価制度に「統合施策への協力姿勢」を評価項目に追加する</p>
+  <button class="revbtn" onclick="revealAns('a2',this)">答えを見る ▼</button>
+  <div class="ans" id="a2">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答</div>
+      <div class="ans-exp">① <span class="tag-a">A（Awareness）</span>：変化の必要性の認識・説明<br>② <span class="tag-k">K（Knowledge）</span>：知識の付与（研修）<br>③ <span class="tag-k">K（Knowledge）</span>：知識提供（マニュアル）<br>④ <span class="tag-ab">A（Ability）</span>：実践能力の養成（OJT）<br>⑤ <span class="tag-r">R（Reinforcement）</span>：評価制度による定着強化</div>
+      <div class="tip"><strong>注意：</strong>③はKですが、「なぜ変わるか」ではなく「どう変わるか」の内容なのでKに分類。Aのための施策は「変化の必要性・背景」を伝えるものに限定。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q3</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">M&Aの発表直後、被買収会社の従業員が示す典型的な心理的反応を段階別に述べよ。（ADKARに関連付けて説明するとよい）</p>
+  <button class="revbtn" onclick="revealAns('a3',this)">答えを見る ▼</button>
+  <div class="ans" id="a3">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>①ショック・不安（Awareness欠如）</strong>：「なぜ急にM&Aが決まったのか」「自分の仕事はなくなるのか」という恐怖と不安。変化の必要性が伝わっていない状態。<br><br><strong>②抵抗・否定（Desire欠如）</strong>：「うちの会社の文化が壊される」「合併会社のやり方に従いたくない」という心理的抵抗。この段階で多くの優秀な人材が離職を検討する。<br><br><strong>③観望・様子見（K獲得前）</strong>：「実際にどう変わるのか分からないから動けない」という状態。マニュアルや研修がないと前進できない。<br><br><strong>→PMIコンサルの役割：</strong>AとDを早期に支援することが最重要。経営者からの直接説明・将来ビジョンの共有・個別の不安ヒアリングが鍵。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q4</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">「研修（K）をしたのに行動が変わらない」という状況はADKARのどのステップが不足しているか？2つの可能性を挙げよ。</p>
+  <button class="revbtn" onclick="revealAns('a4',this)">答えを見る ▼</button>
+  <div class="ans" id="a4">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>可能性①：A・D（認識・意欲）が不足</strong><br>「なぜ変わらなければならないか」が腹落ちしていないまま研修（K）を受けても行動変容は起きない。「また意味のない研修か」と思っている状態。<br><br><strong>可能性②：Ability（能力）が不足</strong><br>研修でKは得たが、実際の業務で使えるレベルまで練習・フィードバックが不十分。「理解はしたが、実務でどう使えばいいか分からない」状態。OJT・ロールプレイ・実践機会の提供が必要。</div>
+      <div class="tip"><strong>実務ポイント：</strong>「研修したのに変わらない」という問題を経営者から相談されたとき、ADKARでどのステップが詰まっているかを診断できることがコンサルの価値。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q5</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">「R（Reinforcement）」として機能する具体的な施策を3つ挙げよ。（PMI文脈で）</p>
+  <button class="revbtn" onclick="revealAns('a5',this)">答えを見る ▼</button>
+  <div class="ans" id="a5">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp">①<strong>評価・表彰制度</strong>：統合推進に貢献した社員を月次で表彰。新評価制度に「統合方針の実践」を評価項目として明記。<br>②<strong>成功事例の共有</strong>：統合後の業務改善事例・シナジー達成事例を全社に発信（社内ニュースレター・朝会など）。「変革は良い成果をもたらす」という認知を強化。<br>③<strong>定期フォローアップ</strong>：3ヶ月・6ヶ月ごとに統合進捗のアンケートを実施し、問題点を早期発見。個別フィードバックとコーチングで定着を支援。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q6</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">ADKARモデルはなぜ「組織」ではなく「個人」に着目するのか説明せよ。</p>
+  <button class="revbtn" onclick="revealAns('a6',this)">答えを見る ▼</button>
+  <div class="ans" id="a6">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp">組織の変革は最終的に「一人ひとりの個人の行動変容」の積み重ねでしか実現しない。「組織として変革する」という抽象的な目標だけでは誰も動かない。ADKARは「一人ひとりの社員がADKARのどのステップにいるか」を個別診断し、各自に必要な支援を提供する。これにより「なぜ変わらないのか」の原因が個人レベルで特定でき、的確な介入が可能になる。コンサルとして重要なのは「全員が同じステップにいない」ことを理解し、個別対応すること。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q7</span><span class="qtype">比較</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">コッターの「変革の8ステップ」とADKARモデルの違いを述べよ。どちらをいつ使うか。</p>
+  <button class="revbtn" onclick="revealAns('a7',this)">答えを見る ▼</button>
+  <div class="ans" id="a7">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>コッターの8ステップ：</strong>組織・リーダーシップ視点の変革プロセス。「危機感の醸成→連携チーム結成→ビジョン策定→周知→短期成果創出→変化の定着」など、上位からの変革推進の手順。大規模組織・トップダウン変革に向く。<br><br><strong>ADKARモデル：</strong>個人の心理変化に着目した変革支援フレームワーク。「一人ひとりが変わるために何が必要か」を診断・支援する。<br><br><strong>使い分け：</strong>大きな変革の「全体設計・戦略立案」→コッター。現場での「個人の変革定着支援」→ADKAR。PMIでは両者を組み合わせて使う（上位はコッターで方向性を決め、現場はADKARで一人ひとりを支援）。</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label sl-mid">SECTION B ― 選択問題（Q8〜Q14）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q8</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">M&A後のPMIで「被買収会社の営業チームがなかなか新しい営業プロセスに移行しない」という状況。ADKAR診断をしたところ「A（認識）は高い・D（意欲）が低い」とわかった。次に取るべき行動として最も適切なものはどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'b')">A. 新しい営業プロセスの研修（K）をすぐに実施する</button>
+    <button class="ch" onclick="checkAns(this,'b')" data-correct="true">B. 変化することへの個人的なメリット・恐れを対話で引き出し、Desire（意欲）を高める支援をする</button>
+    <button class="ch" onclick="checkAns(this,'b')">C. 評価制度の変更（R）をすぐに導入して行動を強制する</button>
+    <button class="ch" onclick="checkAns(this,'b')">D. 実践練習（Ability）の機会をつくって慣れさせる</button>
+  </div>
+  <div class="ans" id="ab8">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <div class="ans-exp">Dが低い状態でK・A・Rを進めても効果がない。「変わりたい」という意欲（Desire）は強制で生まれるものではなく、「なぜ自分にとって変化が良いのか」を個人が納得することで生まれる。1on1・グループ対話・成功事例共有などで各個人の「変化への意欲」を育てる支援が必要。C（評価制度）は後で必要だが、Dが低いうちは「やらされ感」しか生まない。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q9</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">ADKARモデルをPMIで活用する際の正しいアプローチはどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'c')">A. 全社員を同じペースで一斉にADKARの各ステップを進める</button>
+    <button class="ch" onclick="checkAns(this,'c')" data-correct="true">B. 各社員のADKARアセスメントを行い、詰まっているステップを特定して個別支援する</button>
+    <button class="ch" onclick="checkAns(this,'c')">C. AからRまでを順番通りに各2週間ずつかけて計画する</button>
+    <button class="ch" onclick="checkAns(this,'c')">D. 最初にR（定着）から始めて評価制度を変え、行動を変えさせる</button>
+  </div>
+  <div class="ans" id="ac9">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <div class="ans-exp">ADKARは「個人」に着目したモデル。全員が同じステップで進むわけではなく、部署・役職・個人によって「どのステップで詰まっているか」が異なる。アセスメント（調査）でどこが弱いかを診断し、個別の支援計画を立てることが正しい運用。Cのように時間割で管理するのは機能しない。Dは「変化の強制」でDが育たず長続きしない。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q10</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">PMI後に新しい人事評価制度を導入するとき、最初に取り組むべきADKARのステップはどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'d')">A. K：新しい評価制度の内容を説明する研修を開催する</button>
+    <button class="ch" onclick="checkAns(this,'d')" data-correct="true">B. A：「なぜ評価制度を変えるのか・変えないとどんな問題があるか」を全社員に説明する</button>
+    <button class="ch" onclick="checkAns(this,'d')">C. R：新評価制度を即座に実施して評価・給与に反映する</button>
+    <button class="ch" onclick="checkAns(this,'d')">D. A（Ability）：新評価制度の自己評価シートの書き方練習をする</button>
+  </div>
+  <div class="ans" id="ad10">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B（最初はA：Awareness）</div>
+      <div class="ans-exp">ADKARは順番通りが鉄則。どんな変革でも「なぜ変わるか（A）」から始める。「なぜ今の制度では不十分なのか・新制度でどんな未来が実現するのか」を腹落ちさせてからDを育て、Kに進む。Cはもっとも危険な逆順（強制から始める）で、抵抗を最大化する。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q11</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">「研修は実施したが3ヶ月後には元の業務に戻ってしまった」という失敗の原因としてADKARで最も考えられるものはどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'e')">A. K（Knowledge）が不足していた</button>
+    <button class="ch" onclick="checkAns(this,'e')">B. A（Awareness）が不足していた</button>
+    <button class="ch" onclick="checkAns(this,'e')" data-correct="true">C. R（Reinforcement）が不足していた</button>
+    <button class="ch" onclick="checkAns(this,'e')">D. A（Ability）が不足していた</button>
+  </div>
+  <div class="ans" id="ae11">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C（Reinforcement）</div>
+      <div class="ans-exp">「研修してできるようになったのに3ヶ月後には戻った」→ K・Aは達成できていた。しかしRがなければ時間とともに元の習慣に戻る。「続けることへの報酬・承認・フィードバック」がないと変革は定着しない。PMIで最もよく見られる失敗パターン。定着のためにRの仕組みを研修と同時に設計することが重要。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q12</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">PMI Manager の導入を顧客企業に進めるとき、「現場の経理担当者がシステムを使い始めない」状況でADKARアセスメントを実施したら「A・D・Kは高いがAbilityが低い」と判明した。次の施策はどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'f')">A. もう一度「なぜPMI Managerが必要か」を説明する（A支援）</button>
+    <button class="ch" onclick="checkAns(this,'f')">B. 追加の機能説明資料を配布する（K支援）</button>
+    <button class="ch" onclick="checkAns(this,'f')" data-correct="true">C. ハンズオン練習会を開催し、実際のデータを使って操作を繰り返し練習させる（Ability支援）</button>
+    <button class="ch" onclick="checkAns(this,'f')">D. 未使用者の上長に警告メールを送る（R支援）</button>
+  </div>
+  <div class="ans" id="af12">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C</div>
+      <div class="ans-exp">A・D・Kが揃っているのにAbilityが低い＝「わかっているけどできない（操作に慣れていない）」状態。この場合は実際に使う練習（ハンズオン・OJT・ロールプレイ）が必要。A・D・Kはすでに達成されているので繰り返してもムダ。Dも強制ではなく練習機会の提供で自然に解決する。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q13</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">ADKARモデルにおける「D（Desire）」を育てるために最も有効なアプローチはどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'g')">A. 全体説明会で変革の必要性を数字で説明する</button>
+    <button class="ch" onclick="checkAns(this,'g')" data-correct="true">B. 「変化によって自分にとって何が良くなるか（WIIFM：What's In It For Me）」を個別に伝える</button>
+    <button class="ch" onclick="checkAns(this,'g')">C. 変革に反対する社員を特定して研修に参加させる</button>
+    <button class="ch" onclick="checkAns(this,'g')">D. 評価制度で変革への参加度を評価する</button>
+  </div>
+  <div class="ans" id="ag13">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B（WIIFM）</div>
+      <div class="ans-exp">「意欲（Desire）」は強制で生まれない。各個人が「変わることが自分にとってプラス」と感じることで初めて生まれる。WIIFMとは「自分にとって何が良いのか」という観点で変革を説明すること。例：「新しい評価制度では今まで見えなかったあなたの貢献が評価される」「統合後の会社はもっと安定し、給与水準が上がる可能性がある」など。全体の大義（A）だけでなく個人へのメリット（D）を両方伝えることが重要。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q14</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">100日プランにおいてADKARをどのように組み込むのが最も効果的か？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'h')" data-correct="true">A. Day1〜30でA・D（認識・意欲）、Day30〜60でK・A（知識・能力）、Day60〜100でR（定着）の優先順位で進める</button>
+    <button class="ch" onclick="checkAns(this,'h')">B. 100日間ですべてのADKARを均等に繰り返す</button>
+    <button class="ch" onclick="checkAns(this,'h')">C. 最終日（Day100）に評価して達成度を確認するだけでよい</button>
+    <button class="ch" onclick="checkAns(this,'h')">D. ADKARは100日プランとは別で、PMI後1年目以降に使うもの</button>
+  </div>
+  <div class="ans" id="ah14">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：A</div>
+      <div class="ans-exp">100日プランはADKARの順番に沿って設計するのが実践的。<strong>Day1〜30（A・D）</strong>：全社説明会・タウンホール・1on1で変化の必要性を伝え、意欲を育てる。<strong>Day30〜60（K・A）</strong>：新プロセス・システムの研修・OJTで知識と実践能力を育てる。<strong>Day60〜100（R）</strong>：評価制度・成功事例共有・フィードバックで定着させる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label sl-adv">SECTION C ― 実践ケース（Q15〜Q20）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q15</span><span class="qtype">ケース</span><span class="qlv adv">実践</span></div>
+  <div class="case-box">
+    <h4>📋 シナリオ：地方製造業の組織統合</h4>
+    製造業A社（買収側・東京本社）が地方の製造業B社（被買収・従業員80名）を買収した。B社の従業員は「長年の社風が変わる」「東京の会社に乗っ取られた」という不満が強く、キーマン（工場長・技術リーダー）が退職を考えている。統合まで3ヶ月しかない。
+  </div>
+  <p class="qtext">このPMIでADKARに基づいた変革マネジメント計画を作成せよ。各ステップで行うべき具体的施策を挙げよ。</p>
+  <button class="revbtn" onclick="revealAns('ai15',this)">答えを見る ▼</button>
+  <div class="ans" id="ai15">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><span class="tag-a">A（Awareness）</span>：A社社長がB社全従業員と直接対話。「なぜM&Aをしたか・B社の何を守りたいか・合併後の会社の未来像」を誠実に伝える。ビデオメッセージ作成→全員視聴。<br><span class="tag-d">D（Desire）</span>：キーマン（工場長・リーダー）との個別面談。「あなたの役割・処遇・裁量は統合後も維持・向上する」という個人へのWIIFMを伝える。B社の良い文化・慣行を積極的に統合後の会社に取り入れる姿勢を示す。<br><span class="tag-k">K（Knowledge）</span>：統合後の組織図・自分の担当業務変更点・新しい報告ラインをわかりやすく説明するハンドブック配布。Q&Aセッション開催。<br><span class="tag-ab">A（Ability）</span>：新しい業務フロー・システムのOJT実施。A社のメンターをB社各部門に配置し日常業務をサポート。<br><span class="tag-r">R（Reinforcement）</span>：統合推進に貢献した社員を月次で表彰。工場長・技術リーダーに特別プロジェクト（新技術開発リーダー）の役割を付与して「活躍の場」を提供。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q16</span><span class="qtype">診断</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">ADKARアセスメントを実施するには何を測定するか？具体的な設問例を各ステップ1つずつ作成せよ。</p>
+  <button class="revbtn" onclick="revealAns('aj16',this)">答えを見る ▼</button>
+  <div class="ans" id="aj16">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例（5点満点スケールで回答）</div>
+      <div class="ans-exp"><span class="tag-a">A</span>「なぜ今回のM&Aによる組織統合が必要なのか、理解できていますか？」<br><span class="tag-d">D</span>「あなた自身は今回の統合を支持し、積極的に協力したいと思っていますか？」<br><span class="tag-k">K</span>「統合後の自分の業務内容・役割・手順が具体的に理解できていますか？」<br><span class="tag-ab">A</span>「統合後の業務を実際に行う際、必要なスキルや操作ができると感じていますか？」<br><span class="tag-r">R</span>「新しい業務のやり方を続けることへのサポートや評価があると感じていますか？」<br><br>→ 各設問が3点未満の社員が多い場合は、そのステップへの追加支援を実施。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q17</span><span class="qtype">応用</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">PMI Manager にADKAR支援機能を追加するとしたら、どのような機能が考えられるか？具体的な機能を3つ提案せよ。</p>
+  <button class="revbtn" onclick="revealAns('ak17',this)">答えを見る ▼</button>
+  <div class="ans" id="ak17">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>①ADKARアセスメント機能：</strong>5つのステップそれぞれを5点満点で定期的に従業員にアンケート。部署別・個人別の弱点ステップをダッシュボードで可視化。「D（意欲）が低い部署」をアラートで管理者に通知。<br><br><strong>②変革施策カレンダー：</strong>ADKARの各ステップに対応した施策（全社説明会・研修・OJTなど）を100日プランのタイムラインに自動提案。施策の実施状況をトラッキング。<br><br><strong>③成功事例ライブラリー：</strong>類似PMI案件でのADKAR成功施策のデータベース。「製造業×80名規模」のケースで効果的だった施策をAIが推薦。先行事例から学べる機能。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q18</span><span class="qtype">実務</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">変革マネジメントに抵抗する「抵抗勢力」への対処法をADKAR観点から3つ述べよ。</p>
+  <button class="revbtn" onclick="revealAns('al18',this)">答えを見る ▼</button>
+  <div class="ans" id="al18">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>①抵抗の根本原因をADKAR診断：</strong>抵抗が「A（変化の必要性が分からない）」なのか「D（個人的に損する）」なのかを対話で特定。原因によって対応策が変わる。「なぜ反対しているか」を決めつけず聞き出すことが先決。<br><br><strong>②影響力のある「変革チャンピオン」を活用：</strong>抵抗勢力が信頼・尊敬する同僚や先輩が変革を支持する声を届けることでDが育ちやすい。経営者より「隣の席の人が支持している」方が効果的なことが多い。<br><br><strong>③小さな成功体験でAbilityを証明：</strong>「新しいやり方は難しそう」という不安がある場合、小さな成功体験（新システムで1つのタスクをうまくできた）を積ませることでAbilityと自信が生まれ、抵抗が和らぐ。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q19</span><span class="qtype">総合</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">「M&Aのシナジーが実現しない7割」の主な原因としてADKAR観点から説明せよ。</p>
+  <button class="revbtn" onclick="revealAns('am19',this)">答えを見る ▼</button>
+  <div class="ans" id="am19">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp">M&Aシナジーが実現しない主な原因はPMIの「人の変革」の失敗にある。ADKARで見ると：<br><br><strong>A（認識）の失敗：</strong>従業員に「なぜM&Aしたか・統合後の目標は何か」が十分に伝わっていない。現場レベルではM&Aの戦略的意図が届いていない。<br><br><strong>D（意欲）の失敗：</strong>被買収会社の優秀な人材が「うちの会社が負けた・文化が壊される」と感じて早期離職。統合後3〜6ヶ月でキーマンが抜けてシナジーの担い手がいなくなる。<br><br><strong>R（定着）の失敗：</strong>統合初期に施策を打っても、評価・仕組みが変わらないため6ヶ月後には元の業務に戻る。「言葉だけの統合」になる。<br><br>PMIコンサルの本質的価値はこの「人の変革」の支援にある。バリューチェーン統合・財務シナジーは計画できても、人が動かなければ実現しない。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q20</span><span class="qtype">総合</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">【最終問題】あなたは当社のPMIコンサルとして、買収後3ヶ月でB社の従業員エンゲージメントが低下しているという報告を受けた。ADKARアセスメントを実施した結果「A：4点・D：2点・K：3点・A：3点・R：2点」だった。この結果を踏まえて、次の1ヶ月で何をするか？優先順位をつけて行動計画を述べよ。</p>
+  <button class="revbtn" onclick="revealAns('an20',this)">答えを見る ▼</button>
+  <div class="ans" id="an20">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>診断：</strong>D（意欲：2点）とR（定着：2点）が最も低い。K・Aはまずまずなので「知識・スキルはあるが、やる気がなく、続ける仕組みもない」状態。<br><br><strong>優先①：D（意欲）の向上（最緊急）</strong><br>・各部門リーダーとの1on1を今週中に開催。「統合後の自分の役割・今後のキャリア・処遇について」を個別に対話。<br>・WIIFMメッセージを各部門別に作成（営業→「新しい販路ができてお客様が増える」、製造→「最新設備導入の予算がつく可能性」）<br><br><strong>優先②：R（定着）の仕組み構築</strong><br>・統合推進に協力した社員の月次表彰制度をすぐに設計・発表。<br>・週次の「統合進捗共有会（5分）」を設置して小さな成功を可視化・称賛する場を作る。<br><br><strong>翌月確認：</strong>アセスメントを再実施してD・Rのスコア改善を確認。</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="nav-bar">
+  <a href="フレームワーク練習問題_ハブ.html">← ハブに戻る</a>
+  <a href="PMIケーススタディ.html">次：PMI総合ケーススタディ →</a>
+</div>
+
+<script>
+let answered=0,score=0;
+const total=20;
+function updateProgress(){
+  document.getElementById('progressBar').style.width=(answered/total*100)+'%';
+  document.getElementById('progressText').textContent=answered+' / '+total+' 問 回答済み';
+  document.getElementById('scoreDisp').textContent=score;
+}
+function revealAns(id,btn){
+  document.getElementById(id).style.display='block';
+  btn.textContent='▲ 閉じる';
+  btn.classList.toggle('revealed');
+  if(!btn.dataset.counted){btn.dataset.counted=true;answered++;updateProgress();}
+}
+function checkAns(btn,key){
+  const choices=btn.parentElement.querySelectorAll('.ch');
+  choices.forEach(c=>{c.disabled=true;});
+  const ansDiv=btn.closest('.qcard').querySelector('.ans');
+  ansDiv.style.display='block';
+  if(btn.getAttribute('data-correct')==='true'){
+    btn.classList.add('correct');score++;
+  } else {
+    btn.classList.add('wrong');
+    choices.forEach(c=>{if(c.getAttribute('data-correct')==='true')c.classList.add('correct');});
+  }
+  document.getElementById('scoreVal').textContent=score;
+  answered++;updateProgress();
+}
+</script>
+</body>
+</html>

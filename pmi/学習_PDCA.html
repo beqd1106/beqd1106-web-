@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDCA 学習教材｜改善サイクルを回す力を身につける</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','BIZ UDGothic','Meiryo',sans-serif;background:#FAFAF8;color:#1A1A1A;line-height:1.75;font-size:15px;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}img{max-width:100%;height:auto;display:block;}
+.site-header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 32px;height:56px;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);border-bottom:1px solid #E8E5E0;}
+.header-logo{font-size:12px;font-weight:700;letter-spacing:.5px;}.header-logo span{color:#999;font-weight:400;}
+.header-back{font-size:12px;color:#666;}.header-back:hover{color:#1A1A1A;}
+.hero{min-height:28vh;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;padding:76px 48px 36px;background:#F5F3EE;border-bottom:1px solid #E8E5E0;position:relative;overflow:hidden;}
+@media(max-width:768px){.hero{grid-template-columns:1fr;padding:72px 16px 20px;}.hero-illust{display:none;}}
+.hero-left{position:relative;z-index:1;}
+.hero-bg-num{position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:clamp(120px,18vw,220px);font-weight:900;color:rgba(0,0,0,.04);line-height:1;pointer-events:none;letter-spacing:-10px;}
+.hero-meta{display:flex;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+.hero-step{font-size:10px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;}
+.hero-phase{font-size:10px;font-weight:700;letter-spacing:1px;border:1px solid #16a34a;color:#16a34a;padding:2px 10px;border-radius:100px;}
+.hero-title{font-size:clamp(20px,3vw,36px);font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:16px;}
+.hero-title em{font-style:normal;color:#059669;}
+.hero-desc{font-size:14px;color:#666;max-width:440px;line-height:1.8;}
+.hero-illust{width:clamp(160px,20vw,280px);opacity:.9;flex-shrink:0;}
+.hero-divider{width:40px;height:2px;background:#1A1A1A;margin-top:28px;}
+.ch-nav{background:#fff;position:sticky;top:56px;z-index:50;border-bottom:1px solid #E8E5E0;overflow-x:auto;white-space:nowrap;}
+.ch-nav ul{display:inline-flex;list-style:none;padding:0 32px;}
+.ch-nav li a{display:block;font-size:11px;font-weight:600;color:#999;letter-spacing:.5px;padding:12px 14px;border-bottom:2px solid transparent;transition:all .15s;}
+.ch-nav li a:hover{color:#1A1A1A;border-bottom-color:#1A1A1A;}
+.chapter{padding:56px 48px;}.chapter:nth-child(odd){background:#fff;}.chapter:nth-child(even){background:#FAFAF8;}
+@media(max-width:768px){.chapter{padding:28px 16px;}}
+.ch-inner{max-width:720px;margin:0 auto;}
+.ch-head{margin-bottom:28px;display:flex;align-items:baseline;gap:16px;}
+.ch-num-label{font-size:10px;font-weight:700;letter-spacing:2px;color:#BBBBBB;text-transform:uppercase;white-space:nowrap;}
+.ch-line{flex:1;height:1px;background:#E8E5E0;}
+.ch-head-content{margin-top:12px;}
+.ch-head-content h2{font-size:clamp(18px,3vw,24px);font-weight:800;letter-spacing:-.3px;margin-bottom:5px;}
+.ch-head-content p{font-size:13px;color:#888;}
+.key{background:#F5F3EE;border-left:3px solid #1A1A1A;padding:20px 24px;margin:20px 0;}
+.key-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#999;text-transform:uppercase;margin-bottom:8px;}
+.key p{font-size:14px;line-height:1.8;color:#1A1A1A;}
+/* PDCA cycle visual */
+.pdca-cycle{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px auto;max-width:400px;}
+.pdca-box{padding:20px;color:#fff;text-align:center;}
+.pc-p{background:#1D4ED8;}.pc-d{background:#059669;}.pc-c{background:#D97706;}.pc-a{background:#DC2626;}
+.pdca-box .pc-l{font-size:28px;font-weight:900;line-height:1;}
+.pdca-box .pc-w{font-size:11px;font-weight:700;margin:4px 0;}
+.pdca-box .pc-d2{font-size:10px;opacity:.85;line-height:1.4;}
+.phase-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+.ph-card{background:#fff;}
+.ph-head{padding:10px 14px;color:#fff;font-weight:700;font-size:12px;}
+.php-p{background:#1D4ED8;}.php-d{background:#059669;}.php-c{background:#D97706;}.php-a{background:#DC2626;}
+.ph-body{padding:12px 14px;font-size:12px;color:#888;}
+.ph-body ul{padding-left:14px;}.ph-body li{margin-bottom:3px;}
+.ph-body .ph-note{font-size:10px;font-weight:600;margin-top:8px;}
+.ex-flow{border:1px solid #E8E5E0;border-radius:2px;padding:20px;margin:16px 0;background:#fff;}
+.ex-flow h4{font-size:10px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:14px;}
+.flow-item{display:grid;grid-template-columns:52px 1fr;gap:10px;margin-bottom:10px;align-items:flex-start;}
+.fl{font-size:9px;font-weight:700;color:#fff;padding:4px 6px;border-radius:2px;text-align:center;width:44px;}
+.fl-p{background:#1D4ED8;}.fl-d{background:#059669;}.fl-c{background:#D97706;}.fl-a{background:#DC2626;}
+.flow-content{font-size:12px;color:#1A1A1A;padding-top:2px;}
+.card-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:16px 0;}
+.card{background:#fff;padding:18px 16px;}
+.card h4{font-size:12px;font-weight:700;margin-bottom:6px;}
+.card p{font-size:12px;color:#888;line-height:1.7;}
+.callout{padding:14px 18px;margin:14px 0;font-size:13px;border-left:3px solid;border-radius:0 2px 2px 0;}
+.callout-warn{background:#FFFBEB;border-color:#D97706;}.callout-warn strong{color:#92400E;display:block;margin-bottom:3px;}
+.callout-tip{background:#F0FDF4;border-color:#059669;}.callout-tip strong{color:#15803D;display:block;margin-bottom:3px;}
+.src{border:1px solid #E8E5E0;border-radius:2px;padding:16px 20px;margin-top:28px;display:flex;gap:12px;background:#FAFAF8;}
+.src-icon{font-size:14px;flex-shrink:0;margin-top:2px;}
+.src-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;color:#BBBBBB;text-transform:uppercase;margin-bottom:5px;}
+.src-list{list-style:none;font-size:11px;color:#888;}.src-list li{margin-bottom:3px;line-height:1.6;}.src-list cite{font-style:normal;}
+.summary{background:#1A1A1A;color:#FAFAF8;padding:28px 32px;border-radius:2px;}
+.summary-label{font-size:9px;font-weight:700;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:12px;}
+.summary h3{font-size:15px;font-weight:800;margin-bottom:14px;line-height:1.4;}
+.summary ul{padding-left:16px;font-size:13px;line-height:2.2;color:#CCC;}
+.cta{background:#059669;color:#fff;padding:28px 32px;border-radius:2px;text-align:center;margin:20px auto;}
+.cta h3{font-size:15px;font-weight:800;margin-bottom:6px;}
+.cta p{font-size:12px;opacity:.8;margin-bottom:16px;}
+.cta a{display:inline-block;background:#fff;color:#059669;font-weight:700;font-size:13px;padding:11px 28px;border-radius:100px;letter-spacing:.3px;}
+.page-nav{background:#1A1A1A;display:flex;justify-content:space-between;align-items:center;padding:16px 48px;flex-wrap:wrap;gap:8px;}
+.page-nav a{color:#999;font-size:12px;font-weight:600;}.page-nav a:hover{color:#fff;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .site-header{padding:0 14px;}
+  .header-logo{font-size:11px;}
+  .header-back{font-size:11px;}
+  .hero{padding:68px 16px 16px;min-height:auto;}
+  .hero-title{font-size:clamp(18px,5vw,26px);letter-spacing:-.5px;margin-bottom:12px;}
+  .hero-meta{gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+  .hero-desc{font-size:13px;}
+  .hero-divider{margin-top:16px;}
+  .ch-nav ul{padding:0 8px;}
+  .ch-nav li a{padding:10px 8px;font-size:10px;letter-spacing:0;}
+  .chapter{padding:24px 14px;}
+  .ch-inner{max-width:100%;}
+  .ch-head-content h2{font-size:17px;}
+  .ch-head-content p{font-size:12px;}
+  .key{padding:14px 16px;}
+  .key p{font-size:13px;}
+  .card-row{grid-template-columns:1fr;}
+  .mistake-grid{grid-template-columns:1fr;}
+  .d-row{flex-direction:column;}
+  .d-box{width:100%;flex:none;min-width:unset;}
+  .diagram{padding:16px;}
+  .step{grid-template-columns:40px 1fr;}
+  .step-b{padding:14px 14px;}
+  .step-n{font-size:16px;}
+  .src{flex-direction:column;gap:8px;padding:14px 16px;}
+  .callout{font-size:12px;padding:12px 14px;}
+  .summary{padding:20px 18px;border-radius:2px;}
+  .summary h3{font-size:14px;}
+  .summary ul{font-size:12px;line-height:2;}
+  .cta{padding:20px 18px;border-radius:2px;}
+  .cta h3{font-size:14px;}
+  .page-nav{padding:14px 16px;flex-direction:column;align-items:center;gap:12px;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-logo">PMI学習セット</div>
+  <a class="header-back" href="index.html">← 学習一覧に戻る</a>
+</header>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-bg-num" aria-hidden="true">03</div>
+    <div class="hero-meta">
+      <span class="hero-step">Step 03 of 11</span>
+      <span class="hero-phase">BASIC</span>
+    </div>
+    <h1 class="hero-title"><em>PDCA</em><br>改善サイクルを回す</h1>
+    <p class="hero-desc">計画・実行・確認・改善を繰り返すことで、PMIをどんどん良くしていく力を身につける。</p>
+    <div class="hero-divider"></div>
+  </div>
+  <img class="hero-illust" src="https://loosedrawing.com/assets/media/illustrations/png/1820.png" alt="PDCAサイクルのイラスト">
+</section>
+
+<nav class="ch-nav">
+  <ul>
+    <li><a href="#c1">概念</a></li>
+    <li><a href="#c2">4つのフェーズ</a></li>
+    <li><a href="#c3">PMI実例</a></li>
+    <li><a href="#c4">実務のコツ</a></li>
+    <li><a href="#c-kpi">KPI設定</a></li>
+    <li><a href="#c5">まとめ</a></li>
+  </ul>
+</nav>
+
+<div class="chapter" id="c1">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 01</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>PDCAとは何か</h2></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>PDCA ＝ Plan（計画）→ Do（実行）→ Check（確認）→ Act（改善）のサイクル</strong><br>
+      1950年代に品質管理の専門家ウォルター・シューハートが提唱し、W・エドワーズ・デミングが普及させた。「一度やって終わり」ではなく、くるくると回し続けることで継続的に品質が上がる。</p>
+    </div>
+    <div class="pdca-cycle">
+      <div class="pdca-box pc-p"><div class="pc-l">P</div><div class="pc-w">Plan</div><div class="pc-d2">目標とKPIを設定し<br>アクションを決める</div></div>
+      <div class="pdca-box pc-d"><div class="pc-l">D</div><div class="pc-w">Do</div><div class="pc-d2">計画通りに行動し<br>記録を残す</div></div>
+      <div class="pdca-box pc-c"><div class="pc-l">C</div><div class="pc-w">Check</div><div class="pc-d2">実績をKPIと比較し<br>差異の原因を探る</div></div>
+      <div class="pdca-box pc-a"><div class="pc-l">A</div><div class="pc-w">Act</div><div class="pc-d2">改善策を実施し<br>次のPlanへ繋げる</div></div>
+    </div>
+    <div class="callout callout-warn">
+      <strong>⚠️ 最も多い失敗：「PD止まり」</strong>
+      多くの日本企業が計画（P）と実行（D）はするのに確認（C）と改善（A）をしない「PD止まり」になっている。Cを怠ると何が問題かわからないまま同じ失敗を繰り返す。
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>Deming, W. Edwards "Out of the Crisis" (1986, MIT Press) ― PDCAサイクル普及の源流となる著作</cite></li>
+          <li><cite>Shewhart, Walter A. "Statistical Method from the Viewpoint of Quality Control" (1939, Dover) ― PDCAの前身「PDSAサイクル」の原著</cite></li>
+          <li><cite>日本科学技術連盟（JUSE）― 1950年にデミング博士来日。日本の製造業へのPDCA普及の起点</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c2">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 02</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>4つのフェーズの詳細</h2></div>
+    <div class="phase-grid">
+      <div class="ph-card"><div class="ph-head php-p">📋 P：Plan（計画）</div><div class="ph-body"><ul><li>達成すべき目標を設定</li><li>KPIを数値で決める</li><li>アクションプランを作る</li><li>期限・担当者を設定</li></ul><p class="ph-note" style="color:#1D4ED8;">ポイント：KPIがなければCheckができない</p></div></div>
+      <div class="ph-card"><div class="ph-head php-d">▶ D：Do（実行）</div><div class="ph-body"><ul><li>計画通りに行動する</li><li>KPIの実績を随時記録する</li><li>計画と違う場合も記録に残す</li></ul><p class="ph-note" style="color:#059669;">ポイント：記録なしではCheckができない</p></div></div>
+      <div class="ph-card"><div class="ph-head php-c">🔍 C：Check（確認）</div><div class="ph-body"><ul><li>KPIの計画値と実績値を比較</li><li>差異の原因を分析する</li><li>良かった点・悪かった点を仕分ける</li></ul><p class="ph-note" style="color:#D97706;">ポイント：原因まで特定してこそCheck完了</p></div></div>
+      <div class="ph-card"><div class="ph-head php-a">🚀 A：Act（改善）</div><div class="ph-body"><ul><li>問題の根本原因に対して改善策を実施</li><li>うまくいった方法を横展開・標準化</li><li>改善策を次のPlanに組み込む</li></ul><p class="ph-note" style="color:#DC2626;">ポイント：「改善」と「標準化」の両方がAct</p></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c3">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 03</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>実例：PMIのクロスセル施策でPDCAを回す</h2></div>
+    <div class="ex-flow">
+      <h4>シナリオ：A社がB社を買収後、顧客へのクロスセルを目標に設定した</h4>
+      <div class="flow-item"><span class="fl fl-p">P 計画</span><div class="flow-content">目標：3ヶ月でB社顧客への提案100件・成約10件。KPI：週次提案件数・成約率。担当：合同営業チーム。</div></div>
+      <div class="flow-item"><span class="fl fl-d">D 実行</span><div class="flow-content">週1回合同ミーティング実施。提案活動を開始。提案数・商談数を営業日報に記録。</div></div>
+      <div class="flow-item"><span class="fl fl-c">C 確認</span><div class="flow-content">2ヶ月後：提案42件（目標比64%）・成約2件（目標比30%）。原因：「互いを知らず紹介が億劫」「提案トークが不統一」。</div></div>
+      <div class="flow-item"><span class="fl fl-a">A 改善</span><div class="flow-content">①自己紹介セッションを設置 ②統一提案スクリプト作成・配布 ③個人別KPI「1人週2件の紹介」を設定 → 次のPlanに組み込む。</div></div>
+    </div>
+    <div class="callout callout-tip">
+      <strong>PMI Managerの活用</strong>KPIダッシュボードで週次データを自動集計。レビュー会議は「差異の原因分析」と「Actの決定」に集中できる。PD→CAのサイクルが格段に速くなる。
+    </div>
+    <div class="src">
+      <span class="src-icon">📚</span>
+      <div>
+        <div class="src-lbl">参考文献・出典</div>
+        <ul class="src-list">
+          <li><cite>中小企業庁「中小PMIガイドライン」（2022年3月）― PMIにおける進捗管理・KPI設定のベストプラクティス</cite></li>
+          <li><cite>一般社団法人日本品質管理学会（JSQC）「品質管理用語」― PDCAサイクルの定義</cite></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c4">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 04</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>実務でPDCAを回すコツ</h2></div>
+    <div class="card-row">
+      <div class="card"><h4>⏱️ サイクルを短くする</h4><p>月次→週次にすると問題発見が4倍速くなる。PMIでは週次PDCAが基本。</p></div>
+      <div class="card"><h4>📊 KPIは必ず数値化</h4><p>「顧客満足度を上げる」ではなく「スコアを70点以上に」。数値がなければCheckできない。</p></div>
+      <div class="card"><h4>👤 担当者を決める</h4><p>ActはWho・What・Whenを必ず設定。「みんなで」は誰もやらない。</p></div>
+      <div class="card"><h4>🔁 良いActは横展開する</h4><p>うまくいった施策を他部門・他拠点に広める「標準化」もActの重要な役割。</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c-kpi">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 05</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>KPI設定の落とし穴とPDCA停止の原因</h2><p>「回せない」原因は、たいてい最初のKPI設定にある</p></div>
+    <div class="key">
+      <div class="key-label">Key Concept</div>
+      <p><strong>SMARTなKPIがなければPDCAは回らない</strong><br>
+      Specific（具体的）・Measurable（計測可能）・Achievable（達成可能）・Relevant（目的に関連）・Time-bound（期限あり）の5条件を満たさないKPIは、CheckもActも機能しない。</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;margin:14px 0;">
+      <div style="background:#FEF2F2;padding:16px;border-top:3px solid #DC2626;">
+        <h4 style="font-size:12px;font-weight:700;margin-bottom:10px;color:#DC2626;">❌ ダメなKPIの例</h4>
+        <p style="font-size:12px;color:#555;line-height:1.9;">
+          「顧客満足度を上げる」→ 何をどう計る？<br>
+          「売上を増やす」→ いつまでに？どれだけ？<br>
+          「努力を継続する」→ 測定不能<br>
+          「業務効率化を推進する」→ 何が改善されたら達成？
+        </p>
+      </div>
+      <div style="background:#F0FDF4;padding:16px;border-top:3px solid #16a34a;">
+        <h4 style="font-size:12px;font-weight:700;margin-bottom:10px;color:#15803D;">✅ 良いKPIの例</h4>
+        <p style="font-size:12px;color:#555;line-height:1.9;">
+          「顧客満足度スコアを3ヶ月以内に70点→80点に」<br>
+          「月次売上を10%増加（現在1,000万→1,100万）3ヶ月後」<br>
+          「週次提案件数を5件以上・担当：田中、石井」<br>
+          「請求書処理時間を現在3日→1日以内（期限:6月末）」
+        </p>
+      </div>
+    </div>
+    <p style="font-size:11px;font-weight:700;letter-spacing:1px;color:#BBBBBB;text-transform:uppercase;margin:20px 0 10px;">PDCAが止まる7つの原因と対策</p>
+    <div style="display:flex;flex-direction:column;gap:1px;background:#E8E5E0;border:1px solid #E8E5E0;border-radius:2px;overflow:hidden;">
+      <div style="background:#fff;padding:12px 16px;display:grid;grid-template-columns:auto 1fr 1fr;gap:12px;align-items:start;">
+        <span style="font-size:10px;font-weight:700;color:#888;white-space:nowrap;">原因①</span>
+        <p style="font-size:12px;color:#555;"><strong>KPIが数値化されていない</strong><br>CheckできないのでActも生まれない</p>
+        <p style="font-size:12px;color:#059669;"><strong>対策：</strong>KPIを必ず数値＋期限＋担当者で設定し直す</p>
+      </div>
+      <div style="background:#FAFAF8;padding:12px 16px;display:grid;grid-template-columns:auto 1fr 1fr;gap:12px;align-items:start;">
+        <span style="font-size:10px;font-weight:700;color:#888;white-space:nowrap;">原因②</span>
+        <p style="font-size:12px;color:#555;"><strong>Checkの会議がない</strong><br>月に一度も振り返りがない</p>
+        <p style="font-size:12px;color:#059669;"><strong>対策：</strong>週次15分のレビューをカレンダーに必ず入れる</p>
+      </div>
+      <div style="background:#fff;padding:12px 16px;display:grid;grid-template-columns:auto 1fr 1fr;gap:12px;align-items:start;">
+        <span style="font-size:10px;font-weight:700;color:#888;white-space:nowrap;">原因③</span>
+        <p style="font-size:12px;color:#555;"><strong>問題の原因まで掘り下げない</strong><br>「未達だった」で終わり→Actが出ない</p>
+        <p style="font-size:12px;color:#059669;"><strong>対策：</strong>「なぜ？」を3回繰り返して根本原因を特定する</p>
+      </div>
+      <div style="background:#FAFAF8;padding:12px 16px;display:grid;grid-template-columns:auto 1fr 1fr;gap:12px;align-items:start;">
+        <span style="font-size:10px;font-weight:700;color:#888;white-space:nowrap;">原因④</span>
+        <p style="font-size:12px;color:#555;"><strong>Actの担当者が決まっていない</strong><br>「みんなで改善しよう」＝誰もやらない</p>
+        <p style="font-size:12px;color:#059669;"><strong>対策：</strong>Actは必ず「誰が・何を・いつまでに」を明記する</p>
+      </div>
+      <div style="background:#fff;padding:12px 16px;display:grid;grid-template-columns:auto 1fr 1fr;gap:12px;align-items:start;">
+        <span style="font-size:10px;font-weight:700;color:#888;white-space:nowrap;">原因⑤</span>
+        <p style="font-size:12px;color:#555;"><strong>目標が高すぎる</strong><br>常に未達でモチベーションが下がる</p>
+        <p style="font-size:12px;color:#059669;"><strong>対策：</strong>最初は「少し頑張れば達成できる」設定で成功体験を積む</p>
+      </div>
+      <div style="background:#FAFAF8;padding:12px 16px;display:grid;grid-template-columns:auto 1fr 1fr;gap:12px;align-items:start;">
+        <span style="font-size:10px;font-weight:700;color:#888;white-space:nowrap;">原因⑥</span>
+        <p style="font-size:12px;color:#555;"><strong>サイクルが長すぎる</strong><br>四半期に1回では問題に気づくのが遅い</p>
+        <p style="font-size:12px;color:#059669;"><strong>対策：</strong>最低でも月次、PMIでは週次にする</p>
+      </div>
+      <div style="background:#fff;padding:12px 16px;display:grid;grid-template-columns:auto 1fr 1fr;gap:12px;align-items:start;">
+        <span style="font-size:10px;font-weight:700;color:#888;white-space:nowrap;">原因⑦</span>
+        <p style="font-size:12px;color:#555;"><strong>良い結果の「標準化」を忘れる</strong><br>成功事例が属人化・消滅する</p>
+        <p style="font-size:12px;color:#059669;"><strong>対策：</strong>Actに「成功パターンの文書化・共有」を必ず入れる</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="c5">
+  <div class="ch-inner">
+    <div class="ch-head"><span class="ch-num-label">Chapter 06</span><div class="ch-line"></div></div>
+    <div class="ch-head-content"><h2>まとめ</h2></div>
+    <div class="summary">
+      <div class="summary-label">Summary</div>
+      <h3>PDCA ― 3行まとめ</h3>
+      <ul>
+        <li>PDCA = 計画→実行→確認→改善のサイクル。1回で終わらず回し続ける</li>
+        <li>最重要はC（Check）とA（Act）。KPIを数値化して差異の原因まで特定する</li>
+        <li>PMIでは週次でサイクルを回し、Actを次の計画に繋げることで統合を加速させる</li>
+      </ul>
+    </div>
+    <div style="height:20px;"></div>
+    <div class="cta">
+      <h3>PDCAを実務レベルで使えるようになろう</h3>
+      <p>PMIシナリオに基づく20問。フェーズ識別・KPI設定・Act策定の実践演習。</p>
+      <a href="練習_PDCA.html">PDCA 練習問題を解く（20問）→</a>
+    </div>
+  </div>
+</div>
+
+<nav class="page-nav">
+  <a href="学習_ロジックツリー.html">← ロジックツリー</a>
+  <a href="学習_3C分析.html">次：3C分析 →</a>
+</nav>
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>フレームワーク練習問題集｜新入社員向け</title>
+<style>
+:root{--primary:#1a3a5c;--accent:#e85d26;--accent2:#2ca8c2;--green:#16a34a;--purple:#7c3aed;--gold:#d97706;--light:#f4f7fb;--dark:#0f1f30;--gray:#6b7a8d;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--light);color:var(--dark);line-height:1.7;}
+.hero{background:linear-gradient(135deg,#0f1f30 0%,#1a3a5c 55%,#16a34a 100%);color:white;padding:52px 24px 42px;text-align:center;}
+.hero .tag{display:inline-block;background:var(--accent);color:white;font-size:11px;font-weight:bold;letter-spacing:2px;padding:4px 14px;border-radius:20px;margin-bottom:14px;}
+.hero h1{font-size:clamp(20px,4vw,32px);font-weight:800;margin-bottom:10px;}
+.hero h1 span{color:#86efac;}
+.hero p{font-size:13px;opacity:.8;margin-bottom:20px;}
+.hero-stats{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:12px 20px;text-align:center;}
+.stat .val{font-size:24px;font-weight:800;color:#fde68a;}
+.stat .lbl{font-size:11px;opacity:.8;}
+.container{max-width:960px;margin:0 auto;padding:0 20px;}
+section{padding:48px 20px;}
+section:nth-child(even){background:white;}
+.sec-head{text-align:center;margin-bottom:32px;}
+.sec-head .num{display:inline-block;background:var(--accent);color:white;font-size:11px;font-weight:bold;padding:3px 10px;border-radius:20px;margin-bottom:8px;}
+.sec-head h2{font-size:clamp(18px,3vw,24px);color:var(--primary);}
+.sec-head p{color:var(--gray);font-size:13px;margin-top:5px;}
+
+/* Phase labels */
+.phase-label{text-align:center;margin-bottom:14px;}
+.phase-tag{display:inline-block;color:white;font-size:11px;font-weight:700;padding:4px 16px;border-radius:20px;letter-spacing:1px;}
+.pt-basic{background:#16a34a;}
+.pt-mid{background:#0369a1;}
+.pt-adv{background:#7c3aed;}
+.pt-case{background:#e85d26;}
+
+/* SUBJECT CARDS */
+.subject-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;max-width:960px;margin:0 auto 28px;}
+.subject-card{border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s;display:block;}
+.subject-card:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,0,0,.15);}
+.sc-head{padding:22px 20px 16px;color:white;}
+.sc-mece{background:linear-gradient(135deg,#1a3a5c,#2ca8c2);}
+.sc-logic{background:linear-gradient(135deg,#0369a1,#7c3aed);}
+.sc-3c{background:linear-gradient(135deg,#16a34a,#0369a1);}
+.sc-swot{background:linear-gradient(135deg,#d97706,#e85d26);}
+.sc-finance{background:linear-gradient(135deg,#dc2626,#9333ea);}
+.sc-pmi{background:linear-gradient(135deg,#0f766e,#1a3a5c);}
+.sc-pdca{background:linear-gradient(135deg,#15803d,#16a34a);}
+.sc-pest{background:linear-gradient(135deg,#5b21b6,#7c3aed);}
+.sc-vc{background:linear-gradient(135deg,#0369a1,#0ea5e9);}
+.sc-5f{background:linear-gradient(135deg,#b45309,#d97706);}
+.sc-adkar{background:linear-gradient(135deg,#0f766e,#0d9488);}
+.sc-case{background:linear-gradient(135deg,#1a3a5c,#e85d26);}
+.sc-head h3{font-size:18px;font-weight:800;margin-bottom:4px;}
+.sc-head .sc-sub{font-size:12px;opacity:.85;}
+.sc-body{background:white;padding:16px 20px;}
+.sc-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.b-q{background:#dbeafe;color:#1e40af;}
+.b-t{background:#dcfce7;color:#166534;}
+.b-lv{background:#fef3c7;color:#92400e;}
+.b-new{background:#fce7f3;color:#9d174d;}
+.sc-body p{font-size:12px;color:var(--gray);margin-bottom:10px;}
+.sc-body .sc-btn{display:inline-block;background:var(--accent);color:white;font-size:12px;font-weight:700;padding:7px 16px;border-radius:20px;text-decoration:none;}
+
+/* HOW TO USE */
+.how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;max-width:880px;margin:0 auto;}
+.how-card{background:white;border-radius:12px;padding:18px 16px;box-shadow:0 2px 8px rgba(0,0,0,.07);border-top:3px solid var(--accent2);}
+.how-card .hw-num{font-size:28px;font-weight:900;color:var(--accent2);line-height:1;}
+.how-card h4{font-size:13px;font-weight:700;margin:4px 0;}
+.how-card p{font-size:12px;color:var(--gray);}
+
+/* ORDER */
+.order-list{max-width:700px;margin:0 auto;}
+.order-item{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px;background:white;border-radius:12px;padding:14px 18px;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.order-num{min-width:36px;height:36px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;}
+.order-body h4{font-size:13px;font-weight:700;margin-bottom:3px;}
+.order-body p{font-size:12px;color:var(--gray);}
+.order-body .why{font-size:11px;color:var(--accent);font-weight:600;margin-top:3px;}
+
+/* MATRIX */
+.matrix-wrap{overflow-x:auto;max-width:960px;margin:0 auto;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+thead th{background:var(--primary);color:white;padding:10px 12px;text-align:left;}
+tbody tr:nth-child(even){background:#f0f5fb;}
+tbody td{padding:9px 12px;border-bottom:1px solid #e2e8f0;vertical-align:top;}
+tbody td:first-child{font-weight:700;color:var(--primary);}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:2px;}
+
+.nav-bar{background:var(--dark);padding:16px 20px;text-align:center;}
+.nav-bar a{color:#a5f3fc;text-decoration:none;font-size:13px;font-weight:600;margin:0 12px;}
+.nav-bar a:hover{text-decoration:underline;}
+footer{background:var(--dark);color:rgba(255,255,255,.45);text-align:center;padding:20px;font-size:11px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="tag">フレームワーク練習問題集 Ver.2.0</div>
+  <h1>コンサルスキルを<span>実践で鍛える</span></h1>
+  <p>読んだだけでは身につかない。毎日1セット解いて、本物のスキルにする。</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="val">11</div><div class="lbl">フレームワーク</div></div>
+    <div class="stat"><div class="val">220+</div><div class="lbl">練習問題</div></div>
+    <div class="stat"><div class="val">1</div><div class="lbl">総合ケーススタディ</div></div>
+    <div class="stat"><div class="val">12h</div><div class="lbl">推定総学習時間</div></div>
+  </div>
+</div>
+
+<!-- 推奨学習順序 -->
+<section>
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">推奨学習順序</div>
+      <h2>この順番で進めると最短で身につく</h2>
+      <p>Basic → Middle → Advanced → 総合ケーススタディの流れで実力を積み上げる</p>
+    </div>
+    <div class="order-list">
+      <div class="order-item">
+        <div class="order-num">1</div>
+        <div class="order-body">
+          <h4>MECE（モレなく・ダブりなく）</h4>
+          <p>すべての分析の土台。まずここから始める。</p>
+          <div class="why">→ MECEが使えると「整理力」が劇的に上がる</div>
+        </div>
+      </div>
+      <div class="order-item">
+        <div class="order-num">2</div>
+        <div class="order-body">
+          <h4>ロジックツリー（問題分解・解決策設計）</h4>
+          <p>MECEを縦に深める道具。原因特定と解決策立案に直結。</p>
+          <div class="why">→ この2つで「コンサルらしい思考の枠組み」が完成する</div>
+        </div>
+      </div>
+      <div class="order-item">
+        <div class="order-num">3</div>
+        <div class="order-body">
+          <h4>PDCA（計画・実行・確認・改善）</h4>
+          <p>改善サイクルの基本。PMI実行フェーズで毎日使う。</p>
+          <div class="why">→ 「動いて改善する」癖がつくと実務が変わる</div>
+        </div>
+      </div>
+      <div class="order-item">
+        <div class="order-num">4</div>
+        <div class="order-body">
+          <h4>3C分析（市場・競合・自社）</h4>
+          <p>市場を見る目を養う。提案書の冒頭に必ず登場する。</p>
+          <div class="why">→ M&A対象企業の評価に即使える</div>
+        </div>
+      </div>
+      <div class="order-item">
+        <div class="order-num">5</div>
+        <div class="order-body">
+          <h4>SWOT分析（強み・弱み・機会・脅威）</h4>
+          <p>3C後に自社戦略を立案するステップ。クロスSWOTまで習得。</p>
+          <div class="why">→ PMI後の統合戦略立案で毎回使う</div>
+        </div>
+      </div>
+      <div class="order-item">
+        <div class="order-num">6</div>
+        <div class="order-body">
+          <h4>財務基礎（BS・PL・CF読解）</h4>
+          <p>中小企業の経営状況を数字で語るための最低限の言語。</p>
+          <div class="why">→ M&AのDDや買収先評価で必須</div>
+        </div>
+      </div>
+      <div class="order-item">
+        <div class="order-num">7</div>
+        <div class="order-body">
+          <h4>PEST分析（外部環境 4軸分析）</h4>
+          <p>業界の将来性を見る目を養う。M&A対象業界のスクリーニングに使う。</p>
+          <div class="why">→ 「この業界に投資すべきか」の判断力が付く</div>
+        </div>
+      </div>
+      <div class="order-item">
+        <div class="order-num">8</div>
+        <div class="order-body">
+          <h4>バリューチェーン分析（企業活動の分解）</h4>
+          <p>M&Aのシナジーを特定する核心ツール。2社を比較してどこで価値が生まれるかを見る。</p>
+          <div class="why">→ PMIの統合施策の設計に直接使える</div>
+        </div>
+      </div>
+      <div class="order-item">
+        <div class="order-num">9</div>
+        <div class="order-body">
+          <h4>5フォース分析（業界競争構造の評価）</h4>
+          <p>「この業界に参入すべきか」を5つの競争要因で判断する。</p>
+          <div class="why">→ M&AのBusiness DDで必須スキル</div>
+        </div>
+      </div>
+      <div class="order-item">
+        <div class="order-num">10</div>
+        <div class="order-body">
+          <h4>ADKARモデル（変革マネジメント）</h4>
+          <p>PMI後の組織統合・文化融合を推進する。人の変革に特化。</p>
+          <div class="why">→ 「なぜM&Aが失敗するか」の根本を解決するスキル</div>
+        </div>
+      </div>
+      <div class="order-item">
+        <div class="order-num">11</div>
+        <div class="order-body">
+          <h4>PMI基礎（M&A後統合プロセス）＋ 総合ケーススタディ</h4>
+          <p>当社の本業。1〜10の知識を全て統合して使う。</p>
+          <div class="why">→ ここが最終目標。全てはPMIのために</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 問題集リンク：Basic -->
+<section>
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">練習問題集</div>
+      <h2>11のフレームワーク + 総合ケーススタディ</h2>
+      <p>各セットは20問。「基礎→応用→実践ケース」の3段階構成</p>
+    </div>
+
+    <div class="phase-label"><span class="phase-tag pt-basic">BASIC ― まずはここから</span></div>
+    <div class="subject-grid">
+      <a class="subject-card" href="練習_MECE.html">
+        <div class="sc-head sc-mece"><h3>🔷 MECE</h3><div class="sc-sub">モレなく・ダブりなく分類する技術</div></div>
+        <div class="sc-body">
+          <div class="sc-meta"><span class="badge b-q">20問</span><span class="badge b-t">約45分</span><span class="badge b-lv">基礎〜応用</span></div>
+          <p>コンサルの最重要基礎スキル。判定・穴埋め・選択・実践ケースの4タイプ。</p>
+          <span class="sc-btn">練習開始 →</span>
+        </div>
+      </a>
+      <a class="subject-card" href="練習_ロジックツリー.html">
+        <div class="sc-head sc-logic"><h3>🌳 ロジックツリー</h3><div class="sc-sub">問題を分解し解決策を設計する</div></div>
+        <div class="sc-body">
+          <div class="sc-meta"><span class="badge b-q">20問</span><span class="badge b-t">約50分</span><span class="badge b-lv">基礎〜応用</span></div>
+          <p>Whyツリー（原因分析）とHowツリー（解決策立案）の使い分け。空欄補充＋ケース演習。</p>
+          <span class="sc-btn">練習開始 →</span>
+        </div>
+      </a>
+      <a class="subject-card" href="練習_PDCA.html">
+        <div class="sc-head sc-pdca"><h3>🔄 PDCA</h3><div class="sc-sub">改善サイクルを実務で回す</div></div>
+        <div class="sc-body">
+          <div class="sc-meta"><span class="badge b-q">20問</span><span class="badge b-t">約40分</span><span class="badge b-lv">基礎〜実践</span><span class="badge b-new">NEW</span></div>
+          <p>Plan・Do・Check・Actの使い分け・KPI設定・PMI文脈での実践応用。</p>
+          <span class="sc-btn">練習開始 →</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="phase-label"><span class="phase-tag pt-mid">MIDDLE ― 市場・競合・外部環境</span></div>
+    <div class="subject-grid">
+      <a class="subject-card" href="練習_3C分析.html">
+        <div class="sc-head sc-3c"><h3>🔺 3C分析</h3><div class="sc-sub">市場・競合・自社を構造的に捉える</div></div>
+        <div class="sc-body">
+          <div class="sc-meta"><span class="badge b-q">20問</span><span class="badge b-t">約50分</span><span class="badge b-lv">基礎〜応用</span></div>
+          <p>要素識別・企業事例分析・KSF導出・M&A/PMI文脈での実践。</p>
+          <span class="sc-btn">練習開始 →</span>
+        </div>
+      </a>
+      <a class="subject-card" href="練習_SWOT分析.html">
+        <div class="sc-head sc-swot"><h3>⚡ SWOT分析</h3><div class="sc-sub">強み・弱み・機会・脅威で戦略を立てる</div></div>
+        <div class="sc-body">
+          <div class="sc-meta"><span class="badge b-q">20問</span><span class="badge b-t">約50分</span><span class="badge b-lv">基礎〜上級</span></div>
+          <p>要素識別・SWOT完成・クロスSWOT戦略立案・PMI統合戦略への応用。</p>
+          <span class="sc-btn">練習開始 →</span>
+        </div>
+      </a>
+      <a class="subject-card" href="練習_財務基礎.html">
+        <div class="sc-head sc-finance"><h3>💰 財務基礎</h3><div class="sc-sub">BS・PL・CFを読んで経営を語る</div></div>
+        <div class="sc-body">
+          <div class="sc-meta"><span class="badge b-q">20問</span><span class="badge b-t">約60分</span><span class="badge b-lv">基礎〜応用</span></div>
+          <p>項目識別・計算問題・財務3表の繋がり・M&A文脈での財務分析。</p>
+          <span class="sc-btn">練習開始 →</span>
+        </div>
+      </a>
+      <a class="subject-card" href="練習_PEST分析.html">
+        <div class="sc-head sc-pest"><h3>🌐 PEST分析</h3><div class="sc-sub">外部マクロ環境を4軸で読む</div></div>
+        <div class="sc-body">
+          <div class="sc-meta"><span class="badge b-q">20問</span><span class="badge b-t">約50分</span><span class="badge b-lv">応用〜実践</span><span class="badge b-new">NEW</span></div>
+          <p>P・E・S・T分類・業界分析・M&A対象業界評価・SWOTとの連携。</p>
+          <span class="sc-btn">練習開始 →</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="phase-label"><span class="phase-tag pt-adv">ADVANCED ― PMIの核心スキル</span></div>
+    <div class="subject-grid">
+      <a class="subject-card" href="練習_バリューチェーン.html">
+        <div class="sc-head sc-vc"><h3>⛓️ バリューチェーン</h3><div class="sc-sub">企業活動を分解してシナジーを特定</div></div>
+        <div class="sc-body">
+          <div class="sc-meta"><span class="badge b-q">20問</span><span class="badge b-t">約50分</span><span class="badge b-lv">応用〜実践</span><span class="badge b-new">NEW</span></div>
+          <p>主活動・支援活動の分類・コストシナジー・売上シナジーの特定・PMI統合設計。</p>
+          <span class="sc-btn">練習開始 →</span>
+        </div>
+      </a>
+      <a class="subject-card" href="練習_5フォース.html">
+        <div class="sc-head sc-5f"><h3>⚔️ 5フォース分析</h3><div class="sc-sub">業界の競争構造から参入価値を見極める</div></div>
+        <div class="sc-body">
+          <div class="sc-meta"><span class="badge b-q">20問</span><span class="badge b-t">約50分</span><span class="badge b-lv">応用〜実践</span><span class="badge b-new">NEW</span></div>
+          <p>5つの力の識別・業界魅力度評価・M&AのBusiness DD・業界別分析実践。</p>
+          <span class="sc-btn">練習開始 →</span>
+        </div>
+      </a>
+      <a class="subject-card" href="練習_ADKAR.html">
+        <div class="sc-head sc-adkar"><h3>🔄 ADKARモデル</h3><div class="sc-sub">PMI後の組織変革・文化統合を推進</div></div>
+        <div class="sc-body">
+          <div class="sc-meta"><span class="badge b-q">20問</span><span class="badge b-t">約50分</span><span class="badge b-lv">応用〜実践</span><span class="badge b-new">NEW</span></div>
+          <p>変革の5ステップ・アセスメント・施策分類・PMI文脈での組織変革推進。</p>
+          <span class="sc-btn">練習開始 →</span>
+        </div>
+      </a>
+      <a class="subject-card" href="練習_PMI基礎.html">
+        <div class="sc-head sc-pmi"><h3>🤝 PMI基礎</h3><div class="sc-sub">M&A後の統合プロセスを動かす</div></div>
+        <div class="sc-body">
+          <div class="sc-meta"><span class="badge b-q">20問</span><span class="badge b-t">約60分</span><span class="badge b-lv">基礎〜実践</span></div>
+          <p>PMI用語・100日プラン・シナジー分析・実際のPMIケーススタディ。</p>
+          <span class="sc-btn">練習開始 →</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="phase-label"><span class="phase-tag pt-case">FINAL ― 総合実践ケース</span></div>
+    <div class="subject-grid" style="max-width:600px;margin:0 auto;">
+      <a class="subject-card" href="PMIケーススタディ.html">
+        <div class="sc-head sc-case"><h3>🏆 PMI 総合ケーススタディ</h3><div class="sc-sub">架空M&A案件で全フレームワークを実践</div></div>
+        <div class="sc-body">
+          <div class="sc-meta"><span class="badge b-q">20問</span><span class="badge b-t">約90分</span><span class="badge b-lv">総合実践</span><span class="badge b-new">NEW</span></div>
+          <p>「鶴岡食品×エコマート」架空M&A事例。PEST→5フォース→3C→SWOT→バリューチェーン→100日プラン→PDCA→ADKARの全フレームワークを1案件で使い切る。</p>
+          <span class="sc-btn" style="background:#1a3a5c;">ケース演習を始める →</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- フレームワーク使い分け早見表 -->
+<section>
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">早見表</div>
+      <h2>どの場面でどのフレームワークを使うか</h2>
+      <p>迷ったらこの表を見る。実際のコンサル現場よく使われる場面別の対応表</p>
+    </div>
+    <div class="matrix-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>場面・目的</th>
+            <th>PEST</th>
+            <th>5フォース</th>
+            <th>3C</th>
+            <th>SWOT</th>
+            <th>VC</th>
+            <th>財務</th>
+            <th>PMI</th>
+            <th>PDCA</th>
+            <th>ADKAR</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>業界の将来性を評価したい</td><td><span class="dot"></span>主役</td><td><span class="dot"></span>補助</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+          <tr><td>業界参入の妥当性を判断</td><td><span class="dot"></span>補助</td><td><span class="dot"></span>主役</td><td><span class="dot"></span>補助</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+          <tr><td>M&A対象企業を市場分析</td><td><span class="dot"></span>補助</td><td><span class="dot"></span>補助</td><td><span class="dot"></span>主役</td><td><span class="dot"></span>補助</td><td>-</td><td><span class="dot"></span>主役</td><td>-</td><td>-</td><td>-</td></tr>
+          <tr><td>統合後の戦略を立案する</td><td>-</td><td>-</td><td>-</td><td><span class="dot"></span>主役</td><td><span class="dot"></span>補助</td><td>-</td><td><span class="dot"></span>補助</td><td>-</td><td>-</td></tr>
+          <tr><td>シナジーを特定・設計する</td><td>-</td><td>-</td><td>-</td><td>-</td><td><span class="dot"></span>主役</td><td><span class="dot"></span>補助</td><td><span class="dot"></span>主役</td><td>-</td><td>-</td></tr>
+          <tr><td>PMI実行・KPI管理</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><span class="dot"></span>主役</td><td><span class="dot"></span>主役</td><td>-</td></tr>
+          <tr><td>組織変革・文化統合</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><span class="dot"></span>補助</td><td>-</td><td><span class="dot"></span>主役</td></tr>
+          <tr><td>課題を構造化・整理したい</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><span class="dot"></span>補助</td><td>-</td></tr>
+          <tr><td>改善策の継続的見直し</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td><span class="dot"></span>主役</td><td>-</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 効果的な使い方 -->
+<section>
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">学習法</div>
+      <h2>練習問題を最大限に活かす4つのコツ</h2>
+    </div>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="hw-num">01</div>
+        <h4>答えを見る前に書く</h4>
+        <p>必ずノートかメモに自分の答えを書いてから「答えを見る」ボタンを押す。書く行為が記憶を定着させる。</p>
+      </div>
+      <div class="how-card">
+        <div class="hw-num">02</div>
+        <h4>間違えた問題に印をつける</h4>
+        <p>×をつけた問題を週1回見直す。スペースドリピティション（間隔反復）が最も効率よく記憶に残る。</p>
+      </div>
+      <div class="how-card">
+        <div class="hw-num">03</div>
+        <h4>実務に当てはめて考える</h4>
+        <p>問題を解いた後、「今日の業務に置き換えるとどうなる？」と自問する。抽象から具体への変換が本物の理解。</p>
+      </div>
+      <div class="how-card">
+        <div class="hw-num">04</div>
+        <h4>週1回、誰かに説明する</h4>
+        <p>先輩や同僚に「今週MECE学んだんですけど…」と話す。他者への説明が最も強力なアウトプット学習法。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="nav-bar">
+  <a href="成長ロードマップ_新入社員向け.html">← 成長ロードマップ</a>
+  <a href="事業戦略_解説_当社.html">事業戦略解説</a>
+</div>
+<footer>© 2026 All Rights Reserved. Ver.2.0 — 11フレームワーク・220問・総合ケーススタディ完全版</footer>
+</body>
+</html>

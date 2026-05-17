@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDCA練習問題 20問｜フレームワーク練習</title>
+<style>
+:root{--primary:#16a34a;--accent:#e85d26;--accent2:#2ca8c2;--green:#16a34a;--light:#f4f7fb;--dark:#0f1f30;--gray:#6b7a8d;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--light);color:var(--dark);line-height:1.7;}
+.hero{background:linear-gradient(135deg,#0f1f30,#15803d,#16a34a);color:white;padding:40px 20px 32px;text-align:center;}
+.hero h1{font-size:clamp(20px,4vw,30px);font-weight:800;margin-bottom:8px;}
+.hero p{font-size:13px;opacity:.8;margin-bottom:16px;}
+.progress-wrap{background:rgba(255,255,255,.15);border-radius:20px;height:10px;max-width:400px;margin:0 auto 8px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,#86efac,#2ca8c2);border-radius:20px;transition:width .4s;width:0%;}
+.progress-text{font-size:12px;opacity:.8;}
+.stats-row{display:flex;gap:16px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:8px 16px;text-align:center;}
+.stat .v{font-size:20px;font-weight:800;color:#fde68a;line-height:1;}
+.stat .l{font-size:10px;opacity:.75;}
+.container{max-width:800px;margin:0 auto;padding:20px;}
+.lecture{background:white;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.08);border-left:5px solid var(--green);}
+.lecture h2{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:10px;}
+.lecture p{font-size:13px;color:var(--gray);margin-bottom:8px;}
+.cycle-flow{display:flex;justify-content:center;align-items:center;gap:0;margin:16px auto;max-width:500px;flex-wrap:wrap;}
+.cycle-item{text-align:center;padding:14px 18px;border-radius:12px;color:white;font-weight:800;font-size:14px;flex:1;min-width:80px;margin:4px;}
+.cp{background:#1d4ed8;}
+.cd{background:#16a34a;}
+.cc{background:#d97706;}
+.ca{background:#e85d26;}
+.cycle-item span{display:block;font-size:10px;font-weight:400;opacity:.85;margin-top:2px;}
+.arrow{font-size:18px;color:var(--gray);}
+.warn{background:#fff8f0;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 14px;font-size:12px;color:#92400e;margin-top:10px;}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2px;color:white;display:inline-block;padding:4px 14px;border-radius:20px;margin:16px 0 12px;}
+.sl-basic{background:#16a34a;}
+.sl-mid{background:#0369a1;}
+.sl-adv{background:#7c3aed;}
+.qcard{background:white;border-radius:14px;padding:20px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);}
+.qtop{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.qnum{background:var(--primary);color:white;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;}
+.qtype{font-size:11px;color:var(--gray);font-weight:600;}
+.qlv{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.qlv.basic{background:#dcfce7;color:#166534;}
+.qlv.mid{background:#dbeafe;color:#1e40af;}
+.qlv.adv{background:#fce7f3;color:#9d174d;}
+.qtext{font-size:14px;font-weight:600;margin-bottom:10px;line-height:1.6;}
+.qsub{font-size:12px;color:var(--gray);margin-bottom:10px;line-height:1.7;}
+.choices{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.ch{text-align:left;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;background:white;cursor:pointer;font-size:13px;font-family:inherit;transition:all .2s;}
+.ch:hover{border-color:var(--accent2);background:#f0f9ff;}
+.ch.correct{border-color:#16a34a;background:#f0fdf4;color:#166534;font-weight:700;}
+.ch.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626;}
+.ch:disabled{cursor:default;}
+.ans{display:none;margin-top:12px;}
+.ans-inner{background:linear-gradient(135deg,#f0fdf4,#f0f9ff);border-radius:10px;padding:16px;border:1px solid #bbf7d0;}
+.ans-result{font-size:14px;font-weight:700;color:var(--green);margin-bottom:8px;}
+.ans-exp{font-size:13px;color:var(--dark);margin-bottom:10px;line-height:1.6;}
+.tip{background:white;border-radius:8px;padding:10px 14px;font-size:12px;color:#0369a1;border-left:3px solid var(--accent2);}
+.tip strong{display:block;margin-bottom:3px;}
+.revbtn{background:var(--primary);color:white;border:none;border-radius:20px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:10px;}
+.revbtn:hover{background:#15803d;}
+.revbtn.revealed{background:var(--gray);}
+.score-board{background:white;border-radius:14px;padding:16px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:center;}
+.score-board h3{font-size:13px;color:var(--gray);margin-bottom:4px;}
+.score-board .score-val{font-size:40px;font-weight:900;color:var(--primary);}
+.score-board .score-max{font-size:18px;color:var(--gray);}
+.nav-bar{background:var(--dark);padding:14px 20px;text-align:center;margin-top:20px;}
+.nav-bar a{color:#a5f3fc;text-decoration:none;font-size:12px;font-weight:600;margin:0 10px;}
+.case-box{background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:16px;font-size:13px;margin-bottom:12px;line-height:1.8;}
+.case-box h4{font-weight:700;color:#166534;margin-bottom:8px;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .hero{padding:28px 14px 20px;}
+  .hero h1{font-size:clamp(18px,5vw,26px);}
+  .container{padding:12px;}
+  .qcard{padding:16px;border-radius:10px;}
+  .qtext{font-size:13px;}
+  .ch{font-size:12px;padding:10px 12px;}
+  .ans-inner{padding:14px;}
+  .ans-exp{font-size:12px;}
+  .tip{font-size:11px;}
+  .lecture{padding:16px;border-radius:10px;}
+  .lecture h2{font-size:14px;}
+  .lecture p,.lecture .warn{font-size:12px;}
+  .nav-bar{padding:12px 14px;}
+  .nav-bar a{font-size:11px;margin:0 6px;}
+  .stats-row{gap:10px;}
+  .stat{padding:6px 12px;}
+  .stat .v{font-size:18px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🔄 PDCA 練習問題</h1>
+  <p>計画・実行・確認・改善 — 改善サイクルを自在に回す技術を身につける</p>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-text" id="progressText">0 / 20 問 回答済み</div>
+  <div class="stats-row">
+    <div class="stat"><div class="v">20</div><div class="l">問</div></div>
+    <div class="stat"><div class="v">40</div><div class="l">分目安</div></div>
+    <div class="stat"><div class="v" id="scoreDisp">0</div><div class="l">正解（選択問題）</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="lecture">
+  <h2>📖 PDCAとは？（3分で読む）</h2>
+  <p>PDCAサイクルとは、業務改善や目標達成のための継続的改善サイクル。1950年代にW・エドワーズ・デミングが提唱した品質管理手法が起源。</p>
+  <div class="cycle-flow">
+    <div class="cycle-item cp">P<span>Plan（計画）</span></div>
+    <div class="arrow">→</div>
+    <div class="cycle-item cd">D<span>Do（実行）</span></div>
+    <div class="arrow">→</div>
+    <div class="cycle-item cc">C<span>Check（確認）</span></div>
+    <div class="arrow">→</div>
+    <div class="cycle-item ca">A<span>Act（改善）</span></div>
+  </div>
+  <p><strong>P（Plan）</strong>：目標を設定し、達成のための計画を立てる。KPIや具体的なアクションプランを決める。<br>
+  <strong>D（Do）</strong>：計画に基づいて実行する。記録を残しながら進める。<br>
+  <strong>C（Check）</strong>：結果を計画と比較・評価する。数字や事実ベースで分析する。<br>
+  <strong>A（Act）</strong>：Checkの結果を受けて改善策を実施し、次のPlanに繋げる。</p>
+  <div class="warn">⚠️ PMIでのPDCA：M&A後の100日プランでは「D→C→A」が特に重要。計画通りにいかないことが前提。毎週KPIをCheckし、即座にActして軌道修正する姿勢が統合の成否を分ける。</div>
+</div>
+
+<div class="score-board">
+  <h3>選択問題スコア（Q11〜Q15）</h3>
+  <span class="score-val" id="scoreVal">0</span><span class="score-max"> / 5点</span>
+</div>
+
+<!-- SECTION A: 基礎 -->
+<div class="section-label sl-basic">SECTION A ― 基礎理解（Q1〜Q7）</div>
+
+<div class="qcard" id="qc1">
+  <div class="qtop"><span class="qnum">Q1</span><span class="qtype">穴埋め</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">PDCAのCは「Check」の略である。Checkフェーズで行うべき主な活動を2つ挙げよ。</p>
+  <button class="revbtn" onclick="revealAns('a1',this)" id="rb1">答えを見る ▼</button>
+  <div class="ans" id="a1">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp">①<strong>計画との差異分析</strong>：実績数値をKPIと比較し、どのくらい乖離しているかを把握する。②<strong>原因究明</strong>：差異が生じた理由を特定する（外部要因か内部要因か、どのプロセスが問題かなど）。</div>
+      <div class="tip"><strong>実務では：</strong>「差異があった事実」を述べるだけでは不十分。「なぜ差異が生じたか」の原因まで特定して初めてCheckが完了する。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard" id="qc2">
+  <div class="qtop"><span class="qnum">Q2</span><span class="qtype">判定</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">「PDCAは1回回せば十分である。同じ目標に対して何度も回す必要はない」この記述は正しいか？理由も述べよ。</p>
+  <button class="revbtn" onclick="revealAns('a2',this)">答えを見る ▼</button>
+  <div class="ans" id="a2">
+    <div class="ans-inner">
+      <div class="ans-result">❌ 誤り</div>
+      <div class="ans-exp">PDCAは「サイクル（循環）」であり、1回で終わるものではない。Actで出た改善策を次のPlanに繋げ、継続的に回し続けることで品質や成果が向上していく。特にPMIでは環境変化が激しいため、短いサイクル（週次・月次）で何度も回すことが重要。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard" id="qc3">
+  <div class="qtop"><span class="qnum">Q3</span><span class="qtype">分類</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">以下の行動をP・D・C・Aのどれかに分類せよ。<br>①月次売上レポートを見て前月比を計算する<br>②来月の営業訪問先リストを作る<br>③顧客へ提案書を持参してプレゼンする<br>④在庫管理ルールを変更する</p>
+  <button class="revbtn" onclick="revealAns('a3',this)">答えを見る ▼</button>
+  <div class="ans" id="a3">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答</div>
+      <div class="ans-exp">① <strong>C（Check）</strong>：実績を評価・分析する行動<br>② <strong>P（Plan）</strong>：目標達成のための計画立案<br>③ <strong>D（Do）</strong>：計画に基づいた実行<br>④ <strong>A（Act）</strong>：Checkを踏まえた改善・標準化</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard" id="qc4">
+  <div class="qtop"><span class="qnum">Q4</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">PDCAにおける「A（Act）」フェーズで行う2種類のアクションを説明せよ。</p>
+  <button class="revbtn" onclick="revealAns('a4',this)">答えを見る ▼</button>
+  <div class="ans" id="a4">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>①改善（修正）</strong>：問題の原因に対処し、プロセスや方法を変える。例：営業トーク改善、ツール変更など。<br><strong>②標準化</strong>：うまくいった方法を全体に展開する。ベストプラクティスをマニュアル化し、次のPlanの基準値とする。</div>
+      <div class="tip"><strong>重要：</strong>Actを「改善だけ」と理解している人が多い。うまくいったことを標準化する「横展開」も重要なActのアクション。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard" id="qc5">
+  <div class="qtop"><span class="qnum">Q5</span><span class="qtype">選択</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">PDCAで最も失敗しやすいフェーズはどれか？またその理由は何か？</p>
+  <button class="revbtn" onclick="revealAns('a5',this)">答えを見る ▼</button>
+  <div class="ans" id="a5">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例：C（Check）とA（Act）</div>
+      <div class="ans-exp">多くの組織でPDは実行されるが、CとAが省略されがち。理由は「忙しさ」「数字を見ることへの抵抗感」「改善提案が批判に見える文化」など。特にAで「次のPlanへ繋げる」行動が抜けると、PDCAは「PD止まり」になる。</div>
+      <div class="tip"><strong>コンサル視点：</strong>クライアント企業のPDCA実施状況を診断する際は「CheckとActが本当に機能しているか」を最初に確認する。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard" id="qc6">
+  <div class="qtop"><span class="qnum">Q6</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">PMI（M&A後統合）の文脈でPDCAを使う場合、「Plan」フェーズで設定すべきKPIの例を3つ挙げよ。（製造業の買収企業を想定）</p>
+  <button class="revbtn" onclick="revealAns('a6',this)">答えを見る ▼</button>
+  <div class="ans" id="a6">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp">①<strong>社員定着率</strong>：統合から3ヶ月後の離職率を5%以内に抑える<br>②<strong>生産ライン稼働率</strong>：統合から6ヶ月以内に統合前の95%以上を維持<br>③<strong>調達コスト削減率</strong>：統合後の共同購買で調達コストを10%削減する<br>（他例：顧客継続率、システム統合完了率、クロスセル売上比率など）</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard" id="qc7">
+  <div class="qtop"><span class="qnum">Q7</span><span class="qtype">記述</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">「OODAループ」とはPDCAとは異なる意思決定フレームワークである。PDCAとOODAの違いを簡潔に説明せよ。</p>
+  <button class="revbtn" onclick="revealAns('a7',this)">答えを見る ▼</button>
+  <div class="ans" id="a7">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>PDCA</strong>：計画を起点とし、じっくり考えて実行する。安定した環境・中長期改善に向く。<br><strong>OODA（Observe-Orient-Decide-Act）</strong>：観察を起点とし、素早く意思決定して行動する。不確実な環境・緊急対応に向く。<br>PMIでは通常はPDCAで計画的に進めつつ、突発的なトラブル（キーマン離職・顧客クレームなど）にはOODAで即応する。</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION B: 選択問題 -->
+<div class="section-label sl-mid">SECTION B ― 選択問題（Q8〜Q14）</div>
+
+<div class="qcard" id="qc8">
+  <div class="qtop"><span class="qnum">Q8</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">ある会社がPMI後の顧客満足度向上を目標にPDCAを回している。「顧客アンケートの回収率が予定の50%を下回り30%だった原因を分析した」この活動はどのフェーズか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'b','C')">A. Plan（計画）</button>
+    <button class="ch" onclick="checkAns(this,'b','C')">B. Do（実行）</button>
+    <button class="ch" onclick="checkAns(this,'b','C')" data-correct="true">C. Check（確認）</button>
+    <button class="ch" onclick="checkAns(this,'b','C')">D. Act（改善）</button>
+  </div>
+  <div class="ans" id="ab8">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C（Check）</div>
+      <div class="ans-exp">計画（50%）と実績（30%）を比較し、差異の原因を分析している。これは典型的なCheckフェーズの活動。「原因を分析した」がキーワード。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard" id="qc9">
+  <div class="qtop"><span class="qnum">Q9</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">PDCAサイクルを適切に運用するために最も重要な要素はどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'c','C')">A. 毎月必ず新しい目標を設定すること</button>
+    <button class="ch" onclick="checkAns(this,'c','C')">B. Doフェーズを素早く終わらせること</button>
+    <button class="ch" onclick="checkAns(this,'c','C')" data-correct="true">C. 測定可能な指標（KPI）を事前に設定すること</button>
+    <button class="ch" onclick="checkAns(this,'c','C')">D. ActフェーズはPlanの前に行うこと</button>
+  </div>
+  <div class="ans" id="ac9">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C</div>
+      <div class="ans-exp">KPIがなければCheckで「何と比較するか」がわからず、サイクルが機能しない。「測定できないものは管理できない」（ドラッカー）。ActはPlanの後。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard" id="qc10">
+  <div class="qtop"><span class="qnum">Q10</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">製造業A社をB社が買収した。PMI開始3ヶ月後、生産ラインの稼働率が計画比80%にとどまっている。この状況でActとして最も適切な行動はどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'d','C')">A. 計画を80%に下方修正してPlanを終了する</button>
+    <button class="ch" onclick="checkAns(this,'d','C')">B. 稼働率低下の原因を調べずにDoを継続する</button>
+    <button class="ch" onclick="checkAns(this,'d','C')" data-correct="true">C. 稼働率低下の根本原因を特定し、改善策を実施したうえで次のPlanに組み込む</button>
+    <button class="ch" onclick="checkAns(this,'d','C')">D. 生産ラインをすぐに新しいシステムに切り替える</button>
+  </div>
+  <div class="ans" id="ad10">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C</div>
+      <div class="ans-exp">Actは「原因特定→改善実施→次のPlanへ反映」が正しいプロセス。A（目標を下げるだけ）はActではなくPlanの歪曲。Dは根本原因不明のまま大きな変更をするため危険。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard" id="qc11">
+  <div class="qtop"><span class="qnum">Q11</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">PDCAにおける「Plan」フェーズで設定する目標の条件として最も適切なものはどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'e','C')">A. 必ず達成可能な低い目標を設定する</button>
+    <button class="ch" onclick="checkAns(this,'e','C')" data-correct="true">B. SMART（具体的・測定可能・達成可能・関連性・期限付き）な目標を設定する</button>
+    <button class="ch" onclick="checkAns(this,'e','C')">C. 定性的な表現で柔軟性を持たせる</button>
+    <button class="ch" onclick="checkAns(this,'e','C')">D. 上司が設定した目標をそのまま使う</button>
+  </div>
+  <div class="ans" id="ae11">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B（SMART目標）</div>
+      <div class="ans-exp">SMARTはSpecific（具体的）・Measurable（測定可能）・Achievable（達成可能）・Relevant（関連性）・Time-bound（期限）。CheckフェーズでKPIと照合できるようにするため、必ず数値化された目標が必要。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard" id="qc12">
+  <div class="qtop"><span class="qnum">Q12</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">PMI Manager（PMI支援SaaS）でPDCAを支援する機能として最も価値が高いのはどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'f','C')">A. 買収企業の登記情報を自動収集する</button>
+    <button class="ch" onclick="checkAns(this,'f','C')">B. M&A仲介会社とのマッチングを行う</button>
+    <button class="ch" onclick="checkAns(this,'f','C')" data-correct="true">C. 統合KPIのダッシュボードでCheck・Actを自動化・可視化する</button>
+    <button class="ch" onclick="checkAns(this,'f','C')">D. DD（デューデリジェンス）のコストを削減する</button>
+  </div>
+  <div class="ans" id="af12">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C</div>
+      <div class="ans-exp">PMI Manager はPMI実行フェーズを支援するSaaS。KPIの自動収集・可視化・アラート機能はまさにCheckとActを効率化し、PDCAサイクルを加速させる核心機能。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard" id="qc13">
+  <div class="qtop"><span class="qnum">Q13</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">PDCAサイクルの「Do（実行）」フェーズで特に重要なことはどれか？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'g','C')">A. できるだけ多くの人に仕事を任せる</button>
+    <button class="ch" onclick="checkAns(this,'g','C')">B. 計画とは異なる方法で実行して効果を比較する</button>
+    <button class="ch" onclick="checkAns(this,'g','C')" data-correct="true">C. 実行記録を残し、後のCheckで使えるデータを蓄積する</button>
+    <button class="ch" onclick="checkAns(this,'g','C')">D. 成果が出ない場合はすぐにPlanに戻る</button>
+  </div>
+  <div class="ans" id="ag13">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C</div>
+      <div class="ans-exp">DoフェーズでCheckのための「証拠」を残さないと、後でCheckができない。議事録・KPI実績・現場写真・ヒアリングメモなどを記録する習慣が重要。Bは計画を変えることになりCheckが無意味になる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard" id="qc14">
+  <div class="qtop"><span class="qnum">Q14</span><span class="qtype">4択</span><span class="qlv mid">応用</span></div>
+  <p class="qtext">PDCAサイクルを「週次」で回す場合と「月次」で回す場合、一般的にどう使い分けるのが適切か？</p>
+  <div class="choices">
+    <button class="ch" onclick="checkAns(this,'h','C')">A. 週次は戦略的な意思決定に、月次は日常業務の改善に使う</button>
+    <button class="ch" onclick="checkAns(this,'h','C')" data-correct="true">B. 週次は現場の業務改善・タスク管理に、月次は部門目標・戦略的改善に使う</button>
+    <button class="ch" onclick="checkAns(this,'h','C')">C. 週次と月次は同じ内容を繰り返すだけでよい</button>
+    <button class="ch" onclick="checkAns(this,'h','C')">D. 週次は必要なく、月次だけで十分である</button>
+  </div>
+  <div class="ans" id="ah14">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <div class="ans-exp">PDCAは階層的に運用するのが実務的。<strong>週次</strong>：担当者レベルのタスク進捗確認・小さな問題解決。<strong>月次</strong>：チーム・部門の目標進捗確認・戦略調整。PMIでも週次で現場KPIをCheckし、月次で統合全体の進捗を経営層へ報告する。</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION C: 実践・応用 -->
+<div class="section-label sl-adv">SECTION C ― 実践ケース（Q15〜Q20）</div>
+
+<div class="qcard" id="qc15">
+  <div class="qtop"><span class="qnum">Q15</span><span class="qtype">ケース</span><span class="qlv adv">実践</span></div>
+  <div class="case-box">
+    <h4>📋 シナリオ：食品メーカーA社のPMIケース</h4>
+    地方食品メーカーA社が同業のB社を買収し、PMIが始まった。100日プランの重点施策として「顧客リストの統合と共同営業活動」が設定された。<br>
+    Plan：3ヶ月で顧客重複を50%解消し、クロスセル提案数を月100件にする。<br>
+    Do：営業チームが合同会議を週1回開催し、提案活動を実施。<br>
+    Check（2ヶ月後）：顧客重複解消率は30%、提案数は月40件にとどまった。
+  </div>
+  <p class="qtext">このCheckの結果を受けてのActとして適切な改善策を2つ提案せよ。</p>
+  <button class="revbtn" onclick="revealAns('ai15',this)">答えを見る ▼</button>
+  <div class="ans" id="ai15">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp">①<strong>顧客リスト統合を分担化</strong>：重複解消が遅い原因がリストのデータ形式の違いであれば、ITツールを使った自動照合の導入。担当者ごとに100件の割り当てを設定しKPIを個人レベルまで細分化する。<br>②<strong>クロスセル提案の質向上</strong>：提案数が少ない原因が「何を提案すればいいかわからない」であれば、提案テンプレートとスクリプトをAIで作成し、営業担当がすぐに使えるようにする。週1回の合同会議を成功事例共有の場に変える。</div>
+      <div class="tip"><strong>Actのポイント：</strong>原因を特定せずに対策を打つのはNG。なぜ計画比60%になったのかを調べてから改善策を立てること。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard" id="qc16">
+  <div class="qtop"><span class="qnum">Q16</span><span class="qtype">設計</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">PMIコンサルタントとして、買収後の「組織統合」に関するPDCAを設計せよ。<br>目標：「買収から6ヶ月以内に両社の従業員の心理的一体感を醸成する」<br>P・D・C・Aのそれぞれで具体的な施策とKPIを挙げよ。</p>
+  <button class="revbtn" onclick="revealAns('aj16',this)">答えを見る ▼</button>
+  <div class="ans" id="aj16">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>P（計画）</strong>：従業員エンゲージメントスコア（統合前後）を測定。KPI：6ヶ月後のエンゲージメント調査スコア70点以上（業界平均65点）<br><strong>D（実行）</strong>：合同研修月1回・経営層のタウンホール会議月1回・メンター制度（両社員のペアリング）実施<br><strong>C（確認）</strong>：月次でエンゲージメントスコアとメンター制度利用率を計測。半期で退職率を比較分析<br><strong>A（改善）</strong>：スコアが低い部署の原因ヒアリング。施策の効果が低い場合は代替プログラム（社員旅行・合同プロジェクト）を追加。成功部署のやり方を他部署へ横展開</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard" id="qc17">
+  <div class="qtop"><span class="qnum">Q17</span><span class="qtype">批判的思考</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">PDCAの限界・弱点を2つ挙げ、それぞれの対処法を述べよ。</p>
+  <button class="revbtn" onclick="revealAns('ak17',this)">答えを見る ▼</button>
+  <div class="ans" id="ak17">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>①スピードが遅い問題：</strong>PDCAは計画→実行→確認のサイクルに時間がかかる。変化の速い環境では不向き。<br>対処法：サイクルを短くする（週次化）、OODAループと組み合わせる。<br><br><strong>②計画の前提が崩れると機能しない：</strong>市場環境が急変するとPlan自体が無意味になる。<br>対処法：前提条件（リスク）を明示したPlanを作り、定期的に前提条件を検証する。「シナリオプランニング」と組み合わせる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard" id="qc18">
+  <div class="qtop"><span class="qnum">Q18</span><span class="qtype">実務応用</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">あなたは当社のPMIコンサルとして中小企業C社のPMI支援をしている。C社の経営者は「計画を立てても誰も見ない」と言っている。PDCAが機能していない原因を3つ挙げ、改善策を提案せよ。</p>
+  <button class="revbtn" onclick="revealAns('al18',this)">答えを見る ▼</button>
+  <div class="ans" id="al18">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>原因①：KPIが抽象的</strong>→「売上を上げる」などの定性目標は追えない。数値目標への変換と担当者割り当てが必要。<br><strong>原因②：Checkの仕組みがない</strong>→計画を見るタイミング（会議体・レポート）が設定されていない。週次KPIレビュー会議の設置。<br><strong>原因③：Actで誰も動かない</strong>→改善提案しても責任者・期日が不明確。「誰が・何を・いつまでに」の3点をActで必ず設定するルールを作る。<br><br>PMI Manager活用：ダッシュボードで自動KPI可視化→レビュー会議の負荷を下げることが導入の切り口になる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard" id="qc19">
+  <div class="qtop"><span class="qnum">Q19</span><span class="qtype">総合</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">日本の中小企業でPDCAが形骸化しやすい構造的な理由を述べ、コンサルタントとして何ができるかを述べよ。</p>
+  <button class="revbtn" onclick="revealAns('am19',this)">答えを見る ▼</button>
+  <div class="ans" id="am19">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>形骸化の構造的理由：</strong><br>①<strong>人手不足</strong>：少人数でDoに追われ、CheckとActの時間が取れない<br>②<strong>データ管理の未整備</strong>：売上・コストなどのKPIがExcelバラバラ管理でCheckできない<br>③<strong>経営者の暗黙知依存</strong>：「社長の勘」でActしていたため計画→実行サイクルの文化がない<br><br><strong>コンサルとしてできること：</strong><br>①KPI可視化ダッシュボード導入（PMI Manager）でCheckを省力化<br>②週次レビュー会議の設計・ファシリテーションで習慣化を支援<br>③ベストプラクティス（他社のPDCA事例）の共有による文化変革</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard" id="qc20">
+  <div class="qtop"><span class="qnum">Q20</span><span class="qtype">総合</span><span class="qlv adv">実践</span></div>
+  <p class="qtext">【最終問題】PMI Managerを導入した顧客企業が「PDCAが回るようになった」という成功ストーリーを3ステップで説明する資料を作るとしたら、どんな構成にするか？（架空のビフォーアフターを含めてよい）</p>
+  <button class="revbtn" onclick="revealAns('an20',this)">答えを見る ▼</button>
+  <div class="ans" id="an20">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 解答例</div>
+      <div class="ans-exp"><strong>STEP1 Before（導入前）：</strong>「月次会議でKPIを確認しようとしても数字が出てくるまで30分かかる。会議の大半が報告で終わり改善策を議論する時間がない」<br><br><strong>STEP2 導入プロセス：</strong>「PMI Manager導入→基幹システムとAPI連携→KPIダッシュボード自動更新→週次15分レビュー会議フォーマット設計」<br><br><strong>STEP3 After（導入後）：</strong>「KPI確認が会議前に完了。会議は改善策議論のみに集中。3ヶ月でシナジー達成率が63%→85%に改善。PDCAサイクルが月次→週次に短縮」</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div class="nav-bar">
+  <a href="フレームワーク練習問題_ハブ.html">← ハブに戻る</a>
+  <a href="練習_PEST分析.html">次：PEST分析 →</a>
+</div>
+
+<script>
+let answered=0,score=0,scoreMax=0;
+const total=20;
+function updateProgress(){
+  document.getElementById('progressBar').style.width=(answered/total*100)+'%';
+  document.getElementById('progressText').textContent=answered+' / '+total+' 問 回答済み';
+  document.getElementById('scoreDisp').textContent=score;
+}
+function revealAns(id,btn){
+  document.getElementById(id).style.display='block';
+  btn.textContent='▲ 閉じる';
+  btn.classList.toggle('revealed');
+  if(!btn.dataset.counted){btn.dataset.counted=true;answered++;updateProgress();}
+}
+function checkAns(btn,key,correct){
+  const choices=btn.parentElement.querySelectorAll('.ch');
+  choices.forEach(c=>{c.disabled=true;});
+  const ansDiv=btn.closest('.qcard').querySelector('.ans');
+  ansDiv.style.display='block';
+  scoreMax++;
+  if(btn.getAttribute('data-correct')==='true'){
+    btn.classList.add('correct');
+    score++;
+  } else {
+    btn.classList.add('wrong');
+    choices.forEach(c=>{if(c.getAttribute('data-correct')==='true')c.classList.add('correct');});
+  }
+  document.getElementById('scoreVal').textContent=score;
+  answered++;updateProgress();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>財務基礎 練習問題 20問</title>
+<style>
+:root{--primary:#dc2626;--accent:#9333ea;--accent2:#2ca8c2;--light:#f4f7fb;--dark:#0f1f30;--gray:#6b7a8d;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--light);color:var(--dark);line-height:1.7;}
+.hero{background:linear-gradient(135deg,#0f1f30,#dc2626,#9333ea);color:white;padding:40px 20px 32px;text-align:center;}
+.hero h1{font-size:clamp(20px,4vw,30px);font-weight:800;margin-bottom:8px;}
+.hero p{font-size:13px;opacity:.8;margin-bottom:16px;}
+.progress-wrap{background:rgba(255,255,255,.15);border-radius:20px;height:10px;max-width:400px;margin:0 auto 8px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,#fca5a5,#9333ea);border-radius:20px;transition:width .4s;width:0%;}
+.progress-text{font-size:12px;opacity:.8;}
+.stats-row{display:flex;gap:16px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:8px 16px;text-align:center;}
+.stat .v{font-size:20px;font-weight:800;color:#fde68a;line-height:1;}
+.stat .l{font-size:10px;opacity:.75;}
+.container{max-width:800px;margin:0 auto;padding:20px;}
+.lecture{background:white;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.08);border-left:5px solid var(--primary);}
+.lecture h2{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:10px;}
+.lecture p{font-size:13px;color:var(--gray);margin-bottom:8px;}
+.three-stmt{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:12px 0;}
+@media(max-width:500px){.three-stmt{grid-template-columns:1fr;}}
+.bs-card{background:#dbeafe;border-top:3px solid #1d4ed8;border-radius:10px;padding:12px 14px;font-size:12px;}
+.pl-card{background:#dcfce7;border-top:3px solid #16a34a;border-radius:10px;padding:12px 14px;font-size:12px;}
+.cf-card{background:#fef3c7;border-top:3px solid #d97706;border-radius:10px;padding:12px 14px;font-size:12px;}
+.bs-card h4{color:#1d4ed8;font-size:13px;font-weight:700;margin-bottom:4px;}
+.pl-card h4{color:#166534;font-size:13px;font-weight:700;margin-bottom:4px;}
+.cf-card h4{color:#92400e;font-size:13px;font-weight:700;margin-bottom:4px;}
+.formula-box{background:#f8f7ff;border-radius:10px;padding:14px 16px;font-family:monospace;font-size:13px;line-height:2;margin:10px 0;color:var(--dark);}
+.warn{background:#fff8f0;border-left:3px solid #e85d26;border-radius:0 8px 8px 0;padding:10px 14px;font-size:12px;color:#92400e;margin-top:10px;}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2px;color:white;display:inline-block;padding:4px 14px;border-radius:20px;margin:16px 0 12px;}
+.sl-basic{background:#16a34a;}
+.sl-mid{background:#0369a1;}
+.sl-adv{background:#7c3aed;}
+.qcard{background:white;border-radius:14px;padding:20px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);}
+.qtop{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.qnum{background:var(--primary);color:white;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;}
+.qtype{font-size:11px;color:var(--gray);font-weight:600;}
+.qlv{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.qlv.basic{background:#dcfce7;color:#166534;}
+.qlv.mid{background:#dbeafe;color:#1e40af;}
+.qlv.adv{background:#fce7f3;color:#9d174d;}
+.qtext{font-size:14px;font-weight:600;margin-bottom:10px;line-height:1.6;}
+.qsub{font-size:12px;color:var(--gray);margin-bottom:10px;line-height:1.6;}
+.pl-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:12px;}
+.pl-table td{padding:6px 12px;border-bottom:1px solid #e2e8f0;}
+.pl-table .head{background:#f0fdf4;font-weight:700;color:#166534;}
+.pl-table .sub{padding-left:24px;color:var(--gray);}
+.pl-table .total{font-weight:700;background:#f0f9ff;}
+.blank-cell{background:#fde68a;border:1px solid #fbbf24;border-radius:4px;padding:2px 8px;display:inline-block;}
+.choices{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.ch{text-align:left;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;background:white;cursor:pointer;font-size:13px;font-family:inherit;transition:all .2s;}
+.ch:hover{border-color:var(--accent2);background:#f0f9ff;}
+.ch.correct{border-color:#16a34a;background:#f0fdf4;color:#166534;font-weight:700;}
+.ch.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626;}
+.ch:disabled{cursor:default;}
+.ans{display:none;margin-top:12px;}
+.ans-inner{background:linear-gradient(135deg,#fdf2f8,#f5f3ff);border-radius:10px;padding:16px;border:1px solid #ddd6fe;}
+.ans-result{font-size:14px;font-weight:700;color:#7c3aed;margin-bottom:8px;}
+.ans-exp{font-size:13px;color:var(--dark);margin-bottom:10px;line-height:1.6;}
+.ans-formula{background:white;border-radius:8px;padding:10px 14px;font-family:monospace;font-size:12px;margin:8px 0;border:1px solid #ddd6fe;}
+.tip{background:white;border-radius:8px;padding:10px 14px;font-size:12px;color:#0369a1;border-left:3px solid var(--accent2);}
+.tip strong{display:block;margin-bottom:3px;}
+.revbtn{background:var(--primary);color:white;border:none;border-radius:20px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:10px;}
+.revbtn:hover{background:var(--accent);}
+.revbtn.revealed{background:var(--gray);}
+.score-board{background:white;border-radius:14px;padding:16px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:center;}
+.nav-bar{background:#0f1f30;padding:14px 20px;text-align:center;margin-top:20px;}
+.nav-bar a{color:#a5f3fc;text-decoration:none;font-size:12px;font-weight:600;margin:0 10px;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .hero{padding:28px 14px 20px;}
+  .hero h1{font-size:clamp(18px,5vw,26px);}
+  .container{padding:12px;}
+  .qcard{padding:16px;border-radius:10px;}
+  .qtext{font-size:13px;}
+  .ch{font-size:12px;padding:10px 12px;}
+  .ans-inner{padding:14px;}
+  .ans-exp{font-size:12px;}
+  .tip{font-size:11px;}
+  .lecture{padding:16px;border-radius:10px;}
+  .lecture h2{font-size:14px;}
+  .lecture p,.lecture .warn{font-size:12px;}
+  .nav-bar{padding:12px 14px;}
+  .nav-bar a{font-size:11px;margin:0 6px;}
+  .stats-row{gap:10px;}
+  .stat{padding:6px 12px;}
+  .stat .v{font-size:18px;}
+}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>💰 財務基礎 練習問題</html>
+  <p>BS・PL・CFを読んで、数字で経営を語る力をつける</p>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-text" id="progressText">0 / 20 問 回答済み</div>
+  <div class="stats-row">
+    <div class="stat"><div class="v">20</div><div class="l">問</div></div>
+    <div class="stat"><div class="v">60</div><div class="l">分目安</div></div>
+    <div class="stat"><div class="v" id="scoreDisp">0</div><div class="l">正解（選択問題）</div></div>
+  </div>
+</div>
+
+<div class="container">
+<div class="lecture">
+  <h2>📖 財務3表とは？（5分で読む）</h2>
+  <p>企業の財務状況を表す3つの書類。M&Aの評価・PMI後の経営管理・コンサル提案の根拠に必ず使う。</p>
+  <div class="three-stmt">
+    <div class="bs-card"><h4>BS（貸借対照表）</h4>ある時点での「財産と借金の状態」。資産＝負債＋純資産。</div>
+    <div class="pl-card"><h4>PL（損益計算書）</h4>一定期間の「儲けの記録」。売上高から各種費用を引いて利益を計算。</div>
+    <div class="cf-card"><h4>CF（キャッシュフロー）</h4>一定期間の「現金の増減」。利益があってもCFが悪いと倒産リスクあり。</div>
+  </div>
+  <div class="formula-box">
+【PLの基本構造】<br>
+売上高<br>
+− 売上原価（仕入・製造コスト）<br>
+＝ 売上総利益（粗利）<br>
+− 販売費及び一般管理費（販管費）<br>
+＝ 営業利益<br>
+± 営業外損益<br>
+＝ 経常利益<br>
+± 特別損益<br>
+＝ 税引前当期純利益 → 法人税等を引いて → 当期純利益
+  </div>
+  <div class="warn">⚠️ 最重要：「黒字倒産」が起きる理由→ PLは利益があっても、CFで現金が出ていけば会社は倒産する。「利益≠現金」を理解することが財務の第一歩。</div>
+</div>
+
+<div class="score-board">
+  <h3 style="font-size:14px;color:var(--gray);margin-bottom:4px;">選択問題スコア</h3>
+  <span style="font-size:40px;font-weight:900;color:var(--primary)" id="scoreVal">0</span><span style="font-size:18px;color:var(--gray);"> / 10点</span>
+</div>
+
+<div class="section-label sl-basic">SECTION A ― 財務3表の項目識別（Q1〜Q5）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q1</span><span class="qtype">項目識別</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">以下の項目をBS・PL・CFのどれに分類するか答えよ。</p>
+  <p class="qsub">①売上高　②現金及び預金　③買掛金　④営業利益　⑤減価償却費（P/L計上）　⑥長期借入金　⑦売上総利益（粗利）　⑧設備投資額（有形固定資産取得）</p>
+  <button class="revbtn" onclick="revealAns('a1',this)">答えを見る ▼</button>
+  <div class="ans" id="a1"><div class="ans-inner">
+    <div class="ans-result">📝 分類答え</div>
+    <p class="ans-exp">①PL（売上高）②BS（資産の部・流動資産）③BS（負債の部・流動負債）④PL（利益段階）⑤PL（費用）＋CFにも影響（CF計算書では足し戻す）⑥BS（負債の部・固定負債）⑦PL（利益段階）⑧CF（投資活動）<br><br>⑤の減価償却費は「PLでは費用計上されるが現金支出がない」ため、CF計算書では「利益に足し戻す」処理をする。これが「利益とCFが異なる」最大の理由の一つ。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>M&A対象企業のDDで「BS・PL・CFを5分で概観する」ためのチェックポイント：BS＝純資産（会社の体力）、PL＝営業利益率（収益性）、CF＝営業CFがプラスか（現金創出力）の3点を最初に確認。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q2</span><span class="qtype">選択問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">「売上高が5億円あるのに現金が底をついて倒産した」。この原因として最も考えられるものはどれか？</p>
+  <div class="choices" id="ch2">
+    <button class="ch" onclick="checkMCQ(this,'ch2','a2',false)">A）PLの売上高が実際より多く記載されていた</button>
+    <button class="ch" onclick="checkMCQ(this,'ch2','a2',true)">B）売上の回収が遅く（売掛金が膨大）、仕入の支払いが先行していた（黒字倒産）</button>
+    <button class="ch" onclick="checkMCQ(this,'ch2','a2',false)">C）営業利益がマイナスだった</button>
+    <button class="ch" onclick="checkMCQ(this,'ch2','a2',false)">D）従業員が多すぎた</button>
+  </div>
+  <div class="ans" id="a2"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B（黒字倒産の典型）</div>
+    <p class="ans-exp">PLで利益が出ていても、入金タイミング（売掛金の回収）が遅く出金タイミング（買掛金・仕入れの支払）が早ければ、現金が枯渇する。これが「黒字倒産（資金繰り倒産）」。CFステートメントの「営業CF」がマイナスになっていると警戒信号。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>中小企業のDD（デューデリジェンス）では「PLの利益よりCFの実態」を重視する。「売掛金の回収サイト（支払い期日）は？」「買掛金の支払いサイトは？」という運転資本の確認がDDの重要チェックポイント。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q3</span><span class="qtype">選択問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">「BS（貸借対照表）」で必ず成立する等式はどれか？</p>
+  <div class="choices" id="ch3">
+    <button class="ch" onclick="checkMCQ(this,'ch3','a3',false)">A）資産 ＝ 負債</button>
+    <button class="ch" onclick="checkMCQ(this,'ch3','a3',true)">B）資産 ＝ 負債 ＋ 純資産</button>
+    <button class="ch" onclick="checkMCQ(this,'ch3','a3',false)">C）売上 ＝ 資産 ＋ 負債</button>
+    <button class="ch" onclick="checkMCQ(this,'ch3','a3',false)">D）純資産 ＝ 売上 − 費用</button>
+  </div>
+  <div class="ans" id="a3"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">BSの黄金等式：資産（左辺）＝ 負債＋純資産（右辺）。左辺は「財産の使い方（何に投じているか）」、右辺は「財産の調達先（どこから資金を集めたか）」。この等式が成立しなければ仕訳ミス。M&AのDDで最初に確認するのはこの等式とBSの「純資産の大きさ」。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>純資産がマイナス（債務超過）の企業を買収する場合、「買収価格＋追加資本注入が必要」になる。債務超過企業の買収はリスクが高く、事前のDD（財務調査）が特に重要。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q4</span><span class="qtype">穴埋め</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">以下のPL（一部）の★を埋めよ。</p>
+  <table class="pl-table">
+    <tr><td class="head">売上高</td><td style="text-align:right">100,000千円</td></tr>
+    <tr><td class="sub">− 売上原価</td><td style="text-align:right">60,000千円</td></tr>
+    <tr><td class="total">売上総利益（粗利）★①</td><td style="text-align:right"><span class="blank-cell">　　　　</span></td></tr>
+    <tr><td class="sub">− 販管費</td><td style="text-align:right">25,000千円</td></tr>
+    <tr><td class="total">営業利益　★②</td><td style="text-align:right"><span class="blank-cell">　　　　</span></td></tr>
+    <tr><td class="sub">粗利率（★③）</td><td style="text-align:right"><span class="blank-cell">　　　</span>%</td></tr>
+    <tr><td class="sub">営業利益率（★④）</td><td style="text-align:right"><span class="blank-cell">　　　</span>%</td></tr>
+  </table>
+  <button class="revbtn" onclick="revealAns('a4',this)">答えを見る ▼</button>
+  <div class="ans" id="a4"><div class="ans-inner">
+    <div class="ans-result">📝 解答</div>
+    <div class="ans-formula">
+①売上総利益 = 100,000 − 60,000 = 40,000千円<br>
+②営業利益 = 40,000 − 25,000 = 15,000千円<br>
+③粗利率 = 40,000 ÷ 100,000 × 100 = 40%<br>
+④営業利益率 = 15,000 ÷ 100,000 × 100 = 15%
+    </div>
+    <p class="ans-exp">中小企業の営業利益率の目安：製造業3〜6%、サービス業5〜10%、IT・SaaS15〜30%。この会社（15%）はサービス/ITなら優秀。業界平均との比較が重要。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>「粗利率40%」は、売上1円に対して40銭が粗利。この40銭から販管費25銭を引いて15銭が営業利益。PMI後の収益改善でまず確認するのは「粗利率が業界平均より高いか低いか」。低ければ原価改善、高ければ販管費削減が優先。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q5</span><span class="qtype">選択問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">「減価償却費」がCF計算書（間接法）で「利益に加算」される理由はどれか？</p>
+  <div class="choices" id="ch5">
+    <button class="ch" onclick="checkMCQ(this,'ch5','a5',false)">A）減価償却費は現金収入だから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch5','a5',true)">B）PLでは費用計上されるが実際の現金支出がないため、現金ベースの利益を計算するために足し戻す</button>
+    <button class="ch" onclick="checkMCQ(this,'ch5','a5',false)">C）税務上の損金になるから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch5','a5',false)">D）固定資産の価値が増加するから</button>
+  </div>
+  <div class="ans" id="a5"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">減価償却費：設備を購入したとき現金は支出済み。その後毎年PLで費用計上されるが、この時点では現金は出ていかない（ノンキャッシュコスト）。だからCF計算では「利益（PL）に減価償却費を足し戻す」ことで現金の実態（CF）を計算する。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>M&A対象企業のバリュエーション（企業価値評価）でよく使われる「EBITDA」＝ 税引前利益＋支払利息＋減価償却費。減価償却やファイナンス構造に左右されない「本業の稼ぐ力」を示す指標として重要。</div>
+  </div></div>
+</div>
+
+<div class="section-label sl-mid">SECTION B ― 財務指標の計算（Q6〜Q10）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q6</span><span class="qtype">計算問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">以下の会社データを使って、「自己資本比率」と「ROE（自己資本利益率）」を計算せよ。</p>
+  <p class="qsub">総資産：2億円　負債：1.2億円　純資産：0.8億円　当期純利益：800万円</p>
+  <button class="revbtn" onclick="revealAns('a6',this)">答えを見る ▼</button>
+  <div class="ans" id="a6"><div class="ans-inner">
+    <div class="ans-result">📝 解答</div>
+    <div class="ans-formula">
+自己資本比率 = 純資産 ÷ 総資産 × 100<br>
+            = 8,000万円 ÷ 20,000万円 × 100 = 40%<br>
+<br>
+ROE（自己資本利益率）= 当期純利益 ÷ 純資産 × 100<br>
+                    = 800万円 ÷ 8,000万円 × 100 = 10%
+    </div>
+    <p class="ans-exp">自己資本比率40%：中小企業の目安は30%以上で健全。40%は比較的安全な財務体質。ROE10%：日本の上場企業平均は8〜10%程度。この会社は平均的か良好な水準。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>M&Aで「割安な優良企業」を探すとき、ROEが高く自己資本比率が高い企業は「収益性が高くリスクが低い」という理想的な組み合わせ。ただし業界特性も考慮が必要（銀行業は自己資本比率が低くて正常）。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q7</span><span class="qtype">計算問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">買収候補企業の「EV/EBITDA倍率」を計算せよ。（簡易的な企業価値評価に使う指標）</p>
+  <p class="qsub">企業価値（EV）：3億円　EBITDA（税引前利益＋減価償却費）：5,000万円</p>
+  <button class="revbtn" onclick="revealAns('a7',this)">答えを見る ▼</button>
+  <div class="ans" id="a7"><div class="ans-inner">
+    <div class="ans-result">📝 解答</div>
+    <div class="ans-formula">
+EV/EBITDA = 企業価値 ÷ EBITDA<br>
+           = 3億円 ÷ 5,000万円 = 6倍
+    </div>
+    <p class="ans-exp">EV/EBITDA倍率の目安：中小企業M&Aでは通常3〜8倍。6倍は適正範囲内。業種によって異なる（IT・SaaSは10〜20倍、製造業は4〜7倍が多い）。この倍率が高いほど「割高」、低いほど「割安」と判断できる（ただし成長性も考慮する）。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>「なぜEBITDAを使うのか」→ 各国の税率・財務構造の違いを除いた「本業の稼ぐ力」を比較するため。中小企業M&Aでも、買収価格の妥当性を検討するとき「EBITDA × 適正倍率」という計算をする。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q8</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">中小企業のM&A後「運転資本（WC）」が急増した。これが問題な理由はどれか？</p>
+  <div class="choices" id="ch8">
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',false)">A）BSが大きくなるから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',true)">B）運転資本の増加は現金の流出を意味し、CFが悪化して資金繰りが苦しくなるから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',false)">C）PLの費用が増えるから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',false)">D）自己資本比率が下がるから</button>
+  </div>
+  <div class="ans" id="a8"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">運転資本（WC）＝ 売掛金＋棚卸資産 − 買掛金。WCが増えるということは「回収前の売掛金が増えた」か「在庫が積み上がった」ことを意味し、現金が「社内に眠っている」状態。PMI後の混乱で請求・回収業務が滞るとWCが急増する。</p>
+    <div class="tip"><strong>💼 PMI実務メモ</strong>PMI後30〜60日で「売掛金の回収サイト」と「棚卸資産の水準」を必ず確認する。特に製造業や建設業は、PMI後の混乱で受注・納品・請求のサイクルが崩れやすい。早期の運転資本管理がCF悪化を防ぐ。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q9</span><span class="qtype">計算問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">ある中小製造業のデータから「損益分岐点売上高」を計算せよ。</p>
+  <p class="qsub">売上高：1億円　変動費：6,000万円　固定費：3,000万円</p>
+  <button class="revbtn" onclick="revealAns('a9',this)">答えを見る ▼</button>
+  <div class="ans" id="a9"><div class="ans-inner">
+    <div class="ans-result">📝 解答</div>
+    <div class="ans-formula">
+限界利益 = 売上高 − 変動費 = 1億円 − 6,000万円 = 4,000万円<br>
+限界利益率 = 4,000万円 ÷ 1億円 = 40%<br>
+<br>
+損益分岐点売上高 = 固定費 ÷ 限界利益率<br>
+               = 3,000万円 ÷ 40% = 7,500万円
+    </div>
+    <p class="ans-exp">この会社が黒字になるのは売上が7,500万円を超えたとき。現在の売上1億円は損益分岐点を2,500万円上回っており、安全余裕率25%（余裕がある状態）。PMIでコスト削減すると損益分岐点が下がり、より少ない売上で黒字になれる。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>PMI後の統合でよく生まれる「固定費の削減（2社の管理部門統合など）」は、損益分岐点を下げることで「同じ売上でも利益が増える」効果がある。コストシナジーの財務的意味がこれ。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q10</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">中小企業を買収する際、「PLの利益よりCFを重視すべき」理由として最も正確なのはどれか？</p>
+  <div class="choices" id="ch10">
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',false)">A）CFはPLより計算が簡単だから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',true)">B）中小企業は会計処理の柔軟性が高く、利益は操作されやすいが、現金の動きは偽装しにくいから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',false)">C）銀行はCFだけを見るから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',false)">D）PLは税務申告に使われないから</button>
+  </div>
+  <div class="ans" id="a10"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">PLは「計上する費用や収益の認識タイミング」によって利益が変わりうる。特に中小企業は会計基準の適用が緩い場合がある。一方、銀行通帳（現金の実際の動き）は偽装が難しい。DDでは「銀行口座の実際の入出金履歴（通帳）」を確認することが中小M&AのDDの基本。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>中小企業M&AのDDでは「過去3〜5年の銀行通帳コピー」の取得が必須。現金の実態を確認するのが最も確実な方法。「PLはきれいだが通帳の入出金がおかしい」という場合は要警戒。</div>
+  </div></div>
+</div>
+
+<div class="section-label sl-adv">SECTION C ― 財務諸表の読み取り（Q11〜Q15）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q11</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">M&A対象企業の3期比較PLで「売上高は増加しているが営業利益率が低下している」。考えられる原因として最も可能性が高いものはどれか？</p>
+  <div class="choices" id="ch11">
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">A）税率が上がった</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',true)">B）売上を増やすために値引きや広告費が増加し、販管費率が上昇した（薄利多売化）</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">C）従業員数が減った</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">D）借入金が増えた</button>
+  </div>
+  <div class="ans" id="a11"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">「売上増加＋利益率低下」は「量で稼いでいるが質が落ちている」サイン。よくあるパターン：①値引き攻勢で売上を増やしたが粗利率が低下、②売上拡大のための広告・人員増強で販管費が急増。DDでは「売上の内訳（どの顧客・商品が増えたか）」と「費用の内訳（何が増えたか）」を必ず確認。</p>
+    <div class="tip"><strong>💼 PMI実務メモ</strong>「薄利多売化している企業のPMI」では、まず「高利益率の顧客・商品に集中する選択と集中」がシナジー戦略の中心になる。量を追うのをやめて質を追う方向への転換がPMIの最初の課題になることが多い。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q12</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">BSを見て「流動比率が100%を大きく下回っている」場合、どのようなリスクが考えられるか？</p>
+  <div class="choices" id="ch12">
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">A）売上が少ない</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',true)">B）短期間で返済が必要な負債（流動負債）が短期で換金できる資産（流動資産）を上回っており、短期の資金繰りリスクがある</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">C）純資産が少ない</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">D）設備投資が不足している</button>
+  </div>
+  <div class="ans" id="a12"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">流動比率＝流動資産÷流動負債×100。100%未満は「1年以内に支払うべき借金が、1年以内に換金できる資産より多い」状態。一般的に120〜150%以上が健全とされる。中小企業M&Aのターゲットとして、流動比率100%以下の企業は追加資金注入（買収後に運転資金を入れる）が必要になることがある。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>PMI後30日以内に「資金繰り表（向こう6ヶ月のCFシミュレーション）」を必ず作成する。特に買収直後は出費が多く（統合コスト）、流動比率が悪い会社は急速に資金繰りが悪化するリスクがある。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q13</span><span class="qtype">読み取り</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">以下のPLから、この会社の「強み・課題・PMIで優先すべき改善ポイント」を読み取れ。</p>
+  <p class="qsub">売上高：5億円／粗利率：55%（業界平均35%）／販管費率：48%（業界平均25%）／営業利益率：7%（業界平均10%）</p>
+  <button class="revbtn" onclick="revealAns('a13',this)">答えを見る ▼</button>
+  <div class="ans" id="a13"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答（財務分析の読み取り）</div>
+    <p class="ans-exp"><strong>強み：</strong>粗利率55%は業界平均35%を大きく上回る。商品・サービスの「価値が高く値引きされていない」か「原価が低い（効率的な製造・調達）」ことを示す。ここは守るべき核心的強み。<br><br><strong>課題：</strong>販管費率48%が業界平均25%の約2倍。粗利率は高いのに最終的な営業利益率は業界平均以下（7%<10%）になっている。販管費が収益を食い潰している。<br><br><strong>PMIで優先すべき改善：</strong>販管費の内訳分解（人件費？広告費？交際費？）が最優先。具体的には「何に48%使っているか」を分析し、削減可能な費用を特定。粗利率の強みは維持しつつ、販管費を業界平均に近づけるだけで営業利益率が大幅改善できる。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>「粗利率が高いのに最終利益が低い」企業はPMIの「コストシナジー」が最も効きやすいタイプ。販管費の統合（2社の管理部門を1つに）や無駄な固定費削減で、大きな利益改善が期待できる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q14</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">M&A対象企業のBSに「のれん（goodwill）」という項目がある場合、これは何を意味するか？</p>
+  <div class="choices" id="ch14">
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">A）不動産の価値が高いこと</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',true)">B）過去のM&Aで、純資産より高い価格を支払った超過分（ブランド・顧客・技術などの無形価値）</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">C）社長の個人資産</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">D）未払いの税金</button>
+  </div>
+  <div class="ans" id="a14"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">のれん＝買収価格−純資産の差額。「なぜ純資産より高く買うのか」→ ブランド・顧客リスト・技術・ノウハウなど「BSに載らない無形価値」に対して支払う対価。のれんは将来にわたって償却（費用化）される。PMI Manager活用企業のBSには将来「のれん」が計上されることになる。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>「のれんの減損」：PMI後に期待していたシナジーが出なかった場合、のれんの価値が毀損したとして「のれん減損損失」をPLに計上しなければならない。これがM&A失敗の最大の財務的痛手の一つ。PMIの重要性はここにある。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q15</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">PMI後の統合企業の「財務統合」で最初に行うべき優先度が最も高い作業はどれか？</p>
+  <div class="choices" id="ch15">
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">A）2社の売上高を合算したPLを作成する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',true)">B）会計方針・決算期の統一と、向こう6ヶ月の資金繰り表の作成</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">C）経費精算ルールをすぐ統一する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">D）のれんの計算をする</button>
+  </div>
+  <div class="ans" id="a15"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">財務統合でDay1〜30の最優先事項：①会計方針（棚卸資産の評価方法・減価償却方法など）を統一してから連結財務諸表が作れるようになる。②資金繰り表＝「現金が6ヶ月後に尽きないか」を確認。PMI直後は統合コストで現金が出やすく、CF管理が最も重要。</p>
+    <div class="tip"><strong>💼 PMI Manager活用</strong>PMI Managerの「財務統合チェックリスト」にこれらの項目が入る。Day1〜30のタスクとして「会計方針確認・資金繰り表作成」を管理することがプロダクトの中核価値の一つ。</div>
+  </div></div>
+</div>
+
+<div class="section-label sl-adv">SECTION D ― M&A/PMI文脈の財務（Q16〜Q20）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q16</span><span class="qtype">実践ケース</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">【ケース】以下の企業を買収するかどうか財務的な初期判断を行え。<br>売上高2億円、営業利益1,000万円（5%）、純資産5,000万円、有利子負債8,000万円、営業CF800万円、業界平均営業利益率8%</p>
+  <button class="revbtn" onclick="revealAns('a16',this)">答えを見る ▼</button>
+  <div class="ans" id="a16"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答（初期財務判断）</div>
+    <p class="ans-exp"><strong>ポジティブ要因：</strong>営業CFが800万円あり（黒字倒産リスクは低い）。事業は継続しており売上も2億円で規模感あり。<br><br><strong>ネガティブ要因：</strong>①営業利益率5%は業界平均8%を下回る（収益性に課題）②純資産5,000万円に対して有利子負債8,000万円（D/Eレシオ1.6倍、高め）③買収後に財務統合コストが発生するとCFが悪化する可能性。<br><br><strong>初期判断：</strong>「改善余地あり」の企業。収益性改善（営業利益率を8%に近づける）ができれば価値向上余地がある。ただし有利子負債が多いため「買収価格 + 負債引き受け = 実質コスト」の計算が重要。詳細DDが必要。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>この初期財務判断を「5分で口頭で言える」状態になることが目標。先輩から「この会社どう思う？」と聞かれたとき、上記のような「ポジティブ・ネガティブ・判断」を素早く出せると評価が上がる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q17</span><span class="qtype">実践ケース</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">PMI後のシナジー目標を財務的に計算せよ。「管理部門の統合による固定費削減2,000万円/年」というシナジーは、仮に営業利益率が現在5%の場合、「売上で稼ぐと何億円に相当するか」を答えよ。</p>
+  <button class="revbtn" onclick="revealAns('a17',this)">答えを見る ▼</button>
+  <div class="ans" id="a17"><div class="ans-inner">
+    <div class="ans-result">📝 解答</div>
+    <div class="ans-formula">
+コスト削減2,000万円 ÷ 営業利益率5% = 4億円相当の売上増加と同じ効果
+    </div>
+    <p class="ans-exp">営業利益率5%の会社で利益を2,000万円増やすためには、売上を4億円増やさなければならない。しかし固定費を2,000万円削減するだけで同じ効果が得られる。これがコストシナジーの威力。「売上シナジーより実現可能性が高い」とされる理由もここにある。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>PMI Managerのシナジー管理では、コストシナジー（固定費削減効果）を「売上換算」で表示する機能があると経営者にインパクトが伝わりやすい。これをプロダクトの機能提案として出せると存在感を示せる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q18</span><span class="qtype">実践ケース</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">PMIコンサルに初めてアサインされた。先輩から「この会社の財務を3分でまとめてくれ」と言われた。どのように財務諸表を素早く読むか、確認すべき「5つのポイント」を挙げよ。</p>
+  <button class="revbtn" onclick="revealAns('a18',this)">答えを見る ▼</button>
+  <div class="ans" id="a18"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答（3分財務概観の5ポイント）</div>
+    <p class="ans-exp">①<strong>PLの規模：</strong>売上高と3期トレンド（成長？縮小？）を確認<br>②<strong>収益性：</strong>営業利益率が業界平均と比べて高い/低いか（高ければ強み、低ければ課題）<br>③<strong>BSの健全性：</strong>自己資本比率と有利子負債の水準（純資産がプラスか・借金が多すぎないか）<br>④<strong>キャッシュ：</strong>現金残高と営業CFがプラスか（マイナスならすぐ資金調達が必要なリスク）<br>⑤<strong>異常値のチェック：</strong>前年比で大きく変わった項目（急増した費用・急減した売上）を1つ特定して「なぜか」を確認</p>
+    <div class="tip"><strong>💼 実務メモ</strong>この5点を90秒で読めるようになるのが財務読解の第1ステップ。「数字が読める人」というブランドを社内で作ることで、重要な会議に呼ばれる機会が増える。財務読解はコンサルで最も差がつくスキル。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q19</span><span class="qtype">実践ケース</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">【難問】M&A対象企業のオーナー社長から「うちは毎年黒字なのに買収価格を低く言ってくる。なぜか？」と問われた。財務的な観点から説明せよ。</p>
+  <button class="revbtn" onclick="revealAns('a19',this)">答えを見る ▼</button>
+  <div class="ans" id="a19"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答（オーナーへの説明）</div>
+    <p class="ans-exp">買収価格が低い理由として考えられる財務的要因（丁寧に説明）：<br><br>①<strong>オーナー給与の調整</strong>：中小企業ではオーナー社長が「市場相場より高い給与・賞与」を取ることがある。これを「正規の経営者報酬」に調整すると利益が減少する。<br><br>②<strong>有利子負債の重さ</strong>：「企業価値（EV）＝ 買収価格＋負債引き受け」なので、借金が多いと手元に残る実際の代金（エクイティバリュー）は低くなる。<br><br>③<strong>将来リスクの割引</strong>：事業の持続可能性・オーナー依存（社長がいないと回らない）・特定顧客依存（1社に売上50%以上）などのリスクで企業価値が割り引かれる。<br><br>④<strong>PMIコストの先払い</strong>：買収後の統合コスト（システム統合・人員整理・設備更新）が見込まれる場合、その分が価格から引かれる。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>オーナー社長への価格説明はPMI Manager利用企業のコンサルでも重要なシーン。「感情論にならず、財務論理で丁寧に説明する」スキルが必要。数字の読める新入社員が担当者になることで、この説明の質が上がる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q20</span><span class="qtype">実践ケース</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">【総合】当社が2028年に買収する1号案件（売上2億円、営業利益10%、純資産3,000万円）について、①適正買収価格の概算　②PMI後3年で期待できる財務改善　③PMI成功の財務的KPIを提案せよ。</p>
+  <button class="revbtn" onclick="revealAns('a20',this)">答えを見る ▼</button>
+  <div class="ans" id="a20"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答</div>
+    <p class="ans-exp"><strong>①適正買収価格の概算：</strong><br>EBITDA≒営業利益2,000万円（簡易仮定）× 倍率5〜7倍 = 1億〜1.4億円。純資産3,000万円との比較でのれんは7,000万〜1.1億円程度発生。<br><br><strong>②PMI後3年の財務改善シナリオ：</strong><br>コストシナジー（管理部門統合）→ 固定費▲500万円/年。売上シナジー（当社顧客への紹介）→ 売上+10%（2.2億円）。3年後目標：営業利益率12〜15%（2,640〜3,300万円）<br><br><strong>③PMI成功の財務的KPI：</strong><br>・営業利益率：10%→15%（3年後）<br>・自己資本比率：向上（買収後の内部留保蓄積）<br>・のれん回収：7〜8年以内に買収価格相当のCF創出<br>・投資回収率（IRR）：15%以上</p>
+    <div class="tip"><strong>💼 実務メモ</strong>このような「買収前シミュレーション→PMI計画→KPI設定」の流れが、当社が2028年以降に行うことの財務的骨格。これを自分で作れるようになることが、PMIエージェントとしての到達目標。</div>
+  </div></div>
+</div>
+
+<div style="background:white;border-radius:14px;padding:20px;margin-top:20px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.07);">
+  <h3 style="font-size:16px;color:var(--dark);margin-bottom:8px;">🎉 財務基礎 全20問完了！</h3>
+  <p style="font-size:13px;color:var(--gray);">最後は「PMI基礎」。これまでの知識を全て統合して実践力を仕上げよう。</p>
+  <a href="練習_PMI基礎.html" style="display:inline-block;margin-top:12px;background:#0f766e;color:white;text-decoration:none;font-weight:700;font-size:13px;padding:10px 24px;border-radius:20px;">PMI基礎へ進む →</a>
+</div>
+</div>
+<div class="nav-bar">
+  <a href="練習_SWOT分析.html">← SWOT分析</a>
+  <a href="フレームワーク練習問題_ハブ.html">問題集トップ</a>
+  <a href="練習_PMI基礎.html">PMI基礎 →</a>
+</div>
+<script>
+let answered=0,score=0,mcqAnswered={};
+function revealAns(id,btn){const el=document.getElementById(id);if(el.style.display==='none'||el.style.display===''){el.style.display='block';btn.textContent='閉じる ▲';btn.classList.add('revealed');if(!btn.dataset.counted){btn.dataset.counted='1';answered++;updateProgress();}}else{el.style.display='none';btn.textContent='答えを見る ▼';btn.classList.remove('revealed');}}
+function checkMCQ(btn,chId,ansId,correct){if(mcqAnswered[chId])return;mcqAnswered[chId]=true;const choices=document.getElementById(chId).querySelectorAll('.ch');choices.forEach(c=>{c.disabled=true;if(c.onclick.toString().includes(',true)'))c.classList.add('correct');});if(!correct)btn.classList.add('wrong');document.getElementById(ansId).style.display='block';if(correct){score++;document.getElementById('scoreVal').textContent=score;document.getElementById('scoreDisp').textContent=score;}answered++;updateProgress();}
+function updateProgress(){const pct=Math.min(Math.round(answered/20*100),100);document.getElementById('progressBar').style.width=pct+'%';document.getElementById('progressText').textContent=answered+' / 20 問 回答済み';}
+</script>
+</body>
+</html>

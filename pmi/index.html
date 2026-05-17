@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PMI学習セット｜新入社員向け完全学習パッケージ</title>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PMI学習">
+<meta name="theme-color" content="#1A1A1A">
+<link rel="apple-touch-icon" href="icon-192.png">
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+</script>
+<style>
+/* ===== PASSWORD SCREEN ===== */
+#pw-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #0f172a;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 24px;
+  transition: opacity .4s ease;
+}
+#pw-screen.hidden { opacity: 0; pointer-events: none; }
+.pw-logo {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  color: rgba(255,255,255,.35); text-transform: uppercase;
+  margin-bottom: 48px;
+}
+.pw-card {
+  width: 100%; max-width: 360px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  padding: 36px 32px;
+}
+.pw-title {
+  font-size: 22px; font-weight: 800; color: #fff;
+  line-height: 1.3; margin-bottom: 6px;
+}
+.pw-sub {
+  font-size: 13px; color: rgba(255,255,255,.4);
+  margin-bottom: 28px; line-height: 1.6;
+}
+.pw-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  color: rgba(255,255,255,.35); text-transform: uppercase;
+  margin-bottom: 8px; display: block;
+}
+.pw-input {
+  width: 100%; background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px; padding: 14px 16px;
+  font-size: 16px; color: #fff; font-family: inherit;
+  outline: none; transition: border-color .2s;
+  -webkit-appearance: none;
+}
+.pw-input:focus { border-color: rgba(255,255,255,.35); }
+.pw-input::placeholder { color: rgba(255,255,255,.2); }
+.pw-error {
+  font-size: 12px; color: #f87171;
+  margin-top: 8px; min-height: 18px;
+  display: none;
+}
+.pw-error.show { display: block; }
+.pw-btn {
+  width: 100%; margin-top: 20px;
+  background: #2563eb; color: #fff;
+  border: none; border-radius: 10px;
+  padding: 15px; font-size: 15px; font-weight: 700;
+  font-family: inherit; cursor: pointer;
+  transition: background .2s, transform .1s;
+  -webkit-appearance: none;
+}
+.pw-btn:hover  { background: #1d4ed8; }
+.pw-btn:active { transform: scale(.98); }
+.pw-footer {
+  margin-top: 32px; font-size: 11px;
+  color: rgba(255,255,255,.2); text-align: center;
+}
+</style>
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'BIZ UDGothic', 'Meiryo', sans-serif;
+  background: #FAFAF8;
+  color: #1A1A1A;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; height: auto; display: block; }
+
+/* ===== HEADER ===== */
+.site-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 32px; height: 60px;
+  background: rgba(250,250,248,.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid #E8E5E0;
+}
+.header-logo { font-size: 13px; font-weight: 700; letter-spacing: 1px; }
+.header-logo span { color: #888; font-weight: 400; }
+.header-nav { display: flex; gap: 24px; font-size: 12px; color: #666; }
+.header-nav a:hover { color: #1A1A1A; }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: auto;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 80px 48px 48px;
+  position: relative; overflow: hidden;
+  background: #F2F0EB;
+}
+.hero-bg-num {
+  position: absolute; right: -20px; top: 50%;
+  transform: translateY(-50%);
+  font-size: clamp(200px, 30vw, 400px);
+  font-weight: 900;
+  color: rgba(0,0,0,.04);
+  line-height: 1; pointer-events: none; select: none;
+  letter-spacing: -20px;
+}
+.hero-illust {
+  position: absolute; right: 48px; top: 50%; transform: translateY(-45%);
+  width: clamp(200px, 30vw, 380px); opacity: .85;
+}
+.hero-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 3px;
+  color: #888; text-transform: uppercase; margin-bottom: 20px;
+}
+.hero-title {
+  font-size: clamp(24px, 3.5vw, 44px);
+  font-weight: 900; line-height: 1.1; letter-spacing: -1.5px;
+  margin-bottom: 24px; max-width: 680px;
+}
+.hero-title em { font-style: normal; color: #2563EB; }
+.hero-desc { font-size: 15px; color: #666; max-width: 520px; margin-bottom: 40px; line-height: 1.8; }
+.hero-stats {
+  display: flex; gap: 32px; flex-wrap: wrap;
+}
+.hero-stat { }
+.hero-stat .hs-val { font-size: 32px; font-weight: 900; line-height: 1; color: #1A1A1A; }
+.hero-stat .hs-lbl { font-size: 11px; color: #888; margin-top: 4px; letter-spacing: .5px; }
+.hero-divider { width: 48px; height: 2px; background: #1A1A1A; margin: 40px 0 0; }
+
+/* ===== SECTION STRUCTURE ===== */
+.section { padding: 80px 48px; }
+.section-inner { max-width: 900px; margin: 0 auto; }
+.section-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 48px; }
+.section-label { font-size: 11px; font-weight: 700; letter-spacing: 3px; color: #888; text-transform: uppercase; white-space: nowrap; }
+.section-line { flex: 1; height: 1px; background: #E8E5E0; }
+.section-title { font-size: clamp(22px, 3.5vw, 32px); font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+.section-desc { font-size: 14px; color: #666; }
+@media (max-width: 768px) {
+  .hero { padding: 72px 20px 32px; }
+  .hero-illust { display: none; }
+  .section { padding: 40px 16px; }
+  .site-header { padding: 0 16px; }
+  .section-header { margin-bottom: 24px; }
+  .curr-wrap { padding: 0 0; }
+  .phase-label { margin: 24px 0 10px; }
+  .case-cta { padding: 20px 18px; border-radius: 8px; }
+  .how-grid { gap: 1px; }
+  .how-card { padding: 18px 14px; }
+  .how-num { font-size: 28px; }
+  .related-grid { gap: 1px; }
+}
+
+/* ===== HOW TO SECTION ===== */
+.how-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2px; border: 1px solid #E8E5E0; border-radius: 2px;
+  overflow: hidden; background: #E8E5E0;
+}
+.how-card {
+  background: #FAFAF8; padding: 28px 24px;
+}
+.how-num { font-size: 40px; font-weight: 900; color: #E8E5E0; line-height: 1; margin-bottom: 14px; }
+.how-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.how-card p { font-size: 12px; color: #888; line-height: 1.7; }
+
+/* ===== CURRICULUM ===== */
+.phase-label {
+  display: flex; align-items: center; gap: 12px;
+  margin: 40px 0 16px;
+}
+.ph-num { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: #888; }
+.ph-line { flex: 1; height: 1px; background: #E8E5E0; }
+.ph-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  border: 1px solid currentColor; padding: 2px 10px; border-radius: 100px;
+}
+.ph-basic { color: #16a34a; }
+.ph-middle { color: #2563eb; }
+.ph-advanced { color: #7c3aed; }
+.ph-final { color: #dc2626; }
+
+/* === CURRICULUM ITEM (PC) === */
+.curr-item {
+  display: grid; grid-template-columns: 52px 1fr 1fr;
+  gap: 0; border-bottom: 1px solid #E8E5E0;
+  transition: background .15s;
+}
+.curr-item:hover { background: #F5F3EF; }
+.curr-step-col {
+  border-right: 1px solid #E8E5E0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px 8px;
+}
+.curr-step-num {
+  font-size: 11px; font-weight: 700; color: #BBBBB5;
+  letter-spacing: 1px; writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+.curr-learn, .curr-practice {
+  padding: 18px 20px; display: flex; flex-direction: column;
+  justify-content: center;
+}
+.curr-learn { border-right: 1px solid #E8E5E0; }
+.curr-fw { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.curr-desc { font-size: 12px; color: #888; margin-bottom: 8px; }
+.curr-btn {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  letter-spacing: .5px; padding: 4px 12px;
+  border-radius: 100px; border: 1px solid transparent;
+}
+.btn-learn { background: #1A1A1A; color: #fff; border-color: #1A1A1A; }
+.btn-practice { background: transparent; color: #2563EB; border-color: #2563EB; }
+.curr-practice .cp-meta { font-size: 11px; color: #888; margin-bottom: 6px; }
+
+/* === CURRICULUM ITEM (スマホ) === */
+@media (max-width: 640px) {
+  /* PC専用テキスト/SP専用テキスト */
+  .pc-only { display: none; }
+  .sp-only { display: block; }
+
+  /* ヘッダーナビ：文字小さく */
+  .header-nav { gap: 12px; font-size: 11px; }
+  .header-nav a:nth-last-child(-n+2) { display: none; }
+
+  /* ヒーロー */
+  .hero { padding: 72px 16px 28px; }
+  .hero-title { font-size: clamp(22px, 6vw, 32px); letter-spacing: -1px; }
+  .hero-desc { font-size: 13px; }
+  .hero-stats { gap: 20px; }
+  .hero-stat .hs-val { font-size: 26px; }
+
+  /* セクション */
+  .section { padding: 48px 16px; }
+  .section-title { font-size: 19px; }
+
+  /* フェーズラベル */
+  .phase-label { gap: 8px; }
+  .ph-tag { font-size: 9px; padding: 2px 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px; }
+
+  /* カリキュラムカード */
+  .curr-item {
+    display: block;
+    border: 1px solid #E8E5E0;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .curr-step-col { display: none; }
+  .curr-learn {
+    border-right: none;
+    border-bottom: 1px solid #E8E5E0;
+    padding: 14px 16px 12px;
+  }
+  .curr-fw { font-size: 14px; line-height: 1.4; }
+  .curr-desc { font-size: 12px; }
+  .curr-btn { font-size: 11px; padding: 5px 14px; }
+
+  .curr-practice {
+    display: flex !important;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #FAFAF8;
+    flex-wrap: wrap;
+  }
+  .curr-practice .cp-meta { margin-bottom: 0; font-size: 10px; color: #999; }
+  .btn-practice { font-size: 11px; padding: 5px 14px; white-space: nowrap; }
+
+  /* ケーススタディCTA */
+  .case-cta { grid-template-columns: 1fr; gap: 16px; padding: 24px 20px; }
+
+  /* 関連リンク */
+  .related-grid { grid-template-columns: 1fr; }
+  .related-card { padding: 20px 18px; }
+
+  /* フッター */
+  .site-footer { padding: 20px 16px; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .footer-links { flex-wrap: wrap; gap: 12px; }
+}
+
+/* ===== CASE STUDY CTA ===== */
+.case-cta {
+  margin-top: 40px;
+  background: #1A1A1A; color: #FAFAF8;
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: center; gap: 24px;
+  padding: 32px 36px; border-radius: 2px;
+}
+@media (max-width: 600px) { .case-cta { grid-template-columns: 1fr; } }
+.case-cta h3 { font-size: 17px; font-weight: 800; margin-bottom: 6px; }
+.case-cta p { font-size: 12px; color: rgba(255,255,255,.6); }
+.case-cta a {
+  white-space: nowrap; background: #FAFAF8; color: #1A1A1A;
+  font-size: 12px; font-weight: 700; padding: 12px 24px;
+  border-radius: 100px; letter-spacing: .5px;
+}
+
+/* ===== RELATED LINKS ===== */
+.related-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2px; background: #E8E5E0; border: 1px solid #E8E5E0;
+  border-radius: 2px; overflow: hidden;
+}
+.related-card { background: #FAFAF8; padding: 28px 24px; transition: background .15s; }
+.related-card:hover { background: #F5F3EF; }
+.related-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.related-card p { font-size: 12px; color: #888; }
+
+/* ===== FOOTER ===== */
+.site-footer {
+  border-top: 1px solid #E8E5E0; padding: 32px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 11px; color: #888; flex-wrap: wrap; gap: 12px;
+  background: #FAFAF8;
+}
+.footer-links { display: flex; gap: 20px; }
+.footer-links a:hover { color: #1A1A1A; }
+.sp-only { display: none; }
+</style>
+</head>
+<body>
+
+<!-- ===== パスワード画面 ===== -->
+<div id="pw-screen">
+  <div class="pw-logo">社内限定 — PMI学習セット</div>
+  <div class="pw-card">
+    <div class="pw-title">PMI学習セット</div>
+    <div class="pw-sub">社内メンバー専用です。<br>パスワードを入力してください。</div>
+    <label class="pw-label" for="pw-input">パスワード</label>
+    <input id="pw-input" class="pw-input" type="password"
+           placeholder="パスワードを入力" autocomplete="current-password">
+    <div id="pw-error" class="pw-error">パスワードが違います。確認してください。</div>
+    <button class="pw-btn" id="pw-btn" onclick="checkPassword()">ログイン →</button>
+  </div>
+  <div class="pw-footer">© 2026</div>
+</div>
+
+<script>
+  // ── パスワード設定（変更する場合はここを書き換える） ──
+  const CORRECT_PASSWORD = 'keitatensai';
+  const STORAGE_KEY = 'pmi_auth_v1';
+
+  // 既にログイン済みなら即座にスキップ
+  (function() {
+    if (localStorage.getItem(STORAGE_KEY) === 'ok') {
+      document.getElementById('pw-screen').style.display = 'none';
+    }
+  })();
+
+  function checkPassword() {
+    const val = document.getElementById('pw-input').value;
+    const err = document.getElementById('pw-error');
+    if (val === CORRECT_PASSWORD) {
+      localStorage.setItem(STORAGE_KEY, 'ok');
+      const screen = document.getElementById('pw-screen');
+      screen.classList.add('hidden');
+      setTimeout(() => screen.remove(), 420);
+    } else {
+      err.classList.add('show');
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').focus();
+      // 3秒後にエラーメッセージを消す
+      setTimeout(() => err.classList.remove('show'), 3000);
+    }
+  }
+
+  // Enterキーでもログインできる
+  document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('pw-input');
+    if (input) {
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') checkPassword();
+      });
+      input.focus();
+    }
+  });
+</script>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-logo">PMI学習セット</div>
+  <nav class="header-nav">
+    <a href="#curriculum">カリキュラム</a>
+    <a href="#howto">学習の流れ</a>
+    <a href="フレームワーク練習問題_ハブ.html">練習問題</a>
+    <a href="成長ロードマップ_新入社員向け.html">ロードマップ</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-num" aria-hidden="true">11</div>
+  <img class="hero-illust" src="https://loosedrawing.com/assets/media/illustrations/png/1200.png" alt="学習イメージ">
+  <div class="hero-label">PMI Learning Package 2026</div>
+  <h1 class="hero-title">コンサル未経験から<br><em>PMIのプロ</em>へ。</h1>
+  <p class="hero-desc">11のフレームワーク × 220問の練習問題 × 総合ケーススタディ。<br>全てこのフォルダ内に収録。順番通りに進めれば力がつく設計。</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hs-val">11</div><div class="hs-lbl">学習教材</div></div>
+    <div class="hero-stat"><div class="hs-val">220</div><div class="hs-lbl">練習問題</div></div>
+    <div class="hero-stat"><div class="hs-val">20h+</div><div class="hs-lbl">総学習時間</div></div>
+  </div>
+  <div class="hero-divider"></div>
+</section>
+
+<!-- HOW TO STUDY -->
+<section class="section" id="howto" style="background:#fff;">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-label">How to study</span>
+      <div class="section-line"></div>
+    </div>
+    <h2 class="section-title">学ぶ → 解く の2ステップで定着させる</h2>
+    <p class="section-desc" style="margin-bottom:32px;">読んだだけでは身につかない。この順番を守ること。</p>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">01</div>
+        <h4>学習教材を読む</h4>
+        <p>各フレームワークの概念・使い方・実例を20〜30分で把握する</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">02</div>
+        <h4>ノートに書いてから解く</h4>
+        <p>「答えを見る」前に必ず自分の答えをノートに書く</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">03</div>
+        <h4>間違えたら教材に戻る</h4>
+        <p>理解の穴を学習教材で再確認して潰す</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">04</div>
+        <h4>翌日の実務で使う</h4>
+        <p>使ってこそ定着。実務で意識的に適用する</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section class="section" id="curriculum">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-label">Curriculum</span>
+      <div class="section-line"></div>
+    </div>
+    <h2 class="section-title">学習教材 → 練習問題 の順で進む</h2>
+    <p class="section-desc pc-only" style="margin-bottom:8px;">左列：学習教材（まずここ）　右列：練習問題（理解後に解く）</p>
+    <p class="section-desc sp-only" style="margin-bottom:8px;">まず「📖 学習」→ 理解したら「🎯 練習問題」の順で進もう</p>
+
+    <!-- BASIC -->
+    <div class="phase-label">
+      <span class="ph-num">Phase 01</span>
+      <div class="ph-line"></div>
+      <span class="ph-tag ph-basic">BASIC ― コンサル思考の基礎</span>
+    </div>
+
+    <div class="curr-item">
+      <div class="curr-step-col"><span class="curr-step-num">STEP 01</span></div>
+      <div class="curr-learn">
+        <div class="curr-fw">🔷 MECE ― モレなく・ダブりなく</div>
+        <div class="curr-desc">全ての分析の土台。コンサル最重要基礎思考。</div>
+        <a class="curr-btn btn-learn" href="学習_MECE.html">📖 学習教材を開く</a>
+      </div>
+      <div class="curr-practice">
+        <div class="cp-meta">20問 ｜ 約45分 ｜ 基礎〜応用</div>
+        <a class="curr-btn btn-practice" href="練習_MECE.html">🎯 練習問題を解く</a>
+      </div>
+    </div>
+    <div class="curr-item">
+      <div class="curr-step-col"><span class="curr-step-num">STEP 02</span></div>
+      <div class="curr-learn">
+        <div class="curr-fw">🌳 ロジックツリー ― 問題を分解する</div>
+        <div class="curr-desc">WhyとHowで問題を木状に分解する技術。</div>
+        <a class="curr-btn btn-learn" href="学習_ロジックツリー.html">📖 学習教材を開く</a>
+      </div>
+      <div class="curr-practice">
+        <div class="cp-meta">20問 ｜ 約50分 ｜ 基礎〜応用</div>
+        <a class="curr-btn btn-practice" href="練習_ロジックツリー.html">🎯 練習問題を解く</a>
+      </div>
+    </div>
+    <div class="curr-item">
+      <div class="curr-step-col"><span class="curr-step-num">STEP 03</span></div>
+      <div class="curr-learn">
+        <div class="curr-fw">🔄 PDCA ― 改善サイクルを回す</div>
+        <div class="curr-desc">計画→実行→確認→改善を継続的に回す。</div>
+        <a class="curr-btn btn-learn" href="学習_PDCA.html">📖 学習教材を開く</a>
+      </div>
+      <div class="curr-practice">
+        <div class="cp-meta">20問 ｜ 約40分 ｜ 基礎〜実践</div>
+        <a class="curr-btn btn-practice" href="練習_PDCA.html">🎯 練習問題を解く</a>
+      </div>
+    </div>
+
+    <!-- MIDDLE -->
+    <div class="phase-label" style="margin-top:32px;">
+      <span class="ph-num">Phase 02</span>
+      <div class="ph-line"></div>
+      <span class="ph-tag ph-middle">MIDDLE ― 市場・財務・戦略分析</span>
+    </div>
+
+    <div class="curr-item">
+      <div class="curr-step-col"><span class="curr-step-num">STEP 04</span></div>
+      <div class="curr-learn">
+        <div class="curr-fw">🔺 3C分析 ― 市場・競合・自社</div>
+        <div class="curr-desc">3軸で市場を分析してKSF（勝ち筋）を導く。</div>
+        <a class="curr-btn btn-learn" href="学習_3C分析.html">📖 学習教材を開く</a>
+      </div>
+      <div class="curr-practice">
+        <div class="cp-meta">20問 ｜ 約50分 ｜ 基礎〜応用</div>
+        <a class="curr-btn btn-practice" href="練習_3C分析.html">🎯 練習問題を解く</a>
+      </div>
+    </div>
+    <div class="curr-item">
+      <div class="curr-step-col"><span class="curr-step-num">STEP 05</span></div>
+      <div class="curr-learn">
+        <div class="curr-fw">⚡ SWOT分析 ― 強み・弱み・機会・脅威</div>
+        <div class="curr-desc">内外の環境を4象限で整理してクロス戦略を立てる。</div>
+        <a class="curr-btn btn-learn" href="学習_SWOT分析.html">📖 学習教材を開く</a>
+      </div>
+      <div class="curr-practice">
+        <div class="cp-meta">20問 ｜ 約50分 ｜ 基礎〜上級</div>
+        <a class="curr-btn btn-practice" href="練習_SWOT分析.html">🎯 練習問題を解く</a>
+      </div>
+    </div>
+    <div class="curr-item">
+      <div class="curr-step-col"><span class="curr-step-num">STEP 06</span></div>
+      <div class="curr-learn">
+        <div class="curr-fw">💰 財務基礎 ― BS・PL・CF</div>
+        <div class="curr-desc">財務3表を読んで企業の健康状態を数字で語る。</div>
+        <a class="curr-btn btn-learn" href="学習_財務基礎.html">📖 学習教材を開く</a>
+      </div>
+      <div class="curr-practice">
+        <div class="cp-meta">20問 ｜ 約60分 ｜ 基礎〜応用</div>
+        <a class="curr-btn btn-practice" href="練習_財務基礎.html">🎯 練習問題を解く</a>
+      </div>
+    </div>
+    <div class="curr-item">
+      <div class="curr-step-col"><span class="curr-step-num">STEP 07</span></div>
+      <div class="curr-learn">
+        <div class="curr-fw">🌐 PEST分析 ― 外部環境4軸</div>
+        <div class="curr-desc">政治・経済・社会・技術で業界の将来性を読む。</div>
+        <a class="curr-btn btn-learn" href="学習_PEST分析.html">📖 学習教材を開く</a>
+      </div>
+      <div class="curr-practice">
+        <div class="cp-meta">20問 ｜ 約50分 ｜ 応用〜実践</div>
+        <a class="curr-btn btn-practice" href="練習_PEST分析.html">🎯 練習問題を解く</a>
+      </div>
+    </div>
+
+    <!-- ADVANCED -->
+    <div class="phase-label" style="margin-top:32px;">
+      <span class="ph-num">Phase 03</span>
+      <div class="ph-line"></div>
+      <span class="ph-tag ph-advanced">ADVANCED ― PMIの核心スキル</span>
+    </div>
+
+    <div class="curr-item">
+      <div class="curr-step-col"><span class="curr-step-num">STEP 08</span></div>
+      <div class="curr-learn">
+        <div class="curr-fw">⛓️ バリューチェーン分析</div>
+        <div class="curr-desc">企業活動を分解してシナジーを発見する。</div>
+        <a class="curr-btn btn-learn" href="学習_バリューチェーン.html">📖 学習教材を開く</a>
+      </div>
+      <div class="curr-practice">
+        <div class="cp-meta">20問 ｜ 約50分 ｜ 応用〜実践</div>
+        <a class="curr-btn btn-practice" href="練習_バリューチェーン.html">🎯 練習問題を解く</a>
+      </div>
+    </div>
+    <div class="curr-item">
+      <div class="curr-step-col"><span class="curr-step-num">STEP 09</span></div>
+      <div class="curr-learn">
+        <div class="curr-fw">⚔️ 5フォース分析</div>
+        <div class="curr-desc">5つの競争要因から業界の収益性を評価する。</div>
+        <a class="curr-btn btn-learn" href="学習_5フォース.html">📖 学習教材を開く</a>
+      </div>
+      <div class="curr-practice">
+        <div class="cp-meta">20問 ｜ 約50分 ｜ 応用〜実践</div>
+        <a class="curr-btn btn-practice" href="練習_5フォース.html">🎯 練習問題を解く</a>
+      </div>
+    </div>
+    <div class="curr-item">
+      <div class="curr-step-col"><span class="curr-step-num">STEP 10</span></div>
+      <div class="curr-learn">
+        <div class="curr-fw">🔄 ADKARモデル ― 変革マネジメント</div>
+        <div class="curr-desc">人の変革を5ステップで推進する世界標準手法。</div>
+        <a class="curr-btn btn-learn" href="学習_ADKAR.html">📖 学習教材を開く</a>
+      </div>
+      <div class="curr-practice">
+        <div class="cp-meta">20問 ｜ 約50分 ｜ 応用〜実践</div>
+        <a class="curr-btn btn-practice" href="練習_ADKAR.html">🎯 練習問題を解く</a>
+      </div>
+    </div>
+    <div class="curr-item">
+      <div class="curr-step-col"><span class="curr-step-num">STEP 11</span></div>
+      <div class="curr-learn">
+        <div class="curr-fw">🤝 PMI基礎 ― M&A後統合プロセス</div>
+        <div class="curr-desc">Day1〜100〜3年の統合実行プロセス全体像。</div>
+        <a class="curr-btn btn-learn" href="学習_PMI基礎.html">📖 学習教材を開く</a>
+      </div>
+      <div class="curr-practice">
+        <div class="cp-meta">20問 ｜ 約60分 ｜ 基礎〜実践</div>
+        <a class="curr-btn btn-practice" href="練習_PMI基礎.html">🎯 練習問題を解く</a>
+      </div>
+    </div>
+
+    <!-- FINAL -->
+    <div class="phase-label" style="margin-top:32px;">
+      <span class="ph-num">Final</span>
+      <div class="ph-line"></div>
+      <span class="ph-tag ph-final">FINAL ― 総合実践演習</span>
+    </div>
+    <div class="case-cta">
+      <div>
+        <h3>🏆 PMI 総合ケーススタディ</h3>
+        <p>「鶴岡食品 × エコマート」架空M&A。全11フレームワークを1案件で使い切る90分演習。</p>
+      </div>
+      <a href="PMIケーススタディ.html">演習を始める →</a>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED -->
+<section class="section" style="background:#fff;">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-label">Related</span>
+      <div class="section-line"></div>
+    </div>
+    <h2 class="section-title" style="margin-bottom:24px;">あわせて活用してほしいページ</h2>
+    <div class="related-grid">
+      <a class="related-card" href="成長ロードマップ_新入社員向け.html">
+        <h4>📈 成長ロードマップ</h4>
+        <p>マイルストーン・資格・必読書・週次ルーティン。1〜3年の成長計画。</p>
+      </a>
+      <a class="related-card" href="事業戦略_解説_当社.html">
+        <h4>🏢 事業戦略解説</h4>
+        <p>3層ビジネスモデル・PMI Manager・2035ビジョン。</p>
+      </a>
+      <a class="related-card" href="フレームワーク練習問題_ハブ.html">
+        <h4>🎯 練習問題ハブ</h4>
+        <p>全練習問題の一覧・フレームワーク使い分け早見表。</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div>© 2026 All Rights Reserved.</div>
+  <div class="footer-links">
+    <a href="成長ロードマップ_新入社員向け.html">成長ロードマップ</a>
+    <a href="フレームワーク練習問題_ハブ.html">練習問題ハブ</a>
+    <a href="PMIケーススタディ.html">総合ケーススタディ</a>
+  </div>
+</footer>
+
+</body>
+</html>

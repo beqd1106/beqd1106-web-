@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3C分析 練習問題 20問</title>
+<style>
+:root{--primary:#16a34a;--accent:#0369a1;--accent2:#2ca8c2;--light:#f4f7fb;--dark:#0f1f30;--gray:#6b7a8d;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--light);color:var(--dark);line-height:1.7;}
+.hero{background:linear-gradient(135deg,#0f1f30,#16a34a,#0369a1);color:white;padding:40px 20px 32px;text-align:center;}
+.hero h1{font-size:clamp(20px,4vw,30px);font-weight:800;margin-bottom:8px;}
+.hero p{font-size:13px;opacity:.8;margin-bottom:16px;}
+.progress-wrap{background:rgba(255,255,255,.15);border-radius:20px;height:10px;max-width:400px;margin:0 auto 8px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,#86efac,#2ca8c2);border-radius:20px;transition:width .4s;width:0%;}
+.progress-text{font-size:12px;opacity:.8;}
+.stats-row{display:flex;gap:16px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:8px 16px;text-align:center;}
+.stat .v{font-size:20px;font-weight:800;color:#fde68a;line-height:1;}
+.stat .l{font-size:10px;opacity:.75;}
+.container{max-width:800px;margin:0 auto;padding:20px;}
+.lecture{background:white;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.08);border-left:5px solid var(--primary);}
+.lecture h2{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:10px;}
+.lecture p{font-size:13px;color:var(--gray);margin-bottom:8px;}
+.tri{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:12px 0;}
+@media(max-width:500px){.tri{grid-template-columns:1fr;}}
+.tri-card{border-radius:10px;padding:12px 14px;font-size:12px;text-align:center;}
+.c-card{background:#dcfce7;border-top:3px solid #16a34a;}
+.co-card{background:#dbeafe;border-top:3px solid #0369a1;}
+.cp-card{background:#fef3c7;border-top:3px solid #d97706;}
+.tri-card h4{font-size:13px;font-weight:700;margin-bottom:4px;}
+.formula{background:#f0fdf4;border-radius:8px;padding:12px 16px;font-size:13px;font-weight:700;color:#166534;margin:10px 0;text-align:center;}
+.warn{background:#fff8f0;border-left:3px solid #e85d26;border-radius:0 8px 8px 0;padding:10px 14px;font-size:12px;color:#92400e;margin-top:10px;}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2px;color:white;display:inline-block;padding:4px 14px;border-radius:20px;margin:16px 0 12px;}
+.sl-basic{background:#16a34a;}
+.sl-mid{background:#0369a1;}
+.sl-adv{background:#7c3aed;}
+.qcard{background:white;border-radius:14px;padding:20px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);}
+.qtop{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.qnum{background:var(--primary);color:white;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;}
+.qtype{font-size:11px;color:var(--gray);font-weight:600;}
+.qlv{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.qlv.basic{background:#dcfce7;color:#166534;}
+.qlv.mid{background:#dbeafe;color:#1e40af;}
+.qlv.adv{background:#fce7f3;color:#9d174d;}
+.qtext{font-size:14px;font-weight:600;margin-bottom:10px;line-height:1.6;}
+.qsub{font-size:12px;color:var(--gray);margin-bottom:10px;}
+.table3c{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:12px;}
+.table3c th{padding:8px 12px;text-align:left;font-weight:700;}
+.th-c{background:#dcfce7;color:#166534;}
+.th-co{background:#dbeafe;color:#1e40af;}
+.th-cp{background:#fef3c7;color:#92400e;}
+.table3c td{padding:8px 12px;border-bottom:1px solid #e2e8f0;}
+.blank{background:#fde68a;padding:1px 8px;border-radius:4px;font-weight:700;display:inline-block;}
+.choices{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.ch{text-align:left;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;background:white;cursor:pointer;font-size:13px;font-family:inherit;transition:all .2s;}
+.ch:hover{border-color:var(--accent2);background:#f0f9ff;}
+.ch.correct{border-color:#16a34a;background:#f0fdf4;color:#166534;font-weight:700;}
+.ch.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626;}
+.ch:disabled{cursor:default;}
+.ans{display:none;margin-top:12px;}
+.ans-inner{background:linear-gradient(135deg,#f0fdf4,#f0f9ff);border-radius:10px;padding:16px;border:1px solid #bbf7d0;}
+.ans-result{font-size:14px;font-weight:700;color:#166534;margin-bottom:8px;}
+.ans-exp{font-size:13px;color:var(--dark);margin-bottom:10px;line-height:1.6;}
+.tip{background:white;border-radius:8px;padding:10px 14px;font-size:12px;color:#0369a1;border-left:3px solid var(--accent2);}
+.tip strong{display:block;margin-bottom:3px;}
+.revbtn{background:var(--primary);color:white;border:none;border-radius:20px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:10px;}
+.revbtn:hover{background:var(--accent);}
+.revbtn.revealed{background:var(--gray);}
+.score-board{background:white;border-radius:14px;padding:16px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:center;}
+.nav-bar{background:#0f1f30;padding:14px 20px;text-align:center;margin-top:20px;}
+.nav-bar a{color:#a5f3fc;text-decoration:none;font-size:12px;font-weight:600;margin:0 10px;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .hero{padding:28px 14px 20px;}
+  .hero h1{font-size:clamp(18px,5vw,26px);}
+  .container{padding:12px;}
+  .qcard{padding:16px;border-radius:10px;}
+  .qtext{font-size:13px;}
+  .ch{font-size:12px;padding:10px 12px;}
+  .ans-inner{padding:14px;}
+  .ans-exp{font-size:12px;}
+  .tip{font-size:11px;}
+  .lecture{padding:16px;border-radius:10px;}
+  .lecture h2{font-size:14px;}
+  .lecture p,.lecture .warn{font-size:12px;}
+  .nav-bar{padding:12px 14px;}
+  .nav-bar a{font-size:11px;margin:0 6px;}
+  .stats-row{gap:10px;}
+  .stat{padding:6px 12px;}
+  .stat .v{font-size:18px;}
+}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>🔺 3C分析 練習問題</h1>
+  <p>市場・競合・自社を構造的に捉え、勝ち筋（KSF）を導く</p>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-text" id="progressText">0 / 20 問 回答済み</div>
+  <div class="stats-row">
+    <div class="stat"><div class="v">20</div><div class="l">問</div></div>
+    <div class="stat"><div class="v">50</div><div class="l">分目安</div></div>
+    <div class="stat"><div class="v" id="scoreDisp">0</div><div class="l">正解（選択問題）</div></div>
+  </div>
+</div>
+
+<div class="container">
+<div class="lecture">
+  <h2>📖 3C分析とは？（3分で読む）</h2>
+  <p>Customer（顧客・市場）、Competitor（競合）、Company（自社）の3視点で事業環境を分析するフレームワーク。提案書の冒頭「現状分析」で必ず登場する。</p>
+  <div class="tri">
+    <div class="tri-card c-card"><h4>Customer 顧客</h4>市場規模・成長率・顧客ニーズ・購買行動・セグメント</div>
+    <div class="tri-card co-card"><h4>Competitor 競合</h4>主要プレイヤー・強み・弱み・価格・シェア・差別化戦略</div>
+    <div class="tri-card cp-card"><h4>Company 自社</h4>強み・弱み・リソース・実績・ブランド・戦略</div>
+  </div>
+  <div class="formula">3C分析の目的：KSF（Key Success Factor ＝ 成功のカギ）を導き出すこと</div>
+  <p>3つの分析を重ね合わせて「市場が求めていて、競合がやっていなくて、自社が得意なこと」＝KSFを特定する。</p>
+  <div class="warn">⚠️ よくある失敗：自社の話を中心に据えてしまい「Company分析」になってしまう。3Cは市場（C）から始め、競合（C）を理解してから、自社（C）の位置を確認する順番が正しい。</div>
+</div>
+
+<div class="score-board">
+  <h3 style="font-size:14px;color:var(--gray);margin-bottom:4px;">選択問題スコア</h3>
+  <span style="font-size:40px;font-weight:900;color:var(--primary)" id="scoreVal">0</span><span style="font-size:18px;color:var(--gray);"> / 10点</span>
+</div>
+
+<div class="section-label sl-basic">SECTION A ― 3Cの要素を識別する（Q1〜Q5）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q1</span><span class="qtype">要素識別</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">以下の情報を「Customer・Competitor・Company」のどれに分類するか答えよ。</p>
+  <p class="qsub">①日本の事業承継M&A市場の規模は年間約13.5兆円の潜在需要がある<br>②DealRoom（米国）は英語のみ対応でUIが複雑<br>③当社は1,000社以上の業務改善実績を持つ<br>④70歳超の中小企業経営者が245万人存在する<br>⑤バリューアップ（関連会社）がAI開発を担っている</p>
+  <button class="revbtn" onclick="revealAns('a1',this)">答えを見る ▼</button>
+  <div class="ans" id="a1"><div class="ans-inner">
+    <div class="ans-result">📝 分類答え</div>
+    <p class="ans-exp">①Customer（市場規模）②Competitor（競合の弱み）③Company（自社の強み・実績）④Customer（市場ニーズの背景・潜在顧客数）⑤Company（自社リソース・グループ体制）<br><br>③と④が混同されやすい。「245万人」は顧客候補数（C=Customer）、「1,000社実績」は自社の信頼性（C=Company）。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>ヒアリングや調査で集めた情報を3Cに仕分けるだけで、提案書の「現状分析スライド」の骨格が完成する。まず情報を集め、次に3Cに仕分けるのが実務の手順。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q2</span><span class="qtype">要素識別</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">次のうち「Competitor（競合）分析」として最も重要な情報はどれか？（複数選べ）</p>
+  <p class="qsub">A）競合の主要製品・サービスと価格帯<br>B）競合の顧客満足度・NPS<br>C）自社のARR成長率<br>D）競合が参入していない市場セグメント<br>E）市場全体の成長率（CAGR）</p>
+  <button class="revbtn" onclick="revealAns('a2',this)">答えを見る ▼</button>
+  <div class="ans" id="a2"><div class="ans-inner">
+    <div class="ans-result">📝 答え：A・B・D</div>
+    <p class="ans-exp">A（製品・価格）とB（顧客満足度）は競合の強み弱みを直接示す情報。Dの「競合が未参入のセグメント」は自社の差別化機会を示す最重要情報。CはCompany（自社）情報、EはCustomer（市場）情報。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>競合調査で最も価値があるのは「競合が苦手にしていること（弱み）」と「競合が参入していない隙間（ブルーオーシャン）」。PMI Manager vs DealRoomで言えば「英語のみ・大企業向け」という競合の弱みが自社の参入根拠になる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q3</span><span class="qtype">選択問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">3C分析でKSF（成功のカギ）を導き出すには、何が「重なる部分」を探すべきか？</p>
+  <div class="choices" id="ch3">
+    <button class="ch" onclick="checkMCQ(this,'ch3','a3',false)">A）競合が得意 × 自社が得意</button>
+    <button class="ch" onclick="checkMCQ(this,'ch3','a3',true)">B）市場が求めている × 競合がやっていない × 自社が得意</button>
+    <button class="ch" onclick="checkMCQ(this,'ch3','a3',false)">C）市場が大きい × 競合が少ない</button>
+    <button class="ch" onclick="checkMCQ(this,'ch3','a3',false)">D）自社が得意 × コストが安い</button>
+  </div>
+  <div class="ans" id="a3"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">KSFは「顧客ニーズ（Customer） × 競合の手薄な部分（Competitor） × 自社の強み（Company）」の3つが重なる領域。PMI Managerで言えば：「中小企業のPMI支援ニーズ（C）× 日本語対応PMI SaaSが存在しない（Competitor）× 業務改善ノウハウ+AI（Company）」が重なった結果がKSF。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>KSFが明確になると「なぜこのビジネスが勝てるか」の説明が1文でできる。投資家・パートナー・採用候補者への説明がシャープになる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q4</span><span class="qtype">選択問題</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">3C分析の「Customer（顧客・市場）」分析で調べるべき項目として適切でないものはどれか？</p>
+  <div class="choices" id="ch4">
+    <button class="ch" onclick="checkMCQ(this,'ch4','a4',false)">A）市場規模と成長率</button>
+    <button class="ch" onclick="checkMCQ(this,'ch4','a4',false)">B）顧客のニーズと購買理由</button>
+    <button class="ch" onclick="checkMCQ(this,'ch4','a4',true)">C）自社の売上高と利益率</button>
+    <button class="ch" onclick="checkMCQ(this,'ch4','a4',false)">D）顧客セグメントと購買行動</button>
+  </div>
+  <div class="ans" id="a4"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：C</div>
+    <p class="ans-exp">自社の売上・利益はCompany（自社）分析の項目。Customer分析は「市場・顧客側」の情報を扱う。初心者がよく混同するポイントなので注意。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>提案書を書くとき「自社の強みを先に書きたくなる」衝動に注意。3CはCustomerから始める。「どんな市場か → 競合は何をしているか → だから自社はこう差別化できる」という順番で説明すると説得力が増す。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q5</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">3C分析は「静的な分析」と批判されることがある。その補い方として最も適切なのは？</p>
+  <div class="choices" id="ch5">
+    <button class="ch" onclick="checkMCQ(this,'ch5','a5',false)">A）3C分析は時代遅れなので使わない</button>
+    <button class="ch" onclick="checkMCQ(this,'ch5','a5',true)">B）PEST分析で外部環境の変化トレンドを補完し、SWOTで戦略方向を確認する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch5','a5',false)">C）3C分析だけで十分。他は不要</button>
+    <button class="ch" onclick="checkMCQ(this,'ch5','a5',false)">D）財務分析に置き換える</button>
+  </div>
+  <div class="ans" id="a5"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">3C分析は現状の「スナップショット」。市場変化のトレンド（PEST）や自社戦略の方向（SWOT）と組み合わせることで立体的な分析になる。実務では「3C → SWOT → 戦略立案」というフレームワーク連鎖が基本。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>M&A対象企業の評価では「現在の3C」だけでなく「5年後の市場はどう変わるか（PEST）」も必ず分析する。事業承継M&Aでは「2035年の市場」を見据えた投資判断が必要。</div>
+  </div></div>
+</div>
+
+<div class="section-label sl-mid">SECTION B ― 企業事例の3C分析（Q6〜Q10）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q6</span><span class="qtype">穴埋め分析</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">PMI Manager（当社）の3C分析を完成させよ。★の空欄を埋めること。</p>
+  <table class="table3c">
+    <tr><th class="th-c">Customer（市場・顧客）</th><th class="th-co">Competitor（競合）</th><th class="th-cp">Company（自社）</th></tr>
+    <tr>
+      <td>・事業承継M&A市場 潜在13.5兆円<br>・★①（70歳超の経営者）<br>・PMI失敗率約70%</td>
+      <td>・DealRoom（米）：★②<br>・中小企業庁ツール：無料だが機能限定<br>・PMI特化SaaSは日本に★③</td>
+      <td>・業務改善1,000社実績<br>・Claude API統合<br>・★④（安定キャッシュ）</td>
+    </tr>
+  </table>
+  <button class="revbtn" onclick="revealAns('a6',this)">答えを見る ▼</button>
+  <div class="ans" id="a6"><div class="ans-inner">
+    <div class="ans-result">📝 解答例</div>
+    <p class="ans-exp">①245万人の後継者不在経営者（潜在顧客）<br>②英語のみ対応・大企業・PEファンド向けで中小には使いにくい<br>③ほぼゼロ（ブルーオーシャン）<br>④SES事業の安定キャッシュフロー</p>
+    <div class="tip"><strong>💼 実務メモ</strong>この3Cを1枚のスライドで表現できると、「PMI Managerがなぜ今参入すべきか」が一目で伝わる。新入社員のうちに、このスライドを自力で作れるようになることを目標にしよう。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q7</span><span class="qtype">分析練習</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">【事例】あなたがコンサルタントとして担当する「地方の老舗和菓子メーカー（創業60年、売上3億円）」が後継者不在でM&Aを検討している。買い手企業として食品大手が名乗りを上げた。M&A後のPMI戦略を立てるため、この和菓子メーカーの3C分析を行え。</p>
+  <button class="revbtn" onclick="revealAns('a7',this)">答えを見る ▼</button>
+  <div class="ans" id="a7"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答</div>
+    <p class="ans-exp"><strong>Customer（市場・顧客）：</strong>地元・観光客・贈答品需要が主。日本の和菓子市場は高齢者が主力消費層で縮小傾向。ただし「本物志向・インバウンド需要」は拡大中。主要顧客は地元の固定ファンと百貨店バイヤー。<br><br><strong>Competitor（競合）：</strong>地元の他の和菓子店（職人系）・コンビニスイーツ（価格訴求）・全国チェーン（ブランド訴求）。差別化軸は「地域性・伝統・味」。<br><br><strong>Company（自社）：</strong>強み＝60年の職人技・地域ブランド・固定ファン・秘伝レシピ。弱み＝後継者不在・デジタル化の遅れ・販路が地元限定・製造設備の老朽化。<br><br><strong>KSF：</strong>「伝統・本物志向のニーズ（C）× 大手チェーンが持てない職人ブランド（Comp）× 60年の秘伝技術（Co）」→ 全国展開・ECチャネル・インバウンド向けギフト商品化。</p>
+    <div class="tip"><strong>💼 PMI活用</strong>このKSFをPMI Manager「シナジー管理」に入力すると：目標①ECチャネル新設→売上+20%、目標②インバウンドギフト商品化→単価+30%、などの追跡ができる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q8</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">M&A対象企業（建設業、売上5億円）の3C分析をしたところ「市場は成長中（C）・競合は地域に3社（Comp）・自社は施工品質が高いが営業力が弱い（Co）」だった。KSFとして最も適切なものはどれか？</p>
+  <div class="choices" id="ch8">
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',false)">A）即座にコスト削減して利益率を改善する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',true)">B）施工品質を訴求軸に営業強化し、成長市場の案件を獲得する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',false)">C）競合3社と合併して規模を拡大する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',false)">D）海外市場に展開して競合から離れる</button>
+  </div>
+  <div class="ans" id="a8"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">3C分析の結論：「市場成長中（機会）× 競合3社（まだ競争は激しくない）× 施工品質が強み（差別化軸）」→ KSF＝品質を武器にした営業強化。弱い営業力（Co弱み）を補強することでKSFを活かせる。PMI後の統合戦略でもこの方向を優先する。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>PMI後の100日プランでも、この3C分析のKSFを「シナジー目標」の根拠にする。「なぜ営業強化がシナジーの最優先なのか」をKSFで説明できると、経営陣の合意が取りやすい。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q9</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">3C分析の「Competitor（競合）」を調べる方法として、新入社員にまず勧めるものはどれか？</p>
+  <div class="choices" id="ch9">
+    <button class="ch" onclick="checkMCQ(this,'ch9','a9',false)">A）競合に電話して直接聞く</button>
+    <button class="ch" onclick="checkMCQ(this,'ch9','a9',true)">B）競合のウェブサイト・IR資料・求人票・SNS・プレスリリースを収集・分析する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch9','a9',false)">C）調査会社に高額で依頼する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch9','a9',false)">D）自社の営業担当者の感覚に頼る</button>
+  </div>
+  <div class="ans" id="a9"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">公開情報（オープンソースインテリジェンス）を最大限活用するのがコンサルの基本。求人票から「今何に投資しているか」が分かり、プレスリリースから「戦略方向」が分かり、SNSから「顧客の反応」が分かる。無料で膨大な情報が得られる。</p>
+    <div class="tip"><strong>💼 AI活用</strong>競合の公開情報収集はAIが最も得意な作業の一つ。「○○社のプレスリリースをまとめて」「○○社の求人票から戦略を分析して」というプロンプトで、調査時間を1/10にできる。これがあなたの強みを活かすポイント。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q10</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">3C分析を行う際、「Customerから始めるべき」理由として最も正確なのはどれか？</p>
+  <div class="choices" id="ch10">
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',false)">A）Cが一番調べやすいから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',true)">B）市場（顧客ニーズ）が存在しなければ、競合も自社も意味がないから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',false)">C）アルファベット順でCが最初だから</button>
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',false)">D）競合より顧客の方が重要だから</button>
+  </div>
+  <div class="ans" id="a10"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">ビジネスの出発点は「誰の・どんな問題を解くか」（顧客ニーズ）。市場が存在しなければ競合分析も自社戦略も意味がない。「顧客ニーズ先行→競合確認→自社差別化」の順番がビジネス思考の基本。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>M&A対象企業評価でも同じ。まず「その企業が属する市場は今後成長するか」（Customer）を確認してから、「競合環境は」「自社（買収後）の強みは」と進む。市場が縮小していたら、どんな優良企業でも買収メリットが薄い。</div>
+  </div></div>
+</div>
+
+<div class="section-label sl-adv">SECTION C ― KSF導出と実践（Q11〜Q15）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q11</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">当社の3C分析から導かれる最も重要なKSFはどれか？</p>
+  <div class="choices" id="ch11">
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">A）大企業向けに高機能なPMIツールを開発する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',true)">B）中小企業に特化した日本語PMI SaaSを業務改善ノウハウで差別化する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">C）海外展開して英語圏のPMI市場を取る</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">D）M&A仲介事業に転換する</button>
+  </div>
+  <div class="ans" id="a11"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">Customer（中小M&A市場の急拡大・PMI支援需要）× Competitor（既存SaaSは大企業向け英語のみ）× Company（業務改善ノウハウ・AI・SES安定基盤）の3つが重なる最適解がB。会社の事業戦略そのものがこの3C分析から導かれている。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>入社した会社の戦略をKSFで説明できると、「なぜこの仕事が社会的意義があるか」が腹落ちする。会社への愛着と当事者意識（ラストマン精神）が生まれやすくなる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q12</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">3C分析で「競合が強い領域に自社も参入すべきか」を判断する際、最も重要な視点はどれか？</p>
+  <div class="choices" id="ch12">
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">A）競合が強いなら参入しない一択</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',true)">B）顧客ニーズのどのサブセグメントで自社が差別化できるかを探る</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">C）競合より安い価格をつければ必ず勝てる</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">D）競合を模倣して同じサービスを出す</button>
+  </div>
+  <div class="ans" id="a12"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">「競合が強い」は全体の話。必ずサブセグメントに「競合が手薄な部分」がある。PMI Managerが「DealRoomが手薄にしている中小企業向け・日本語市場」に絞ったのと同じ戦略。大きな市場の中のニッチを狙うのが新参者の正攻法。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>M&A対象企業を評価するとき、競合が強い業界でも「地域密着・特定業種特化・特定顧客層」など差別化軸を持つ企業は高く評価できる。逆に「業界大手に価格で対抗しているだけ」という企業はPMI後も厳しい。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q13</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">PMI後の統合企業（製造業、従業員80名）の事業計画を立てるため3C分析を実施した。どのタイミングで3Cを行うのが最も効果的か？</p>
+  <div class="choices" id="ch13">
+    <button class="ch" onclick="checkMCQ(this,'ch13','a13',false)">A）PMI完了後（1年後）に振り返りとして実施</button>
+    <button class="ch" onclick="checkMCQ(this,'ch13','a13',true)">B）買収前のDD（デューデリジェンス）段階で実施し、PMI計画に反映</button>
+    <button class="ch" onclick="checkMCQ(this,'ch13','a13',false)">C）買収後100日が経過してから実施</button>
+    <button class="ch" onclick="checkMCQ(this,'ch13','a13',false)">D）毎年1回の定期実施で十分</button>
+  </div>
+  <div class="ans" id="a13"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">3C分析はDD段階で「この企業を買う価値があるか」「PMI後にどこで成長できるか」を判断するための武器。買収後に「やっぱり市場が縮小していた」では遅い。DD段階でKSFを特定し、それをPMIの100日プランのシナジー目標に落とし込む。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>中小企業庁の「中小PMIガイドライン」でも、PMI計画策定のインプットとして事業環境分析（3Cに相当）を行うことを推奨している。DDとPMI計画は連続したプロセス。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q14</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">「3C分析」と「5フォース分析（Porter）」の最大の違いはどれか？</p>
+  <div class="choices" id="ch14">
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">A）3Cは外部環境のみ、5フォースは内部環境のみ</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',true)">B）3Cは「自社の戦略立案」寄り、5フォースは「業界の構造・収益性」の分析寄り</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">C）どちらも全く同じで使い方も同じ</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">D）3Cは製造業向け、5フォースはサービス業向け</button>
+  </div>
+  <div class="ans" id="a14"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">3Cは「自社がどこで戦うか」のKSFを導くツール。5フォース（新規参入・競合・代替品・買い手・売り手）は「この業界は儲かりやすいか」を分析するツール。M&A対象企業の業界選定には5フォースを先に使い、参入後の戦略立案に3Cを使う、という使い分けが実務的。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>「なぜ事業承継M&A業界なのか」をPorter 5フォースで分析すると：新規参入障壁（低〜中）・業界内競合（低・まだブルーオーシャン）・代替品（廃業という選択肢）・買い手力（低）・売り手力（低）→ 全体的に参入魅力度高。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q15</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">3C分析を使って「地方銀行のM&Aパートナー提携」を提案する際、最も説得力のある構成はどれか？</p>
+  <div class="choices" id="ch15">
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">A）当社のサービス紹介→価格提示→契約</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',true)">B）「地銀の顧客（中小企業）が抱えるPMI課題（C）→既存解決策の限界（Comp）→当社の提供価値（Co）→提携スキームの提案」</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">C）競合他社の批判から始める</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">D）当社の会社概要から始める</button>
+  </div>
+  <div class="ans" id="a15"><div class="ans-inner">
+    <div class="ans-result">✅ 正解：B</div>
+    <p class="ans-exp">提案書は「相手の顧客（C）の課題から始まり、既存解決策の限界（Comp）を示し、自社の提供価値（Co）で締める」3C順の構成が最も説得力がある。相手（地銀）が「うちの顧客の話だ」と前のめりになる。自社紹介から始めると「売り込み」に見えて心理的抵抗が生まれる。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>これはコンサル提案書の黄金フォーマット。「顧客の痛み（Pain）→ 現状の解決策の限界 → 我々の解（Gain）」という構造は、3Cそのもの。このパターンを体に染み込ませよう。</div>
+  </div></div>
+</div>
+
+<div class="section-label sl-adv">SECTION D ― 実践ケース（Q16〜Q20）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q16</span><span class="qtype">実践ケース</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">【演習】当社が2028年に買収を検討している「IT系中小企業（従業員20名、売上2億円、クラウド導入支援業）」の3C分析を行い、KSFを導け。</p>
+  <button class="revbtn" onclick="revealAns('a16',this)">答えを見る ▼</button>
+  <div class="ans" id="a16"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答</div>
+    <p class="ans-exp"><strong>Customer：</strong>中小企業のDX推進需要は拡大中（IT導入補助金の活用増加）。顧客は「何から手をつければいいかわからない」状態が多い。<br><strong>Competitor：</strong>大手SIer（中小には高額・過剰）、フリーランスIT支援者（品質にばらつき）、クラウドベンダー直販（ツール売りで終わる）。「伴走型・業種特化」の競合は少ない。<br><strong>Company（買収対象）：</strong>強み＝中小企業DX実績・地域密着・顧客信頼関係。弱み＝人材定着率低・営業力弱・サービスの標準化不足。<br><strong>KSF：</strong>「DX支援需要（C）× 伴走型中小特化の競合不足（Comp）× 地域密着実績（Co）」→ 当社のPMI Manager+DXコンサルの組み合わせシナジーが生まれる。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>この「PMI Manager × DX支援」のシナジーは実際に当社が狙える拡張戦略。PMI後の買収先でDXも支援できれば、月額コンサルフィーの増額と長期契約が見込める。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q17</span><span class="qtype">実践ケース</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">3C分析を実施したが「競合が強すぎて差別化軸が見つからない」状況に陥った。どのように打開するか、3つのアプローチを提示せよ。</p>
+  <button class="revbtn" onclick="revealAns('a17',this)">答えを見る ▼</button>
+  <div class="ans" id="a17"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答</div>
+    <p class="ans-exp">①<strong>Customer分析を細分化する</strong>：市場全体ではなく、競合が無視している「ニッチセグメント」を探す。例：「建設業のPMIに特化」「売上1〜3億円規模だけ」など。<br>②<strong>Competitor分析を深化する</strong>：競合の顧客レビュー・解約理由・批判を調べ、「顧客が不満に思っていること」を差別化軸にする。<br>③<strong>Company分析でユニークな組み合わせを探す</strong>：単独の強みでなく「業務改善×AI×PMI×コンサル伴走」など複数の強みの組み合わせが生む独自価値を探す。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>当社がまさにこの③を実践している。「PMI SaaS単体」ではDealRoomに負けるが「SaaS+コンサル+買収」の組み合わせは唯一無二。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q18</span><span class="qtype">実践ケース</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">PMI Manager の地銀向け提案書（3C構成）を作るとする。「Customer・Competitor・Company」それぞれのスライドに何を記載するか、箇条書きで3点ずつ挙げよ。</p>
+  <button class="revbtn" onclick="revealAns('a18',this)">答えを見る ▼</button>
+  <div class="ans" id="a18"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答</div>
+    <p class="ans-exp"><strong>Customerスライド（地銀の顧客企業の実態）：</strong><br>・地銀の融資先中小企業の50%超が後継者不在（帝国データバンク）<br>・M&A後PMI支援を必要とする企業が年間1,344件（2025年）<br>・PMI失敗による廃業・業績悪化が地銀の不良債権リスクに直結<br><br><strong>Competitorスライド（既存解決策の限界）：</strong><br>・PMI専門コンサル会社は大企業向けで中小には高額（月500万〜）<br>・日本語対応PMI SaaSは実質ゼロ<br>・地銀自身のPMI支援体制はノウハウ・人員とも不足<br><br><strong>Companyスライド（当社の提供価値）：</strong><br>・PMI Manager月額5〜15万円（中小企業でも導入可能）<br>・業種別テンプレート・AI機能で支援ノウハウを代替<br>・コンサル連携により地銀が直接PMI現場に入らなくても支援完結</p>
+    <div class="tip"><strong>💼 実務メモ</strong>このスライド構成は実際の営業提案に使える。地銀担当者が「自分たちの課題」「既存の限界」「解決策」の順で読むと、PMI Managerの必然性が伝わる。このパターンを覚えると提案書作成が格段に速くなる。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q19</span><span class="qtype">実践ケース</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">【難問】あなたは先輩コンサルタントから「この企業（買収候補）の3C分析をやってみて」と言われた。しかし公開情報が少なく、競合情報も限られている。どのようなアプローチで3C分析を進めるか、手順を述べよ。</p>
+  <button class="revbtn" onclick="revealAns('a19',this)">答えを見る ▼</button>
+  <div class="ans" id="a19"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答（情報不足時の3C分析アプローチ）</div>
+    <p class="ans-exp"><strong>Step1：Customer分析</strong>→ 業界団体資料・中小企業庁統計・帝国データバンクの業界レポート・市場調査レポート（無料版）を活用。市場規模・成長率の概算を出す。<br><strong>Step2：Competitor分析</strong>→ Google/LinkedIn/求人サイトで競合候補を特定。各社のHPから価格・ターゲット・強みを推測。可能なら競合のサービスを実際に試す（フリートライアル等）。<br><strong>Step3：Company分析</strong>→ 対象企業の代表者にインタビュー（DD面談）。「強みは何ですか？」「リピート顧客は何%ですか？」などを聞く。帝国データバンクで財務概要確認。<br><strong>Step4：仮説ベースで3Cドラフト作成</strong>→ 「データが少ない部分は仮説と明記」して先輩に提出。「ここはインタビューで確認が必要」と判断を示す。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>「情報が少ないから分析できない」は禁句。「今あるデータで仮説を立て、何を追加確認すべきかを示す」のがコンサルの価値。不完全でも仮説ドラフトを出せる人が信頼される。</div>
+  </div></div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q20</span><span class="qtype">実践ケース</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">【総合】「当社が2030年に事業承継PMIの日本No.1プラットフォームになる」ための3C分析を行い、その結論として「取るべき最重要アクション3つ」を具体的に述べよ。</p>
+  <button class="revbtn" onclick="revealAns('a20',this)">答えを見る ▼</button>
+  <div class="ans" id="a20"><div class="ans-inner">
+    <div class="ans-result">📝 模範解答</div>
+    <p class="ans-exp"><strong>3C分析結論：</strong><br>Customer：2030年に事業承継M&Aはピーク（年9.5万社）、PMI支援需要が急拡大する。<br>Competitor：2030年時点でもPMI SaaS市場は未成熟。ただし大手コンサル・SIerが参入リスクあり。<br>Company：SaaSデータ蓄積・コンサル実績・PMI Managerブランドが競争優位になる（但し人材不足が課題）。<br><br><strong>最重要アクション3つ：</strong><br>①<strong>SaaSの顧客データを独占蓄積する（今すぐ）</strong>：100日プランの実績データが増えるほど、AIの提案精度が上がり、後発参入者が追いつけない参入障壁になる。2026年リリース後に真剣に取り組む。<br>②<strong>業界団体・地銀とのパートナーシップを先に確保する</strong>：チャネルを先に押さえれば、後からサービスが良い競合が来ても切り替えコストが高い。<br>③<strong>PMI実績をブランド化する（年次レポート公開など）</strong>：「○○社のPMIを支援した事例集」を公開することで業界標準の地位を確立する。</p>
+    <div class="tip"><strong>💼 実務メモ</strong>これらのアクションは実際に当社が2026〜2028年に着手すべき内容。新入社員のあなたが「自分がどれを担当できるか」を考えながら読むと、仕事への当事者意識（ラストマン精神）が高まる。</div>
+  </div></div>
+</div>
+
+<div style="background:white;border-radius:14px;padding:20px;margin-top:20px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.07);">
+  <h3 style="font-size:16px;color:var(--dark);margin-bottom:8px;">🎉 3C分析 全20問完了！</h3>
+  <p style="font-size:13px;color:var(--gray);">次は「SWOT分析」。3Cで把握した環境を戦略に落とし込む技術を身につけよう。</p>
+  <a href="練習_SWOT分析.html" style="display:inline-block;margin-top:12px;background:#d97706;color:white;text-decoration:none;font-weight:700;font-size:13px;padding:10px 24px;border-radius:20px;">SWOT分析へ進む →</a>
+</div>
+</div>
+
+<div class="nav-bar">
+  <a href="練習_ロジックツリー.html">← ロジックツリー</a>
+  <a href="フレームワーク練習問題_ハブ.html">問題集トップ</a>
+  <a href="練習_SWOT分析.html">SWOT分析 →</a>
+</div>
+<script>
+let answered=0,score=0,mcqAnswered={};
+function revealAns(id,btn){const el=document.getElementById(id);if(el.style.display==='none'||el.style.display===''){el.style.display='block';btn.textContent='閉じる ▲';btn.classList.add('revealed');if(!btn.dataset.counted){btn.dataset.counted='1';answered++;updateProgress();}}else{el.style.display='none';btn.textContent='答えを見る ▼';btn.classList.remove('revealed');}}
+function checkMCQ(btn,chId,ansId,correct){if(mcqAnswered[chId])return;mcqAnswered[chId]=true;const choices=document.getElementById(chId).querySelectorAll('.ch');choices.forEach(c=>{c.disabled=true;if(c.onclick.toString().includes(',true)'))c.classList.add('correct');});if(!correct)btn.classList.add('wrong');document.getElementById(ansId).style.display='block';if(correct){score++;document.getElementById('scoreVal').textContent=score;document.getElementById('scoreDisp').textContent=score;}answered++;updateProgress();}
+function updateProgress(){const pct=Math.min(Math.round(answered/20*100),100);document.getElementById('progressBar').style.width=pct+'%';document.getElementById('progressText').textContent=answered+' / 20 問 回答済み';}
+</script>
+</body>
+</html>

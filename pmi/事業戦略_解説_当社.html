@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>事業戦略 解説 2026年4月</title>
+<style>
+  :root {
+    --primary: #1a3a5c;
+    --accent: #e85d26;
+    --accent2: #2ca8c2;
+    --light: #f4f7fb;
+    --dark: #0f1f30;
+    --gray: #6b7a8d;
+    --card-bg: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+    background: var(--light);
+    color: var(--dark);
+    line-height: 1.7;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: linear-gradient(135deg, #0f1f30 0%, #1a3a5c 60%, #2ca8c2 100%);
+    color: white;
+    padding: 60px 24px 50px;
+    text-align: center;
+  }
+  .hero .tag {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(22px, 5vw, 38px);
+    font-weight: 800;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  .hero h1 span { color: #5dd9f5; }
+  .hero .subtitle {
+    font-size: 15px;
+    opacity: 0.8;
+    margin-bottom: 30px;
+  }
+  .hero .key-msg {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 12px;
+    padding: 18px 24px;
+    font-size: 15px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .hero .key-msg strong { color: #ffd66b; }
+
+  /* ===== LAYOUT ===== */
+  .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+  section { padding: 56px 20px; }
+  section:nth-child(even) { background: white; }
+
+  /* ===== SECTION HEADER ===== */
+  .sec-head { text-align: center; margin-bottom: 36px; }
+  .sec-head .num {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .sec-head h2 { font-size: clamp(18px, 3.5vw, 26px); color: var(--primary); }
+  .sec-head p { color: var(--gray); font-size: 14px; margin-top: 6px; }
+
+  /* ===== CARDS ===== */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; max-width: 960px; margin: 0 auto; }
+  .card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 22px 18px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    border-top: 4px solid var(--accent2);
+  }
+  .card.accent { border-top-color: var(--accent); }
+  .card.dark { background: var(--primary); color: white; border-top-color: #5dd9f5; }
+  .card.dark p { color: rgba(255,255,255,0.75); }
+  .card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .card p { font-size: 13px; color: var(--gray); }
+
+  /* ===== BIG NUMBERS ===== */
+  .big-num-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; max-width: 960px; margin: 0 auto; }
+  .big-num {
+    background: white;
+    border-radius: 14px;
+    padding: 20px 14px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+  }
+  .big-num .value { font-size: 28px; font-weight: 800; color: var(--accent); line-height: 1; }
+  .big-num .unit { font-size: 13px; color: var(--gray); margin-top: 4px; }
+  .big-num .label { font-size: 12px; color: var(--dark); margin-top: 6px; font-weight: 600; }
+
+  /* ===== TABLE ===== */
+  .tbl-wrap { overflow-x: auto; max-width: 960px; margin: 0 auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: var(--primary); color: white; padding: 10px 14px; text-align: left; }
+  tbody tr:nth-child(even) { background: #f0f5fb; }
+  tbody td { padding: 10px 14px; border-bottom: 1px solid #e2e8f0; }
+  tbody td:first-child { font-weight: 600; }
+  .star { color: var(--accent); font-weight: bold; }
+
+  /* ===== LAYERS ===== */
+  .layer-list { max-width: 720px; margin: 0 auto; }
+  .layer {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    margin-bottom: 18px;
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .layer-num {
+    min-width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 800;
+    color: white;
+    flex-shrink: 0;
+  }
+  .l1 { background: var(--accent); }
+  .l2 { background: #8b5cf6; }
+  .l3 { background: var(--primary); }
+  .layer-body h3 { font-size: 15px; margin-bottom: 4px; }
+  .layer-body p { font-size: 13px; color: var(--gray); }
+  .layer-body .price { font-size: 12px; font-weight: 700; color: var(--accent); margin-top: 4px; }
+
+  /* ===== TIMELINE ===== */
+  .timeline { max-width: 800px; margin: 0 auto; position: relative; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 22px;
+    top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2));
+    border-radius: 2px;
+  }
+  .tl-item { display: flex; gap: 18px; margin-bottom: 28px; align-items: flex-start; }
+  .tl-dot {
+    min-width: 46px; height: 46px; border-radius: 50%;
+    background: var(--primary); border: 3px solid white;
+    box-shadow: 0 0 0 3px var(--accent2);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 11px; font-weight: 700; flex-shrink: 0;
+    position: relative; z-index: 1;
+  }
+  .tl-dot.accent { background: var(--accent); box-shadow: 0 0 0 3px var(--accent); }
+  .tl-body {
+    background: white;
+    border-radius: 12px;
+    padding: 16px 18px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    flex: 1;
+  }
+  .tl-body h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; color: var(--primary); }
+  .tl-body ul { padding-left: 16px; font-size: 13px; color: var(--gray); }
+  .tl-body ul li { margin-bottom: 3px; }
+
+  /* ===== GOALS TABLE ===== */
+  .goal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; max-width: 960px; margin: 0 auto; }
+  .goal-card {
+    border-radius: 14px; padding: 22px 16px; text-align: center;
+    color: white;
+  }
+  .gc-2026 { background: linear-gradient(135deg, #4a90d9, #2ca8c2); }
+  .gc-2028 { background: linear-gradient(135deg, #7c4dff, #4a90d9); }
+  .gc-2030 { background: linear-gradient(135deg, #e85d26, #f5a623); }
+  .gc-2035 { background: linear-gradient(135deg, #0f1f30, #1a3a5c); }
+  .goal-card .year { font-size: 12px; opacity: 0.8; letter-spacing: 1px; }
+  .goal-card h3 { font-size: 22px; font-weight: 800; margin: 4px 0; }
+  .goal-card p { font-size: 12px; opacity: 0.85; }
+
+  /* ===== SKILLS MAP ===== */
+  .skill-map { max-width: 760px; margin: 0 auto; }
+  .skill-row {
+    display: flex; gap: 0; margin-bottom: 10px; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  .sk-left, .sk-right { flex: 1; padding: 12px 14px; font-size: 13px; }
+  .sk-left { background: #e8f0fb; color: var(--primary); font-weight: 600; }
+  .sk-arrow {
+    background: var(--accent);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 12px;
+    font-size: 16px; font-weight: bold;
+    flex-shrink: 0;
+  }
+  .sk-right { background: #fff8f0; color: #c0441a; font-weight: 600; }
+
+  /* ===== PHILOSOPHY ===== */
+  .phil-wrap { max-width: 700px; margin: 0 auto; text-align: center; }
+  .phil-wrap blockquote {
+    font-size: clamp(16px, 3vw, 22px);
+    font-weight: 700;
+    color: var(--primary);
+    margin: 18px 0;
+    line-height: 1.5;
+    border-left: 4px solid var(--accent);
+    text-align: left;
+    padding: 12px 20px;
+    background: white;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--dark);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+  }
+
+  /* ===== UTILITY ===== */
+  .badge {
+    display: inline-block;
+    background: #fff0e8;
+    color: var(--accent);
+    border: 1px solid #ffd0b0;
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-right: 4px;
+  }
+  .highlight-box {
+    background: linear-gradient(135deg, #fff8f0, #fff0e0);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 16px 20px;
+    margin: 20px auto;
+    max-width: 720px;
+    font-size: 14px;
+  }
+  .highlight-box strong { color: var(--accent); }
+  .text-center { text-align: center; }
+  .mb-8 { margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="tag">PMI学習セット 2026年4月 事業戦略</div>
+  <h1>PMIプラットフォーム企業へ<br><span>— 事業承継M&Aの未来を変える —</span></h1>
+  <p class="subtitle">当社 ｜ SaaS-Led Entry × 事業承継 × PMI</p>
+  <div class="key-msg">
+    <strong>Key Message：</strong>PMI SaaSを戦略の中核に据え、SES・コンサル・買収を統合した<br>
+    「<strong>PMIプラットフォーム企業</strong>」へと進化する
+  </div>
+</div>
+
+<!-- 1. 会社概要 -->
+<section>
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">01 会社概要</div>
+      <h2>当社とは？</h2>
+      <p>1995年創業。業務改善を強みに持つ、コンサル×IT×AI企業</p>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <h3>📅 創業・規模</h3>
+        <p>1995年設立。現在の従業員は約12〜15名（2026年4月時点）。東京・新宿に本社を置く。</p>
+      </div>
+      <div class="card accent">
+        <h3>💼 主な事業</h3>
+        <p>①コンサルティング（1,000社以上の実績）<br>②SES（エンジニア派遣・プライム案件中心）<br>③AI開発・実装<br>④バック/ミドルオフィス代行</p>
+      </div>
+      <div class="card">
+        <h3>🤝 グループ会社</h3>
+        <p>バリューアップ株式会社（AI開発専門の関連会社）。技術基盤を支える重要な役割を担う。</p>
+      </div>
+      <div class="card dark">
+        <h3>🚀 これからの中核</h3>
+        <p>既存3事業の強みを統合し、<strong style="color:#5dd9f5">PMI SaaS「PMI Manager」</strong>を新たな柱として展開していく。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. なぜPMIなのか -->
+<section>
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">02 なぜPMI？</div>
+      <h2>業務改善スキルがPMIに直結する理由</h2>
+      <p>スキルの90%がそのまま活かせる、最高の隣接市場</p>
+    </div>
+    <div class="skill-map">
+      <div style="display:flex;gap:0;margin-bottom:10px;border-radius:10px;overflow:hidden;background:var(--primary);">
+        <div style="flex:1;padding:10px 14px;color:white;font-size:13px;font-weight:700;">業務改善（BPR）</div>
+        <div style="padding:10px 14px;color:rgba(255,255,255,0.5);font-size:13px;">→</div>
+        <div style="flex:1;padding:10px 14px;color:#ffd66b;font-size:13px;font-weight:700;">PMI（M&A後の統合）</div>
+      </div>
+      <div class="skill-row"><div class="sk-left">現業務の可視化・業務フロー設計</div><div class="sk-arrow">→</div><div class="sk-right">買収先業務の可視化（Day1分析）</div></div>
+      <div class="skill-row"><div class="sk-left">課題抽出・改善案の策定</div><div class="sk-arrow">→</div><div class="sk-right">統合課題の抽出・100日プラン策定</div></div>
+      <div class="skill-row"><div class="sk-left">経営層と現場の橋渡し</div><div class="sk-arrow">→</div><div class="sk-right">買収側と被買収側の橋渡し</div></div>
+      <div class="skill-row"><div class="sk-left">KPI設計・予実管理</div><div class="sk-arrow">→</div><div class="sk-right">シナジー目標設定・追跡</div></div>
+      <div class="skill-row"><div class="sk-left">伴走実装・コンサルティング</div><div class="sk-arrow">→</div><div class="sk-right">現場常駐型のPMI実行支援</div></div>
+      <div class="skill-row"><div class="sk-left">組織浸透・概念化</div><div class="sk-arrow">→</div><div class="sk-right">文化融合・組織統合</div></div>
+    </div>
+    <div class="highlight-box">
+      <strong>★ ポイント：</strong>メンバーの業務改善経験が、そのまま<strong>PMI支援の競争優位性</strong>になる。追加投資なしで参入できる最高のピボット先。
+    </div>
+  </div>
+</section>
+
+<!-- 3. 市場機会 -->
+<section>
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">03 市場機会</div>
+      <h2>事業承継M&A市場は今、爆発的に拡大中</h2>
+      <p>後継者不在の中小企業が急増し、PMI支援の需要が急騰している</p>
+    </div>
+    <div class="big-num-grid">
+      <div class="big-num"><div class="value">13.5</div><div class="unit">兆円</div><div class="label">事業承継M&A 潜在需要</div></div>
+      <div class="big-num"><div class="value">245</div><div class="unit">万人</div><div class="label">70歳超の中小企業経営者</div></div>
+      <div class="big-num"><div class="value">50.1<span style="font-size:16px">%</span></div><div class="unit">後継者不在率</div><div class="label">（7年連続で改善中）</div></div>
+      <div class="big-num"><div class="value">1,344</div><div class="unit">件</div><div class="label">2025年M&A件数（過去最多）</div></div>
+      <div class="big-num"><div class="value">20.4</div><div class="unit">兆円</div><div class="label">2025年取引総額（7年ぶり最高）</div></div>
+      <div class="big-num"><div class="value">22</div><div class="unit">兆円</div><div class="label">対策なし時のGDP損失リスク</div></div>
+    </div>
+    <div class="highlight-box" style="margin-top:28px;">
+      <strong>ブルーオーシャンの理由：</strong>M&A後の約7割がシナジーを十分に得られていない。日本市場に<strong>PMI専用SaaSはほぼゼロ</strong>（海外製品は英語のみ）。中小企業庁もPMIガイドラインを策定中で、政策の追い風あり。
+    </div>
+  </div>
+</section>
+
+<!-- 4. サービス構造 -->
+<section>
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">04 サービス構造</div>
+      <h2>3層のサービスモデルで市場を制圧</h2>
+      <p>SaaSで入口を作り、コンサルで深耕し、最後は自社で買収・経営する</p>
+    </div>
+    <div class="layer-list">
+      <div class="layer">
+        <div class="layer-num l1">L1</div>
+        <div class="layer-body">
+          <h3>PMI Manager（SaaS）― 入口</h3>
+          <p>100日プラン管理・タスク管理・シナジー追跡・KPI可視化・AI機能（プラン提案・リスク検知）を提供するクラウドサービス。<strong>日本初の中小企業特化PMI管理SaaS。</strong></p>
+          <div class="price">月額 5〜15万円 ／ 完全日本語対応 ／ Claude API統合</div>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="layer-num l2">L2</div>
+        <div class="layer-body">
+          <h3>PMIコンサルティング ― 深耕</h3>
+          <p>SaaS顧客の中でPMI課題が深刻な企業へ、現場常駐型のオペレーション改善支援・統合実行・組織融合を提供。SaaS導入からコンサルへ自然に引き上げる。</p>
+          <div class="price">月額 150〜300万円 × 6〜12ヶ月</div>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="layer-num l3">L3</div>
+        <div class="layer-body">
+          <h3>自社買収・経営 ― 本丸</h3>
+          <p>売上1〜10億円の中小企業を自ら買収し、PMIノウハウを実証・蓄積。「Track B人材」を経営者として派遣し、PMI Managerで全社を管理する。</p>
+          <div class="price">2028年 1号案件目標 → 2035年 累計14社保有</div>
+        </div>
+      </div>
+    </div>
+    <div class="highlight-box">
+      <strong>一気通貫モデル：</strong>SaaS導入 → コンサル受託 → 買収機会の発掘まで、3層がシームレスに連携する。SaaSはデータとブランドを積み上げる「資産形成装置」。
+    </div>
+  </div>
+</section>
+
+<!-- 5. 競合比較 -->
+<section>
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">05 競合比較</div>
+      <h2>PMI Managerの差別化ポイント</h2>
+      <p>海外SaaSには大企業向けしかなく、中小企業向けは完全に空白地帯</p>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>比較項目</th>
+            <th>DealRoom（米国）</th>
+            <th>中小企業庁ツール</th>
+            <th class="star">★ PMI Manager</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>対象規模</td><td>大企業・PEファンド</td><td>全規模</td><td class="star">中小企業（1〜10億円）</td></tr>
+          <tr><td>言語</td><td>英語のみ</td><td>日本語</td><td class="star">完全日本語</td></tr>
+          <tr><td>価格</td><td>$500〜25,000/年</td><td>無料</td><td class="star">月額5〜15万円</td></tr>
+          <tr><td>100日テンプレート</td><td>汎用のみ</td><td>基本のみ</td><td class="star">業種別（製造/建設/IT）</td></tr>
+          <tr><td>AI機能</td><td>契約書分析中心</td><td>なし</td><td class="star">100日プラン提案・リスク検知</td></tr>
+          <tr><td>サポート</td><td>英語チャット</td><td>ガイドのみ</td><td class="star">日本語伴走（コンサル連携）</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 6. ロードマップ -->
+<section>
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">06 ロードマップ</div>
+      <h2>10年間の事業展開計画</h2>
+      <p>SaaSでブランドを作り、コンサルで稼ぎ、買収で企業価値を積み上げる</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot accent">2026<br>〜27</div>
+        <div class="tl-body">
+          <h3>Horizon 1｜SaaS-First期</h3>
+          <ul>
+            <li>PMI Manager MVP リリース（2026年9月）→ 100社獲得・ARR 1.2億円</li>
+            <li>M&A仲介会社・地銀5行と提携 → SaaS共同提案</li>
+            <li>PMIコンサル受託 7〜10件</li>
+            <li>シードラウンド 5,000万〜1億円 調達</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">2028<br>〜29</div>
+        <div class="tl-body">
+          <h3>Horizon 2｜Vertical Integration期</h3>
+          <ul>
+            <li>1〜2号案件の自社買収（売上1〜5億円規模）</li>
+            <li>SaaS事業 ARR 3億円・顧客300社へ拡大</li>
+            <li>PMIコンサル年間15〜20件</li>
+            <li>シリーズA 5〜10億円 調達</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">2030<br>〜35</div>
+        <div class="tl-body">
+          <h3>Horizon 3｜Acceleration & Platform期</h3>
+          <ul>
+            <li>年2〜3社買収、累計14社保有（2035年）</li>
+            <li>SaaS外販本格化、ARR 8億円</li>
+            <li>事業承継ファンド組成</li>
+            <li>IPOまたは戦略的売却</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. 数値ゴール -->
+<section>
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">07 数値目標</div>
+      <h2>10年間の成長シナリオ</h2>
+      <p>2026年の総売上5,000万円から2035年の20億円へ、段階的に成長する</p>
+    </div>
+    <div class="goal-grid">
+      <div class="goal-card gc-2026">
+        <div class="year">2026年</div>
+        <h3>5,000万円</h3>
+        <p>総売上｜ARR 1,000万円<br>買収 0社</p>
+      </div>
+      <div class="goal-card gc-2028">
+        <div class="year">2028年</div>
+        <h3>3億円</h3>
+        <p>総売上｜ARR 1.5億円<br>買収累計 1社</p>
+      </div>
+      <div class="goal-card gc-2030">
+        <div class="year">2030年</div>
+        <h3>8億円</h3>
+        <p>総売上｜ARR 4億円<br>買収累計 4社</p>
+      </div>
+      <div class="goal-card gc-2035">
+        <div class="year">2035年</div>
+        <h3>20億円</h3>
+        <p>総売上｜ARR 8億円<br>買収累計 14社</p>
+      </div>
+    </div>
+    <div class="highlight-box" style="margin-top:28px;">
+      <strong>究極のゴール（2035年以降）：</strong>事業承継PMIの「日本デファクトプラットフォーム」として、<strong>IPOまたは戦略的売却</strong>の選択肢を持つ。
+    </div>
+  </div>
+</section>
+
+<!-- 8. 競争優位性 -->
+<section>
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">08 競争優位性</div>
+      <h2>5つの強みで作られる「堀」</h2>
+      <p>簡単にマネできない、複合的な競争優位性</p>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <h3>① 業務改善の実績</h3>
+        <p>1,000社超のBPRノウハウが、そのままPMI支援の武器になる。</p>
+      </div>
+      <div class="card">
+        <h3>② 戦略立案力</h3>
+        <p>経営層と現場を行き来できる独自のアプローチ。橋渡しに強い。</p>
+      </div>
+      <div class="card accent">
+        <h3>③ AI開発能力</h3>
+        <p>バリューアップのAIエンジニアが中核。Claude API統合でSaaSに差別化。</p>
+      </div>
+      <div class="card">
+        <h3>④ ラストマン人材</h3>
+        <p>「圧倒的な当事者意識」を持つハイパフォーマー育成。組織の質が武器。</p>
+      </div>
+      <div class="card">
+        <h3>⑤ SES事業の安定基盤</h3>
+        <p>安定したキャッシュフローで新規事業への投資を支える。資金繰りリスクが低い。</p>
+      </div>
+      <div class="card dark">
+        <h3>⑥ 日本語×中小企業特化</h3>
+        <p>海外SaaSとの決定的な差別化。日本の中小企業の慣行を深く理解。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. ミッション・ビジョン -->
+<section>
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">09 理念</div>
+      <h2>Mission・Vision・Value</h2>
+      <p>何のために、どこへ向かい、どう行動するか</p>
+    </div>
+    <div class="phil-wrap">
+      <p style="font-size:12px;color:var(--gray);margin-bottom:6px;">MISSION</p>
+      <blockquote>マルチタレントを輩出し、<br>事業承継を通じて社会を豊かにする</blockquote>
+      <p style="font-size:12px;color:var(--gray);margin-bottom:6px;">VISION</p>
+      <blockquote>事業承継PMIの日本デファクトプラットフォーム企業へ<br><span style="font-size:13px;font-weight:400;color:var(--gray)">PMI SaaS 国内500社 / 保有企業10〜15社 / 売上20億円超（2035年）</span></blockquote>
+      <p style="font-size:12px;color:var(--gray);margin-bottom:6px;">VALUE</p>
+      <blockquote>
+        <span class="badge">ラストマン精神</span>圧倒的な当事者意識と強い責任感<br>
+        <span class="badge" style="margin-top:8px;display:inline-block">現場主義</span>机上ではなく現場で勝負する<br>
+        <span class="badge" style="margin-top:8px;display:inline-block">データ駆動</span>数値で意思決定・顧客と共に作る
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- 10. 直近スケジュール -->
+<section>
+  <div class="container">
+    <div class="sec-head">
+      <div class="num">10 直近の動き</div>
+      <h2>2026年の具体的スケジュール</h2>
+      <p>2026年9月のプロダクトリリースに向けて動き出している</p>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>時期</th><th>フェーズ</th><th>主な取り組み</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>〜2026/8</td><td>プロダクト開発</td><td>PMI Manager開発・社内テスト・βユーザー2〜3社確保</td></tr>
+          <tr><td class="star">2026/9 ★</td><td>正式リリース</td><td>PMI Manager公開・初期顧客5社獲得・PdM/CTO採用開始</td></tr>
+          <tr><td>2026/10</td><td>体制構築</td><td>PdM・CTO採用、営業・CS採用開始、M&A支援機関登録</td></tr>
+          <tr><td>2026/12</td><td>資金調達</td><td>シードラウンド5,000万〜1億円・顧客10社・ARR 1,000万円</td></tr>
+          <tr><td>2027/3</td><td>顧客拡大</td><td>顧客30社・ARR 3,000万・地銀5行連携・PMIコンサル5件</td></tr>
+          <tr><td>2027/8</td><td>Phase 1達成</td><td>顧客60社・ARR 6,000万・初の単月黒字化</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 11. 締めくくり -->
+<section style="background:linear-gradient(135deg, #0f1f30, #1a3a5c); color:white; text-align:center; padding:60px 20px;">
+  <div class="container">
+    <div style="font-size:12px;letter-spacing:2px;opacity:0.6;margin-bottom:12px;">CLOSING</div>
+    <h2 style="font-size:clamp(18px,3vw,26px);margin-bottom:28px;color:white;">最後に — 当社が大切にする3つの言葉</h2>
+    <div style="max-width:600px;margin:0 auto;display:grid;gap:14px;">
+      <div style="background:rgba(255,255,255,0.1);border-radius:12px;padding:18px 20px;font-size:15px;font-weight:600;">
+        本当のコンサルティングとはホスピタリティ
+      </div>
+      <div style="background:rgba(255,255,255,0.1);border-radius:12px;padding:18px 20px;font-size:15px;font-weight:600;">
+        行動がない思考・言論に意味はない
+      </div>
+      <div style="background:rgba(255,255,255,0.1);border-radius:12px;padding:18px 20px;font-size:15px;font-weight:600;">
+        「量」の先に「質」がある
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="background:#1a3a5c;padding:20px;text-align:center;">
+  <a href="成長ロードマップ_新入社員向け.html" style="display:inline-block;background:#e85d26;color:white;text-decoration:none;font-weight:700;font-size:14px;padding:12px 28px;border-radius:30px;letter-spacing:0.5px;">
+    📋 新入社員 成長ロードマップを見る →
+  </a>
+  <p style="color:rgba(255,255,255,0.5);font-size:12px;margin-top:10px;">月次マイルストーン・資格ロードマップ・必読書・AI活用ガイドを掲載</p>
+</div>
+
+<footer>
+  © 2026 All Rights Reserved. ｜ 本資料はPPTX（事業戦略_当社 202604）をもとに作成したHTML解説版です。
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ロジックツリー練習問題 20問｜フレームワーク練習</title>
+<style>
+:root{--primary:#0369a1;--accent:#7c3aed;--accent2:#2ca8c2;--green:#16a34a;--light:#f4f7fb;--dark:#0f1f30;--gray:#6b7a8d;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--light);color:var(--dark);line-height:1.7;}
+.hero{background:linear-gradient(135deg,#0f1f30,#0369a1,#7c3aed);color:white;padding:40px 20px 32px;text-align:center;}
+.hero h1{font-size:clamp(20px,4vw,30px);font-weight:800;margin-bottom:8px;}
+.hero p{font-size:13px;opacity:.8;margin-bottom:16px;}
+.progress-wrap{background:rgba(255,255,255,.15);border-radius:20px;height:10px;max-width:400px;margin:0 auto 8px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,#c4b5fd,#7c3aed);border-radius:20px;transition:width .4s;width:0%;}
+.progress-text{font-size:12px;opacity:.8;}
+.stats-row{display:flex;gap:16px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:8px 16px;text-align:center;}
+.stat .v{font-size:20px;font-weight:800;color:#fde68a;line-height:1;}
+.stat .l{font-size:10px;opacity:.75;}
+.container{max-width:800px;margin:0 auto;padding:20px;}
+.lecture{background:white;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.08);border-left:5px solid var(--accent);}
+.lecture h2{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:10px;}
+.lecture p{font-size:13px;color:var(--gray);margin-bottom:8px;}
+.tree-demo{background:#f8f7ff;border-radius:10px;padding:16px;font-family:monospace;font-size:12px;line-height:2;margin:10px 0;color:var(--dark);}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0;}
+@media(max-width:540px){.two-col{grid-template-columns:1fr;}}
+.col-card{border-radius:10px;padding:12px 14px;font-size:12px;}
+.why-card{background:#fff0e0;border-left:3px solid #e85d26;}
+.how-card{background:#e0f2fe;border-left:3px solid #0369a1;}
+.col-card h4{font-size:12px;font-weight:700;margin-bottom:6px;}
+.warn{background:#fff8f0;border-left:3px solid #e85d26;border-radius:0 8px 8px 0;padding:10px 14px;font-size:12px;color:#92400e;margin-top:10px;}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2px;color:white;display:inline-block;padding:4px 14px;border-radius:20px;margin:16px 0 12px;}
+.sl-basic{background:var(--green);}
+.sl-mid{background:var(--accent2);}
+.sl-adv{background:var(--accent);}
+.qcard{background:white;border-radius:14px;padding:20px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);}
+.qtop{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.qnum{background:var(--primary);color:white;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;}
+.qtype{font-size:11px;color:var(--gray);font-weight:600;}
+.qlv{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.qlv.basic{background:#dcfce7;color:#166534;}
+.qlv.mid{background:#dbeafe;color:#1e40af;}
+.qlv.adv{background:#fce7f3;color:#9d174d;}
+.qtext{font-size:14px;font-weight:600;margin-bottom:10px;line-height:1.6;}
+.qsub{font-size:12px;color:var(--gray);margin-bottom:12px;}
+.tree-q{background:#f8f7ff;border-radius:8px;padding:14px;font-family:monospace;font-size:13px;line-height:2.2;margin-bottom:12px;color:var(--dark);}
+.blank{background:#fde68a;padding:1px 8px;border-radius:4px;font-weight:700;}
+.choices{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.ch{text-align:left;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;background:white;cursor:pointer;font-size:13px;font-family:inherit;transition:all .2s;}
+.ch:hover{border-color:var(--accent2);background:#f0f9ff;}
+.ch.correct{border-color:var(--green);background:#f0fdf4;color:#166534;font-weight:700;}
+.ch.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626;}
+.ch:disabled{cursor:default;}
+.ans{display:none;margin-top:12px;}
+.ans-inner{background:linear-gradient(135deg,#f5f3ff,#eff6ff);border-radius:10px;padding:16px;border:1px solid #ddd6fe;}
+.ans-result{font-size:14px;font-weight:700;color:#6d28d9;margin-bottom:8px;}
+.ans-exp{font-size:13px;color:var(--dark);margin-bottom:10px;line-height:1.6;}
+.tree-ans{background:white;border-radius:8px;padding:14px;font-family:monospace;font-size:12px;line-height:2.2;margin:8px 0;border:1px solid #ddd6fe;}
+.tip{background:white;border-radius:8px;padding:10px 14px;font-size:12px;color:#0369a1;border-left:3px solid var(--accent2);}
+.tip strong{display:block;margin-bottom:3px;}
+.revbtn{background:var(--primary);color:white;border:none;border-radius:20px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:10px;}
+.revbtn:hover{background:var(--accent);}
+.revbtn.revealed{background:var(--gray);}
+.score-board{background:white;border-radius:14px;padding:20px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:center;}
+.score-board h3{font-size:14px;color:var(--gray);margin-bottom:4px;}
+.score-board .score-val{font-size:40px;font-weight:900;color:var(--primary);}
+.nav-bar{background:#0f1f30;padding:14px 20px;text-align:center;margin-top:20px;}
+.nav-bar a{color:#a5f3fc;text-decoration:none;font-size:12px;font-weight:600;margin:0 10px;}
+
+/* === MOBILE 640px === */
+@media(max-width:640px){
+  .hero{padding:28px 14px 20px;}
+  .hero h1{font-size:clamp(18px,5vw,26px);}
+  .container{padding:12px;}
+  .qcard{padding:16px;border-radius:10px;}
+  .qtext{font-size:13px;}
+  .ch{font-size:12px;padding:10px 12px;}
+  .ans-inner{padding:14px;}
+  .ans-exp{font-size:12px;}
+  .tip{font-size:11px;}
+  .lecture{padding:16px;border-radius:10px;}
+  .lecture h2{font-size:14px;}
+  .lecture p,.lecture .warn{font-size:12px;}
+  .nav-bar{padding:12px 14px;}
+  .nav-bar a{font-size:11px;margin:0 6px;}
+  .stats-row{gap:10px;}
+  .stat{padding:6px 12px;}
+  .stat .v{font-size:18px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🌳 ロジックツリー 練習問題</h1>
+  <p>問題の根本原因を探り、解決策を設計する思考技術</p>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-text" id="progressText">0 / 20 問 回答済み</div>
+  <div class="stats-row">
+    <div class="stat"><div class="v">20</div><div class="l">問</div></div>
+    <div class="stat"><div class="v">50</div><div class="l">分目安</div></div>
+    <div class="stat"><div class="v" id="scoreDisp">0</div><div class="l">正解（選択問題）</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="lecture">
+  <h2>📖 ロジックツリーとは？（4分で読む）</h2>
+  <p>問題や課題を<strong>ツリー構造（木構造）</strong>で分解する思考ツール。上位の概念を下位の要素に展開していく。MECE（モレなく・ダブりなく）を縦方向に深める道具。</p>
+  <div class="two-col">
+    <div class="col-card why-card">
+      <h4>🔍 Whyツリー（原因分析）</h4>
+      問題の「なぜ？」を繰り返して根本原因を特定する。現状分析・問題解決の出発点で使う。
+    </div>
+    <div class="col-card how-card">
+      <h4>💡 Howツリー（解決策）</h4>
+      目標達成の「どうやって？」を展開して施策を網羅する。提案書の施策一覧を作るときに使う。
+    </div>
+  </div>
+  <div class="tree-demo">
+【Whyツリーの例：PMI後に売上が落ちた】<br>
+売上低下<br>
+├── 顧客数の減少<br>
+│   ├── 既存顧客の離脱（Why？→担当者交代で関係が切れた）<br>
+│   └── 新規獲得の停止（Why？→買収期間中に営業活動が止まった）<br>
+└── 単価の低下<br>
+    ├── 値下げ（Why？→競合の価格攻勢への対応）<br>
+    └── 高単価商品のラインナップ廃止（Why？→製造統合で削除された）
+  </div>
+  <div class="warn">⚠️ 各展開はMECEでなければならない。「売上低下の原因がAとBだけ」と言う前に「他に原因はないか？」を必ず確認する。深さは通常3〜4層が実務的。</div>
+</div>
+
+<div class="score-board">
+  <h3>選択問題スコア</h3>
+  <span class="score-val" id="scoreVal">0</span><span style="font-size:18px;color:var(--gray);"> / 10点</span>
+</div>
+
+<div class="section-label sl-basic">SECTION A ― ツリーの空欄を埋める（Q1〜Q5）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q1</span><span class="qtype">空欄補充</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">以下のWhyツリーの空欄（★）を埋めよ。</p>
+  <div class="tree-q">
+PMI Manager の解約が増えた<br>
+├── プロダクト起因<br>
+│   ├── ★①<br>
+│   └── バグ・障害の多発<br>
+└── 顧客起因<br>
+    ├── PMI完了による利用終了<br>
+    └── ★②
+  </div>
+  <button class="revbtn" onclick="revealAns('a1',this)">答えを見る ▼</button>
+  <div class="ans" id="a1">
+    <div class="ans-inner">
+      <div class="ans-result">📝 解答例</div>
+      <div class="tree-ans">
+①　必要な機能の不足（ユーザーが求める機能がない）<br>
+②　予算削減・担当者交代など顧客事情の変化
+      </div>
+      <p class="ans-exp">ロジックツリーの各枝はMECEになるよう展開する。「プロダクト起因」を掘り下げるなら「機能・品質・UX」などが主要素。「顧客起因」は「使い終わり・お金・人」などで整理できる。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>解約分析でWhyツリーを作るとき、まず仮説ツリーを作って、それをデータ（ヒアリング・ログ分析）で検証していく。「仮説→検証」のサイクルがコンサルの基本動作。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q2</span><span class="qtype">空欄補充</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">以下のHowツリーの空欄（★）を埋めよ。（PMIコンサルの売上を増やすための施策ツリー）</p>
+  <div class="tree-q">
+PMIコンサル売上アップ<br>
+├── 顧客数を増やす<br>
+│   ├── ★①（SaaS顧客からの転換）<br>
+│   └── 新規チャネル開拓（地銀・仲介会社）<br>
+└── 単価を上げる<br>
+    ├── ★②（コンサル料の値上げ交渉）<br>
+    └── 契約期間を延ばす（6ヶ月→12ヶ月）
+  </div>
+  <button class="revbtn" onclick="revealAns('a2',this)">答えを見る ▼</button>
+  <div class="ans" id="a2">
+    <div class="ans-inner">
+      <div class="ans-result">📝 解答例</div>
+      <div class="tree-ans">
+①　SaaS導入顧客へのアップセル提案（Layer1→Layer2への引き上げ）<br>
+②　高付加価値サービスの提供（成果報酬型・専門特化）
+      </div>
+      <p class="ans-exp">Howツリーは「売上=顧客数×単価」のような数式から始めるのが最もMECEになりやすい。施策の抜け漏れが起きにくい。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>当社の3層サービスモデル（SaaS→コンサル→買収）はHowツリーの構造そのもの。Layer1の顧客をLayer2へ引き上げる施策設計が重要。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q3</span><span class="qtype">空欄補充</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">ある建設会社をM&Aで買収した。PMI後の統合課題をWhyツリーで展開したい。空欄を埋めよ。</p>
+  <div class="tree-q">
+PMI後の統合が進まない<br>
+├── ヒトの問題<br>
+│   ├── ★①<br>
+│   └── 既存社員のモチベーション低下<br>
+├── 情報の問題<br>
+│   ├── ★②<br>
+│   └── ナレッジ移転の未完了<br>
+└── プロセスの問題<br>
+    └── 業務フローの二重化・非効率
+  </div>
+  <button class="revbtn" onclick="revealAns('a3',this)">答えを見る ▼</button>
+  <div class="ans" id="a3">
+    <div class="ans-inner">
+      <div class="ans-result">📝 解答例</div>
+      <div class="tree-ans">
+①　役割・権限・責任の不明確化（誰が何を決めるか不明）<br>
+②　基幹システムの未統合（会計・顧客管理・施工管理が別々）
+      </div>
+      <p class="ans-exp">PMI実務では「ヒト・モノ・カネ・情報」の4軸でツリーを展開するのが鉄板。それぞれの第2層をMECEに挙げられるかどうかが、PMIプロとしての基礎力になる。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>「役割・権限の不明確化」はどのPMI案件でも必ず出てくる課題No.1。買収後Day1に組織図と権限委譲表を確定させることが100日プランの最重要タスクの一つ。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q4</span><span class="qtype">空欄補充</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">IT系の中小企業（売上3億円）の「利益が薄い」問題をWhyツリーで分析。3階層まで展開し、空欄★を最低3つ埋めよ。</p>
+  <div class="tree-q">
+営業利益率が低い（業界平均5%に対し2%）<br>
+├── 売上が低い<br>
+│   ├── ★①<br>
+│   └── ★②<br>
+└── 費用が高い<br>
+    ├── 人件費率が高い（売上の65%）<br>
+    │   ├── ★③<br>
+    │   └── 稼働率が低い（75%）<br>
+    └── 営業コストが高い
+  </div>
+  <button class="revbtn" onclick="revealAns('a4',this)">答えを見る ▼</button>
+  <div class="ans" id="a4">
+    <div class="ans-inner">
+      <div class="ans-result">📝 解答例</div>
+      <div class="tree-ans">
+①　案件単価が低い（大手に対して値下げ交渉を受け入れすぎている）<br>
+②　既存顧客の継続率が低い（リピート受注が取れていない）<br>
+③　エンジニア単価が市場と比べて高い（採用コスト・給与水準）
+      </div>
+      <p class="ans-exp">このWhyツリーは実際のSES企業でよく見られる構造。「売上×利益率」の数式から逆算して、どの指標が業界平均と乖離しているかを確認するのが分析の出発点。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>当社のSES事業でも同様の分析が使える。「案件単価85万以上・稼働率85%以上」という目標設定はまさにこの2軸を数値目標化したもの。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q5</span><span class="qtype">空欄補充</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">事業承継後の「従業員の早期離職」問題をWhyツリーで展開。第2・第3層で★を埋めよ。</p>
+  <div class="tree-q">
+M&A後の従業員離職率が高い（年15%→買収後25%）<br>
+├── 将来への不安<br>
+│   ├── ★①（新経営陣への不信感）<br>
+│   └── 自分の役割・評価が変わることへの不安<br>
+├── 待遇・条件の変化<br>
+│   ├── ★②<br>
+│   └── 勤務場所・勤務体系の変更<br>
+└── 文化・価値観の衝突<br>
+    ├── 意思決定スピードの違い<br>
+    └── ★③
+  </div>
+  <button class="revbtn" onclick="revealAns('a5',this)">答えを見る ▼</button>
+  <div class="ans" id="a5">
+    <div class="ans-inner">
+      <div class="ans-result">📝 解答例</div>
+      <div class="tree-ans">
+①　情報開示が不十分で「何が変わるのか」が不明確<br>
+②　給与・賞与・福利厚生の実質的な低下<br>
+③　コミュニケーションスタイルや仕事の進め方の根本的な違い
+      </div>
+      <p class="ans-exp">離職率はPMIの「失敗指標」の中で最も重要なもの。特にキーパーソン（業績の80%を生み出すトップ20%の社員）の離職はPMI後の業績直撃になる。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>PMI後30日以内に全従業員への「ヒアリング面談」を実施し、この3軸の懸念を吸い上げることが鉄則。ADKAR変革マネジメントの「Awareness（認識）→Desire（意欲）」のフェーズに直結。</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label sl-basic">SECTION B ― WhyツリーとHowツリーの使い分け（Q6〜Q10）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q6</span><span class="qtype">使い分け</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">次の場面でWhyツリーとHowツリーのどちらを使うべきか答えよ。<br>「PMI Manager導入3ヶ月後に顧客満足度が想定より低い。経営報告のため原因を整理したい。」</p>
+  <button class="revbtn" onclick="revealAns('a6',this)">答えを見る ▼</button>
+  <div class="ans" id="a6">
+    <div class="ans-inner">
+      <div class="ans-result">📝 答え：Whyツリー（原因分析）</div>
+      <p class="ans-exp">「なぜ満足度が低いのか」を掘り下げるのでWhyツリー。「満足度低下の原因を機能・サポート・期待値ギャップで分解する」→「それぞれのなぜ」→「根本原因」という流れ。Howツリー（解決策）はその後。</p>
+      <div class="tip"><strong>💼 コンサルの鉄則</strong>「原因分析（Why）→解決策立案（How）」の順番を必ず守る。原因が分からないまま解決策を出すと、見当外れな施策を提案してしまう。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q7</span><span class="qtype">使い分け</span><span class="qlv basic">基礎</span></div>
+  <p class="qtext">「2026年9月のPMI Managerリリースに向けて、初期顧客5社をどう獲得するか」の検討にはWhyツリーとHowツリーのどちらか？</p>
+  <button class="revbtn" onclick="revealAns('a7',this)">答えを見る ▼</button>
+  <div class="ans" id="a7">
+    <div class="ans-inner">
+      <div class="ans-result">📝 答え：Howツリー（解決策・施策立案）</div>
+      <p class="ans-exp">「どうやって5社を獲得するか」という目標達成のための施策展開なのでHowツリー。「5社獲得 ← 既存顧客へのアプローチ / パートナー経由 / インバウンド」…と展開していく。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>Howツリーはそのまま「施策リスト」になる。作成後に各施策に「担当者・期日・KPI」を付ければプロジェクト管理資料になる。PMI Managerの100日プランもHowツリーの発展形。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q8</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">ロジックツリーを使う際に「最も良くないアプローチ」はどれか？</p>
+  <div class="choices" id="ch8">
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',false)">A）ツリーの深さを2〜4層に留める</button>
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',false)">B）各分岐をMECEになるよう確認する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',true)">C）原因が思いつく限りどこまでも深掘りする</button>
+    <button class="ch" onclick="checkMCQ(this,'ch8','a8',false)">D）ツリー完成後にデータで仮説を検証する</button>
+  </div>
+  <div class="ans" id="a8">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C（やりすぎ注意）</div>
+      <p class="ans-exp">ツリーを深く掘りすぎると「分析のための分析」になり、実務では使えない。実践的には3〜4層で「重要な仮説」を立てて、データで検証するのがベスト。完璧なツリーより「速く作れる実用的なツリー」を目指す。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>コンサルの現場では「30分でドラフトツリーを作り、クライアントに見せてフィードバックをもらう」という使い方が多い。完成度より速度と修正しやすさが大切。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q9</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">以下の展開でMECEが崩れている箇所はどれか？</p>
+  <div class="tree-q" style="font-size:12px;">
+PMIコンサル売上低迷<br>
+├── 営業力の問題<br>
+│   ├── 新規案件獲得力が低い<br>
+│   └── 既存顧客からの紹介が少ない<br>
+└── プロダクトの問題<br>
+    ├── PMI Managerの機能不足<br>
+    ├── 価格が高い<br>
+    └── 競合が強い ← ここ
+  </div>
+  <div class="choices" id="ch9">
+    <button class="ch" onclick="checkMCQ(this,'ch9','a9',false)">A）問題ない。すべてMECE</button>
+    <button class="ch" onclick="checkMCQ(this,'ch9','a9',true)">B）「競合が強い」は外部要因で、他の2つ（機能・価格）は内部要因。レイヤーが違う</button>
+    <button class="ch" onclick="checkMCQ(this,'ch9','a9',false)">C）「営業力の問題」と「プロダクトの問題」がダブっている</button>
+    <button class="ch" onclick="checkMCQ(this,'ch9','a9',false)">D）「紹介が少ない」は「新規案件獲得」に含まれるのでダブり</button>
+  </div>
+  <div class="ans" id="a9">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <p class="ans-exp">「競合が強い」は自社ではコントロールできない外部要因。「機能不足・価格」は内部要因。同じ「プロダクトの問題」という枝でも、外部・内部要因を混在させるとMECEが崩れる。改善：「プロダクトの競争力の問題（機能・価格）」と「外部環境（競合）」を別枝にする。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>外部要因と内部要因の混在はロジックツリーでよくあるミス。外部要因は「認識・適応」の施策、内部要因は「改善・変革」の施策になるので、分けないと施策の方向性が混乱する。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q10</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">「従業員の生産性を上げる」ためのHowツリーとして最もMECEな第一層展開はどれか？</p>
+  <div class="choices" id="ch10">
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',false)">A）研修・給与アップ・休暇増加</button>
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',true)">B）能力向上・意欲向上・環境整備（業務効率化）</button>
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',false)">C）短期施策・中期施策・長期施策</button>
+    <button class="ch" onclick="checkMCQ(this,'ch10','a10',false)">D）管理職向け・一般社員向け</button>
+  </div>
+  <div class="ans" id="a10">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <p class="ans-exp">生産性 = 能力（できること） × 意欲（やること） × 環境（やりやすさ）という人材管理の基本式。3つは独立かつ網羅的。Aの「研修・給与・休暇」はこれらの下位施策であり、第一層としては網羅性が低い。</p>
+      <div class="tip"><strong>💼 PMI実務メモ</strong>PMI後の人材統合で生産性低下が起きたとき、まずこの3軸でどこが問題かを診断する。最もよくあるのは「意欲の低下（不安・不満）」。だからADKAR（変革マネジメント）が重要になる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label sl-mid">SECTION C ― ツリー設計（Q11〜Q15）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q11</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">「PMI Managerで顧客が30日以内に解約する」問題をWhyツリーで分析する。最も有効な第一層展開はどれか？</p>
+  <div class="choices" id="ch11">
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">A）機能が少ない・価格が高い・競合がある</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',true)">B）オンボーディングの失敗・価値実感の欠如・期待値ミスマッチ</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">C）営業の説明不足・マーケティングの問題</button>
+    <button class="ch" onclick="checkMCQ(this,'ch11','a11',false)">D）大企業顧客・中小企業顧客の違い</button>
+  </div>
+  <div class="ans" id="a11">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <p class="ans-exp">30日以内という「早期解約」は「使い始めて辞める」パターン。この場合、原因はほぼ①うまく使い始められない（オンボーディング失敗）②使っても価値が感じられない（価値実感欠如）③思っていたのと違う（期待値ミスマッチ）の3つに集約される。SaaS業界のベストプラクティス。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>PMI Managerのカスタマーサクセス（CS）チームは、導入後30日のオンボーディング成功が最重要KPI。「最初の1週間で1つの100日プランを作れた顧客は90%継続する」などのデータを集めて改善施策につなげる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q12</span><span class="qtype">選択問題</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">「M&A後の買収企業の売上を回復させる」Howツリーの第一層として最も適切なのはどれか？</p>
+  <div class="choices" id="ch12">
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',true)">A）既存顧客の維持・新規顧客の獲得・単価の向上</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">B）広告・SNS・展示会への参加</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">C）商品開発・価格改定・販促強化</button>
+    <button class="ch" onclick="checkMCQ(this,'ch12','a12',false)">D）短期・中期・長期の施策</button>
+  </div>
+  <div class="ans" id="a12">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：A</div>
+      <p class="ans-exp">売上 = 顧客数 × 単価 = (既存維持 + 新規獲得 - 離脱) × 単価。この式から「既存維持・新規獲得・単価向上」の3軸はMECEかつ数式的に証明可能。B・CはHowツリーの第二層・第三層に当たる施策。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>PMI後は「新規獲得より既存維持が先」が鉄則。M&A後の混乱で既存顧客が離れることが多いため、まず既存維持の施策を優先する。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q13</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">「ロジックツリーで原因を特定したが、データが集まらず検証できない」状況で最もコンサルとして適切な対処は？</p>
+  <div class="choices" id="ch13">
+    <button class="ch" onclick="checkMCQ(this,'ch13','a13',false)">A）データが揃うまで分析を止めて待つ</button>
+    <button class="ch" onclick="checkMCQ(this,'ch13','a13',false)">B）仮説ツリーを捨てて別のアプローチに切り替える</button>
+    <button class="ch" onclick="checkMCQ(this,'ch13','a13',true)">C）確認できる枝から検証を進め、不確かな枝には「仮説」と明記して報告する</button>
+    <button class="ch" onclick="checkMCQ(this,'ch13','a13',false)">D）クライアントに「データが必要」と言ってプロジェクトを延長する</button>
+  </div>
+  <div class="ans" id="a13">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C</div>
+      <p class="ans-exp">コンサルはデータが揃うまで待てるほど時間がない。検証できる部分から進め、不確かな部分は「これは仮説段階」と透明性を保つのがプロのアプローチ。「仮説→検証→精緻化」を反復する。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>「データがないから分からない」は禁句。「データはないが、こういう仮説があり、この方法で確認できる。1週間でデータを集める」と言えるのがプロ。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q14</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">「ロジックツリー」と「フィッシュボーン図（特性要因図）」の主な違いは何か？</p>
+  <div class="choices" id="ch14">
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">A）フィッシュボーンは製造業専用、ロジックツリーはコンサル専用</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',true)">B）フィッシュボーンは「4M（人・機械・材料・方法）」などの固定軸を使い、ロジックツリーは問題に応じた自由な軸を設計できる</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">C）ロジックツリーはWhyの分析に使えず、Howだけ</button>
+    <button class="ch" onclick="checkMCQ(this,'ch14','a14',false)">D）どちらも全く同じツールで呼び方が違うだけ</button>
+  </div>
+  <div class="ans" id="a14">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：B</div>
+      <p class="ans-exp">フィッシュボーン図は製造業でよく使われる「固定軸（4Mや5M1E）」での原因分析。ロジックツリーは軸を自分で設計できる汎用性の高いツール。コンサル業務ではロジックツリーの方が使われる。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>製造業の買収先企業でQC（品質管理）の話になるとフィッシュボーン図が登場することがある。「あ、フィッシュボーンですね、PMI文脈ではロジックツリーと合わせて使うと…」と言えると知識の幅を示せる。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q15</span><span class="qtype">選択問題</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">「中小企業のDX推進がうまくいかない」問題のWhyツリーとして最もMECEに近い第一層は？</p>
+  <div class="choices" id="ch15">
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">A）予算がない・人材がいない・時間がない</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">B）社長のせい・社員のせい・ITベンダーのせい</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',true)">C）経営意思決定の問題・人材・スキルの問題・外部環境（ベンダー・ツール）の問題</button>
+    <button class="ch" onclick="checkMCQ(this,'ch15','a15',false)">D）短期課題・中期課題・長期課題</button>
+  </div>
+  <div class="ans" id="a15">
+    <div class="ans-inner">
+      <div class="ans-result">✅ 正解：C</div>
+      <p class="ans-exp">DX推進失敗の原因は「誰が意思決定するか（経営）」「誰が実行するか（人材・スキル）」「何を使うか（外部ツール・ベンダー）」の3軸で網羅できる。Aは全てリソース不足（同じレイヤー）で、根本原因（意思決定の問題）が見えない。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>DXコンサルでよくある失敗：「ツールを導入したが使われない」。これはC軸で言えば「外部ベンダーへの丸投げ＋経営意思決定の不備＋内部人材の教育不足」が重なった結果。WhyツリーでCを使えば各施策が見える。</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label sl-adv">SECTION D ― 実践ケース（Q16〜Q20）</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q16</span><span class="qtype">実践ケース</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">当社が買収した飲食チェーン（10店舗、売上5億円）のPMI後3ヶ月で「店舗の客数が15%減少」している。Whyツリーを2〜3層で展開せよ。</p>
+  <button class="revbtn" onclick="revealAns('a16',this)">答えを見る ▼</button>
+  <div class="ans" id="a16">
+    <div class="ans-inner">
+      <div class="ans-result">📝 模範解答</div>
+      <div class="tree-ans">
+客数15%減少<br>
+├── 既存顧客の離脱<br>
+│   ├── M&Aが報道され「変わった」イメージが広がった<br>
+│   ├── メニュー・価格の変更への不満<br>
+│   └── スタッフの接客品質の低下（キーパーソン離職）<br>
+└── 新規集客の停滞<br>
+    ├── M&A移行期に広告・販促が止まった<br>
+    └── 地域での認知度低下
+      </div>
+      <p class="ans-exp">飲食業のPMI後客数減少は「既存客の離脱」が最も多い原因。特に常連客は「お気に入りの店が変わってしまった」感覚に敏感。PMI Day1から「変わらないもの（味・スタッフ・価格）」を明確に伝えることが重要。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>飲食業の買収PMIでは、雇用継続・メニュー維持・価格維持を「100日プランの優先事項」として明文化し、それを従業員・常連客に積極的に伝えるコミュニケーション戦略が必要。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q17</span><span class="qtype">実践ケース</span><span class="qlv mid">中級</span></div>
+  <p class="qtext">「PMI Managerの新機能開発が遅れている」問題のWhyツリーを3層で展開せよ。（開発チームは5名・外部パートナー有）</p>
+  <button class="revbtn" onclick="revealAns('a17',this)">答えを見る ▼</button>
+  <div class="ans" id="a17">
+    <div class="ans-inner">
+      <div class="ans-result">📝 模範解答</div>
+      <div class="tree-ans">
+開発遅延<br>
+├── 人材・体制の問題<br>
+│   ├── 開発人員が不足（5名では処理能力が低い）<br>
+│   └── 役割分担・優先順位が不明確<br>
+├── 要件・仕様の問題<br>
+│   ├── 仕様変更が頻繁（コンサル現場からの追加要求）<br>
+│   └── 要件定義が曖昧で手戻りが発生<br>
+└── 技術・プロセスの問題<br>
+    ├── テスト工程が属人化している<br>
+    └── 外部パートナーとの連携・コミュニケーション不足
+      </div>
+      <div class="tip"><strong>💼 実務メモ</strong>スタートアップ/小規模開発チームでの遅延原因は「仕様変更と手戻り」が最多。PMI Managerでも「コンサル現場の要求をプロダクトにどう反映するか」の意思決定プロセス整備が重要。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q18</span><span class="qtype">実践ケース</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">「当社が2028年に自社買収（1号案件）を成功させる」ためのHowツリーを作成せよ。「買収準備・対象選定・PMI実行」の3軸で展開すること。</p>
+  <button class="revbtn" onclick="revealAns('a18',this)">答えを見る ▼</button>
+  <div class="ans" id="a18">
+    <div class="ans-inner">
+      <div class="ans-result">📝 模範解答</div>
+      <div class="tree-ans">
+2028年 1号自社買収成功<br>
+├── 買収準備（〜2027年）<br>
+│   ├── 資金調達（シリーズA 5〜10億円）<br>
+│   ├── M&A担当チームの組成（Track B人材・法務・FA）<br>
+│   └── DD体制の構築（弁護士・会計士との連携）<br>
+├── 対象企業の選定<br>
+│   ├── ターゲット基準の明確化（売上1〜3億・黒字・後継者不在）<br>
+│   ├── ソーシング（地銀・仲介会社・SaaS顧客からの紹介）<br>
+│   └── スクリーニング・DD（財務・法務・事業）<br>
+└── PMI実行<br>
+    ├── 100日プラン策定（PMI Managerで管理）<br>
+    ├── Track B人材の経営者派遣<br>
+    └── シナジー目標の設定・追跡
+      </div>
+      <div class="tip"><strong>💼 実務メモ</strong>このHowツリーは会社の戦略ロードマップそのもの。入社したてのうちにこのツリーを自分で作れると、「会社が何をしようとしているか」が体系的に理解できる。ぜひ自分でも書いてみること。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q19</span><span class="qtype">実践ケース</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">あなたはPMIコンサルプロジェクトで「買収先の製造業（従業員50名）の収益を1年で改善する」担当者になった。Howツリーで施策を整理し、その中から「最初の30日で着手すべき施策」を3つ選んでその理由も述べよ。</p>
+  <button class="revbtn" onclick="revealAns('a19',this)">答えを見る ▼</button>
+  <div class="ans" id="a19">
+    <div class="ans-inner">
+      <div class="ans-result">📝 模範解答</div>
+      <p class="ans-exp"><strong>Howツリー（収益改善）：</strong><br>売上増加：既存顧客維持 / 新規顧客開拓 / 製品価格の見直し<br>コスト削減：原材料費の削減（仕入先見直し）/ 製造効率化（生産ライン最適化）/ 管理コスト削減（業務自動化）<br><br><strong>最初の30日で着手する施策（優先3つ）：</strong><br>①<strong>既存顧客の関係維持</strong>：買収後の不安で顧客が離れる前に、新経営陣が直接訪問して「変わらない点」を伝える。最も緊急かつインパクト大。<br>②<strong>役割・権限の明確化</strong>：従業員が「誰に何を相談すればいいか」わからない状態を解消。生産性低下の最大原因。<br>③<strong>キャッシュフロー状況の把握</strong>：CFが悪化していれば早急な資金手当が必要。後手に回ると取り返しがつかない。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>PMIの最初30日（Day1-30）は「守り」が最優先。「壊さない・逃がさない・混乱させない」。新機能・改革はDay31以降。</div>
+    </div>
+  </div>
+</div>
+
+<div class="qcard">
+  <div class="qtop"><span class="qnum">Q20</span><span class="qtype">実践ケース</span><span class="qlv adv">上級</span></div>
+  <p class="qtext">【最終問題】「ロジックツリー」「MECE」「3C分析」「SWOT」を使って、「当社がPMI SaaS市場で5年以内に業界No.1になるための戦略」を整理せよ。各フレームワークをどの順番・目的で使うかも述べること。</p>
+  <button class="revbtn" onclick="revealAns('a20',this)">答えを見る ▼</button>
+  <div class="ans" id="a20">
+    <div class="ans-inner">
+      <div class="ans-result">📝 模範解答（フレームワーク連鎖の使い方）</div>
+      <p class="ans-exp"><strong>Step1：3C分析</strong>で市場を把握→ Customer（M&A仲介・PE・事業会社のPMIニーズ）、Competitor（DealRoom等の海外SaaS・コンサル会社）、Company（業務改善ノウハウ・AI開発力）。KSFは「日本語×中小企業特化×コンサル連携」<br><br><strong>Step2：SWOT分析</strong>で戦略の方向を決定→ S×O（強みを機会に活かす）：業務改善ノウハウ+AI+事業承継市場の急拡大＝PMI SaaSに最適。W克服策：人材不足→採用・育成投資。<br><br><strong>Step3：ロジックツリー（Howツリー）</strong>で戦略を施策に落とす→ No.1になる ← SaaS顧客500社 / 業界標準テンプレート確立 / PMIデータの独占蓄積<br><br><strong>Step4：MECE確認</strong>で施策の抜け漏れを検証→「商品・価格・チャネル・ブランド」など軸でモレがないか確認。</p>
+      <div class="tip"><strong>💼 実務メモ</strong>これが戦略コンサルの「フレームワーク連鎖」。3C→SWOT→ロジックツリー→MECEチェックの順番は提案書作成の黄金パターン。これを体に染み込ませると、どんな経営課題でも対応できる。</div>
+    </div>
+  </div>
+</div>
+
+<div style="background:white;border-radius:14px;padding:20px;margin-top:20px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.07);">
+  <h3 style="font-size:16px;color:var(--dark);margin-bottom:8px;">🎉 全20問完了！</h3>
+  <p style="font-size:13px;color:var(--gray);">次は「3C分析」へ。市場・競合・自社を構造的に見る目を養う。</p>
+  <a href="練習_3C分析.html" style="display:inline-block;margin-top:12px;background:#0369a1;color:white;text-decoration:none;font-weight:700;font-size:13px;padding:10px 24px;border-radius:20px;">3C分析へ進む →</a>
+</div>
+</div>
+
+<div class="nav-bar">
+  <a href="練習_MECE.html">← MECE</a>
+  <a href="フレームワーク練習問題_ハブ.html">問題集トップ</a>
+  <a href="練習_3C分析.html">3C分析 →</a>
+</div>
+
+<script>
+let answered=0,score=0,mcqAnswered={};
+function revealAns(id,btn){const el=document.getElementById(id);if(el.style.display==='none'||el.style.display===''){el.style.display='block';btn.textContent='閉じる ▲';btn.classList.add('revealed');if(!btn.dataset.counted){btn.dataset.counted='1';answered++;updateProgress();}}else{el.style.display='none';btn.textContent='答えを見る ▼';btn.classList.remove('revealed');}}
+function checkMCQ(btn,chId,ansId,correct){if(mcqAnswered[chId])return;mcqAnswered[chId]=true;const choices=document.getElementById(chId).querySelectorAll('.ch');choices.forEach(c=>{c.disabled=true;if(c.onclick.toString().includes(',true)'))c.classList.add('correct');});if(!correct)btn.classList.add('wrong');document.getElementById(ansId).style.display='block';if(correct){score++;document.getElementById('scoreVal').textContent=score;document.getElementById('scoreDisp').textContent=score;}answered++;updateProgress();}
+function updateProgress(){const pct=Math.min(Math.round(answered/20*100),100);document.getElementById('progressBar').style.width=pct+'%';document.getElementById('progressText').textContent=answered+' / 20 問 回答済み';}
+</script>
+</body>
+</html>
