@@ -1036,6 +1036,104 @@ dialog::backdrop {
 }
 
 /* ================================================================
+   INTERACTIVE CHECKLIST
+================================================================ */
+/* 全体進捗バー */
+.cl-progress-wrap {
+  background: #f5f0eb; border-radius: 12px; padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.cl-progress-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 0.5rem; font-size: 0.83rem;
+}
+#cl-bar-text { font-weight: 600; color: var(--coral-dark); }
+#cl-bar-pct  { font-size: 1.1rem; font-weight: 800; color: var(--coral-dark); }
+.cl-bar-track {
+  height: 10px; background: #e8ddd5; border-radius: 99px; overflow: hidden;
+}
+#cl-bar-fill {
+  height: 100%; background: linear-gradient(90deg, var(--coral), var(--coral-dark));
+  border-radius: 99px; transition: width 0.4s ease;
+  width: 0%;
+}
+.cl-reset-all {
+  margin-top: 0.5rem;
+  font-size: 0.72rem; color: #9ca3af; cursor: pointer;
+  background: none; border: none; padding: 0; text-decoration: underline;
+}
+.cl-reset-all:hover { color: var(--coral-dark); }
+
+/* グループ */
+.cl-group {
+  border: 1.5px solid #e8ddd5; border-radius: 12px;
+  margin-bottom: 1rem; overflow: hidden; transition: border-color 0.3s;
+}
+.cl-group-done { border-color: #5AAA80; }
+
+.cl-group-header {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--blk-cream); padding: 0.7rem 1rem;
+  border-bottom: 1px solid #e8ddd5;
+}
+.cl-group-done .cl-group-header { background: #e0f2e8; border-bottom-color: #b6e4c8; }
+.cl-group-title {
+  font-size: 0.88rem; font-weight: 700; color: var(--coral-dark); margin: 0;
+}
+.cl-group-done .cl-group-title { color: #166534; }
+.cl-group-meta { display: flex; align-items: center; gap: 0.5rem; }
+.cl-group-count {
+  font-size: 0.75rem; font-weight: 700;
+  background: white; border-radius: 999px; padding: 2px 8px;
+  color: var(--coral-dark); border: 1px solid var(--coral-mid);
+}
+.cl-group-done .cl-group-count { color: #166534; border-color: #5AAA80; }
+.cl-group-reset {
+  font-size: 0.65rem; color: #9ca3af; cursor: pointer;
+  background: none; border: none; text-decoration: underline;
+}
+.cl-group-reset:hover { color: var(--coral-dark); }
+
+/* リスト本体 */
+.cl-list {
+  list-style: none; margin: 0; padding: 0.25rem 0;
+}
+.cl-list li { border-bottom: 1px solid #f5f0eb; }
+.cl-list li:last-child { border-bottom: none; }
+
+/* チェックアイテム */
+.cl-item {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  padding: 0.6rem 1rem; cursor: pointer; transition: background 0.1s;
+  user-select: none; width: 100%; box-sizing: border-box;
+}
+.cl-item:hover { background: var(--coral-light); }
+.cl-cb { display: none; }
+.cl-box {
+  width: 20px; height: 20px; min-width: 20px; margin-top: 1px;
+  border: 2px solid #ccc; border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; background: white; font-size: 13px;
+}
+.cl-item:hover .cl-box { border-color: var(--coral-mid); }
+.cl-cb:checked + .cl-box {
+  background: #5AAA80; border-color: #5AAA80; color: white;
+}
+.cl-text {
+  font-size: 0.83rem; color: var(--text); line-height: 1.5;
+  flex: 1;
+}
+.cl-item.cl-checked .cl-text {
+  text-decoration: line-through; color: #a09898;
+}
+
+/* 完了バッジ */
+.cl-group-done .cl-group-header::after {
+  content: '✅ 完了'; font-size: 0.72rem; font-weight: 700;
+  color: #166534;
+}
+
+/* ================================================================
    SITE SEARCH
 ================================================================ */
 /* ナビ内検索ボタン */
