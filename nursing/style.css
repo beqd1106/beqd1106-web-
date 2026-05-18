@@ -608,6 +608,15 @@ tr:hover td { background: var(--coral-light); transition: background 0.12s; }
 .dl-btn.template:hover { background: #8060A8; }
 .dl-btn.word { background: #5A78C0; }
 .dl-btn.word:hover { background: #4060A8; }
+/* 公式サイトリンクボタン（🌐 公式）*/
+.dl-btn.ext-link {
+  background: transparent;
+  border: 1.5px solid #5AAA80;
+  color: #5AAA80 !important;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.55rem;
+}
+.dl-btn.ext-link:hover { background: #5AAA80; color: #fff !important; transform: translateY(-1px); }
 
 /* ================================================================
    YEAR CALENDAR
@@ -957,6 +966,21 @@ dialog::backdrop {
   line-height: 1.5;
 }
 .popup-source a { color: var(--coral-dark); }
+.source-ext-link {
+  display: inline-block;
+  margin-left: 0.6rem;
+  padding: 0.1rem 0.5rem;
+  background: var(--coral-light);
+  color: var(--coral-dark) !important;
+  border: 1px solid var(--coral-mid);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.source-ext-link:hover { background: var(--coral-mid); color: #fff !important; }
 .popup-btn {
   background: white;
   border: 1px solid var(--coral-mid);
