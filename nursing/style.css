@@ -1036,6 +1036,75 @@ dialog::backdrop {
 }
 
 /* ================================================================
+   SIMULATOR
+================================================================ */
+.sim-tabs {
+  display: flex; gap: 0.4rem; margin-bottom: 1rem; flex-wrap: wrap;
+}
+.sim-tab {
+  background: #f5f0eb; border: 1.5px solid #e8ddd5; color: var(--text-mid);
+  border-radius: 8px; padding: 0.4rem 1rem;
+  font-size: 0.82rem; font-weight: 700; cursor: pointer;
+  transition: all 0.15s;
+}
+.sim-tab.active, .sim-tab:hover {
+  background: var(--coral-light); border-color: var(--coral-mid);
+  color: var(--coral-dark);
+}
+.sim-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+}
+@media (max-width: 680px) { .sim-grid { grid-template-columns: 1fr; } }
+
+.sim-section-title {
+  font-size: 0.8rem; font-weight: 700; color: var(--coral-dark);
+  margin: 0.75rem 0 0.5rem; padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--coral-light);
+}
+.sim-row {
+  display: flex; flex-direction: column; gap: 0.2rem;
+  margin-bottom: 0.6rem; font-size: 0.82rem; color: var(--text);
+}
+.sim-row span small { display: block; color: var(--text-mid); font-size: 0.72rem; }
+.sim-row input {
+  border: 1.5px solid #e8ddd5; border-radius: 7px;
+  padding: 0.35rem 0.6rem; font-size: 0.88rem;
+  background: #fff; color: var(--text);
+  transition: border-color 0.15s; width: 100%; box-sizing: border-box;
+}
+.sim-row input:focus { outline: none; border-color: var(--coral-mid); }
+.sim-check {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 0.82rem; color: var(--text); margin-bottom: 0.4rem;
+  cursor: pointer;
+}
+.sim-check input { accent-color: var(--coral); width: 16px; height: 16px; }
+.sim-note { font-size: 0.72rem; color: var(--text-mid); margin-top: 0.5rem; }
+
+.sim-results { background: #fafaf8; border-radius: 10px; padding: 0.75rem 1rem; }
+.sim-result-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.8rem; padding: 0.3rem 0;
+  border-bottom: 1px dashed #ece5de;
+}
+.sim-result-row span { color: var(--text-mid); }
+.sim-result-row strong { color: var(--text); font-weight: 600; }
+.sim-baseunit-row { background: var(--coral-light); border-radius: 5px; padding: 0.3rem 0.4rem; margin-bottom: 0.2rem; }
+.sim-baseunit-row strong { color: var(--coral-dark); }
+.sim-total-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 0.5rem; padding: 0.5rem 0.4rem;
+  background: var(--coral-dark); border-radius: 8px;
+  font-size: 0.9rem;
+}
+.sim-total-row span { color: rgba(255,255,255,0.85); font-weight: 600; }
+.sim-total-row strong { color: #fff; font-size: 1.05rem; font-weight: 800; }
+.sim-year-row {
+  text-align: right; font-size: 0.75rem; color: var(--text-mid);
+  margin-top: 0.4rem; font-style: italic;
+}
+
+/* ================================================================
    INTERACTIVE CHECKLIST
 ================================================================ */
 /* 全体進捗バー */

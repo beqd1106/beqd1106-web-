@@ -390,12 +390,123 @@
 </div>
 </dialog>
 
+
+  <!-- ===== 加算シミュレーター ===== -->
+  <div class="card" id="simulator">
+    <div class="section-header"><span class="icon">🧮</span><h2>加算シミュレーター（月間収益概算）</h2></div>
+    <div class="alert alert-warning" style="font-size:0.8rem;margin-bottom:1rem;">
+      <strong class="alert-hdr">⚠️ 注意</strong>
+      本シミュレーターは2024年度の参考単価をもとにした概算ツールです。実際の請求額は利用者の保険種別・加算の算定要件・地域単価等により異なります。必ず国保連への実際の請求で確認してください。
+    </div>
+
+    <!-- タブ切替 -->
+    <div class="sim-tabs">
+      <button class="sim-tab active" onclick="switchSim('vn',this)">🏥 訪問看護</button>
+      <button class="sim-tab" onclick="switchSim('a',this)">🏢 就労継続A型</button>
+      <button class="sim-tab" onclick="switchSim('b',this)">🏭 就労継続B型</button>
+    </div>
+
+    <!-- 訪問看護 -->
+    <div id="sim-vn" class="sim-panel">
+      <div class="sim-grid">
+        <div class="sim-inputs">
+          <h4 class="sim-section-title">📥 基本情報</h4>
+          <label class="sim-row"><span>月間利用者数（人）</span><input type="number" id="vn-users" value="10" min="1" max="200"></label>
+          <label class="sim-row"><span>月間訪問回数 / 人</span><input type="number" id="vn-visits" value="8" min="1" max="31"></label>
+          <label class="sim-row"><span>特別管理加算Ⅰ対象者（人）<small>人工呼吸器・気管切開・悪性腫瘍末期等</small></span><input type="number" id="vn-toku1" value="0" min="0" max="100"></label>
+          <label class="sim-row"><span>特別管理加算Ⅱ対象者（人）<small>留置カテーテル・人工肛門等</small></span><input type="number" id="vn-toku2" value="2" min="0" max="100"></label>
+          <label class="sim-row"><span>ターミナルケア加算（件/月）</span><input type="number" id="vn-terminal" value="0" min="0" max="20"></label>
+          <h4 class="sim-section-title">✅ 算定中の加算</h4>
+          <label class="sim-check"><input type="checkbox" id="vn-24h" checked><span>24時間対応体制加算（6,520円/月/人）</span></label>
+          <label class="sim-check"><input type="checkbox" id="vn-shoryo" checked><span>処遇改善加算Ⅰ（所定費用×13.7%）</span></label>
+        </div>
+        <div class="sim-results">
+          <h4 class="sim-section-title">📊 月間収益内訳（概算）</h4>
+          <div class="sim-result-row"><span>基本療養費（5,610円×訪問回数）</span><strong id="vn-res-basic">¥0</strong></div>
+          <div class="sim-result-row"><span>24時間対応体制加算</span><strong id="vn-res-24h">¥0</strong></div>
+          <div class="sim-result-row"><span>特別管理加算Ⅰ（5,100円/人）</span><strong id="vn-res-toku1">¥0</strong></div>
+          <div class="sim-result-row"><span>特別管理加算Ⅱ（2,550円/人）</span><strong id="vn-res-toku2">¥0</strong></div>
+          <div class="sim-result-row"><span>ターミナルケア加算（25,000円/件）</span><strong id="vn-res-terminal">¥0</strong></div>
+          <div class="sim-result-row"><span>処遇改善加算Ⅰ（13.7%）</span><strong id="vn-res-shoryo">¥0</strong></div>
+          <div class="sim-total-row"><span>月間合計収益（概算）</span><strong id="vn-res-total">¥0</strong></div>
+          <div class="sim-year-row" id="vn-res-year">年間概算: ¥0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 就労継続A型 -->
+    <div id="sim-a" class="sim-panel" style="display:none;">
+      <div class="sim-grid">
+        <div class="sim-inputs">
+          <h4 class="sim-section-title">📥 基本情報</h4>
+          <label class="sim-row"><span>月間利用者数（人）</span><input type="number" id="a-users" value="20" min="1" max="100"></label>
+          <label class="sim-row"><span>月間利用日数（日）</span><input type="number" id="a-days" value="22" min="1" max="31"></label>
+          <label class="sim-row"><span>就労移行支援体制加算 前年度就労者数</span><input type="number" id="a-shuro" value="0" min="0" max="30"></label>
+          <h4 class="sim-section-title">✅ 算定中の加算</h4>
+          <label class="sim-check"><input type="checkbox" id="a-fukushi"><span>福祉専門職員配置等加算Ⅰ（15単位/日）</span></label>
+          <label class="sim-check"><input type="checkbox" id="a-food"><span>食事提供体制加算（34単位/日）</span></label>
+          <label class="sim-check"><input type="checkbox" id="a-shoryo" checked><span>処遇改善加算Ⅰ（所定費用×13.7%）</span></label>
+          <p class="sim-note">※ 基本報酬は定員20名以下・7〜8時間区分の参考単価（584単位/日）を使用</p>
+        </div>
+        <div class="sim-results">
+          <h4 class="sim-section-title">📊 月間収益内訳（概算）</h4>
+          <div class="sim-result-row"><span>基本報酬（584単位×10.18円）</span><strong id="a-res-base">¥0</strong></div>
+          <div class="sim-result-row"><span>就労移行支援体制加算</span><strong id="a-res-shuro">¥0</strong></div>
+          <div class="sim-result-row"><span>福祉専門職員配置等加算Ⅰ</span><strong id="a-res-fukushi">¥0</strong></div>
+          <div class="sim-result-row"><span>食事提供体制加算</span><strong id="a-res-food">¥0</strong></div>
+          <div class="sim-result-row"><span>処遇改善加算Ⅰ（13.7%）</span><strong id="a-res-shoryo">¥0</strong></div>
+          <div class="sim-total-row"><span>月間合計収益（概算）</span><strong id="a-res-total">¥0</strong></div>
+          <div class="sim-year-row" id="a-res-year">年間概算: ¥0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 就労継続B型 -->
+    <div id="sim-b" class="sim-panel" style="display:none;">
+      <div class="sim-grid">
+        <div class="sim-inputs">
+          <h4 class="sim-section-title">📥 基本情報</h4>
+          <label class="sim-row"><span>月間利用者数（人）</span><input type="number" id="b-users" value="20" min="1" max="100"></label>
+          <label class="sim-row"><span>月間利用日数（日）</span><input type="number" id="b-days" value="22" min="1" max="31"></label>
+          <label class="sim-row"><span>前年度 平均工賃月額（円）<small>基本報酬区分の決定に使用</small></span><input type="number" id="b-wage" value="18000" min="0" max="100000" step="1000"></label>
+          <h4 class="sim-section-title">✅ 算定中の加算</h4>
+          <label class="sim-check"><input type="checkbox" id="b-mokuhyo" checked><span>目標工賃達成加算（109単位/日）</span></label>
+          <label class="sim-check"><input type="checkbox" id="b-shuro"><span>就労移行支援体制加算（27単位〜/日）</span></label>
+          <label class="sim-check"><input type="checkbox" id="b-fukushi"><span>福祉専門職員配置等加算Ⅰ（15単位/日）</span></label>
+          <label class="sim-check"><input type="checkbox" id="b-food"><span>食事提供体制加算（30単位/日）</span></label>
+          <label class="sim-check"><input type="checkbox" id="b-shoryo" checked><span>処遇改善加算Ⅰ（所定費用×13.7%）</span></label>
+        </div>
+        <div class="sim-results">
+          <h4 class="sim-section-title">📊 月間収益内訳（概算）</h4>
+          <div class="sim-result-row sim-baseunit-row"><span>基本報酬単価（平均工賃月額から算定）</span><strong id="b-res-baseunit">--単位/日</strong></div>
+          <div class="sim-result-row"><span>基本報酬</span><strong id="b-res-base">¥0</strong></div>
+          <div class="sim-result-row"><span>目標工賃達成加算（109単位/日）</span><strong id="b-res-mokuhyo">¥0</strong></div>
+          <div class="sim-result-row"><span>就労移行支援体制加算</span><strong id="b-res-shuro">¥0</strong></div>
+          <div class="sim-result-row"><span>福祉専門職員配置等加算Ⅰ</span><strong id="b-res-fukushi">¥0</strong></div>
+          <div class="sim-result-row"><span>食事提供体制加算</span><strong id="b-res-food">¥0</strong></div>
+          <div class="sim-result-row"><span>処遇改善加算Ⅰ（13.7%）</span><strong id="b-res-shoryo">¥0</strong></div>
+          <div class="sim-total-row"><span>月間合計収益（概算）</span><strong id="b-res-total">¥0</strong></div>
+          <div class="sim-year-row" id="b-res-year">年間概算: ¥0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </main>
 <footer>
   <p>障碍者福祉事業所 運営ガイド｜収入向上ページ</p>
   <p>※ 法令・制度・報酬は改定されることがあります。最新情報は各官公庁の公式情報をご確認ください。</p>
 </footer>
 <script src="popup.js"></script><script src="table-responsive.js"></script><script src="nav.js"></script>
-<script src="search-data.js"></script><script src="search.js"></script>
+<script src="simulator.js"></script><script src="search-data.js"></script><script src="search.js"></script>
+<script>
+function switchSim(id, btn) {
+  document.querySelectorAll('.sim-panel').forEach(function(p){ p.style.display='none'; });
+  document.querySelectorAll('.sim-tab').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('sim-'+id).style.display='block';
+  btn.classList.add('active');
+}
+</script>
 </body>
 </html>
+
