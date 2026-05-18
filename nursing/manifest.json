@@ -1,0 +1,43 @@
+{
+  "name": "障碍者福祉事業所 運営ガイド",
+  "short_name": "福祉ガイド",
+  "description": "京都の訪問看護・就労継続支援・相談支援事業所向け運営ガイド",
+  "start_url": "/nursing/",
+  "scope": "/nursing/",
+  "display": "standalone",
+  "background_color": "#FAFAF8",
+  "theme_color": "#F0956A",
+  "lang": "ja",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "チェックリスト",
+      "url": "/nursing/09_監査対応.html",
+      "description": "監査対応チェックリスト"
+    },
+    {
+      "name": "様式DL",
+      "url": "/nursing/フォーマット/index.html",
+      "description": "様式ダウンロード"
+    },
+    {
+      "name": "加算シミュレーター",
+      "url": "/nursing/10_収入向上.html#simulator",
+      "description": "加算収益シミュレーター"
+    }
+  ]
+}

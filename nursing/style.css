@@ -1036,6 +1036,81 @@ dialog::backdrop {
 }
 
 /* ================================================================
+   PRINT OPTIMIZATION
+================================================================ */
+@media print {
+  /* 非表示にするUI要素 */
+  .site-header, .site-nav, .page-hero, .page-hero-sm,
+  .back-link, .popup-btn, .dl-box, .dl-btn, .dl-links,
+  .search-nav-btn, #search-modal, #dl-banner,
+  #deadline-widget, .sim-tabs, .sim-inputs,
+  footer, .cl-progress-wrap, .cl-group-header button,
+  .source-ext-link, .dl-btn.ext-link { display: none !important; }
+
+  /* ページ設定 */
+  @page { margin: 15mm 12mm; size: A4; }
+  body { background: white !important; color: #000 !important; font-size: 10pt; }
+
+  /* コンテナ幅を紙面いっぱいに */
+  .container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+  main.container { padding: 0 !important; }
+
+  /* カード */
+  .card {
+    box-shadow: none !important; border: 1px solid #ccc !important;
+    break-inside: avoid; margin-bottom: 12pt; border-radius: 0 !important;
+  }
+  .section-header { border-bottom: 1.5pt solid #555 !important; padding-bottom: 4pt !important; }
+  .section-header h2 { font-size: 12pt !important; }
+
+  /* テーブル */
+  table { border-collapse: collapse !important; width: 100% !important; font-size: 9pt; }
+  th, td { border: 0.5pt solid #888 !important; padding: 4pt !important; }
+  th { background: #eee !important; }
+
+  /* アラート */
+  .alert { border: 1pt solid #ccc !important; background: #f9f9f9 !important; color: #000 !important; }
+  .alert-danger  { border-color: #c00 !important; }
+  .alert-warning { border-color: #a60 !important; }
+
+  /* ポップアップ */
+  dialog { display: none !important; }
+
+  /* チェックリスト：チェックボックス見た目を維持 */
+  .cl-group { break-inside: avoid; border: 1pt solid #ccc !important; }
+  .cl-box { border: 1.5pt solid #888 !important; }
+  .cl-cb:checked + .cl-box { background: #000 !important; }
+  .cl-item.cl-checked .cl-text { text-decoration: line-through; color: #888; }
+
+  /* 2カラムを印刷では1カラム */
+  .two-col { display: block !important; }
+  .two-col > div { margin-bottom: 8pt; }
+
+  /* シミュレーター結果だけ表示 */
+  .sim-panel { display: block !important; }
+  .sim-grid { grid-template-columns: 1fr !important; }
+
+  /* リンクにURLを付記 */
+  a[href]:after { content: " (" attr(href) ")"; font-size: 7pt; color: #666; }
+  a[href^="#"]:after, a.dl-btn:after, a.popup-btn:after { content: none; }
+
+  /* ページタイトルを印刷時に表示 */
+  .page-hero-sm::before {
+    content: attr(data-print-title);
+    display: block; font-size: 14pt; font-weight: bold;
+    margin-bottom: 8pt; border-bottom: 2pt solid #333; padding-bottom: 4pt;
+  }
+
+  /* 印刷ヘッダー */
+  main::before {
+    content: "障碍者福祉事業所 運営ガイド";
+    display: block; font-size: 8pt; color: #666;
+    margin-bottom: 10pt; padding-bottom: 4pt;
+    border-bottom: 0.5pt solid #ccc;
+  }
+}
+
+/* ================================================================
    DEADLINE ALERT
 ================================================================ */
 /* TOPページ ウィジェット */

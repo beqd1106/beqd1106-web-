@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>収入向上 ｜ 障碍者福祉事業所 運営ガイド</title>
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#F0956A"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="福祉ガイド">
 </head>
 <body>
 <header class="site-header">
@@ -508,7 +509,9 @@ function switchSim(id, btn) {
   btn.classList.add('active');
 }
 </script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/nursing/sw.js").catch(function(){});}</script>
 </body>
 </html>
+
 
 
