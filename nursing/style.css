@@ -1036,6 +1036,56 @@ dialog::backdrop {
 }
 
 /* ================================================================
+   DEADLINE ALERT
+================================================================ */
+/* TOPページ ウィジェット */
+.dl-widget-empty { padding: 1rem; color: #6b7280; font-size: 0.88rem; text-align: center; }
+.dl-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.55rem 0.75rem; border-radius: 8px; text-decoration: none;
+  border: 1px solid #f0ebe4; margin-bottom: 0.4rem;
+  transition: background 0.15s; color: var(--text);
+}
+.dl-item:hover { background: var(--coral-light); border-color: var(--coral-mid); }
+.dl-item-left { display: flex; align-items: center; gap: 0.5rem; flex: 1; min-width: 0; }
+.dl-item-right { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+.dl-badge {
+  font-size: 0.65rem; font-weight: 800; padding: 2px 6px;
+  border-radius: 99px; white-space: nowrap; flex-shrink: 0;
+}
+.dl-badge-danger  { background: var(--danger-light); color: var(--danger); }
+.dl-badge-warning { background: var(--warning-light); color: #9a6000; }
+.dl-badge-info    { background: var(--info-light); color: #1a5c80; }
+.dl-label { font-size: 0.82rem; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dl-date  { font-size: 0.72rem; color: var(--text-mid); }
+.dl-days  { font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 99px; white-space: nowrap; }
+.dl-urgent { background: #fde8e8; color: #c0392b; }
+.dl-soon   { background: #fef3c7; color: #9a6000; }
+.dl-near   { background: #e0f2e8; color: #166534; }
+.dl-far    { background: #f3f4f6; color: #6b7280; }
+
+/* 全ページ ミニバナー */
+.dl-banner {
+  display: flex; align-items: center; gap: 0.75rem;
+  background: #fffbeb; border-bottom: 2px solid #fbbf24;
+  padding: 0.45rem 1rem; font-size: 0.78rem; flex-wrap: wrap;
+}
+.dl-banner-icon { font-size: 1rem; flex-shrink: 0; }
+.dl-banner-items { display: flex; gap: 0.5rem; flex-wrap: wrap; flex: 1; }
+.dl-banner-item {
+  padding: 2px 8px; border-radius: 99px; text-decoration: none;
+  font-weight: 600; white-space: nowrap; font-size: 0.75rem;
+}
+.dl-banner-danger  { background: #fde8e8; color: #c0392b; }
+.dl-banner-warning { background: #fef3c7; color: #9a6000; }
+.dl-banner-info    { background: #dff0fb; color: #1a5c80; }
+.dl-banner-close {
+  background: none; border: none; cursor: pointer; color: #9ca3af;
+  font-size: 0.85rem; padding: 0 4px; margin-left: auto; flex-shrink: 0;
+}
+.dl-banner-close:hover { color: #374151; }
+
+/* ================================================================
    SIMULATOR
 ================================================================ */
 .sim-tabs {
