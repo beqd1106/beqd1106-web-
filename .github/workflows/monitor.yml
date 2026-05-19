@@ -6,6 +6,12 @@ on:
     - cron: '0 0 * * 1'
   workflow_dispatch:
     # GitHub の Actions タブから手動実行も可能
+  push:
+    branches: [main]
+    paths:
+      # 監視スクリプト自体が変わったときだけpushでも実行
+      - 'nursing/scripts/**'
+      - '.github/workflows/monitor.yml'
 
 jobs:
   monitor-and-deploy:
