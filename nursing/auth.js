@@ -21,7 +21,7 @@
     '  <form class="auth-form" id="auth-form" autocomplete="off">',
     '    <div class="auth-field">',
     '      <input type="password" id="auth-input" placeholder="パスワードを入力" autocomplete="current-password" />',
-    '      <button type="submit" id="auth-btn">入室する →</button>',
+    '      <button type="submit" id="auth-btn">ログイン</button>',
     '    </div>',
     '    <p class="auth-error" id="auth-error" aria-live="polite"></p>',
     '  </form>',
