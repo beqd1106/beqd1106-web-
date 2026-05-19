@@ -3063,7 +3063,14 @@ const SEARCH_DATA = [
     "page": "フォーマット/index.html",
     "pageTitle": "📁 様式DLセンター",
     "section": "様式ダウンロード",
-    "text": "記録書Ⅰ（フェイスシート）",
+    "text": "記録書Ⅰ（フェイスシート・法令必須項目完全版）",
+    "type": "file"
+  },
+  {
+    "page": "フォーマット/index.html",
+    "pageTitle": "📁 様式DLセンター",
+    "section": "様式ダウンロード",
+    "text": "居宅介護サービス提供記録【新規・法令必須】",
     "type": "file"
   },
   {
@@ -3091,7 +3098,14 @@ const SEARCH_DATA = [
     "page": "フォーマット/index.html",
     "pageTitle": "📁 様式DLセンター",
     "section": "様式ダウンロード",
-    "text": "個別支援計画書（就労支援版）",
+    "text": "個別支援計画書（就労継続支援・法令必須項目完全版）",
+    "type": "file"
+  },
+  {
+    "page": "フォーマット/index.html",
+    "pageTitle": "📁 様式DLセンター",
+    "section": "様式ダウンロード",
+    "text": "個別支援計画書（居宅介護・同行援護等【新規】）",
     "type": "file"
   },
   {
