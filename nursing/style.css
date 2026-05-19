@@ -317,6 +317,14 @@ a { color: var(--coral-dark); }
   margin: 1.5rem 0;
 }
 
+/* TOPページ コンテンツ一覧グリッド */
+.nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin: 1.25rem 0 2rem;
+}
+
 /* nami-nami 風ナビカード: 上部カラーストライプ + 矢印 */
 .nav-card {
   background:
