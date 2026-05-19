@@ -350,29 +350,43 @@ a { color: var(--coral-dark); }
   box-shadow: var(--shadow-lg);
 }
 
-/* 不要になった要素（互換性のため残す） */
 .nav-card-stripe { display: none; }
-.nav-card-body   { display: contents; }
 
-.card-icon {
+/* カード内レイアウト：アイコン左・テキスト右（縦並び） */
+.nav-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: 0.3rem;
+}
+
+.nav-card-icon {
   font-size: 2rem;
   flex-shrink: 0;
   line-height: 1.1;
 }
 
-.nav-card h3 {
+.nav-card-title {
   font-size: 1rem;
   font-weight: 800;
   color: var(--coral-dark);
-  margin-bottom: 0.3rem;
   letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.nav-card p {
+.nav-card-desc {
   font-size: 0.8rem;
   color: var(--text-mid);
   line-height: 1.6;
 }
+
+/* 後方互換：h3・p を直接書いた箇所 */
+.card-icon { font-size: 2rem; flex-shrink: 0; line-height: 1.1; }
+.nav-card h3 { font-size: 1rem; font-weight: 800; color: var(--coral-dark); margin: 0 0 0.25rem; letter-spacing: 0.02em; }
+.nav-card p  { font-size: 0.8rem; color: var(--text-mid); line-height: 1.6; margin: 0; }
 
 /* 矢印アクセント（nami-nami 参照） */
 .nav-card::after {
@@ -802,6 +816,7 @@ footer p + p { margin-top: 0.45rem; font-size: 0.72rem; color: rgba(255,255,255,
 
 @media (max-width: 768px) {
   .card-grid        { grid-template-columns: 1fr; }
+  .nav-grid         { grid-template-columns: 1fr; gap: 0.85rem; }
   .two-col, .three-col { grid-template-columns: 1fr; }
   .month-grid       { grid-template-columns: 1fr 1fr; }
   .year-grid        { grid-template-columns: 1fr 1fr; }
@@ -813,6 +828,8 @@ footer p + p { margin-top: 0.45rem; font-size: 0.72rem; color: rgba(255,255,255,
   .page-hero-sm h1  { font-size: 1.3rem; }
   .container        { padding: 1.5rem 1rem; }
   .nav-card::after  { display: none; }
+  .nav-card-title   { white-space: normal; }
+  .nav-card         { padding: 1rem 1.1rem 1.1rem; gap: 0.7rem; }
   .dl-links         { gap: 0.3rem; }
   .dl-btn           { font-size: 0.72rem; padding: 0.25rem 0.55rem; }
   footer            { margin-top: 2.5rem; }
