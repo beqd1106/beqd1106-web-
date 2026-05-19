@@ -6,16 +6,12 @@ on:
     - cron: '0 0 * * *'
   workflow_dispatch:
     # GitHub の Actions タブから手動実行も可能
-  push:
-    branches: [main]
-    paths:
-      # 監視スクリプト自体が変わったときだけpushでも実行
-      - 'nursing/scripts/**'
-      - '.github/workflows/monitor.yml'
 
 jobs:
   monitor-and-deploy:
     runs-on: ubuntu-latest
+    # schedule（毎日9時）または手動実行のみ動作。pushでは即スキップ（成功扱い）。
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     permissions:
       contents: write   # コミット・プッシュに必要
 
