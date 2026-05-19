@@ -1,1 +1,65 @@
-{}
+{
+  "mhlw_shougai_service": {
+    "hash": "f8ebed8e2c1f8cca8558ebf78dae53ba2097087720aaad427067a3ca63ef8152",
+    "snippet": "ãã®ãã¼ã¸ã§ã¯JavaScriptãä½¿ç¨ãã¦ãã¾ããJavaScriptãæå¹ã«ãã¦ãã ããã ãã¼ã > æ¿ç­ã«ã¤ãã¦ > åéå¥ã®æ¿ç­ä¸è¦§ > ç¦ç¥ã»ä»è­· > éå®³èç¦ç¥ > é",
+    "checked": "2026-05-19"
+  },
+  "mhlw_houmon_kango": {
+    "hash": "275d790adfbb399391606f606a8514ca90649a7dfad1304230a138d31dee15b2",
+    "snippet": "ãã¼ã > æ¿ç­ã«ã¤ãã¦ > åéå¥ã®æ¿ç­ä¸è¦§ > ç¦ç¥ã»ä»è­· > ä»è­·ã»é«é½¢èç¦ç¥ > ä»è­·å ±é¬ > ä»¤åï¼å¹´åº¦ä»è­·å ±é¬æ¹å®ã«ã¤ãã¦ ä»¤åï¼å¹´åº¦ä»è­·å ±é¬æ¹å®ã",
+    "checked": "2026-05-19"
+  },
+  "mhlw_shinryo_kaitei": {
+    "hash": "bc36af1e69b08b52b3f31c292ec298450f88ee40c6c0793335c622e438bd5fe9",
+    "snippet": "ã²ã¨ãããããã¿ããã®ããã« æ¬æã¸ ãã¼ã ãååãçªå£ ããããå¾¡è³ªå ãµã¤ãããã ç¹å­ãã¦ã³ã­ã¼ã ãµã¤ãé²è¦§æ¯æ´ãã¼ã«èµ·å ï¼ãã«ãï¼ ",
+    "checked": "2026-05-19"
+  },
+  "kyoto_shougai": {
+    "hash": "eea8cab1d7291b89b3032371ece84dddf9da1c0b9a2872493d6f6f9d4e1df9a1",
+    "snippet": "ãã®ãµã¤ãã§ã¯JavaScriptãä½¿ç¨ããã³ã³ãã³ãã»æ©è½ãæä¾ãã¦ãã¾ããJavaScriptãæå¹ã«ããã¨ãå©ç¨ããã ãã¾ãã æ¬æã¸ã¹ã­ãããã¾ãã ããã",
+    "checked": "2026-05-19"
+  },
+  "mhlw_shougai_law": {
+    "hash": "31808237dfeedffb9e8c3eb7fb36d14764c9075dfcd30c182daacc9d8c29c9f6",
+    "snippet": "ãã®ãã¼ã¸ã§ã¯JavaScriptãä½¿ç¨ãã¦ãã¾ããJavaScriptãæå¹ã«ãã¦ãã ããã ãã¼ã > æ¿ç­ã«ã¤ãã¦ > åéå¥ã®æ¿ç­ä¸è¦§ > ç¦ç¥ã»ä»è­· > éå®³èç¦ç¥ ç¦ç¥",
+    "checked": "2026-05-19"
+  },
+  "kyoto_shoguu_page": {
+    "hash": "5900261d15e345fa6ea6960f4931fc176fdfffc971483b95788ff39bb5c913bf",
+    "snippet": "ãã®ãµã¤ãã§ã¯JavaScriptãä½¿ç¨ããã³ã³ãã³ãã»æ©è½ãæä¾ãã¦ãã¾ããJavaScriptãæå¹ã«ããã¨ãå©ç¨ããã ãã¾ãã æ¬æã¸ã¹ã­ãããã¾ãã ããã",
+    "checked": "2026-05-19"
+  },
+  "kyoto_shitei_page": {
+    "hash": "3f97001892689c738687d27e91a5c02f998f44de21ab336a40ae0033ea436075",
+    "snippet": "ãã®ãµã¤ãã§ã¯JavaScriptãä½¿ç¨ããã³ã³ãã³ãã»æ©è½ãæä¾ãã¦ãã¾ããJavaScriptãæå¹ã«ããã¨ãå©ç¨ããã ãã¾ãã æ¬æã¸ã¹ã­ãããã¾ãã ããã",
+    "checked": "2026-05-19"
+  },
+  "form_shoguu_keikaku": {
+    "url": "https://www.pref.kyoto.jp/shogaishien/documents/20260409r8keikaku.xlsx",
+    "checked": "2026-05-19"
+  },
+  "form_shoguu_jisseki": {
+    "url": "https://www.pref.kyoto.jp/shogaishien/documents/r8jissekiyoshiki3.xlsx",
+    "checked": "2026-05-19"
+  },
+  "form_shoguu_henko": {
+    "url": "https://www.pref.kyoto.jp/shogaishien/documents/20260331r8henkotodoke.xlsx",
+    "checked": "2026-05-19"
+  },
+  "form_jizen_soudan": {
+    "url": "https://www.pref.kyoto.jp/shogaishien/documents/01jizensoudan.xls",
+    "checked": "2026-05-19"
+  },
+  "form_houjin_gaiyou": {
+    "url": "https://www.pref.kyoto.jp/shogaishien/documents/02houjingaiyou.xlsx",
+    "checked": "2026-05-19"
+  },
+  "form_juugyousha": {
+    "url": "https://www.pref.kyoto.jp/shogaishien/documents/03jyuugyousya.xlsx",
+    "checked": "2026-05-19"
+  },
+  "form_shikin": {
+    "url": "https://www.pref.kyoto.jp/shogaishien/documents/04sikinkeikaku.xls",
+    "checked": "2026-05-19"
+  }
+}
