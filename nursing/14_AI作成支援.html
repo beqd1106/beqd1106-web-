@@ -444,7 +444,7 @@
     <a href="10_収入向上.html">📈 収入</a>
     <a href="11_年間スケジュール.html">📆 年間</a>
     <a href="12_QA.html">❓ Q&amp;A</a>
-    <a href="14_AI作成支援.html" class="active" style="background:var(--blk-lavender);color:#6040a0;border:1px solid #c0a0e0;">✨ AI支援</a>
+    <a href="14_AI作成支援.html" class="active" style="background:var(--blk-lavender);color:#6040a0;">✨ AI支援</a>
     <a href="フォーマット/index.html" style="background:var(--coral-light);color:var(--coral-dark);border:1px solid var(--coral-mid);">📁 様式DL</a>
   </nav>
 </header>
@@ -582,6 +582,7 @@
               <button class="ai-action-btn primary-action" onclick="copyOutput('plan_shuro')">📋 コピー</button>
               <button class="ai-action-btn" onclick="printOutput('plan_shuro')">🖨️ 印刷</button>
               <button class="ai-action-btn" onclick="clearOutput('plan_shuro')">🗑️ クリア</button>
+              <button class="ai-action-btn" onclick="downloadOutput('plan_shuro')" style="background:var(--blk-lavender);color:#6040a0;border:none;">📥 DL（Word）</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-plan_shuro"></div>
@@ -711,6 +712,7 @@
               <button class="ai-action-btn primary-action" onclick="copyOutput('plan_kyotaku')">📋 コピー</button>
               <button class="ai-action-btn" onclick="printOutput('plan_kyotaku')">🖨️ 印刷</button>
               <button class="ai-action-btn" onclick="clearOutput('plan_kyotaku')">🗑️ クリア</button>
+              <button class="ai-action-btn" onclick="downloadOutput('plan_kyotaku')" style="background:var(--blk-lavender);color:#6040a0;border:none;">📥 DL（Word）</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-plan_kyotaku"></div>
@@ -789,6 +791,7 @@
               <button class="ai-action-btn primary-action" onclick="copyOutput('assessment')">📋 コピー</button>
               <button class="ai-action-btn" onclick="printOutput('assessment')">🖨️ 印刷</button>
               <button class="ai-action-btn" onclick="clearOutput('assessment')">🗑️ クリア</button>
+              <button class="ai-action-btn" onclick="downloadOutput('assessment')" style="background:var(--blk-lavender);color:#6040a0;border:none;">📥 DL（Word）</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-assessment"></div>
@@ -861,6 +864,7 @@
               <button class="ai-action-btn primary-action" onclick="copyOutput('monitoring')">📋 コピー</button>
               <button class="ai-action-btn" onclick="printOutput('monitoring')">🖨️ 印刷</button>
               <button class="ai-action-btn" onclick="clearOutput('monitoring')">🗑️ クリア</button>
+              <button class="ai-action-btn" onclick="downloadOutput('monitoring')" style="background:var(--blk-lavender);color:#6040a0;border:none;">📥 DL（Word）</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-monitoring"></div>
@@ -929,6 +933,7 @@
               <button class="ai-action-btn primary-action" onclick="copyOutput('nursing_report')">📋 コピー</button>
               <button class="ai-action-btn" onclick="printOutput('nursing_report')">🖨️ 印刷</button>
               <button class="ai-action-btn" onclick="clearOutput('nursing_report')">🗑️ クリア</button>
+              <button class="ai-action-btn" onclick="downloadOutput('nursing_report')" style="background:var(--blk-lavender);color:#6040a0;border:none;">📥 DL（Word）</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-nursing_report"></div>
@@ -1012,6 +1017,7 @@
             <div class="ai-output-actions">
               <button class="ai-action-btn primary-action" onclick="copyOutput('kasan_check')">📋 コピー</button>
               <button class="ai-action-btn" onclick="clearOutput('kasan_check')">🗑️ クリア</button>
+              <button class="ai-action-btn" onclick="downloadOutput('kasan_check')" style="background:var(--blk-lavender);color:#6040a0;border:none;">📥 DL（Word）</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-kasan_check"></div>
@@ -1071,6 +1077,7 @@
             <div class="ai-output-actions">
               <button class="ai-action-btn primary-action" onclick="copyOutput('claim_check')">📋 コピー</button>
               <button class="ai-action-btn" onclick="clearOutput('claim_check')">🗑️ クリア</button>
+              <button class="ai-action-btn" onclick="downloadOutput('claim_check')" style="background:var(--blk-lavender);color:#6040a0;border:none;">📥 DL（Word）</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-claim_check"></div>
@@ -1125,6 +1132,7 @@
             <div class="ai-output-actions">
               <button class="ai-action-btn primary-action" onclick="copyOutput('law_summary')">📋 コピー</button>
               <button class="ai-action-btn" onclick="clearOutput('law_summary')">🗑️ クリア</button>
+              <button class="ai-action-btn" onclick="downloadOutput('law_summary')" style="background:var(--blk-lavender);color:#6040a0;border:none;">📥 DL（Word）</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-law_summary"></div>
@@ -1216,6 +1224,7 @@
               <button class="ai-action-btn primary-action" onclick="copyOutput('incident_docs')">📋 コピー</button>
               <button class="ai-action-btn" onclick="printOutput('incident_docs')">🖨️ 印刷</button>
               <button class="ai-action-btn" onclick="clearOutput('incident_docs')">🗑️ クリア</button>
+              <button class="ai-action-btn" onclick="downloadOutput('incident_docs')" style="background:var(--blk-lavender);color:#6040a0;border:none;">📥 DL（Word）</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-incident_docs"></div>
@@ -1290,6 +1299,7 @@
               <button class="ai-action-btn primary-action" onclick="copyOutput('wage_plan')">📋 コピー</button>
               <button class="ai-action-btn" onclick="printOutput('wage_plan')">🖨️ 印刷</button>
               <button class="ai-action-btn" onclick="clearOutput('wage_plan')">🗑️ クリア</button>
+              <button class="ai-action-btn" onclick="downloadOutput('wage_plan')" style="background:var(--blk-lavender);color:#6040a0;border:none;">📥 DL（Word）</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-wage_plan"></div>
@@ -1346,6 +1356,7 @@
               <button class="ai-action-btn primary-action" onclick="copyOutput('easy_read')">📋 コピー</button>
               <button class="ai-action-btn" onclick="printOutput('easy_read')">🖨️ 印刷</button>
               <button class="ai-action-btn" onclick="clearOutput('easy_read')">🗑️ クリア</button>
+              <button class="ai-action-btn" onclick="downloadOutput('easy_read')" style="background:var(--blk-lavender);color:#6040a0;border:none;">📥 DL（Word）</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-easy_read"></div>
@@ -1415,6 +1426,7 @@
             <div class="ai-output-actions">
               <button class="ai-action-btn primary-action" onclick="copyOutput('staff_sim')">📋 コピー</button>
               <button class="ai-action-btn" onclick="clearOutput('staff_sim')">🗑️ クリア</button>
+              <button class="ai-action-btn" onclick="downloadOutput('staff_sim')" style="background:var(--blk-lavender);color:#6040a0;border:none;">📥 DL（Word）</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-staff_sim"></div>
@@ -1773,6 +1785,85 @@ function rateOutput(feature, type) {
   var msg = type === 'good' ? '👍 フィードバックありがとうございます！' : '👎 改善のフィードバックをありがとうございます。';
   var ratingEl = document.querySelector('#output-' + feature + ' .ai-rating');
   if (ratingEl) ratingEl.innerHTML = '<span style="color:var(--text-mid);font-size:0.78rem;">' + msg + '</span>';
+}
+
+// ── 書類タイトル定義 ─────────────────────────────
+var FEATURE_TITLES = {
+  plan_shuro:     '個別支援計画書（就労継続支援）',
+  plan_kyotaku:   '個別支援計画書（居宅介護）',
+  assessment:     'アセスメントシート',
+  monitoring:     'モニタリング報告書',
+  nursing_report: '看護記録・看護サマリー',
+  kasan_check:    '加算算定診断レポート',
+  claim_check:    '請求エラーチェックレポート',
+  law_summary:    '法令・Q&A回答',
+  incident_docs:  '事故・ヒヤリハット報告書',
+  wage_plan:      '工賃向上計画書',
+  easy_read:      'わかりやすい説明文',
+  staff_sim:      '人員配置診断レポート',
+};
+
+// ── Word（HTML形式）でダウンロード ───────────────
+function downloadOutput(feature) {
+  var box   = document.getElementById('output-box-' + feature);
+  var inner = box.innerHTML;
+  if (!inner || !inner.trim()) return;
+
+  var title = FEATURE_TITLES[feature] || 'AI生成書類';
+  var today = new Date();
+  var dateStr = today.getFullYear() + '年' +
+                (today.getMonth()+1) + '月' +
+                today.getDate() + '日';
+  var fileDate = today.getFullYear() +
+                 String(today.getMonth()+1).padStart(2,'0') +
+                 String(today.getDate()).padStart(2,'0');
+
+  var html = '<!DOCTYPE html>\n' +
+'<html lang="ja">\n' +
+'<head>\n' +
+'<meta charset="UTF-8">\n' +
+'<title>' + title + '</title>\n' +
+'<style>\n' +
+'body{font-family:"Hiragino Sans","Meiryo","MS PGothic",sans-serif;font-size:11pt;line-height:1.9;margin:2.5cm 2cm;color:#111;}\n' +
+'.doc-header{border-bottom:3px solid #333;padding-bottom:0.6em;margin-bottom:1.8em;}\n' +
+'.doc-title{font-size:18pt;font-weight:bold;margin:0 0 0.3em;color:#1a1a1a;}\n' +
+'.doc-meta{font-size:9pt;color:#666;margin:0;}\n' +
+'.doc-notice{font-size:9pt;color:#c0504f;font-weight:bold;margin:0.2em 0 0;}\n' +
+'h2{font-size:13pt;font-weight:bold;border-bottom:2px solid #ccc;padding-bottom:4px;margin:1.5em 0 0.5em;color:#1a1a1a;page-break-after:avoid;}\n' +
+'h3{font-size:11pt;font-weight:bold;margin:1.2em 0 0.4em;color:#333;page-break-after:avoid;}\n' +
+'ul,ol{margin:0.3em 0 0.8em 1.8em;padding:0;}\n' +
+'li{margin-bottom:0.25em;}\n' +
+'strong{font-weight:bold;}\n' +
+'table{width:100%;border-collapse:collapse;margin:0.8em 0;font-size:10pt;}\n' +
+'th{background:#f0f0f0;border:1px solid #aaa;padding:6px 10px;text-align:left;font-weight:bold;}\n' +
+'td{border:1px solid #ccc;padding:5px 10px;vertical-align:top;}\n' +
+'br{display:block;margin:0.15em 0;}\n' +
+'.doc-footer{margin-top:2.5em;padding-top:0.6em;border-top:1px solid #ccc;font-size:8pt;color:#888;}\n' +
+'@page{margin:2.5cm 2cm;}\n' +
+'@media print{.doc-footer{position:fixed;bottom:1cm;left:2cm;right:2cm;}}\n' +
+'</style>\n' +
+'</head>\n' +
+'<body>\n' +
+'<div class="doc-header">\n' +
+'  <p class="doc-title">' + title + '</p>\n' +
+'  <p class="doc-meta">作成日：' + dateStr + '　　事業所名：___________________________　担当者：_______________</p>\n' +
+'  <p class="doc-notice">※ これはAI（Llama 3.1）が生成した下書きです。内容は必ず担当者が確認・修正のうえご使用ください。</p>\n' +
+'</div>\n' +
+inner + '\n' +
+'<div class="doc-footer">AI作成支援 — 障碍者福祉事業所 運営ガイド | beqd1106.com/nursing/ | 生成日時：' + dateStr + '</div>\n' +
+'</body>\n' +
+'</html>';
+
+  var bom  = '﻿'; // BOM付きUTF-8（Wordが文字化けしないように）
+  var blob = new Blob([bom + html], { type: 'application/msword;charset=utf-8' });
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  a.href     = url;
+  a.download = title + '_' + fileDate + '.doc';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 </script>
 </body>
