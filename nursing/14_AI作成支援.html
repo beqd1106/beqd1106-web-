@@ -419,6 +419,98 @@
 }
 .char-counter.warn { color: var(--warning); }
 
+/* ================================================================
+   レスポンシブ（タブレット以下）
+================================================================ */
+@media (max-width: 768px) {
+  /* タブ */
+  .ai-tabs { gap: 0.3rem; }
+  .ai-tab { font-size: 0.72rem; padding: 0.35rem 0.65rem; }
+  .ai-tab-group-label { font-size: 0.62rem; margin: 0.35rem 0 0.1rem; }
+
+  /* カード内余白 */
+  .card { padding: 1rem; }
+
+  /* ガイド・注意バナー */
+  .ai-guide { font-size: 0.74rem; }
+
+  /* ラベル */
+  .ai-label { font-size: 0.77rem; }
+
+  /* チェックボックス・ラジオ */
+  .ai-checkbox-group label,
+  .ai-radio-group label { font-size: 0.74rem; padding: 0.25rem 0.55rem; }
+
+  /* 生成ボタン：全幅 */
+  .ai-generate-btn { width: 100%; padding: 0.8rem 1rem; font-size: 0.92rem; }
+
+  /* 出力ヘッダー：縦積み */
+  .ai-output-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+  .ai-output-actions { flex-wrap: wrap; gap: 0.3rem; }
+  .ai-action-btn { font-size: 0.7rem; padding: 0.3rem 0.65rem; }
+
+  /* 出力ボックス */
+  .ai-output-box {
+    font-size: 0.82rem;
+    padding: 0.9rem 1rem;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+  .ai-output-box h2 { font-size: 0.92rem; }
+  .ai-output-box h3 { font-size: 0.84rem; }
+  .ai-output-box table { display: block; overflow-x: auto; }
+
+  /* 区切り線 */
+  .ai-section-divider span { font-size: 0.68rem; }
+
+  /* ページヒーロー */
+  .page-hero .hero-img { display: none; }
+}
+
+/* ================================================================
+   スマホ（480px以下）
+================================================================ */
+@media (max-width: 480px) {
+  /* タブ：2列グリッドに */
+  .ai-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem;
+  }
+  .ai-tab-group-label {
+    grid-column: 1 / -1;
+    font-size: 0.6rem;
+    margin: 0.4rem 0 0;
+  }
+  .ai-tab { font-size: 0.68rem; padding: 0.3rem 0.4rem; text-align: center; }
+
+  /* フォーム入力 */
+  .ai-input, .ai-select, .ai-textarea {
+    font-size: 0.84rem;
+    padding: 0.55rem 0.7rem;
+  }
+
+  /* 出力エリア */
+  .ai-output-box {
+    font-size: 0.8rem;
+    padding: 0.75rem 0.85rem;
+    line-height: 1.75;
+  }
+
+  /* 評価ボタン */
+  .ai-rating { font-size: 0.72rem; flex-wrap: wrap; }
+
+  /* モデルバッジ */
+  .model-badge { display: none; }
+
+  /* 免責バナー */
+  .ai-notice { font-size: 0.72rem; }
+}
+
 @media print {
   .site-header, .site-nav, .ai-tabs, .ai-form, .ai-generate-btn,
   .ai-output-actions, .ai-guide, .ai-notice, .page-hero { display: none !important; }
@@ -444,7 +536,7 @@
     <a href="10_収入向上.html">📈 収入</a>
     <a href="11_年間スケジュール.html">📆 年間</a>
     <a href="12_QA.html">❓ Q&amp;A</a>
-    <a href="14_AI作成支援.html" class="active" style="background:var(--blk-lavender);color:#6040a0;">✨ AI支援</a>
+    <a href="14_AI作成支援.html" class="active" style="color:#6040a0;font-weight:800;background:var(--blk-lavender);">✨ AI支援</a>
     <a href="フォーマット/index.html" style="background:var(--coral-light);color:var(--coral-dark);border:1px solid var(--coral-mid);">📁 様式DL</a>
   </nav>
 </header>
@@ -1954,7 +2046,12 @@ function generateAI(feature) {
             var delta = obj.response || (obj.delta && obj.delta.text) || '';
             if (delta) {
               rawText += delta;
-              outputBox.textContent = rawText;
+              // ストリーミング中はシンプルなHTMLレンダリング（改行を保持）
+              outputBox.innerHTML = rawText
+                .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                .replace(/^##\s+(.+)$/gm,'<strong style="display:block;margin-top:0.8em;color:var(--coral-dark);">$1</strong>')
+                .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+                .replace(/\n/g,'<br>');
               outputBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
           } catch(e) {}
