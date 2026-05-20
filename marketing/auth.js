@@ -1,0 +1,189 @@
+/* ================================================================
+   パスワード認証 — マーケティング資格学習サイト
+   sessionStorage に認証フラグを保存（タブを閉じるとリセット）
+================================================================ */
+(function () {
+  var SESSION_KEY = 'marketing_auth_v1';
+
+  /* すでに認証済みならスキップ */
+  if (sessionStorage.getItem(SESSION_KEY) === '1') return;
+
+  /* ── overlay HTML を生成 ────────────────────── */
+  var overlay = document.createElement('div');
+  overlay.id = 'auth-overlay';
+  overlay.innerHTML = [
+    '<div class="auth-bg"></div>',
+    '<div class="auth-card">',
+    '  <div class="auth-rings" aria-hidden="true"></div>',
+    '  <div class="auth-logo">📊</div>',
+    '  <h1 class="auth-title">マーケティング<br><span>資格学習ガイド</span></h1>',
+    '  <p class="auth-sub">このサイトはパスワードで保護されています</p>',
+    '  <form class="auth-form" id="auth-form" autocomplete="off">',
+    '    <div class="auth-field">',
+    '      <input type="password" id="auth-input" placeholder="パスワードを入力" autocomplete="current-password" />',
+    '      <button type="submit" id="auth-btn">→</button>',
+    '    </div>',
+    '    <p class="auth-error" id="auth-error" aria-live="polite"></p>',
+    '  </form>',
+    '  <p class="auth-note">関係者専用サイトです</p>',
+    '</div>',
+  ].join('\n');
+
+  /* ── スタイル ────────────────────────────────── */
+  var style = document.createElement('style');
+  style.textContent = [
+    '#auth-overlay {',
+    '  position:fixed; inset:0; z-index:99999;',
+    '  display:flex; align-items:center; justify-content:center;',
+    '  font-family:"M PLUS Rounded 1c","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;',
+    '}',
+    '.auth-bg {',
+    '  position:absolute; inset:0;',
+    '  background:linear-gradient(150deg,#eef7ee 0%,#d4ecd4 40%,#fdf5ec 100%);',
+    '}',
+    '.auth-card {',
+    '  position:relative; z-index:1;',
+    '  background:#fff;',
+    '  border-radius:28px;',
+    '  padding:3rem 3rem 2.5rem;',
+    '  width:min(420px,90vw);',
+    '  box-shadow:0 16px 60px rgba(90,144,96,0.14),0 4px 16px rgba(90,144,96,0.08);',
+    '  text-align:center;',
+    '  overflow:hidden;',
+    '}',
+    '.auth-rings {',
+    '  position:absolute; top:-5rem; right:-5rem;',
+    '  width:18rem; height:18rem;',
+    '  border-radius:50%;',
+    '  border:2px solid rgba(138,184,138,0.25);',
+    '  box-shadow:',
+    '    0 0 0 2.5rem rgba(138,184,138,0.08),',
+    '    0 0 0 5rem  rgba(138,184,138,0.05),',
+    '    0 0 0 7.5rem rgba(138,184,138,0.025);',
+    '  pointer-events:none;',
+    '}',
+    '.auth-logo {',
+    '  font-size:2.8rem;',
+    '  line-height:1;',
+    '  margin-bottom:0.75rem;',
+    '}',
+    '.auth-title {',
+    '  font-size:1.35rem;',
+    '  font-weight:900;',
+    '  line-height:1.35;',
+    '  color:#2a2a2a;',
+    '  letter-spacing:0.02em;',
+    '  margin-bottom:0.4rem;',
+    '}',
+    '.auth-title span { color:#8ab88a; }',
+    '.auth-sub {',
+    '  font-size:0.8rem;',
+    '  color:#6b7280;',
+    '  margin-bottom:1.75rem;',
+    '}',
+    '.auth-field {',
+    '  display:flex;',
+    '  border:2px solid #d4ecd4;',
+    '  border-radius:999px;',
+    '  overflow:hidden;',
+    '  transition:border-color 0.18s;',
+    '}',
+    '.auth-field:focus-within { border-color:#8ab88a; }',
+    '#auth-input {',
+    '  flex:1;',
+    '  border:none;',
+    '  outline:none;',
+    '  padding:0.75rem 1.25rem;',
+    '  font-size:1rem;',
+    '  background:transparent;',
+    '  color:#2a2a2a;',
+    '  font-family:inherit;',
+    '}',
+    '#auth-input::placeholder { color:#b0c4b0; }',
+    '#auth-btn {',
+    '  background:#8ab88a;',
+    '  color:white;',
+    '  border:none;',
+    '  width:52px;',
+    '  flex-shrink:0;',
+    '  font-size:1.25rem;',
+    '  line-height:1;',
+    '  cursor:pointer;',
+    '  transition:background 0.18s;',
+    '  display:flex;',
+    '  align-items:center;',
+    '  justify-content:center;',
+    '}',
+    '#auth-btn:hover { background:#5a9060; }',
+    '.auth-error {',
+    '  color:#e8704a;',
+    '  font-size:0.8rem;',
+    '  margin-top:0.65rem;',
+    '  min-height:1.2em;',
+    '  font-weight:600;',
+    '}',
+    '.auth-note {',
+    '  font-size:0.72rem;',
+    '  color:#9ca3af;',
+    '  margin-top:1.5rem;',
+    '}',
+    '@keyframes authFadeOut {',
+    '  to { opacity:0; transform:scale(1.04); }',
+    '}',
+    '.auth-success {',
+    '  animation:authFadeOut 0.45s ease forwards;',
+    '}',
+    '@keyframes authShake {',
+    '  0%,100%{transform:translateX(0)}',
+    '  20%{transform:translateX(-6px)}',
+    '  40%{transform:translateX(6px)}',
+    '  60%{transform:translateX(-4px)}',
+    '  80%{transform:translateX(4px)}',
+    '}',
+    '.auth-shake { animation:authShake 0.4s ease; }',
+  ].join('\n');
+
+  document.head.appendChild(style);
+
+  function mount() {
+    document.body.style.overflow = 'hidden';
+    document.body.insertBefore(overlay, document.body.firstChild);
+
+    var form  = document.getElementById('auth-form');
+    var input = document.getElementById('auth-input');
+    var error = document.getElementById('auth-error');
+    var field = overlay.querySelector('.auth-field');
+
+    input.focus();
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var val = input.value;
+
+      if (val === 'keitasugoi') {
+        sessionStorage.setItem(SESSION_KEY, '1');
+        overlay.classList.add('auth-success');
+        setTimeout(function () {
+          document.body.style.overflow = '';
+          overlay.remove();
+        }, 460);
+      } else {
+        error.textContent = 'パスワードが違います。もう一度お試しください。';
+        input.value = '';
+        field.classList.remove('auth-shake');
+        void field.offsetWidth;
+        field.classList.add('auth-shake');
+        input.focus();
+        field.addEventListener('animationend', function () {
+          field.classList.remove('auth-shake');
+        }, { once: true });
+      }
+    });
+  }
+
+  if (document.body) {
+    mount();
+  } else {
+    document.addEventListener('DOMContentLoaded', mount);
+  }
+})();
