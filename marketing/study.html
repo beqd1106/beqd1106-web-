@@ -347,14 +347,49 @@ body::after{
 }
 .quiz-reset:hover{background:#fff;color:var(--sage-dk);}
 
+/* ── MOBILE SIDEBAR TOGGLE ── */
+.sb-toggle{
+  display:none;
+  position:relative;z-index:1;
+  align-items:center;gap:5px;
+  padding:6px 13px;border-radius:20px;
+  background:rgba(255,255,255,.8);
+  border:1.5px solid rgba(138,184,138,.5);
+  color:var(--sage-dk);font-size:.8rem;font-weight:700;
+  cursor:pointer;font-family:inherit;margin-left:auto;white-space:nowrap;
+  transition:all .15s;
+}
+.sb-toggle:hover{background:#fff;border-color:var(--sage);}
+.sb-toggle i{font-size:.9rem;transition:transform .25s;}
+.sb-toggle.open i.ph-caret-down{transform:rotate(180deg);}
+
+/* Mobile active cert bar */
+.mob-cert-bar{
+  display:none;
+  background:var(--sage-bg);
+  padding:9px 16px;
+  font-size:.8rem;font-weight:700;color:var(--sage-dk);
+  border-bottom:1.5px solid rgba(138,184,138,.3);
+  align-items:center;gap:8px;
+}
+.mob-cert-bar i{font-size:1rem;flex-shrink:0;}
+.mob-cert-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
 /* ── MOBILE ── */
 @media(max-width:720px){
+  .sb-toggle{display:flex;}
+  .mob-cert-bar{display:flex;}
   .layout{flex-direction:column;height:auto;}
-  .sidebar{width:100%;border-right:none;border-bottom:2px solid var(--sage-bg);max-height:50vh;overflow-y:auto;}
+  .sidebar{
+    width:100%;border-right:none;border-bottom:2px solid var(--sage-bg);
+    max-height:0;overflow:hidden;padding:0;
+    transition:max-height .3s ease,padding .2s;
+  }
+  .sidebar.sb-open{max-height:60vh;overflow-y:auto;padding:12px 0 20px;}
   .main{padding:16px 14px;}
   .cert-meta{grid-template-columns:1fr 1fr;}
   .hdr-kicker{display:none;}
-  .hdr h1{font-size:.85rem;}
+  .hdr h1{font-size:.82rem;}
   .quiz-sub{padding-left:0;}
 }
 @media(max-width:480px){
@@ -369,8 +404,15 @@ body::after{
   <a href="index.html" class="hdr-back"><i class="ph-bold ph-arrow-left"></i> 資格一覧</a>
   <h1><i class="ph-duotone ph-graduation-cap" style="color:var(--sage-dk);font-size:1.1rem;"></i> マーケティング資格 学習アプリ</h1>
   <span class="hdr-kicker">Study Guide ✎</span>
+  <button class="sb-toggle" id="sb-toggle-btn" onclick="toggleSidebar()">
+    <i class="ph-bold ph-list"></i> 資格を選ぶ <i class="ph-bold ph-caret-down"></i>
+  </button>
   <div class="hdr-bg-word">STUDY</div>
 </header>
+<div class="mob-cert-bar" id="mob-cert-bar">
+  <i class="ph-duotone ph-book-open"></i>
+  <span class="mob-cert-name" id="mob-cert-name">資格を選んでください</span>
+</div>
 
 <div class="layout">
   <nav class="sidebar" id="sidebar">
@@ -502,6 +544,11 @@ function showCert(id){
 
   window._quiz = {id:id, total:c.quiz.length, answers:new Array(c.quiz.length).fill(null), correct:0};
   main.scrollTop = 0;
+
+  // モバイル: 選択中の資格名をバーに表示してサイドバーを閉じる
+  const nameEl = document.getElementById('mob-cert-name');
+  if(nameEl) nameEl.textContent = c.name;
+  closeSidebarOnMobile();
 }
 
 function toggleCh(i){
@@ -542,6 +589,21 @@ function doAnswer(certId, qi, ci){
                 '💪 基礎から教材を読み直してみましょう';
     if(el){ el.classList.add('show'); el.scrollIntoView({behavior:'smooth',block:'center'}); }
   }
+}
+
+function toggleSidebar(){
+  const sb = document.getElementById('sidebar');
+  const btn = document.getElementById('sb-toggle-btn');
+  const open = sb.classList.toggle('sb-open');
+  if(btn) btn.classList.toggle('open', open);
+}
+
+function closeSidebarOnMobile(){
+  if(window.innerWidth > 720) return;
+  const sb = document.getElementById('sidebar');
+  const btn = document.getElementById('sb-toggle-btn');
+  sb.classList.remove('sb-open');
+  if(btn) btn.classList.remove('open');
 }
 
 buildSidebar();

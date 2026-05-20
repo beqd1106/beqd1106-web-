@@ -238,14 +238,52 @@ body::after{
   margin-top:40px;
 }
 
+/* Mobile filter toggle */
+.panel-toggle{
+  display:none;
+  width:100%;padding:11px 16px;
+  background:var(--paper);border-radius:var(--r);
+  border:1.5px solid rgba(138,184,138,.3);
+  color:var(--sage-dk);font-weight:700;font-size:.85rem;font-family:inherit;
+  cursor:pointer;text-align:left;
+  align-items:center;justify-content:space-between;
+  margin-bottom:14px;box-shadow:var(--shadow);
+}
+.panel-toggle .toggle-arrow{transition:transform .25s;}
+.panel-toggle.open .toggle-arrow{transform:rotate(180deg);}
+
 @media(max-width:900px){
   .grid{grid-template-columns:1fr 1fr;}
 }
 @media(max-width:600px){
-  .header h1{font-size:1.4rem;}
+  .header h1{font-size:1.3rem;}
+  .header-kicker{font-size:.85rem;}
   .grid{grid-template-columns:1fr;}
-  .summary-row{flex-direction:column;}
-  .container{padding:16px 14px;}
+  .summary-row{
+    display:grid;grid-template-columns:1fr 1fr;
+    flex-direction:unset;gap:10px;
+  }
+  .s-card{min-width:0;padding:14px 16px;}
+  .s-card .num{font-size:1.6rem;}
+  .container{padding:14px 12px;}
+  .legend{flex-wrap:wrap;gap:6px;padding:10px 12px;font-size:.75rem;}
+  .legend-title{width:100%;margin-bottom:0;}
+  /* filter panel: hidden by default, toggle to show */
+  .panel-toggle{display:flex;}
+  .panel{
+    max-height:0;overflow:hidden;padding:0;
+    border-top:none;margin-bottom:14px;
+    transition:max-height .35s ease,padding .25s;
+  }
+  .panel.panel-open{
+    max-height:800px;padding:16px 14px;
+    border-top:3px solid var(--sage-lt);
+  }
+  .panel-row{gap:5px;}
+  .row-label{font-size:.82rem;min-width:58px;}
+  .btn{font-size:.75rem;padding:4px 10px;}
+  .sns-banner{font-size:.78rem;padding:7px 12px;}
+  .header-inner{padding:24px 16px 28px;}
 }
 </style>
 </head>
@@ -300,7 +338,12 @@ body::after{
     <div class="legend-item"><span class="badge b-free">無料</span>受験無料</div>
   </div>
 
-  <div class="panel">
+  <button class="panel-toggle" id="panel-toggle" onclick="toggleFilter()">
+    <span><i class="ph-bold ph-funnel" style="color:var(--sage);margin-right:6px;"></i>フィルター・ソート</span>
+    <i class="ph-bold ph-caret-down toggle-arrow"></i>
+  </button>
+
+  <div class="panel" id="filter-panel">
     <div class="panel-row">
       <span class="row-label"><i class="ph-bold ph-funnel" style="color:var(--sage);"></i> 表示</span>
       <button class="btn factive" data-f="type" data-v="all">すべて</button>
@@ -781,6 +824,13 @@ document.querySelectorAll("[data-s]").forEach(btn=>{
 });
 
 render();
+
+function toggleFilter(){
+  const panel = document.getElementById('filter-panel');
+  const btn   = document.getElementById('panel-toggle');
+  const open  = panel.classList.toggle('panel-open');
+  if(btn) btn.classList.toggle('open', open);
+}
 </script>
 <script src="auth.js"></script>
 </body>
