@@ -4,10 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>マーケティング資格ガイド</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#8ab88a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="マーケ学習">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=M+PLUS+Rounded+1c:wght@400;500;700;800&family=Poppins:ital,wght@0,700;0,800;1,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<script src="progress.js"></script>
 <style>
 :root{
   --sage:#8ab88a; --sage-lt:#c8e0c0; --sage-bg:#eef6ea;
@@ -185,6 +191,23 @@ body::after{
 .card-org{font-size:.74rem;color:var(--text3);margin-top:4px;display:flex;align-items:center;gap:4px;}
 .card-body{padding:14px 18px 16px;}
 .card-summary{font-size:.82rem;color:var(--text2);line-height:1.7;margin-bottom:14px;}
+
+/* 進捗バッジ */
+.card-progress{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:800;
+  margin-bottom:8px;border:1.5px solid transparent;
+}
+.card-progress.pass{background:rgba(138,184,138,.15);color:var(--sage-dk);border-color:rgba(138,184,138,.4);}
+.card-progress.try{background:rgba(232,112,74,.1);color:var(--coral);border-color:rgba(232,112,74,.3);}
+
+/* メモ欄 */
+.memo-row{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(138,184,138,.2);flex-wrap:wrap;}
+.memo-date-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;background:var(--sage-bg);color:var(--sage-dk);font-size:.72rem;font-weight:700;}
+.memo-clear{padding:2px 8px;border-radius:8px;border:none;background:transparent;color:var(--text3);font-size:.68rem;cursor:pointer;font-family:inherit;transition:color .15s;}
+.memo-clear:hover{color:var(--coral);}
+.memo-start-btn{padding:4px 12px;border-radius:20px;border:1.5px dashed rgba(138,184,138,.5);background:transparent;color:var(--sage-dk);font-size:.72rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;display:inline-flex;align-items:center;gap:4px;}
+.memo-start-btn:hover{background:var(--sage-bg);border-color:var(--sage);}
 
 /* 学習ボタン */
 .study-btn{
@@ -681,6 +704,20 @@ function stars(d){
   return `<span class="stars">${s}</span>`;
 }
 
+const STUDY_IDS = {
+  "HubSpot Academy 認定資格（各種）":"hubspot",
+  "Google 広告認定資格（各種）":"google_ads",
+  "SEO検定 4級":"seo4",
+  "ビジネス・キャリア検定 3級（マーケティング区分）":"bizcareer3",
+  "マーケティング検定 3級":"marken3",
+  "マーケティング・ビジネス実務検定 C級":"imma_c",
+  "ウェブ解析士":"waca",
+  "ネットマーケティング検定":"netmk",
+  "Google アナリティクス4（GA4）認定資格":"ga4",
+  "Yahoo!広告認定資格":"yahoo_ads",
+  "SEO検定 3級":"seo3",
+};
+
 function makeCard(c){
   const div = document.createElement("div");
   div.className = `cert-card ${DCLASS[c.diff]}`;
@@ -688,28 +725,45 @@ function makeCard(c){
   const allowBadge = c.allow ? `<span class="badge b-allow"><i class="ph-bold ph-currency-jpy" style="font-size:.75rem;"></i> 資格手当有</span>` : "";
   const freeBadge  = c.free  ? `<span class="badge b-free"><i class="ph-bold ph-gift" style="font-size:.75rem;"></i> 無料</span>` : "";
 
-  // 入門・易しいは学習ページへのリンクを追加
-  const studyIds = {
-    "HubSpot Academy 認定資格（各種）":"hubspot",
-    "Google 広告認定資格（各種）":"google_ads",
-    "SEO検定 4級":"seo4",
-    "ビジネス・キャリア検定 3級（マーケティング区分）":"bizcareer3",
-    "マーケティング検定 3級":"marken3",
-    "マーケティング・ビジネス実務検定 C級":"imma_c",
-    "ウェブ解析士":"waca",
-    "ネットマーケティング検定":"netmk",
-    "Google アナリティクス4（GA4）認定資格":"ga4",
-    "Yahoo!広告認定資格":"yahoo_ads",
-    "SEO検定 3級":"seo3",
-  };
-  const studyId = (c.diff<=2) ? studyIds[c.name] : null;
+  const studyId = (c.diff<=2) ? STUDY_IDS[c.name] : null;
+
+  // 進捗バッジ
+  let progressBadge = "";
+  if(studyId){
+    const p = Progress.get(studyId);
+    if(p){
+      const passed = p.bestPct >= 80;
+      progressBadge = `<span class="card-progress ${passed?'pass':'try'}"><i class="ph-bold ph-${passed?'check-circle':'clock-countdown'}" style="font-size:.8rem;"></i> ${passed?'合格 ':'挑戦中 '}${p.best}/${p.total}点</span>`;
+    }
+  }
+
+  // 学習ボタン
+  let studyBtnLabel = "学習する";
+  if(studyId){ const p=Progress.get(studyId); if(p&&p.bestPct>=80) studyBtnLabel="復習する"; }
   const studyBtn = studyId
-    ? `<a href="study.html#${studyId}" class="study-btn"><i class="ph-bold ph-book-open-text" style="font-size:.85rem;"></i> 学習する</a>`
+    ? `<a href="study.html#${studyId}" class="study-btn"><i class="ph-bold ph-book-open-text" style="font-size:.85rem;"></i> ${studyBtnLabel}</a>`
     : "";
 
   const linkHtml = c.url
     ? `<a href="${c.url}" target="_blank" rel="noopener noreferrer" class="card-link"><i class="ph-bold ph-arrow-square-out" style="font-size:.78rem;"></i> 公式サイト</a>`
     : `<span class="card-link-none">各大学院の公式サイトをご参照ください</span>`;
+
+  // メモ（勉強開始日）
+  let memoHtml = "";
+  if(studyId){
+    const m = Memo.get(studyId);
+    if(m && m.startDate){
+      memoHtml = `<div class="memo-row">
+        <i class="ph-duotone ph-calendar-check" style="color:var(--sage-dk);font-size:1rem;"></i>
+        <span class="memo-date-tag">📅 勉強開始日：${m.startDate}</span>
+        <button class="memo-clear" onclick="clearMemo('${studyId}',this.closest('.cert-card'))">×</button>
+      </div>`;
+    } else {
+      memoHtml = `<div class="memo-row">
+        <button class="memo-start-btn" onclick="setMemoToday('${studyId}',this.closest('.cert-card'))"><i class="ph-bold ph-calendar-plus" style="font-size:.8rem;"></i> 勉強開始日を記録</button>
+      </div>`;
+    }
+  }
 
   div.innerHTML = `
     <div class="card-top">
@@ -718,6 +772,7 @@ function makeCard(c){
         ${stars(c.diff)}
         ${typeBadge}${allowBadge}${freeBadge}
       </div>
+      ${progressBadge}
       <div class="card-name">${c.name}</div>
       <div class="card-org"><i class="ph-duotone ph-buildings" style="font-size:.9rem;color:var(--sage);"></i> ${c.org}</div>
     </div>
@@ -738,8 +793,30 @@ function makeCard(c){
           <div class="info-val ${c.free?"free-color":""}">${c.cost}</div>
         </div>
       </div>
+      ${memoHtml}
     </div>`;
   return div;
+}
+
+function setMemoToday(studyId, card){
+  const today = new Date().toLocaleDateString('ja-JP',{year:'numeric',month:'2-digit',day:'2-digit'});
+  Memo.save(studyId, {startDate: today});
+  // カードのメモ欄を更新
+  const memoRow = card.querySelector('.memo-row');
+  if(memoRow){
+    memoRow.innerHTML = `
+      <i class="ph-duotone ph-calendar-check" style="color:var(--sage-dk);font-size:1rem;"></i>
+      <span class="memo-date-tag">📅 勉強開始日：${today}</span>
+      <button class="memo-clear" onclick="clearMemo('${studyId}',this.closest('.cert-card'))">×</button>`;
+  }
+}
+
+function clearMemo(studyId, card){
+  Memo.remove(studyId);
+  const memoRow = card.querySelector('.memo-row');
+  if(memoRow){
+    memoRow.innerHTML = `<button class="memo-start-btn" onclick="setMemoToday('${studyId}',this.closest('.cert-card'))"><i class="ph-bold ph-calendar-plus" style="font-size:.8rem;"></i> 勉強開始日を記録</button>`;
+  }
 }
 
 function makeSectionHdr(label, color){
@@ -830,6 +907,11 @@ function toggleFilter(){
   const btn   = document.getElementById('panel-toggle');
   const open  = panel.classList.toggle('panel-open');
   if(btn) btn.classList.toggle('open', open);
+}
+
+// Service Worker 登録
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
 </script>
 <script src="auth.js"></script>

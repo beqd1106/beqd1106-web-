@@ -4,174 +4,116 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>マーケティング資格 学習アプリ</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#8ab88a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="マーケ学習">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<script src="progress.js"></script>
 <style>
 :root{
-  --sage:#8ab88a;
-  --sage-bg:#d4ecd4;
-  --sage-dk:#5a9060;
-  --coral:#e8704a;
-  --coral-bg:#f9dfd5;
-  --cream:#fdf5ec;
-  --paper:#fff9f3;
-  --text:#2d2d2d;
-  --text2:#6b7280;
-  --d1:#8ab88a;
-  --d2:#e8704a;
-  --border:#e5e7eb;
+  --sage:#8ab88a;--sage-bg:#d4ecd4;--sage-dk:#5a9060;
+  --coral:#e8704a;--coral-bg:#f9dfd5;
+  --cream:#fdf5ec;--paper:#fff9f3;
+  --text:#2d2d2d;--text2:#6b7280;
+  --d1:#8ab88a;--d2:#e8704a;--border:#e5e7eb;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{
-  font-family:'M PLUS Rounded 1c','Segoe UI','Hiragino Sans','Yu Gothic',sans-serif;
-  background:var(--cream);
-  color:var(--text);
-  display:flex;flex-direction:column;min-height:100vh;
-}
-
-/* ── GRAIN TEXTURE ── */
-body::after{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
-  opacity:.025;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-}
+body{font-family:'M PLUS Rounded 1c','Segoe UI','Hiragino Sans','Yu Gothic',sans-serif;background:var(--cream);color:var(--text);display:flex;flex-direction:column;min-height:100vh;}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");}
 
 /* ── HEADER ── */
-.hdr{
-  background:var(--sage-bg);
-  padding:0 24px;
-  height:56px;
-  display:flex;align-items:center;gap:16px;
-  position:sticky;top:0;z-index:100;
-  border-bottom:2px solid rgba(138,184,138,.35);
-  position:relative;
-}
-.hdr::before{
-  content:'';position:absolute;inset:0;
-  background-image:linear-gradient(rgba(138,184,138,.18) 1px,transparent 1px),
-                   linear-gradient(90deg,rgba(138,184,138,.18) 1px,transparent 1px);
-  background-size:22px 22px;
-  pointer-events:none;
-}
-.hdr-bg-word{
-  position:absolute;right:20px;top:50%;transform:translateY(-50%);
-  font-family:'Caveat',cursive;font-size:3rem;font-weight:700;
-  color:rgba(90,144,96,.12);letter-spacing:.08em;pointer-events:none;white-space:nowrap;
-}
-.hdr-back{
-  position:relative;z-index:1;
-  color:var(--sage-dk);font-size:.82rem;text-decoration:none;
-  display:flex;align-items:center;gap:5px;
-  padding:5px 12px;border-radius:20px;
-  background:rgba(255,255,255,.7);
-  border:1.5px solid rgba(138,184,138,.5);
-  transition:all .2s;white-space:nowrap;
-}
-.hdr-back:hover{background:#fff;border-color:var(--sage);color:var(--sage-dk);}
-.hdr h1{
-  position:relative;z-index:1;
-  font-size:.95rem;font-weight:800;color:var(--sage-dk);
-}
-.hdr-kicker{
-  position:relative;z-index:1;
-  font-family:'Caveat',cursive;font-size:1.1rem;font-weight:700;
-  color:rgba(90,144,96,.7);margin-left:auto;margin-right:3rem;
-}
+.hdr{background:var(--sage-bg);padding:0 24px;height:56px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;border-bottom:2px solid rgba(138,184,138,.35);position:relative;}
+.hdr::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(138,184,138,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(138,184,138,.18) 1px,transparent 1px);background-size:22px 22px;pointer-events:none;}
+.hdr-bg-word{position:absolute;right:20px;top:50%;transform:translateY(-50%);font-family:'Caveat',cursive;font-size:3rem;font-weight:700;color:rgba(90,144,96,.12);letter-spacing:.08em;pointer-events:none;white-space:nowrap;}
+.hdr-back{position:relative;z-index:1;color:var(--sage-dk);font-size:.82rem;text-decoration:none;display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;background:rgba(255,255,255,.7);border:1.5px solid rgba(138,184,138,.5);transition:all .2s;white-space:nowrap;}
+.hdr-back:hover{background:#fff;border-color:var(--sage);}
+.hdr h1{position:relative;z-index:1;font-size:.95rem;font-weight:800;color:var(--sage-dk);}
+.hdr-kicker{position:relative;z-index:1;font-family:'Caveat',cursive;font-size:1.1rem;font-weight:700;color:rgba(90,144,96,.7);margin-left:auto;margin-right:3rem;}
 
 /* ── LAYOUT ── */
 .layout{display:flex;flex:1;overflow:hidden;height:calc(100vh - 56px);}
 
 /* ── SIDEBAR ── */
-.sidebar{
-  width:260px;flex-shrink:0;
-  background:var(--paper);
-  border-right:2px solid var(--sage-bg);
-  overflow-y:auto;
-  padding:16px 0 24px;
-}
-.sb-logo{
-  padding:0 18px 14px;
-  border-bottom:1px solid var(--sage-bg);
-  margin-bottom:10px;
-}
-.sb-logo-text{
-  font-family:'Caveat',cursive;font-size:1.15rem;font-weight:700;
-  color:var(--sage-dk);display:flex;align-items:center;gap:6px;
-}
-.sb-group{margin-bottom:6px;}
-.sb-group-title{
-  font-size:.68rem;font-weight:800;
-  text-transform:uppercase;letter-spacing:.1em;
-  padding:10px 18px 5px;
-  display:flex;align-items:center;gap:6px;
-}
+.sidebar{width:260px;flex-shrink:0;background:var(--paper);border-right:2px solid var(--sage-bg);overflow-y:auto;padding:14px 0 0;display:flex;flex-direction:column;}
+.sb-logo{padding:0 18px 12px;border-bottom:1px solid var(--sage-bg);margin-bottom:10px;}
+.sb-logo-text{font-family:'Caveat',cursive;font-size:1.15rem;font-weight:700;color:var(--sage-dk);display:flex;align-items:center;gap:6px;}
+
+/* Progress summary */
+.sb-progress{margin:0 14px 12px;background:linear-gradient(135deg,var(--sage-bg),rgba(138,184,138,.12));border-radius:12px;padding:12px 14px;border:1px solid rgba(138,184,138,.3);}
+.sb-prog-title{font-size:.67rem;font-weight:800;color:var(--sage-dk);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;}
+.sb-prog-bar-wrap{background:rgba(0,0,0,.1);border-radius:20px;height:7px;margin-bottom:6px;}
+.sb-prog-bar{background:linear-gradient(90deg,var(--sage),var(--sage-dk));border-radius:20px;height:7px;transition:width .7s cubic-bezier(.4,0,.2,1);}
+.sb-prog-stats{display:flex;justify-content:space-between;font-size:.7rem;font-weight:700;color:var(--sage-dk);}
+
+.sb-group{margin-bottom:4px;}
+.sb-group-title{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;padding:8px 18px 4px;display:flex;align-items:center;gap:6px;}
 .sb-group-title.d1{color:var(--sage-dk);}
 .sb-group-title.d2{color:var(--coral);}
-.sb-group-badge{
-  font-size:.6rem;padding:1px 7px;border-radius:8px;font-weight:700;font-family:inherit;
-}
+.sb-group-badge{font-size:.6rem;padding:1px 7px;border-radius:8px;font-weight:700;}
 .sb-group-badge.d1{background:var(--sage-bg);color:var(--sage-dk);}
 .sb-group-badge.d2{background:var(--coral-bg);color:var(--coral);}
-.sb-item{
-  display:flex;align-items:center;gap:9px;
-  padding:9px 18px;cursor:pointer;
-  border-left:3px solid transparent;
-  transition:all .15s;font-size:.82rem;color:var(--text2);
-  line-height:1.4;
-}
+.sb-item{display:flex;align-items:center;gap:8px;padding:8px 16px 8px 18px;cursor:pointer;border-left:3px solid transparent;transition:all .15s;font-size:.81rem;color:var(--text2);line-height:1.35;}
 .sb-item:hover{background:var(--sage-bg);color:var(--text);border-left-color:var(--sage);}
-.sb-item.active{
-  background:rgba(138,184,138,.2);
-  border-left-color:var(--sage-dk);
-  color:var(--sage-dk);font-weight:700;
-}
-.sb-item i{font-size:1rem;flex-shrink:0;opacity:.7;}
-.sb-item.active i{opacity:1;}
+.sb-item.active{background:rgba(138,184,138,.2);border-left-color:var(--sage-dk);color:var(--sage-dk);font-weight:700;}
+.sb-item i.icon{font-size:.95rem;flex-shrink:0;opacity:.7;}
+.sb-item.active i.icon{opacity:1;}
+.sb-item-name{flex:1;min-width:0;}
+.sb-badge{flex-shrink:0;padding:1px 6px;border-radius:6px;font-size:.62rem;font-weight:800;white-space:nowrap;}
+.sb-badge.pass{background:var(--sage);color:#fff;}
+.sb-badge.try{background:var(--coral-bg);color:var(--coral);border:1px solid rgba(232,112,74,.3);}
+
+/* Sidebar footer */
+.sb-footer{margin-top:auto;padding:14px 14px 16px;border-top:1px solid var(--sage-bg);}
+.sb-reset-all{width:100%;padding:8px 10px;border-radius:10px;border:1.5px solid rgba(232,112,74,.3);background:transparent;color:var(--coral);font-size:.75rem;font-weight:700;font-family:inherit;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px;}
+.sb-reset-all:hover{background:var(--coral-bg);}
 
 /* ── MAIN ── */
 .main{flex:1;overflow-y:auto;padding:28px 32px;background:var(--cream);}
 
-/* ── WELCOME ── */
-.welcome{
-  text-align:center;padding:80px 24px;
-  display:flex;flex-direction:column;align-items:center;gap:16px;
-}
-.welcome-icon{
-  width:80px;height:80px;border-radius:50%;
-  background:linear-gradient(135deg,var(--sage-bg),var(--coral-bg));
-  display:flex;align-items:center;justify-content:center;
-  font-size:2.2rem;box-shadow:0 4px 16px rgba(0,0,0,.08);
-}
-.welcome h2{font-size:1.5rem;font-weight:800;color:var(--text);}
-.welcome p{font-size:.88rem;color:var(--text2);line-height:1.9;max-width:320px;}
-.welcome p strong{color:var(--sage-dk);}
-.welcome-hint{
-  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:6px;
-}
-.welcome-tag{
-  padding:5px 14px;border-radius:20px;font-size:.78rem;font-weight:700;
-  background:var(--sage-bg);color:var(--sage-dk);
-  border:1.5px solid rgba(138,184,138,.5);
-}
+/* ── WELCOME (progress) ── */
+.welcome{padding:40px 24px;display:flex;flex-direction:column;align-items:center;gap:18px;}
+.welcome-hero{text-align:center;}
+.welcome-icon{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--sage-bg),var(--coral-bg));display:flex;align-items:center;justify-content:center;font-size:2rem;box-shadow:0 4px 16px rgba(0,0,0,.08);margin:0 auto 12px;}
+.welcome h2{font-size:1.4rem;font-weight:800;color:var(--text);}
+.welcome p{font-size:.86rem;color:var(--text2);line-height:1.85;margin-top:6px;}
+.welcome-tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px;}
+.welcome-tag{padding:4px 13px;border-radius:20px;font-size:.76rem;font-weight:700;background:var(--sage-bg);color:var(--sage-dk);border:1.5px solid rgba(138,184,138,.5);}
 .welcome-tag.c{background:var(--coral-bg);color:var(--coral);border-color:rgba(232,112,74,.4);}
 
+/* progress overview */
+.prog-overview{width:100%;max-width:680px;background:var(--paper);border-radius:16px;padding:22px 24px;border:1.5px solid var(--sage-bg);box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.po-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.po-title{font-size:.95rem;font-weight:800;color:var(--text);display:flex;align-items:center;gap:6px;}
+.po-stats{display:flex;gap:16px;}
+.po-stat{text-align:center;}
+.po-stat-num{font-size:1.4rem;font-weight:800;color:var(--sage-dk);}
+.po-stat-lbl{font-size:.65rem;color:var(--text2);font-weight:700;}
+.po-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.po-bar{flex:1;height:10px;background:#e5e7eb;border-radius:10px;overflow:hidden;}
+.po-bar-fill{height:10px;background:linear-gradient(90deg,var(--sage),var(--sage-dk));border-radius:10px;transition:width .8s ease;}
+.po-bar-label{font-size:.75rem;font-weight:800;color:var(--sage-dk);white-space:nowrap;}
+.po-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;}
+.po-card{padding:10px 12px;border-radius:10px;border:1.5px solid var(--border);cursor:pointer;transition:all .18s;background:#fff;}
+.po-card:hover{border-color:var(--sage);box-shadow:0 2px 8px rgba(138,184,138,.2);transform:translateY(-1px);}
+.po-card.pass{border-color:var(--sage);background:rgba(138,184,138,.08);}
+.po-card.try{border-color:rgba(232,112,74,.35);background:rgba(232,112,74,.04);}
+.po-card-name{font-size:.72rem;font-weight:700;color:var(--text);line-height:1.4;margin-bottom:5px;}
+.po-card-score{font-size:.82rem;font-weight:800;}
+.po-card-score.pass{color:var(--sage-dk);}
+.po-card-score.try{color:var(--coral);}
+.po-card-score.none{color:var(--text2);}
+.po-card-meta{font-size:.65rem;color:var(--text2);margin-top:2px;}
+
 /* ── CERT HEADER ── */
-.cert-hdr{
-  background:var(--paper);
-  border-radius:16px;padding:22px 26px;margin-bottom:18px;
-  box-shadow:0 2px 12px rgba(0,0,0,.06);
-  border:1.5px solid var(--sage-bg);
-  position:relative;overflow:hidden;
-}
-.cert-hdr::before{
-  content:'';position:absolute;top:0;right:0;
-  width:120px;height:120px;border-radius:50%;
-  background:linear-gradient(135deg,var(--sage-bg),transparent);
-  opacity:.5;transform:translate(30px,-30px);
-}
+.cert-hdr{background:var(--paper);border-radius:16px;padding:22px 26px;margin-bottom:18px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1.5px solid var(--sage-bg);position:relative;overflow:hidden;}
+.cert-hdr::before{content:'';position:absolute;top:0;right:0;width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--sage-bg),transparent);opacity:.5;transform:translate(30px,-30px);}
 .badges{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;position:relative;}
 .badge{padding:3px 11px;border-radius:10px;font-size:.7rem;font-weight:800;letter-spacing:.02em;}
 .bd1{background:var(--sage-bg);color:var(--sage-dk);}
@@ -181,75 +123,45 @@ body::after{
 .cert-name{font-size:1.25rem;font-weight:800;color:var(--text);margin-bottom:4px;position:relative;}
 .cert-org{font-size:.8rem;color:var(--text2);display:flex;align-items:center;gap:5px;}
 .cert-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px;}
-.meta-box{
-  background:var(--cream);border-radius:10px;padding:11px 14px;
-  border:1.5px solid var(--sage-bg);
-}
+.meta-box{background:var(--cream);border-radius:10px;padding:11px 14px;border:1.5px solid var(--sage-bg);}
 .meta-lbl{font-size:.65rem;color:var(--text2);margin-bottom:4px;display:flex;align-items:center;gap:4px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
 .meta-lbl i{font-size:.85rem;color:var(--sage);}
 .meta-val{font-size:.88rem;font-weight:800;color:var(--text);}
 
+/* Prev score in cert header */
+.cert-prev{display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 14px;background:rgba(138,184,138,.1);border-radius:10px;flex-wrap:wrap;}
+.cert-prev-icon{font-size:1.1rem;flex-shrink:0;}
+.cert-prev-info{flex:1;min-width:120px;}
+.cert-prev-lbl{font-size:.68rem;color:var(--text2);font-weight:700;}
+.cert-prev-val{font-size:.9rem;font-weight:800;}
+.cert-prev-val.pass{color:var(--sage-dk);}
+.cert-prev-val.try{color:var(--coral);}
+.cert-prev-bar-wrap{flex:1;min-width:80px;height:7px;background:rgba(0,0,0,.08);border-radius:7px;overflow:hidden;}
+.cert-prev-bar{height:7px;border-radius:7px;transition:width .7s ease;}
+.cert-prev-bar.pass{background:var(--sage);}
+.cert-prev-bar.try{background:var(--coral);}
+.cert-prev-attempts{font-size:.68rem;color:var(--text2);white-space:nowrap;}
+
 /* ── CHAPTERS ── */
-.chapter{
-  background:var(--paper);border-radius:14px;margin-bottom:10px;
-  box-shadow:0 2px 8px rgba(0,0,0,.05);
-  border:1.5px solid var(--border);
-  transition:box-shadow .2s;
-}
+.chapter{background:var(--paper);border-radius:14px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.05);border:1.5px solid var(--border);transition:box-shadow .2s;}
 .chapter:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);}
 .chapter.open-ch{border-color:var(--sage-bg);}
-.ch-header{
-  padding:15px 20px;cursor:pointer;
-  display:flex;justify-content:space-between;align-items:center;
-  transition:background .15s;
-  gap:12px;
-}
+.ch-header{padding:15px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .15s;gap:12px;}
 .ch-header:hover{background:rgba(138,184,138,.08);}
 .ch-header-left{display:flex;align-items:center;gap:10px;}
-.ch-num{
-  width:26px;height:26px;border-radius:50%;
-  background:var(--sage-bg);color:var(--sage-dk);
-  font-size:.72rem;font-weight:800;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
+.ch-num{width:26px;height:26px;border-radius:50%;background:var(--sage-bg);color:var(--sage-dk);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .chapter.open-ch .ch-num{background:var(--sage);color:#fff;}
 .ch-title{font-size:.92rem;font-weight:700;color:var(--text);}
-.ch-arrow{
-  width:28px;height:28px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  background:var(--cream);color:var(--text2);
-  font-size:.75rem;transition:transform .25s,background .15s;
-  flex-shrink:0;
-}
+.ch-arrow{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--cream);color:var(--text2);font-size:.75rem;transition:transform .25s,background .15s;flex-shrink:0;}
 .ch-arrow.open{transform:rotate(180deg);background:var(--sage-bg);color:var(--sage-dk);}
-.ch-body{
-  padding:0 20px 20px 20px;display:none;
-  line-height:1.9;font-size:.87rem;color:#444;
-  border-top:1px solid var(--sage-bg);
-}
+.ch-body{padding:0 20px 20px;display:none;line-height:1.9;font-size:.87rem;color:#444;border-top:1px solid var(--sage-bg);}
 .ch-body.show{display:block;}
-.ch-body h4{
-  font-weight:800;color:var(--text);margin:18px 0 8px;
-  font-size:.9rem;
-  display:flex;align-items:center;gap:6px;
-}
-.ch-body h4::before{
-  content:'';width:3px;height:1em;border-radius:2px;
-  background:var(--sage);display:inline-block;
-}
+.ch-body h4{font-weight:800;color:var(--text);margin:18px 0 8px;font-size:.9rem;display:flex;align-items:center;gap:6px;}
+.ch-body h4::before{content:'';width:3px;height:1em;border-radius:2px;background:var(--sage);display:inline-block;}
 .ch-body ul,.ch-body ol{padding-left:1.6em;margin:7px 0;}
 .ch-body li{margin-bottom:6px;}
 .ch-body p{margin-bottom:10px;}
-
-/* keyword chip */
-.kw{
-  display:inline-block;background:rgba(138,184,138,.18);
-  color:var(--sage-dk);border-radius:5px;
-  padding:1px 8px;font-weight:800;font-size:.8rem;margin:1px;
-  border:1px solid rgba(138,184,138,.4);
-}
-
-/* callout boxes */
+.kw{display:inline-block;background:rgba(138,184,138,.18);color:var(--sage-dk);border-radius:5px;padding:1px 8px;font-weight:800;font-size:.8rem;margin:1px;border:1px solid rgba(138,184,138,.4);}
 .tip{background:rgba(138,184,138,.1);border-left:4px solid var(--sage);border-radius:0 10px 10px 0;padding:12px 16px;margin:13px 0;font-size:.85rem;}
 .tip strong{color:var(--sage-dk);}
 .warn{background:#fff8e6;border-left:4px solid #f59e0b;border-radius:0 10px 10px 0;padding:12px 16px;margin:13px 0;font-size:.85rem;}
@@ -258,73 +170,26 @@ body::after{
 .exam strong{color:var(--coral);}
 .memory{background:#f5f3ff;border-left:4px solid #8b5cf6;border-radius:0 10px 10px 0;padding:12px 16px;margin:13px 0;font-size:.85rem;}
 .memory strong{color:#5b21b6;}
-
-/* table */
-.tbl-wrap{
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-  margin:11px 0;
-  border-radius:10px;
-  border:1px solid rgba(138,184,138,.3);
-}
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:11px 0;border-radius:10px;border:1px solid rgba(138,184,138,.3);}
 .tbl{width:100%;border-collapse:collapse;margin:0;font-size:.83rem;min-width:420px;}
 .tbl th{background:var(--sage-bg);padding:8px 12px;text-align:left;font-weight:800;border:1px solid rgba(138,184,138,.3);color:var(--sage-dk);white-space:nowrap;}
 .tbl td{padding:8px 12px;border:1px solid #e5e7eb;vertical-align:top;}
 .tbl tr:nth-child(even) td{background:rgba(138,184,138,.05);}
-@media(max-width:720px){
-  .tbl{font-size:.78rem;width:auto;}
-  .tbl th,.tbl td{padding:7px 10px;}
-}
-
-/* formula */
-.formula{
-  text-align:center;
-  background:linear-gradient(135deg,var(--sage-bg),rgba(138,184,138,.15));
-  border-radius:10px;padding:14px;margin:11px 0;
-  font-weight:800;font-size:.95rem;color:var(--sage-dk);
-  border:1.5px solid rgba(138,184,138,.3);
-}
+.formula{text-align:center;background:linear-gradient(135deg,var(--sage-bg),rgba(138,184,138,.15));border-radius:10px;padding:14px;margin:11px 0;font-weight:800;font-size:.95rem;color:var(--sage-dk);border:1.5px solid rgba(138,184,138,.3);}
 
 /* ── QUIZ ── */
-.quiz-section{
-  background:var(--paper);border-radius:16px;padding:28px 26px;
-  box-shadow:0 2px 12px rgba(0,0,0,.06);
-  border:1.5px solid var(--sage-bg);margin-top:18px;
-}
-.quiz-header{
-  display:flex;align-items:center;gap:10px;margin-bottom:6px;
-}
-.quiz-icon{
-  width:36px;height:36px;border-radius:10px;
-  background:var(--sage-bg);color:var(--sage-dk);
-  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
-}
+.quiz-section{background:var(--paper);border-radius:16px;padding:28px 26px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1.5px solid var(--sage-bg);margin-top:18px;}
+.quiz-header{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.quiz-icon{width:36px;height:36px;border-radius:10px;background:var(--sage-bg);color:var(--sage-dk);display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
 .quiz-title{font-size:1.1rem;font-weight:800;color:var(--text);}
 .quiz-sub{font-size:.79rem;color:var(--text2);margin-bottom:22px;padding-left:46px;}
 .q-block{margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid #f0f0f0;}
 .q-block:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0;}
 .q-text{font-weight:700;font-size:.9rem;margin-bottom:13px;line-height:1.7;}
-.q-num{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:26px;height:26px;border-radius:50%;
-  background:var(--coral);color:#fff;
-  font-size:.72rem;font-weight:800;margin-right:8px;flex-shrink:0;
-  vertical-align:middle;
-}
+.q-num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--coral);color:#fff;font-size:.72rem;font-weight:800;margin-right:8px;flex-shrink:0;vertical-align:middle;}
 .choices{display:flex;flex-direction:column;gap:8px;}
-.choice{
-  padding:11px 16px;border-radius:10px;
-  border:2px solid var(--border);
-  cursor:pointer;font-size:.85rem;
-  transition:all .15s;text-align:left;
-  background:#fff;font-family:inherit;line-height:1.55;
-  display:flex;align-items:flex-start;gap:8px;
-}
-.choice::before{
-  content:'';width:16px;height:16px;border-radius:50%;
-  border:2px solid var(--border);flex-shrink:0;margin-top:2px;
-  transition:all .15s;
-}
+.choice{padding:11px 16px;border-radius:10px;border:2px solid var(--border);cursor:pointer;font-size:.85rem;transition:all .15s;text-align:left;background:#fff;font-family:inherit;line-height:1.55;display:flex;align-items:flex-start;gap:8px;}
+.choice::before{content:'';width:16px;height:16px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;margin-top:2px;transition:all .15s;}
 .choice:hover:not(:disabled){border-color:var(--sage);background:rgba(138,184,138,.08);}
 .choice:hover:not(:disabled)::before{border-color:var(--sage);background:rgba(138,184,138,.3);}
 .choice.correct{border-color:var(--sage);background:rgba(138,184,138,.1);color:var(--sage-dk);font-weight:700;}
@@ -332,56 +197,28 @@ body::after{
 .choice.wrong{border-color:var(--coral);background:rgba(232,112,74,.08);color:var(--coral);font-weight:700;}
 .choice.wrong::before{border-color:var(--coral);background:var(--coral);}
 .choice:disabled{cursor:default;}
-.explanation{
-  margin-top:13px;padding:13px 16px;
-  background:rgba(138,184,138,.07);border-radius:10px;
-  font-size:.84rem;color:#555;line-height:1.75;
-  display:none;border-left:3px solid var(--sage);
-}
+.explanation{margin-top:13px;padding:13px 16px;background:rgba(138,184,138,.07);border-radius:10px;font-size:.84rem;color:#555;line-height:1.75;display:none;border-left:3px solid var(--sage);}
 .explanation.show{display:block;}
 
 /* quiz result */
-.quiz-result{
-  text-align:center;padding:28px 20px;
-  background:linear-gradient(135deg,var(--sage) 0%,var(--coral) 100%);
-  color:#fff;border-radius:14px;margin-top:20px;display:none;
-}
-.quiz-result.show{display:block;}
+.quiz-result{text-align:center;padding:28px 20px;background:linear-gradient(135deg,var(--sage) 0%,var(--coral) 100%);color:#fff;border-radius:14px;margin-top:20px;display:none;}
+.quiz-result.show{display:block;animation:fadeInUp .4s ease;}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
 .result-score{font-size:2.4rem;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.15);}
 .result-msg{font-size:.95rem;margin-top:8px;opacity:.95;}
-.quiz-reset{
-  margin-top:16px;padding:10px 26px;border-radius:24px;
-  border:2px solid #fff;background:transparent;color:#fff;
-  cursor:pointer;font-size:.85rem;font-family:inherit;font-weight:700;
-  transition:all .2s;
-}
+.result-saved{font-size:.75rem;margin-top:6px;opacity:.75;display:flex;align-items:center;justify-content:center;gap:4px;}
+.quiz-actions{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap;}
+.quiz-reset{padding:10px 22px;border-radius:24px;border:2px solid #fff;background:transparent;color:#fff;cursor:pointer;font-size:.85rem;font-family:inherit;font-weight:700;transition:all .2s;}
 .quiz-reset:hover{background:#fff;color:var(--sage-dk);}
+.quiz-go-index{padding:10px 22px;border-radius:24px;border:2px solid rgba(255,255,255,.6);background:rgba(255,255,255,.15);color:#fff;cursor:pointer;font-size:.85rem;font-family:inherit;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:all .2s;}
+.quiz-go-index:hover{background:rgba(255,255,255,.3);}
 
 /* ── MOBILE SIDEBAR TOGGLE ── */
-.sb-toggle{
-  display:none;
-  position:relative;z-index:1;
-  align-items:center;gap:5px;
-  padding:6px 13px;border-radius:20px;
-  background:rgba(255,255,255,.8);
-  border:1.5px solid rgba(138,184,138,.5);
-  color:var(--sage-dk);font-size:.8rem;font-weight:700;
-  cursor:pointer;font-family:inherit;margin-left:auto;white-space:nowrap;
-  transition:all .15s;
-}
+.sb-toggle{display:none;position:relative;z-index:1;align-items:center;gap:5px;padding:6px 13px;border-radius:20px;background:rgba(255,255,255,.8);border:1.5px solid rgba(138,184,138,.5);color:var(--sage-dk);font-size:.8rem;font-weight:700;cursor:pointer;font-family:inherit;margin-left:auto;white-space:nowrap;transition:all .15s;}
 .sb-toggle:hover{background:#fff;border-color:var(--sage);}
 .sb-toggle i{font-size:.9rem;transition:transform .25s;}
 .sb-toggle.open i.ph-caret-down{transform:rotate(180deg);}
-
-/* Mobile active cert bar */
-.mob-cert-bar{
-  display:none;
-  background:var(--sage-bg);
-  padding:9px 16px;
-  font-size:.8rem;font-weight:700;color:var(--sage-dk);
-  border-bottom:1.5px solid rgba(138,184,138,.3);
-  align-items:center;gap:8px;
-}
+.mob-cert-bar{display:none;background:var(--sage-bg);padding:9px 16px;font-size:.8rem;font-weight:700;color:var(--sage-dk);border-bottom:1.5px solid rgba(138,184,138,.3);align-items:center;gap:8px;}
 .mob-cert-bar i{font-size:1rem;flex-shrink:0;}
 .mob-cert-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
@@ -390,22 +227,23 @@ body::after{
   .sb-toggle{display:flex;}
   .mob-cert-bar{display:flex;}
   .layout{flex-direction:column;height:auto;overflow:visible;}
-  .sidebar{
-    width:100%;border-right:none;border-bottom:2px solid var(--sage-bg);
-    max-height:0;overflow:hidden;padding:0;
-    transition:max-height .3s ease,padding .2s;
-  }
-  .sidebar.sb-open{max-height:60vh;overflow-y:auto;padding:12px 0 20px;}
+  .sidebar{width:100%;border-right:none;border-bottom:2px solid var(--sage-bg);max-height:0;overflow:hidden;padding:0;transition:max-height .3s ease,padding .2s;flex-direction:column;}
+  .sidebar.sb-open{max-height:70vh;overflow-y:auto;padding:12px 0 0;}
   .main{padding:16px 14px;overflow:visible;}
   .cert-meta{grid-template-columns:1fr 1fr;}
   .hdr-kicker{display:none;}
   .hdr h1{font-size:.82rem;}
   .quiz-sub{padding-left:0;}
+  .po-grid{grid-template-columns:repeat(2,1fr);}
+  .po-stats{gap:10px;}
+  .tbl{font-size:.78rem;width:auto;}
+  .tbl th,.tbl td{padding:7px 10px;}
 }
 @media(max-width:480px){
   .cert-meta{grid-template-columns:1fr;}
   .quiz-section{padding:18px 14px;}
   .ch-body{padding:0 14px 16px;}
+  .po-grid{grid-template-columns:1fr 1fr;}
 }
 </style>
 </head>
@@ -429,35 +267,44 @@ body::after{
     <div class="sb-logo">
       <div class="sb-logo-text"><i class="ph-duotone ph-book-open" style="color:var(--sage-dk);font-size:1.2rem;"></i> 資格を選ぼう</div>
     </div>
+    <!-- Progress summary (JS will fill) -->
+    <div class="sb-progress" id="sb-progress">
+      <div class="sb-prog-title"><span>学習進捗</span><span id="sb-prog-frac">0 / 11</span></div>
+      <div class="sb-prog-bar-wrap"><div class="sb-prog-bar" id="sb-prog-bar" style="width:0%"></div></div>
+      <div class="sb-prog-stats"><span id="sb-prog-pass">合格 0件</span><span id="sb-prog-avg">平均 -%</span></div>
+    </div>
+    <!-- cert groups injected by JS -->
+    <div id="sb-groups"></div>
+    <div class="sb-footer">
+      <button class="sb-reset-all" onclick="confirmResetAll()"><i class="ph-bold ph-arrow-counter-clockwise"></i> 進捗をすべてリセット</button>
+    </div>
   </nav>
   <main class="main" id="main">
-    <div class="welcome">
-      <div class="welcome-icon">📚</div>
-      <h2>学習を始めましょう</h2>
-      <p>左のメニューから資格を選ぶと<br>教材とミニテストが表示されます。</p>
-      <div class="welcome-hint">
-        <span class="welcome-tag"><i class="ph-bold ph-star" style="font-size:.75rem;"></i> 入門 ×7</span>
-        <span class="welcome-tag c"><i class="ph-bold ph-star" style="font-size:.75rem;"></i><i class="ph-bold ph-star" style="font-size:.75rem;"></i> 易しい ×4</span>
+    <!-- welcome screen (JS will replace on cert select) -->
+    <div class="welcome" id="welcome-screen">
+      <div class="welcome-hero">
+        <div class="welcome-icon">📚</div>
+        <h2>学習を始めましょう</h2>
+        <p>資格を選ぶと教材とミニテストが表示されます。<br>クイズの結果は自動保存されます。</p>
+        <div class="welcome-tags">
+          <span class="welcome-tag"><i class="ph-bold ph-star" style="font-size:.75rem;"></i> 入門 ×7</span>
+          <span class="welcome-tag c"><i class="ph-bold ph-star" style="font-size:.75rem;"></i><i class="ph-bold ph-star" style="font-size:.75rem;"></i> 易しい ×4</span>
+        </div>
       </div>
+      <!-- Progress overview injected by JS -->
+      <div class="prog-overview" id="prog-overview"></div>
     </div>
   </main>
 </div>
 
 <script src="study_data.js"></script>
 <script>
-const DCOLORS = {1:'var(--sage-dk)', 2:'var(--coral)'};
+const TOTAL_CERTS = 11;
 const CERT_ICONS = {
-  hubspot:'ph-chart-line-up',
-  google_ads:'ph-target',
-  seo4:'ph-magnifying-glass',
-  bizcareer3:'ph-briefcase',
-  marken3:'ph-megaphone',
-  imma_c:'ph-certificate',
-  waca:'ph-globe',
-  netmk:'ph-devices',
-  ga4:'ph-chart-bar',
-  yahoo_ads:'ph-currency-jpy',
-  seo3:'ph-magnifying-glass-plus'
+  hubspot:'ph-chart-line-up', google_ads:'ph-target', seo4:'ph-magnifying-glass',
+  bizcareer3:'ph-briefcase', marken3:'ph-megaphone', imma_c:'ph-certificate',
+  waca:'ph-globe', netmk:'ph-devices', ga4:'ph-chart-bar',
+  yahoo_ads:'ph-currency-jpy', seo3:'ph-magnifying-glass-plus'
 };
 
 function stars(d){
@@ -466,56 +313,133 @@ function stars(d){
   return '<span class="stars">'+s+'</span>';
 }
 
-function buildSidebar(){
-  const sb = document.getElementById('sidebar');
-  [1,2].forEach(d=>{
-    const label = d===1 ? '入門' : '易しい';
-    const star  = d===1 ? '★' : '★★';
-    const grp = document.createElement('div');
-    grp.className = 'sb-group';
-    grp.innerHTML = '<div class="sb-group-title d'+d+'"><span>'+label+'</span><span class="sb-group-badge d'+d+'">'+star+'</span></div>';
-    DATA.filter(c=>c.diff===d).forEach(c=>{
-      const iconName = CERT_ICONS[c.id] || 'ph-book';
-      const item = document.createElement('div');
-      item.className = 'sb-item';
-      item.dataset.id = c.id;
-      item.innerHTML = '<i class="ph-duotone '+iconName+'"></i>'+c.name;
-      item.addEventListener('click', ()=>showCert(c.id));
-      grp.appendChild(item);
-    });
-    sb.appendChild(grp);
+/* ── サイドバー進捗表示更新 ── */
+function updateSidebarProgress(){
+  const pass = Progress.passCount();
+  const tried = Progress.triedCount();
+  const avg  = Progress.avgBestPct();
+  const pct  = Math.round(pass / TOTAL_CERTS * 100);
+  document.getElementById('sb-prog-bar').style.width = pct + '%';
+  document.getElementById('sb-prog-frac').textContent = pass + ' / ' + TOTAL_CERTS;
+  document.getElementById('sb-prog-pass').textContent = '合格 ' + pass + '件';
+  document.getElementById('sb-prog-avg').textContent  = tried ? '平均 ' + avg + '%' : '平均 -%';
+  // sb-item バッジ更新
+  document.querySelectorAll('.sb-item').forEach(el => {
+    const id = el.dataset.id;
+    const p  = Progress.get(id);
+    let badge = el.querySelector('.sb-badge');
+    if(!badge){ badge = document.createElement('span'); badge.className='sb-badge'; el.appendChild(badge); }
+    if(p){
+      badge.textContent = p.best + '/' + p.total;
+      badge.className = 'sb-badge ' + (p.bestPct >= 80 ? 'pass' : 'try');
+    } else {
+      badge.textContent = '';
+      badge.className = 'sb-badge';
+    }
   });
 }
 
-function showCert(id){
-  const c = DATA.find(x=>x.id===id);
-  if(!c) return;
-  document.querySelectorAll('.sb-item').forEach(el=>{
-    el.classList.toggle('active', el.dataset.id===id);
+/* ── サイドバー構築 ── */
+function buildSidebar(){
+  const grpContainer = document.getElementById('sb-groups');
+  [1,2].forEach(d => {
+    const label = d===1 ? '入門' : '易しい';
+    const star  = d===1 ? '★' : '★★';
+    const grp   = document.createElement('div');
+    grp.className = 'sb-group';
+    grp.innerHTML = '<div class="sb-group-title d'+d+'"><span>'+label+'</span><span class="sb-group-badge d'+d+'">'+star+'</span></div>';
+    DATA.filter(c => c.diff===d).forEach(c => {
+      const item = document.createElement('div');
+      item.className = 'sb-item';
+      item.dataset.id = c.id;
+      item.innerHTML =
+        '<i class="ph-duotone '+(CERT_ICONS[c.id]||'ph-book')+' icon"></i>'
+        +'<span class="sb-item-name">'+c.name+'</span>'
+        +'<span class="sb-badge"></span>';
+      item.addEventListener('click', () => showCert(c.id));
+      grp.appendChild(item);
+    });
+    grpContainer.appendChild(grp);
   });
-  const main = document.getElementById('main');
-  const freeBadge = c.free ? '<span class="badge b-free"><i class="ph-bold ph-gift" style="font-size:.75rem;"></i> 無料</span>' : '';
-  const dlclass = c.diff===1 ? 'bd1' : 'bd2';
-  const iconName = CERT_ICONS[id] || 'ph-book';
+  updateSidebarProgress();
+}
 
-  let chapHtml = c.chapters.map((ch,i)=>
+/* ── ウェルカム画面の進捗グリッド ── */
+function renderWelcomeProgress(){
+  const po   = document.getElementById('prog-overview');
+  const pass = Progress.passCount();
+  const tried= Progress.triedCount();
+  const avg  = Progress.avgBestPct();
+  const fillPct = Math.round(pass / TOTAL_CERTS * 100);
+
+  let cardsHtml = DATA.map(c => {
+    const p = Progress.get(c.id);
+    let cls = '', scoreHtml = '<span class="po-card-score none">未挑戦</span>', metaHtml = '';
+    if(p){
+      const passed = p.bestPct >= 80;
+      cls = passed ? 'pass' : 'try';
+      scoreHtml = '<span class="po-card-score '+(passed?'pass':'try')+'">最高 '+p.best+'/'+p.total+'点（'+p.bestPct+'%）</span>';
+      metaHtml  = '<div class="po-card-meta">'+p.attempts+'回挑戦・'+p.date+'</div>';
+    }
+    return '<div class="po-card '+cls+'" onclick="showCert(\''+c.id+'\')"><div class="po-card-name">'+c.name+'</div>'+scoreHtml+metaHtml+'</div>';
+  }).join('');
+
+  po.innerHTML =
+    '<div class="po-header">'
+    +'<div class="po-title"><i class="ph-duotone ph-chart-line-up" style="color:var(--sage);"></i> 学習進捗</div>'
+    +'<div class="po-stats">'
+    +'<div class="po-stat"><div class="po-stat-num">'+pass+'</div><div class="po-stat-lbl">合格済み</div></div>'
+    +'<div class="po-stat"><div class="po-stat-num">'+tried+'</div><div class="po-stat-lbl">挑戦済み</div></div>'
+    +'<div class="po-stat"><div class="po-stat-num" style="color:var(--coral);">'+(tried?avg+'%':'-')+'</div><div class="po-stat-lbl">平均スコア</div></div>'
+    +'</div></div>'
+    +'<div class="po-bar-row"><div class="po-bar"><div class="po-bar-fill" style="width:'+fillPct+'%"></div></div><div class="po-bar-label">'+pass+' / '+TOTAL_CERTS+'</div></div>'
+    +'<div class="po-grid">'+cardsHtml+'</div>';
+}
+
+/* ── 資格表示 ── */
+function showCert(id){
+  const c = DATA.find(x => x.id===id);
+  if(!c) return;
+  document.querySelectorAll('.sb-item').forEach(el =>
+    el.classList.toggle('active', el.dataset.id===id)
+  );
+  const main = document.getElementById('main');
+  const freeBadge = c.free ? '<span class="badge b-free"><i class="ph-bold ph-gift" style="font-size:.7rem;"></i> 無料</span>' : '';
+  const dlclass   = c.diff===1 ? 'bd1' : 'bd2';
+  const icon      = CERT_ICONS[id] || 'ph-book';
+  const prev      = Progress.get(id);
+
+  // 過去スコア表示
+  let prevHtml = '';
+  if(prev){
+    const passed = prev.bestPct >= 80;
+    prevHtml =
+      '<div class="cert-prev">'
+      +'<span class="cert-prev-icon">'+(passed?'🏆':'📝')+'</span>'
+      +'<div class="cert-prev-info">'
+      +'<div class="cert-prev-lbl">前回の記録</div>'
+      +'<div class="cert-prev-val '+(passed?'pass':'try')+'">最高 '+prev.best+'/'+prev.total+'点（'+prev.bestPct+'%）</div>'
+      +'</div>'
+      +'<div class="cert-prev-bar-wrap"><div class="cert-prev-bar '+(passed?'pass':'try')+'" style="width:'+prev.bestPct+'%"></div></div>'
+      +'<div class="cert-prev-attempts">'+prev.attempts+'回挑戦</div>'
+      +'</div>';
+  }
+
+  const chapHtml = c.chapters.map((ch,i) =>
     '<div class="chapter" id="ch-wrap-'+i+'">'
     +'<div class="ch-header" onclick="toggleCh('+i+')">'
-    +'<div class="ch-header-left">'
-    +'<div class="ch-num">'+(i+1)+'</div>'
-    +'<span class="ch-title">'+ch.title+'</span>'
-    +'</div>'
+    +'<div class="ch-header-left"><div class="ch-num">'+(i+1)+'</div><span class="ch-title">'+ch.title+'</span></div>'
     +'<div class="ch-arrow'+(i===0?' open':'')+'" id="arr-'+i+'">▾</div>'
     +'</div>'
     +'<div class="ch-body'+(i===0?' show':'')+'" id="body-'+i+'">'+ch.body+'</div>'
     +'</div>'
   ).join('');
 
-  let quizHtml = c.quiz.map((q,qi)=>
+  const quizHtml = c.quiz.map((q,qi) =>
     '<div class="q-block">'
     +'<div class="q-text"><span class="q-num">Q'+(qi+1)+'</span>'+q.q+'</div>'
     +'<div class="choices">'
-    +q.choices.map((ch,ci)=>
+    +q.choices.map((ch,ci) =>
       '<button class="choice" onclick="doAnswer(\''+id+'\','+qi+','+ci+')" id="qbtn-'+qi+'-'+ci+'">'+ch+'</button>'
     ).join('')
     +'</div>'
@@ -525,18 +449,16 @@ function showCert(id){
 
   main.innerHTML =
     '<div class="cert-hdr">'
-    +'<div class="badges">'
-    +'<span class="badge '+dlclass+'"><i class="ph-bold ph-'+( c.diff===1?'star':'star-half')+'" style="font-size:.7rem;"></i> '+c.dlabel+'</span>'
-    +stars(c.diff)
-    +freeBadge
-    +'</div>'
-    +'<div class="cert-name"><i class="ph-duotone '+iconName+'" style="color:var(--sage);margin-right:6px;"></i>'+c.name+'</div>'
+    +'<div class="badges"><span class="badge '+dlclass+'"><i class="ph-bold ph-'+(c.diff===1?'star':'star-half')+'" style="font-size:.7rem;"></i> '+c.dlabel+'</span>'+stars(c.diff)+freeBadge+'</div>'
+    +'<div class="cert-name"><i class="ph-duotone '+icon+'" style="color:var(--sage);margin-right:6px;"></i>'+c.name+'</div>'
     +'<div class="cert-org"><i class="ph-duotone ph-buildings" style="color:var(--text2);"></i> '+c.org+'</div>'
     +'<div class="cert-meta">'
     +'<div class="meta-box"><div class="meta-lbl"><i class="ph-duotone ph-clock"></i>目安勉強時間</div><div class="meta-val">'+c.hours+'</div></div>'
     +'<div class="meta-box"><div class="meta-lbl"><i class="ph-duotone ph-chart-pie"></i>合格率（目安）</div><div class="meta-val">'+c.rate+'</div></div>'
     +'<div class="meta-box"><div class="meta-lbl"><i class="ph-duotone ph-currency-jpy"></i>受験費用</div><div class="meta-val">'+c.cost+'</div></div>'
-    +'</div></div>'
+    +'</div>'
+    +prevHtml
+    +'</div>'
     +chapHtml
     +'<div class="quiz-section">'
     +'<div class="quiz-header"><div class="quiz-icon"><i class="ph-duotone ph-brain"></i></div><div class="quiz-title">ミニテスト</div></div>'
@@ -545,10 +467,13 @@ function showCert(id){
     +'<div class="quiz-result" id="quiz-result">'
     +'<div class="result-score" id="result-score"></div>'
     +'<div class="result-msg" id="result-msg"></div>'
+    +'<div class="result-saved"><i class="ph-bold ph-check-circle"></i> 結果を保存しました</div>'
+    +'<div class="quiz-actions">'
     +'<button class="quiz-reset" onclick="showCert(\''+id+'\')">🔄 もう一度挑戦</button>'
-    +'</div></div>';
+    +'<a class="quiz-go-index" href="index.html"><i class="ph-bold ph-list"></i> 資格一覧へ</a>'
+    +'</div></div></div>';
 
-  // テーブルを横スクロールコンテナで囲む
+  // テーブル横スクロール
   main.querySelectorAll('.tbl').forEach(tbl => {
     if(tbl.parentElement.classList.contains('tbl-wrap')) return;
     const wrap = document.createElement('div');
@@ -557,14 +482,12 @@ function showCert(id){
     wrap.appendChild(tbl);
   });
 
-  // mark first chapter open
   const firstWrap = document.getElementById('ch-wrap-0');
   if(firstWrap) firstWrap.classList.add('open-ch');
 
-  window._quiz = {id:id, total:c.quiz.length, answers:new Array(c.quiz.length).fill(null), correct:0};
+  window._quiz = {id, total:c.quiz.length, answers:new Array(c.quiz.length).fill(null), correct:0};
   main.scrollTop = 0;
 
-  // モバイル: 選択中の資格名をバーに表示してサイドバーを閉じる
   const nameEl = document.getElementById('mob-cert-name');
   if(nameEl) nameEl.textContent = c.name;
   closeSidebarOnMobile();
@@ -585,7 +508,7 @@ function doAnswer(certId, qi, ci){
   const qz = window._quiz;
   if(!qz || qz.answers[qi]!==null) return;
   qz.answers[qi] = ci;
-  const c = DATA.find(x=>x.id===certId);
+  const c = DATA.find(x => x.id===certId);
   if(!c) return;
   const correct = c.quiz[qi].answer;
   for(let i=0;i<c.quiz[qi].choices.length;i++){
@@ -598,12 +521,17 @@ function doAnswer(certId, qi, ci){
   const exp = document.getElementById('exp-'+qi);
   if(exp) exp.classList.add('show');
   if(ci===correct) qz.correct++;
-  if(qz.answers.every(a=>a!==null)){
+
+  if(qz.answers.every(a => a!==null)){
     const pct = Math.round(qz.correct/qz.total*100);
+    // 進捗保存
+    Progress.save(certId, qz.correct, qz.total);
+    updateSidebarProgress();
+
     const el = document.getElementById('quiz-result');
     document.getElementById('result-score').textContent = qz.correct+' / '+qz.total+' 問正解（'+pct+'%）';
     document.getElementById('result-msg').textContent =
-      pct>=80 ? '🎉 素晴らしい！本番試験も合格ラインです！' :
+      pct>=80 ? '🎉 素晴らしい！合格ラインを突破しました！' :
       pct>=60 ? '📖 あと少し！解説を読んで復習しましょう' :
                 '💪 基礎から教材を読み直してみましょう';
     if(el){ el.classList.add('show'); el.scrollIntoView({behavior:'smooth',block:'center'}); }
@@ -611,7 +539,7 @@ function doAnswer(certId, qi, ci){
 }
 
 function toggleSidebar(){
-  const sb = document.getElementById('sidebar');
+  const sb  = document.getElementById('sidebar');
   const btn = document.getElementById('sb-toggle-btn');
   const open = sb.classList.toggle('sb-open');
   if(btn) btn.classList.toggle('open', open);
@@ -619,15 +547,35 @@ function toggleSidebar(){
 
 function closeSidebarOnMobile(){
   if(window.innerWidth > 720) return;
-  const sb = document.getElementById('sidebar');
+  const sb  = document.getElementById('sidebar');
   const btn = document.getElementById('sb-toggle-btn');
   sb.classList.remove('sb-open');
   if(btn) btn.classList.remove('open');
 }
 
+function confirmResetAll(){
+  if(!confirm('全資格の学習進捗をリセットしますか？\nこの操作は取り消せません。')) return;
+  Progress.resetAll();
+  updateSidebarProgress();
+  // ウェルカム画面表示中ならグリッド更新
+  if(document.getElementById('prog-overview')) renderWelcomeProgress();
+  // cert表示中なら prevHtml部分を更新するためリロード
+  const activeId = document.querySelector('.sb-item.active')?.dataset.id;
+  if(activeId) showCert(activeId);
+}
+
+// 初期化
 buildSidebar();
+renderWelcomeProgress();
+
+// URL ハッシュから直接開く
 const hash = location.hash.replace('#','');
-if(hash && DATA.find(c=>c.id===hash)) showCert(hash);
+if(hash && DATA.find(c => c.id===hash)) showCert(hash);
+
+// Service Worker 登録
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
 </script>
 <script src="auth.js"></script>
 </body>
