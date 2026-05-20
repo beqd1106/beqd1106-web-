@@ -1942,7 +1942,11 @@ function buildGenericRows(sections, dateStr, title) {
   return rows;
 }
 
-// ── メイン：Excelダウンロード
+// ── Render.com API URL ─────────────────────────────
+// デプロイ後に実際のURLに書き換えてください
+var RENDER_API_URL = "https://beqd1106-fukushi-api.onrender.com";
+
+// ── メイン：Excelダウンロード（Render API経由）
 function downloadFilledTemplate(feature) {
   var rawText = AI_RAW_OUTPUT[feature];
   if (!rawText) {
@@ -1953,38 +1957,67 @@ function downloadFilledTemplate(feature) {
     alert('先にAI生成を実行してください。');
     return;
   }
-  if (typeof XLSX === 'undefined') {
-    alert('Excelライブラリ読み込み中です。数秒後に再試行してください。');
-    return;
-  }
 
-  var title    = FEATURE_TITLES[feature] || 'AI生成書類';
-  var today    = new Date();
-  var dateStr  = today.getFullYear() + '年' + (today.getMonth()+1) + '月' + today.getDate() + '日';
-  var fileDate = today.getFullYear() + String(today.getMonth()+1).padStart(2,'0') + String(today.getDate()).padStart(2,'0');
+  var title   = FEATURE_TITLES[feature] || 'AI生成書類';
+  var today   = new Date();
+  var fileDate= today.getFullYear() + String(today.getMonth()+1).padStart(2,'0') + String(today.getDate()).padStart(2,'0');
+
+  // ボタンをローディング状態に
+  var btn = event && event.target;
+  var origText = btn ? btn.textContent : '';
+  if (btn) { btn.textContent = '⏳ 生成中...'; btn.disabled = true; }
+
+  // Form データも送信（テンプレート固有の入力値に使用）
+  var formData = {};
+  try { formData = collectFormData(feature) || {}; } catch(e) {}
+
+  fetch(RENDER_API_URL + '/fill-excel', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      feature:   feature,
+      raw_text:  rawText,
+      form_data: formData,
+    }),
+  })
+  .then(function(res) {
+    if (!res.ok) throw new Error('API エラー: ' + res.status);
+    return res.blob();
+  })
+  .then(function(blob) {
+    var url = URL.createObjectURL(blob);
+    var a   = document.createElement('a');
+    a.href     = url;
+    a.download = title + '_' + fileDate + '.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  })
+  .catch(function(err) {
+    // Render がスリープ中の場合はフォールバック（SheetJS）
+    console.warn('Render API unavailable, falling back to SheetJS:', err);
+    if (typeof XLSX !== 'undefined') {
+      fallbackSheetJS(feature, rawText, title, fileDate);
+    } else {
+      alert('ダウンロードに失敗しました。しばらく待ってから再試行してください。
+（Renderサーバー起動中：約30秒）');
+    }
+  })
+  .finally(function() {
+    if (btn) { btn.textContent = origText; btn.disabled = false; }
+  });
+}
+
+// ── フォールバック：SheetJS（Renderがスリープ中の場合）
+function fallbackSheetJS(feature, rawText, title, fileDate) {
   var sections = parseMdSections(rawText);
-
-  var rows;
-  switch(feature) {
-    case 'assessment':     rows = buildAssessmentRows(sections, dateStr); break;
-    case 'nursing_report': rows = buildNursingRows(sections, dateStr); break;
-    case 'kasan_check':    rows = buildCheckRows(sections, dateStr, title); break;
-    case 'claim_check':    rows = buildCheckRows(sections, dateStr, title); break;
-    case 'incident_docs':  rows = buildIncidentRows(sections, dateStr); break;
-    case 'wage_plan':      rows = buildWagePlanRows(sections, dateStr); break;
-    case 'staff_sim':      rows = buildStaffSimRows(sections, dateStr); break;
-    default:               rows = buildGenericRows(sections, dateStr, title); break;
-  }
-
-  rows.push([]);
-  rows.push(['※ AI（Llama 3.1）生成の下書きです。内容は必ず担当者が確認・修正してください。']);
-  rows.push(['出力元：障碍者福祉事業所 運営ガイド | beqd1106.com/nursing/']);
-
+  var rows = buildGenericRows(sections, new Date().getFullYear() + '年' + (new Date().getMonth()+1) + '月' + new Date().getDate() + '日', title);
+  rows.push([], ['※ サーバー未応答のためシンプル形式で出力しました。Excelボタンを再度押すと高品質版が取得できます。']);
   var wb = XLSX.utils.book_new();
   var ws = XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols'] = COL_WIDTHS[feature] || [{wch:24},{wch:70}];
-
-  XLSX.utils.book_append_sheet(wb, ws, title.slice(0, 31));
+  ws['!cols'] = [{wch:22},{wch:70}];
+  XLSX.utils.book_append_sheet(wb, ws, title.slice(0,31));
   XLSX.writeFile(wb, title + '_' + fileDate + '.xlsx');
 }
 
