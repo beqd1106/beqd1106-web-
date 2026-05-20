@@ -4,8 +4,8 @@
  */
 
 // ── モデル設定 ────────────────────────────────────────────
-const MODEL_QUALITY = "claude-sonnet-4-6";       // 書類生成・複雑な分析
-const MODEL_FAST    = "claude-haiku-4-5-20251001"; // 加算チェック・簡易タスク
+const MODEL_QUALITY = "@cf/meta/llama-3.1-8b-instruct";  // 書類生成・複雑な分析
+const MODEL_FAST    = "@cf/meta/llama-3.1-8b-instruct";  // 加算チェック・簡易タスク
 
 // ── 各機能のシステムプロンプト ────────────────────────────
 const SYSTEM_PROMPTS = {
@@ -343,63 +343,47 @@ export default {
   },
 };
 
-// ── AI 生成ハンドラー ───────────────────────────────────
+// ── AI 生成ハンドラー（Cloudflare Workers AI）───────────
 async function handleAIGenerate(request, env) {
-  // APIキー確認
-  if (!env.ANTHROPIC_API_KEY) {
-    return jsonError("ANTHROPIC_API_KEY が設定されていません", 500);
-  }
-
   let body;
   try {
     body = await request.json();
   } catch {
-    return jsonError("リクエストボディが不正です", 400);
+    return jsonError('リクエストボディが不正です', 400);
   }
 
   const feature = body.feature;
 
   if (!feature || !SYSTEM_PROMPTS[feature]) {
-    return jsonError("不明な機能です: " + feature, 400);
+    return jsonError('不明な機能です: ' + feature, 400);
   }
 
-  const config = FEATURE_CONFIG[feature];
+  const config      = FEATURE_CONFIG[feature];
   const systemPrompt = SYSTEM_PROMPTS[feature];
-  const userMessage = buildUserMessage(feature, body);
+  const userMessage  = buildUserMessage(feature, body);
 
-  // Anthropic API を呼び出す（ストリーミング）
-  let anthropicRes;
+  // Cloudflare Workers AI を呼び出す（ストリーミング）
+  let aiResponse;
   try {
-    anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "x-api-key": env.ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        model: config.model,
-        max_tokens: config.max_tokens,
-        system: systemPrompt,
-        messages: [{ role: "user", content: userMessage }],
-        stream: true,
-      }),
+    aiResponse = await env.AI.run(config.model, {
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user',   content: userMessage  },
+      ],
+      stream:     true,
+      max_tokens: config.max_tokens,
     });
   } catch (err) {
-    return jsonError("Anthropic API への接続に失敗しました: " + err.message, 502);
+    return jsonError('AI の呼び出しに失敗しました: ' + String(err), 502);
   }
 
-  if (!anthropicRes.ok) {
-    const errText = await anthropicRes.text();
-    return jsonError("Anthropic API エラー: " + errText, anthropicRes.status);
-  }
-
-  // ストリーミングレスポンスをそのまま返す
-  return new Response(anthropicRes.body, {
+  // Cloudflare Workers AI のストリームをそのまま返す
+  // フロント側は data: {response:...} 形式で受信する
+  return new Response(aiResponse, {
     headers: {
-      "Content-Type": "text/event-stream",
-      "Cache-Control": "no-cache",
-      "Access-Control-Allow-Origin": "*",
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Access-Control-Allow-Origin': '*',
     },
   });
 }
