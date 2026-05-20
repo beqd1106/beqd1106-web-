@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マーケティング資格 学習アプリ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>
+:root{
+  --sage:#8ab88a;
+  --sage-bg:#d4ecd4;
+  --sage-dk:#5a9060;
+  --coral:#e8704a;
+  --coral-bg:#f9dfd5;
+  --cream:#fdf5ec;
+  --paper:#fff9f3;
+  --text:#2d2d2d;
+  --text2:#6b7280;
+  --d1:#8ab88a;
+  --d2:#e8704a;
+  --border:#e5e7eb;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'M PLUS Rounded 1c','Segoe UI','Hiragino Sans','Yu Gothic',sans-serif;
+  background:var(--cream);
+  color:var(--text);
+  display:flex;flex-direction:column;min-height:100vh;
+}
+
+/* ── GRAIN TEXTURE ── */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+  opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* ── HEADER ── */
+.hdr{
+  background:var(--sage-bg);
+  padding:0 24px;
+  height:56px;
+  display:flex;align-items:center;gap:16px;
+  position:sticky;top:0;z-index:100;
+  border-bottom:2px solid rgba(138,184,138,.35);
+  position:relative;
+}
+.hdr::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(138,184,138,.18) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(138,184,138,.18) 1px,transparent 1px);
+  background-size:22px 22px;
+  pointer-events:none;
+}
+.hdr-bg-word{
+  position:absolute;right:20px;top:50%;transform:translateY(-50%);
+  font-family:'Caveat',cursive;font-size:3rem;font-weight:700;
+  color:rgba(90,144,96,.12);letter-spacing:.08em;pointer-events:none;white-space:nowrap;
+}
+.hdr-back{
+  position:relative;z-index:1;
+  color:var(--sage-dk);font-size:.82rem;text-decoration:none;
+  display:flex;align-items:center;gap:5px;
+  padding:5px 12px;border-radius:20px;
+  background:rgba(255,255,255,.7);
+  border:1.5px solid rgba(138,184,138,.5);
+  transition:all .2s;white-space:nowrap;
+}
+.hdr-back:hover{background:#fff;border-color:var(--sage);color:var(--sage-dk);}
+.hdr h1{
+  position:relative;z-index:1;
+  font-size:.95rem;font-weight:800;color:var(--sage-dk);
+}
+.hdr-kicker{
+  position:relative;z-index:1;
+  font-family:'Caveat',cursive;font-size:1.1rem;font-weight:700;
+  color:rgba(90,144,96,.7);margin-left:auto;margin-right:3rem;
+}
+
+/* ── LAYOUT ── */
+.layout{display:flex;flex:1;overflow:hidden;height:calc(100vh - 56px);}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:260px;flex-shrink:0;
+  background:var(--paper);
+  border-right:2px solid var(--sage-bg);
+  overflow-y:auto;
+  padding:16px 0 24px;
+}
+.sb-logo{
+  padding:0 18px 14px;
+  border-bottom:1px solid var(--sage-bg);
+  margin-bottom:10px;
+}
+.sb-logo-text{
+  font-family:'Caveat',cursive;font-size:1.15rem;font-weight:700;
+  color:var(--sage-dk);display:flex;align-items:center;gap:6px;
+}
+.sb-group{margin-bottom:6px;}
+.sb-group-title{
+  font-size:.68rem;font-weight:800;
+  text-transform:uppercase;letter-spacing:.1em;
+  padding:10px 18px 5px;
+  display:flex;align-items:center;gap:6px;
+}
+.sb-group-title.d1{color:var(--sage-dk);}
+.sb-group-title.d2{color:var(--coral);}
+.sb-group-badge{
+  font-size:.6rem;padding:1px 7px;border-radius:8px;font-weight:700;font-family:inherit;
+}
+.sb-group-badge.d1{background:var(--sage-bg);color:var(--sage-dk);}
+.sb-group-badge.d2{background:var(--coral-bg);color:var(--coral);}
+.sb-item{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 18px;cursor:pointer;
+  border-left:3px solid transparent;
+  transition:all .15s;font-size:.82rem;color:var(--text2);
+  line-height:1.4;
+}
+.sb-item:hover{background:var(--sage-bg);color:var(--text);border-left-color:var(--sage);}
+.sb-item.active{
+  background:rgba(138,184,138,.2);
+  border-left-color:var(--sage-dk);
+  color:var(--sage-dk);font-weight:700;
+}
+.sb-item i{font-size:1rem;flex-shrink:0;opacity:.7;}
+.sb-item.active i{opacity:1;}
+
+/* ── MAIN ── */
+.main{flex:1;overflow-y:auto;padding:28px 32px;background:var(--cream);}
+
+/* ── WELCOME ── */
+.welcome{
+  text-align:center;padding:80px 24px;
+  display:flex;flex-direction:column;align-items:center;gap:16px;
+}
+.welcome-icon{
+  width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sage-bg),var(--coral-bg));
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.2rem;box-shadow:0 4px 16px rgba(0,0,0,.08);
+}
+.welcome h2{font-size:1.5rem;font-weight:800;color:var(--text);}
+.welcome p{font-size:.88rem;color:var(--text2);line-height:1.9;max-width:320px;}
+.welcome p strong{color:var(--sage-dk);}
+.welcome-hint{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:6px;
+}
+.welcome-tag{
+  padding:5px 14px;border-radius:20px;font-size:.78rem;font-weight:700;
+  background:var(--sage-bg);color:var(--sage-dk);
+  border:1.5px solid rgba(138,184,138,.5);
+}
+.welcome-tag.c{background:var(--coral-bg);color:var(--coral);border-color:rgba(232,112,74,.4);}
+
+/* ── CERT HEADER ── */
+.cert-hdr{
+  background:var(--paper);
+  border-radius:16px;padding:22px 26px;margin-bottom:18px;
+  box-shadow:0 2px 12px rgba(0,0,0,.06);
+  border:1.5px solid var(--sage-bg);
+  position:relative;overflow:hidden;
+}
+.cert-hdr::before{
+  content:'';position:absolute;top:0;right:0;
+  width:120px;height:120px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sage-bg),transparent);
+  opacity:.5;transform:translate(30px,-30px);
+}
+.badges{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;position:relative;}
+.badge{padding:3px 11px;border-radius:10px;font-size:.7rem;font-weight:800;letter-spacing:.02em;}
+.bd1{background:var(--sage-bg);color:var(--sage-dk);}
+.bd2{background:var(--coral-bg);color:var(--coral);}
+.b-free{background:#e8f4fd;color:#1d4ed8;}
+.stars{color:#f59e0b;letter-spacing:1px;}
+.cert-name{font-size:1.25rem;font-weight:800;color:var(--text);margin-bottom:4px;position:relative;}
+.cert-org{font-size:.8rem;color:var(--text2);display:flex;align-items:center;gap:5px;}
+.cert-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px;}
+.meta-box{
+  background:var(--cream);border-radius:10px;padding:11px 14px;
+  border:1.5px solid var(--sage-bg);
+}
+.meta-lbl{font-size:.65rem;color:var(--text2);margin-bottom:4px;display:flex;align-items:center;gap:4px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+.meta-lbl i{font-size:.85rem;color:var(--sage);}
+.meta-val{font-size:.88rem;font-weight:800;color:var(--text);}
+
+/* ── CHAPTERS ── */
+.chapter{
+  background:var(--paper);border-radius:14px;margin-bottom:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.05);
+  border:1.5px solid var(--border);
+  overflow:hidden;
+  transition:box-shadow .2s;
+}
+.chapter:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);}
+.chapter.open-ch{border-color:var(--sage-bg);}
+.ch-header{
+  padding:15px 20px;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
+  transition:background .15s;
+  gap:12px;
+}
+.ch-header:hover{background:rgba(138,184,138,.08);}
+.ch-header-left{display:flex;align-items:center;gap:10px;}
+.ch-num{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--sage-bg);color:var(--sage-dk);
+  font-size:.72rem;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.chapter.open-ch .ch-num{background:var(--sage);color:#fff;}
+.ch-title{font-size:.92rem;font-weight:700;color:var(--text);}
+.ch-arrow{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--cream);color:var(--text2);
+  font-size:.75rem;transition:transform .25s,background .15s;
+  flex-shrink:0;
+}
+.ch-arrow.open{transform:rotate(180deg);background:var(--sage-bg);color:var(--sage-dk);}
+.ch-body{
+  padding:0 20px 20px 20px;display:none;
+  line-height:1.9;font-size:.87rem;color:#444;
+  border-top:1px solid var(--sage-bg);
+}
+.ch-body.show{display:block;}
+.ch-body h4{
+  font-weight:800;color:var(--text);margin:18px 0 8px;
+  font-size:.9rem;
+  display:flex;align-items:center;gap:6px;
+}
+.ch-body h4::before{
+  content:'';width:3px;height:1em;border-radius:2px;
+  background:var(--sage);display:inline-block;
+}
+.ch-body ul,.ch-body ol{padding-left:1.6em;margin:7px 0;}
+.ch-body li{margin-bottom:6px;}
+.ch-body p{margin-bottom:10px;}
+
+/* keyword chip */
+.kw{
+  display:inline-block;background:rgba(138,184,138,.18);
+  color:var(--sage-dk);border-radius:5px;
+  padding:1px 8px;font-weight:800;font-size:.8rem;margin:1px;
+  border:1px solid rgba(138,184,138,.4);
+}
+
+/* callout boxes */
+.tip{background:rgba(138,184,138,.1);border-left:4px solid var(--sage);border-radius:0 10px 10px 0;padding:12px 16px;margin:13px 0;font-size:.85rem;}
+.tip strong{color:var(--sage-dk);}
+.warn{background:#fff8e6;border-left:4px solid #f59e0b;border-radius:0 10px 10px 0;padding:12px 16px;margin:13px 0;font-size:.85rem;}
+.warn strong{color:#92400e;}
+.exam{background:rgba(232,112,74,.08);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;padding:12px 16px;margin:13px 0;font-size:.85rem;}
+.exam strong{color:var(--coral);}
+.memory{background:#f5f3ff;border-left:4px solid #8b5cf6;border-radius:0 10px 10px 0;padding:12px 16px;margin:13px 0;font-size:.85rem;}
+.memory strong{color:#5b21b6;}
+
+/* table */
+.tbl{width:100%;border-collapse:collapse;margin:11px 0;font-size:.83rem;}
+.tbl th{background:var(--sage-bg);padding:8px 10px;text-align:left;font-weight:800;border:1px solid rgba(138,184,138,.3);color:var(--sage-dk);}
+.tbl td{padding:8px 10px;border:1px solid #e5e7eb;vertical-align:top;}
+.tbl tr:nth-child(even) td{background:rgba(138,184,138,.05);}
+
+/* formula */
+.formula{
+  text-align:center;
+  background:linear-gradient(135deg,var(--sage-bg),rgba(138,184,138,.15));
+  border-radius:10px;padding:14px;margin:11px 0;
+  font-weight:800;font-size:.95rem;color:var(--sage-dk);
+  border:1.5px solid rgba(138,184,138,.3);
+}
+
+/* ── QUIZ ── */
+.quiz-section{
+  background:var(--paper);border-radius:16px;padding:28px 26px;
+  box-shadow:0 2px 12px rgba(0,0,0,.06);
+  border:1.5px solid var(--sage-bg);margin-top:18px;
+}
+.quiz-header{
+  display:flex;align-items:center;gap:10px;margin-bottom:6px;
+}
+.quiz-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--sage-bg);color:var(--sage-dk);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+}
+.quiz-title{font-size:1.1rem;font-weight:800;color:var(--text);}
+.quiz-sub{font-size:.79rem;color:var(--text2);margin-bottom:22px;padding-left:46px;}
+.q-block{margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid #f0f0f0;}
+.q-block:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.q-text{font-weight:700;font-size:.9rem;margin-bottom:13px;line-height:1.7;}
+.q-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:26px;height:26px;border-radius:50%;
+  background:var(--coral);color:#fff;
+  font-size:.72rem;font-weight:800;margin-right:8px;flex-shrink:0;
+  vertical-align:middle;
+}
+.choices{display:flex;flex-direction:column;gap:8px;}
+.choice{
+  padding:11px 16px;border-radius:10px;
+  border:2px solid var(--border);
+  cursor:pointer;font-size:.85rem;
+  transition:all .15s;text-align:left;
+  background:#fff;font-family:inherit;line-height:1.55;
+  display:flex;align-items:flex-start;gap:8px;
+}
+.choice::before{
+  content:'';width:16px;height:16px;border-radius:50%;
+  border:2px solid var(--border);flex-shrink:0;margin-top:2px;
+  transition:all .15s;
+}
+.choice:hover:not(:disabled){border-color:var(--sage);background:rgba(138,184,138,.08);}
+.choice:hover:not(:disabled)::before{border-color:var(--sage);background:rgba(138,184,138,.3);}
+.choice.correct{border-color:var(--sage);background:rgba(138,184,138,.1);color:var(--sage-dk);font-weight:700;}
+.choice.correct::before{border-color:var(--sage);background:var(--sage);}
+.choice.wrong{border-color:var(--coral);background:rgba(232,112,74,.08);color:var(--coral);font-weight:700;}
+.choice.wrong::before{border-color:var(--coral);background:var(--coral);}
+.choice:disabled{cursor:default;}
+.explanation{
+  margin-top:13px;padding:13px 16px;
+  background:rgba(138,184,138,.07);border-radius:10px;
+  font-size:.84rem;color:#555;line-height:1.75;
+  display:none;border-left:3px solid var(--sage);
+}
+.explanation.show{display:block;}
+
+/* quiz result */
+.quiz-result{
+  text-align:center;padding:28px 20px;
+  background:linear-gradient(135deg,var(--sage) 0%,var(--coral) 100%);
+  color:#fff;border-radius:14px;margin-top:20px;display:none;
+}
+.quiz-result.show{display:block;}
+.result-score{font-size:2.4rem;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.15);}
+.result-msg{font-size:.95rem;margin-top:8px;opacity:.95;}
+.quiz-reset{
+  margin-top:16px;padding:10px 26px;border-radius:24px;
+  border:2px solid #fff;background:transparent;color:#fff;
+  cursor:pointer;font-size:.85rem;font-family:inherit;font-weight:700;
+  transition:all .2s;
+}
+.quiz-reset:hover{background:#fff;color:var(--sage-dk);}
+
+/* ── MOBILE ── */
+@media(max-width:720px){
+  .layout{flex-direction:column;height:auto;}
+  .sidebar{width:100%;border-right:none;border-bottom:2px solid var(--sage-bg);max-height:50vh;overflow-y:auto;}
+  .main{padding:16px 14px;}
+  .cert-meta{grid-template-columns:1fr 1fr;}
+  .hdr-kicker{display:none;}
+  .hdr h1{font-size:.85rem;}
+  .quiz-sub{padding-left:0;}
+}
+@media(max-width:480px){
+  .cert-meta{grid-template-columns:1fr;}
+  .quiz-section{padding:18px 14px;}
+  .ch-body{padding:0 14px 16px;}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <a href="index.html" class="hdr-back"><i class="ph-bold ph-arrow-left"></i> 資格一覧</a>
+  <h1><i class="ph-duotone ph-graduation-cap" style="color:var(--sage-dk);font-size:1.1rem;"></i> マーケティング資格 学習アプリ</h1>
+  <span class="hdr-kicker">Study Guide ✎</span>
+  <div class="hdr-bg-word">STUDY</div>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-text"><i class="ph-duotone ph-book-open" style="color:var(--sage-dk);font-size:1.2rem;"></i> 資格を選ぼう</div>
+    </div>
+  </nav>
+  <main class="main" id="main">
+    <div class="welcome">
+      <div class="welcome-icon">📚</div>
+      <h2>学習を始めましょう</h2>
+      <p>左のメニューから資格を選ぶと<br>教材とミニテストが表示されます。</p>
+      <div class="welcome-hint">
+        <span class="welcome-tag"><i class="ph-bold ph-star" style="font-size:.75rem;"></i> 入門 ×7</span>
+        <span class="welcome-tag c"><i class="ph-bold ph-star" style="font-size:.75rem;"></i><i class="ph-bold ph-star" style="font-size:.75rem;"></i> 易しい ×4</span>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="study_data.js"></script>
+<script>
+const DCOLORS = {1:'var(--sage-dk)', 2:'var(--coral)'};
+const CERT_ICONS = {
+  hubspot:'ph-chart-line-up',
+  google_ads:'ph-target',
+  seo4:'ph-magnifying-glass',
+  bizcareer3:'ph-briefcase',
+  marken3:'ph-megaphone',
+  imma_c:'ph-certificate',
+  waca:'ph-globe',
+  netmk:'ph-devices',
+  ga4:'ph-chart-bar',
+  yahoo_ads:'ph-currency-jpy',
+  seo3:'ph-magnifying-glass-plus'
+};
+
+function stars(d){
+  let s='';
+  for(let i=1;i<=5;i++) s += i<=d ? '&#9733;' : '<span style="color:#e5e7eb">&#9733;</span>';
+  return '<span class="stars">'+s+'</span>';
+}
+
+function buildSidebar(){
+  const sb = document.getElementById('sidebar');
+  [1,2].forEach(d=>{
+    const label = d===1 ? '入門' : '易しい';
+    const star  = d===1 ? '★' : '★★';
+    const grp = document.createElement('div');
+    grp.className = 'sb-group';
+    grp.innerHTML = '<div class="sb-group-title d'+d+'"><span>'+label+'</span><span class="sb-group-badge d'+d+'">'+star+'</span></div>';
+    DATA.filter(c=>c.diff===d).forEach(c=>{
+      const iconName = CERT_ICONS[c.id] || 'ph-book';
+      const item = document.createElement('div');
+      item.className = 'sb-item';
+      item.dataset.id = c.id;
+      item.innerHTML = '<i class="ph-duotone '+iconName+'"></i>'+c.name;
+      item.addEventListener('click', ()=>showCert(c.id));
+      grp.appendChild(item);
+    });
+    sb.appendChild(grp);
+  });
+}
+
+function showCert(id){
+  const c = DATA.find(x=>x.id===id);
+  if(!c) return;
+  document.querySelectorAll('.sb-item').forEach(el=>{
+    el.classList.toggle('active', el.dataset.id===id);
+  });
+  const main = document.getElementById('main');
+  const freeBadge = c.free ? '<span class="badge b-free"><i class="ph-bold ph-gift" style="font-size:.75rem;"></i> 無料</span>' : '';
+  const dlclass = c.diff===1 ? 'bd1' : 'bd2';
+  const iconName = CERT_ICONS[id] || 'ph-book';
+
+  let chapHtml = c.chapters.map((ch,i)=>
+    '<div class="chapter" id="ch-wrap-'+i+'">'
+    +'<div class="ch-header" onclick="toggleCh('+i+')">'
+    +'<div class="ch-header-left">'
+    +'<div class="ch-num">'+(i+1)+'</div>'
+    +'<span class="ch-title">'+ch.title+'</span>'
+    +'</div>'
+    +'<div class="ch-arrow'+(i===0?' open':'')+'" id="arr-'+i+'">▾</div>'
+    +'</div>'
+    +'<div class="ch-body'+(i===0?' show':'')+'" id="body-'+i+'">'+ch.body+'</div>'
+    +'</div>'
+  ).join('');
+
+  let quizHtml = c.quiz.map((q,qi)=>
+    '<div class="q-block">'
+    +'<div class="q-text"><span class="q-num">Q'+(qi+1)+'</span>'+q.q+'</div>'
+    +'<div class="choices">'
+    +q.choices.map((ch,ci)=>
+      '<button class="choice" onclick="doAnswer(\''+id+'\','+qi+','+ci+')" id="qbtn-'+qi+'-'+ci+'">'+ch+'</button>'
+    ).join('')
+    +'</div>'
+    +'<div class="explanation" id="exp-'+qi+'">💡 '+q.explanation+'</div>'
+    +'</div>'
+  ).join('');
+
+  main.innerHTML =
+    '<div class="cert-hdr">'
+    +'<div class="badges">'
+    +'<span class="badge '+dlclass+'"><i class="ph-bold ph-'+( c.diff===1?'star':'star-half')+'" style="font-size:.7rem;"></i> '+c.dlabel+'</span>'
+    +stars(c.diff)
+    +freeBadge
+    +'</div>'
+    +'<div class="cert-name"><i class="ph-duotone '+iconName+'" style="color:var(--sage);margin-right:6px;"></i>'+c.name+'</div>'
+    +'<div class="cert-org"><i class="ph-duotone ph-buildings" style="color:var(--text2);"></i> '+c.org+'</div>'
+    +'<div class="cert-meta">'
+    +'<div class="meta-box"><div class="meta-lbl"><i class="ph-duotone ph-clock"></i>目安勉強時間</div><div class="meta-val">'+c.hours+'</div></div>'
+    +'<div class="meta-box"><div class="meta-lbl"><i class="ph-duotone ph-chart-pie"></i>合格率（目安）</div><div class="meta-val">'+c.rate+'</div></div>'
+    +'<div class="meta-box"><div class="meta-lbl"><i class="ph-duotone ph-currency-jpy"></i>受験費用</div><div class="meta-val">'+c.cost+'</div></div>'
+    +'</div></div>'
+    +chapHtml
+    +'<div class="quiz-section">'
+    +'<div class="quiz-header"><div class="quiz-icon"><i class="ph-duotone ph-brain"></i></div><div class="quiz-title">ミニテスト</div></div>'
+    +'<div class="quiz-sub">'+c.quiz.length+'問 ／ 選択肢を選ぶと即時に正誤と解説が表示されます</div>'
+    +quizHtml
+    +'<div class="quiz-result" id="quiz-result">'
+    +'<div class="result-score" id="result-score"></div>'
+    +'<div class="result-msg" id="result-msg"></div>'
+    +'<button class="quiz-reset" onclick="showCert(\''+id+'\')">🔄 もう一度挑戦</button>'
+    +'</div></div>';
+
+  // mark first chapter open
+  const firstWrap = document.getElementById('ch-wrap-0');
+  if(firstWrap) firstWrap.classList.add('open-ch');
+
+  window._quiz = {id:id, total:c.quiz.length, answers:new Array(c.quiz.length).fill(null), correct:0};
+  main.scrollTop = 0;
+}
+
+function toggleCh(i){
+  const body = document.getElementById('body-'+i);
+  const arr  = document.getElementById('arr-'+i);
+  const wrap = document.getElementById('ch-wrap-'+i);
+  if(!body||!arr) return;
+  const opening = !body.classList.contains('show');
+  body.classList.toggle('show');
+  arr.classList.toggle('open');
+  if(wrap) wrap.classList.toggle('open-ch', opening);
+}
+
+function doAnswer(certId, qi, ci){
+  const qz = window._quiz;
+  if(!qz || qz.answers[qi]!==null) return;
+  qz.answers[qi] = ci;
+  const c = DATA.find(x=>x.id===certId);
+  if(!c) return;
+  const correct = c.quiz[qi].answer;
+  for(let i=0;i<c.quiz[qi].choices.length;i++){
+    const btn = document.getElementById('qbtn-'+qi+'-'+i);
+    if(!btn) continue;
+    btn.disabled = true;
+    if(i===correct) btn.classList.add('correct');
+    else if(i===ci) btn.classList.add('wrong');
+  }
+  const exp = document.getElementById('exp-'+qi);
+  if(exp) exp.classList.add('show');
+  if(ci===correct) qz.correct++;
+  if(qz.answers.every(a=>a!==null)){
+    const pct = Math.round(qz.correct/qz.total*100);
+    const el = document.getElementById('quiz-result');
+    document.getElementById('result-score').textContent = qz.correct+' / '+qz.total+' 問正解（'+pct+'%）';
+    document.getElementById('result-msg').textContent =
+      pct>=80 ? '🎉 素晴らしい！本番試験も合格ラインです！' :
+      pct>=60 ? '📖 あと少し！解説を読んで復習しましょう' :
+                '💪 基礎から教材を読み直してみましょう';
+    if(el){ el.classList.add('show'); el.scrollIntoView({behavior:'smooth',block:'center'}); }
+  }
+}
+
+buildSidebar();
+const hash = location.hash.replace('#','');
+if(hash && DATA.find(c=>c.id===hash)) showCert(hash);
+</script>
+</body>
+</html>

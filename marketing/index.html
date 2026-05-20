@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マーケティング資格ガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=M+PLUS+Rounded+1c:wght@400;500;700;800&family=Poppins:ital,wght@0,700;0,800;1,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>
+:root{
+  --sage:#8ab88a; --sage-lt:#c8e0c0; --sage-bg:#eef6ea;
+  --coral:#e8704a; --coral-bg:#feeee6;
+  --cream:#fdf5ec; --paper:#fff9f3;
+  --text:#3d2e2e; --text2:#7a6060; --text3:#b0a0a0;
+  --d1:#06d6a0; --d2:#118ab2; --d3:#f4a261; --d4:#e76f51; --d5:#c1121f;
+  --shadow:0 4px 24px rgba(138,184,138,.14);
+  --r:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'M PLUS Rounded 1c','Hiragino Sans',sans-serif;
+  background:var(--cream);color:var(--text);overflow-x:hidden;
+}
+/* grain */
+body::after{
+  content:'';position:fixed;inset:0;z-index:999;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");
+}
+
+/* ===SNSバナー=== */
+.sns-banner{
+  background:linear-gradient(135deg,var(--sage-bg),var(--coral-bg));
+  padding:11px 20px;text-align:center;
+  border-bottom:1px solid rgba(138,184,138,.2);
+}
+.sns-banner a{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--paper);color:var(--text);
+  font-weight:800;font-size:.8rem;
+  padding:7px 20px;border-radius:30px;
+  text-decoration:none;
+  box-shadow:0 3px 14px rgba(138,184,138,.2);
+  transition:transform .2s,box-shadow .2s;
+}
+.sns-banner a:hover{transform:translateY(-2px);box-shadow:0 7px 22px rgba(232,112,74,.2);}
+
+/* ===HEADER=== */
+.header{
+  background:linear-gradient(145deg,var(--sage-bg) 0%,#d4ecd4 40%,#efe8e0 100%);
+  color:var(--text);padding:56px 24px 48px;
+  text-align:center;position:relative;overflow:hidden;
+}
+/* 方眼紙テクスチャ */
+.header::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(138,184,138,.18) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(138,184,138,.18) 1px,transparent 1px);
+  background-size:26px 26px;
+}
+/* 大型背景文字 */
+.header-bg-word{
+  position:absolute;bottom:-30px;left:0;right:0;
+  font-family:'Poppins',sans-serif;font-weight:800;font-style:italic;
+  font-size:clamp(60px,12vw,160px);color:rgba(138,184,138,.1);
+  white-space:nowrap;pointer-events:none;line-height:1;
+}
+.header-inner{position:relative;z-index:1;}
+.header-kicker{
+  font-family:'Caveat',cursive;font-size:1.05rem;font-weight:600;
+  color:var(--coral);display:block;margin-bottom:10px;
+}
+.header h1{
+  font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;
+  color:var(--text);margin-bottom:10px;letter-spacing:.02em;
+}
+.header .sub{color:var(--text2);font-size:.88rem;margin-top:6px;font-weight:500;}
+
+/* ===CONTAINER=== */
+.container{max-width:1380px;margin:0 auto;padding:24px 20px;}
+
+/* ===STATS=== */
+.summary-row{display:flex;gap:14px;margin-bottom:22px;flex-wrap:wrap;}
+.s-card{
+  background:var(--paper);border-radius:var(--r);padding:18px 22px;
+  flex:1;min-width:140px;
+  box-shadow:var(--shadow);text-align:center;
+  transition:transform .2s;position:relative;overflow:hidden;
+}
+.s-card::after{content:'';position:absolute;bottom:-14px;right:-14px;
+  width:50px;height:50px;border-radius:50%;background:rgba(138,184,138,.1);}
+.s-card:hover{transform:translateY(-3px);}
+.s-card .num{font-size:2rem;font-weight:800;color:var(--sage);}
+.s-card .lbl{font-size:.74rem;color:var(--text3);margin-top:3px;font-weight:600;}
+
+/* ===LEGEND=== */
+.legend{
+  background:var(--paper);border-radius:var(--r);padding:14px 20px;
+  margin-bottom:18px;box-shadow:var(--shadow);
+  display:flex;gap:16px;flex-wrap:wrap;align-items:center;
+}
+.legend-title{
+  font-family:'Caveat',cursive;font-size:.95rem;font-weight:600;
+  color:var(--text2);
+}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--text2);}
+.ldot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+/* ===FILTER PANEL=== */
+.panel{
+  background:var(--paper);border-radius:var(--r);padding:20px 22px;
+  margin-bottom:22px;box-shadow:var(--shadow);
+  border-top:3px solid var(--sage-lt);
+}
+.panel-row{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-bottom:10px;}
+.panel-row:last-child{margin-bottom:0;}
+.row-label{
+  font-family:'Caveat',cursive;font-size:.95rem;font-weight:600;
+  color:var(--text2);min-width:68px;flex-shrink:0;
+  display:flex;align-items:center;gap:5px;
+}
+.divider{width:100%;height:1px;background:rgba(138,184,138,.2);margin:10px 0;}
+
+.btn{
+  padding:5px 14px;border-radius:30px;
+  border:2px solid rgba(138,184,138,.3);background:var(--paper);
+  cursor:pointer;font-size:.78rem;
+  font-family:'M PLUS Rounded 1c',sans-serif;
+  font-weight:700;white-space:nowrap;
+  transition:all .15s;color:var(--text2);
+}
+.btn:hover{border-color:var(--sage);color:var(--sage);}
+.btn.factive{background:var(--sage);color:#fff;border-color:var(--sage);}
+.btn.fd1.factive{background:var(--d1);border-color:var(--d1);}
+.btn.fd2.factive{background:var(--d2);border-color:var(--d2);}
+.btn.fd3.factive{background:var(--d3);border-color:var(--d3);}
+.btn.fd4.factive{background:var(--d4);border-color:var(--d4);}
+.btn.fd5.factive{background:var(--d5);border-color:var(--d5);}
+.btn.sactive{background:var(--coral);color:#fff;border-color:var(--coral);}
+
+/* ===GRID=== */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;}
+
+/* ===SEC HEADER=== */
+.sec-hdr{grid-column:1/-1;display:flex;align-items:center;gap:14px;margin-top:12px;}
+.sec-hdr h2{font-family:'Caveat',cursive;font-size:1.15rem;font-weight:700;white-space:nowrap;}
+.sec-line{flex:1;height:1px;background:rgba(138,184,138,.25);}
+
+/* ===CARDS=== */
+.cert-card{
+  background:var(--paper);border-radius:var(--r);overflow:hidden;
+  box-shadow:var(--shadow);
+  transition:transform .22s,box-shadow .22s;
+  border-left:5px solid rgba(138,184,138,.2);
+  position:relative;
+}
+.cert-card::before{
+  content:'';position:absolute;top:-20px;right:-20px;
+  width:60px;height:60px;border-radius:50%;
+  background:rgba(138,184,138,.06);
+}
+.cert-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(138,184,138,.2);}
+.cert-card.d1{border-left-color:var(--d1);}
+.cert-card.d2{border-left-color:var(--d2);}
+.cert-card.d3{border-left-color:var(--d3);}
+.cert-card.d4{border-left-color:var(--d4);}
+.cert-card.d5{border-left-color:var(--d5);}
+
+.card-top{padding:16px 18px 12px;border-bottom:1px solid rgba(138,184,138,.12);}
+.badges{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px;}
+.badge{padding:3px 9px;border-radius:20px;font-size:.69rem;font-weight:700;}
+.bd1{background:#e6faf5;color:#058a69;}
+.bd2{background:#e3f3fa;color:#0d6e8e;}
+.bd3{background:#fef3e6;color:#b45309;}
+.bd4{background:#fdeae6;color:#b84322;}
+.bd5{background:#fde8e8;color:#9b1c1c;}
+.b-in{background:rgba(232,112,74,.1);color:var(--coral);border:1.5px solid rgba(232,112,74,.3);}
+.b-out{background:rgba(138,184,138,.1);color:#4a8040;border:1.5px solid rgba(138,184,138,.3);}
+.b-allow{background:rgba(138,184,138,.15);color:#3a7030;border:1.5px solid rgba(138,184,138,.4);}
+.b-free{background:rgba(6,214,160,.1);color:#058a69;border:1.5px solid rgba(6,214,160,.3);}
+
+.card-name{font-size:.96rem;font-weight:800;color:var(--text);line-height:1.4;}
+.card-org{font-size:.74rem;color:var(--text3);margin-top:4px;display:flex;align-items:center;gap:4px;}
+.card-body{padding:14px 18px 16px;}
+.card-summary{font-size:.82rem;color:var(--text2);line-height:1.7;margin-bottom:14px;}
+
+/* 学習ボタン */
+.study-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-bottom:10px;margin-right:8px;
+  color:#fff;font-size:.78rem;font-weight:800;
+  text-decoration:none;
+  background:var(--sage);
+  border-radius:30px;padding:6px 16px;
+  transition:all .15s;
+  box-shadow:0 3px 10px rgba(138,184,138,.3);
+}
+.study-btn:hover{background:var(--coral);box-shadow:0 4px 14px rgba(232,112,74,.3);}
+
+/* 公式リンク */
+.card-link{
+  display:inline-flex;align-items:center;gap:5px;
+  margin-bottom:12px;color:var(--text2);font-size:.77rem;font-weight:600;
+  text-decoration:none;
+  border:1.5px solid rgba(138,184,138,.3);border-radius:20px;
+  padding:4px 12px;background:var(--cream);
+  transition:all .15s;
+}
+.card-link:hover{background:var(--sage-bg);border-color:var(--sage);color:var(--sage);}
+.card-link-none{display:inline-block;margin-bottom:12px;font-size:.73rem;color:var(--text3);font-style:italic;}
+
+/* info boxes */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.info-box{background:var(--cream);border-radius:12px;padding:9px 12px;}
+.info-box.span2{grid-column:span 2;}
+.info-lbl{font-size:.66rem;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;display:flex;align-items:center;gap:4px;}
+.info-val{font-size:.82rem;font-weight:700;color:var(--text);}
+.info-val.free-color{color:var(--sage);}
+
+.stars{color:#f59e0b;letter-spacing:1px;font-size:.84rem;}
+.stars .s-empty{color:rgba(0,0,0,.12);}
+
+.sort-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--coral);color:#fff;border-radius:20px;
+  padding:5px 14px;font-size:.76rem;font-weight:700;margin-bottom:14px;
+}
+
+.no-result{text-align:center;padding:70px 20px;color:var(--text3);grid-column:1/-1;display:none;}
+.no-result.show{display:block;}
+
+/* footer */
+.footer{
+  background:var(--text);color:rgba(255,255,255,.5);
+  text-align:center;padding:40px 24px;font-size:.77rem;line-height:1.8;
+  margin-top:40px;
+}
+
+@media(max-width:900px){
+  .grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:600px){
+  .header h1{font-size:1.4rem;}
+  .grid{grid-template-columns:1fr;}
+  .summary-row{flex-direction:column;}
+  .container{padding:16px 14px;}
+}
+</style>
+</head>
+<body>
+
+<div class="sns-banner">
+  <a href="sns.html"><i class="ph-duotone ph-instagram-logo" style="font-size:1rem;color:var(--coral);"></i> <strong>SNSマーケティング完全ガイド</strong> — Instagram・X・TikTokで集客・採用を変える <i class="ph-bold ph-arrow-right" style="font-size:.8rem;opacity:.6;"></i></a>
+</div>
+
+<div class="header">
+  <div class="header-bg-word">MARKETING</div>
+  <div class="header-inner">
+    <span class="header-kicker">✦ キュリオシティ株式会社 推奨資格ガイド</span>
+    <h1><i class="ph-duotone ph-certificate" style="font-size:1.4rem;vertical-align:middle;margin-right:8px;color:var(--coral);"></i>マーケティング資格ガイド</h1>
+    <div class="sub">社内推奨リスト（資格手当有）＋ リスト外推奨資格 ／ 難易度・勉強時間・費用 一覧</div>
+    <div class="sub" style="margin-top:5px;font-family:'Caveat',cursive;font-size:1rem;">更新日：2026年5月18日</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="summary-row">
+    <div class="s-card">
+      <i class="ph-duotone ph-books" style="font-size:1.6rem;color:var(--sage);display:block;margin-bottom:4px;"></i>
+      <div class="num" id="cnt-total">26</div><div class="lbl">表示中の資格数</div>
+    </div>
+    <div class="s-card">
+      <i class="ph-duotone ph-medal" style="font-size:1.6rem;color:var(--coral);display:block;margin-bottom:4px;"></i>
+      <div class="num" style="color:var(--coral);">6</div><div class="lbl">リスト内（資格手当有）</div>
+    </div>
+    <div class="s-card">
+      <i class="ph-duotone ph-graduation-cap" style="font-size:1.6rem;color:var(--sage);display:block;margin-bottom:4px;"></i>
+      <div class="num">20</div><div class="lbl">リスト外（推奨資格）</div>
+    </div>
+    <div class="s-card">
+      <i class="ph-duotone ph-gift" style="font-size:1.6rem;color:var(--sage);display:block;margin-bottom:4px;"></i>
+      <div class="num">4</div><div class="lbl">無料取得可能</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span class="legend-title">難易度</span>
+    <div class="legend-item"><div class="ldot" style="background:var(--d1)"></div>入門 ★</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--d2)"></div>易しい ★★</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--d3)"></div>普通 ★★★</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--d4)"></div>難しい ★★★★</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--d5)"></div>超難関 ★★★★★</div>
+    <span class="legend-title" style="margin-left:6px;">種別</span>
+    <div class="legend-item"><span class="badge b-in">リスト内</span>会社推奨</div>
+    <div class="legend-item"><span class="badge b-allow">資格手当有</span>手当支給対象</div>
+    <div class="legend-item"><span class="badge b-out">リスト外</span>社外推奨</div>
+    <div class="legend-item"><span class="badge b-free">無料</span>受験無料</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-row">
+      <span class="row-label"><i class="ph-bold ph-funnel" style="color:var(--sage);"></i> 表示</span>
+      <button class="btn factive" data-f="type" data-v="all">すべて</button>
+      <button class="btn" data-f="type" data-v="in"><i class="ph-bold ph-medal" style="font-size:.8rem;"></i> リスト内のみ</button>
+      <button class="btn" data-f="type" data-v="out">リスト外のみ</button>
+    </div>
+    <div class="panel-row">
+      <span class="row-label"><i class="ph-bold ph-star" style="color:var(--sage);"></i> 難易度</span>
+      <button class="btn factive" data-f="diff" data-v="all">すべて</button>
+      <button class="btn fd1" data-f="diff" data-v="1">入門 ★</button>
+      <button class="btn fd2" data-f="diff" data-v="2">易しい ★★</button>
+      <button class="btn fd3" data-f="diff" data-v="3">普通 ★★★</button>
+      <button class="btn fd4" data-f="diff" data-v="4">難しい ★★★★</button>
+      <button class="btn fd5" data-f="diff" data-v="5">超難関 ★★★★★</button>
+    </div>
+    <div class="panel-row">
+      <span class="row-label"><i class="ph-bold ph-currency-jpy" style="color:var(--sage);"></i> 費用</span>
+      <button class="btn factive" data-f="free" data-v="all">すべて</button>
+      <button class="btn" data-f="free" data-v="free">無料のみ</button>
+      <button class="btn" data-f="free" data-v="paid">有料のみ</button>
+    </div>
+    <div class="divider"></div>
+    <div class="panel-row">
+      <span class="row-label"><i class="ph-bold ph-arrows-down-up" style="color:var(--coral);"></i> ソート</span>
+      <button class="btn sactive" data-s="diff-asc">難易度：低い順</button>
+      <button class="btn" data-s="diff-desc">難易度：高い順</button>
+      <button class="btn" data-s="allow-first"><i class="ph-bold ph-medal" style="font-size:.8rem;"></i> 資格手当優先</button>
+      <button class="btn" data-s="free-first"><i class="ph-bold ph-gift" style="font-size:.8rem;"></i> 無料優先</button>
+      <button class="btn" data-s="hours-asc"><i class="ph-bold ph-clock" style="font-size:.8rem;"></i> 勉強時間：短い順</button>
+      <button class="btn" data-s="hours-desc"><i class="ph-bold ph-clock" style="font-size:.8rem;"></i> 勉強時間：長い順</button>
+      <button class="btn" data-s="cost-asc"><i class="ph-bold ph-currency-jpy" style="font-size:.8rem;"></i> 費用：安い順</button>
+      <button class="btn" data-s="cost-desc"><i class="ph-bold ph-currency-jpy" style="font-size:.8rem;"></i> 費用：高い順</button>
+    </div>
+  </div>
+
+  <div class="grid" id="grid">
+    <div class="no-result" id="no-result">該当する資格がありません</div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div style="font-size:1.4rem;margin-bottom:8px;opacity:.7;">📚</div>
+  ※ 勉強時間・合格率・受験費用はいずれも目安です。個人差・改定により変動します。最新情報は各主催機関の公式サイトをご確認ください。<br>
+  <a href="sns.html" style="color:rgba(255,255,255,.5);margin-top:8px;display:inline-block;">SNSマーケティングガイドへ →</a>
+</footer>
+
+<script>
+const DATA = [
+  // ===== リスト内（資格手当有）=====
+  {
+    name:"中小企業診断士",
+    org:"中小企業診断協会（J-SMECA）",
+    url:"https://www.j-smeca.jp/contents/007_shiken.html",
+    type:"in", allow:true, free:false, diff:5, dlabel:"超難関",
+    hours:"1,000〜1,500時間", hoursMin:1000,
+    rate:"約5%（最終合格率）",
+    cost:"一次 14,500円 ／ 二次 17,800円", costNum:32300,
+    summary:"経営コンサルタント唯一の国家資格。一次試験「企業経営理論」にマーケティング論が全体の約1/3を占め、二次試験「事例Ⅱ」はマーケティング・流通が直接テーマ。合格後は企業へのコンサルティング業務が可能。"
+  },
+  {
+    name:"MBA（経営学修士）",
+    org:"各大学院（国内・海外）",
+    url:null,
+    type:"in", allow:true, free:false, diff:5, dlabel:"超難関",
+    hours:"2〜4年間（FullTime / PartTime）", hoursMin:10000,
+    rate:"入試倍率による",
+    cost:"数百万〜1,000万円以上", costNum:3000000,
+    summary:"経営学修士号。マーケティングマネジメントが必修科目の一つであり、STP・ブランド戦略・消費者行動・グローバルマーケティングを体系的に学ぶ。実務ケーススタディ中心のカリキュラムが特徴。"
+  },
+  {
+    name:"ビジネス・キャリア検定 1級（マーケティング区分）",
+    org:"中央職業能力開発協会（JAVADA）",
+    url:"https://www.javada.or.jp/jigyou/gino/business/eigyo.html",
+    type:"in", allow:true, free:false, diff:4, dlabel:"難しい",
+    hours:"200〜300時間", hoursMin:200,
+    rate:"約20〜30%",
+    cost:"約11,000円", costNum:11000,
+    summary:"管理職・マネジメントレベルを対象とした国家検定。マーケティング戦略の立案・意思決定・部門管理まで幅広く問われる。「営業」「マーケティング」で試験区分が分かれており、マーケティング区分での受験を推奨。"
+  },
+  {
+    name:"Salesforce Marketing Cloud Email Specialist",
+    org:"Salesforce（Trailhead）",
+    url:"https://trailhead.salesforce.com/en/credentials/marketingcloudemailspecialist",
+    type:"in", allow:true, free:false, diff:3, dlabel:"普通",
+    hours:"100〜150時間", hoursMin:100,
+    rate:"非公開",
+    cost:"約30,000円（USD 200）", costNum:30000,
+    summary:"Salesforce Marketing Cloud のメール配信・ジャーニービルダー・オートメーション・データ管理・レポートを対象とした専門資格。Trailheadでの学習と実務経験を組み合わせた準備が有効。"
+  },
+  {
+    name:"ビジネス・キャリア検定 2級（マーケティング区分）",
+    org:"中央職業能力開発協会（JAVADA）",
+    url:"https://www.javada.or.jp/jigyou/gino/business/eigyo.html",
+    type:"in", allow:true, free:false, diff:3, dlabel:"普通",
+    hours:"100〜150時間", hoursMin:100,
+    rate:"約40〜50%",
+    cost:"約7,700円", costNum:7700,
+    summary:"主任・係長レベルを対象とした国家検定。マーケティング戦略・リサーチ・製品価格政策・流通経路政策・プロモーション計画など実務横断的な知識が問われる。1級への登竜門として重要。"
+  },
+  {
+    name:"ビジネス・キャリア検定 3級（マーケティング区分）",
+    org:"中央職業能力開発協会（JAVADA）",
+    url:"https://www.javada.or.jp/jigyou/gino/business/eigyo.html",
+    type:"in", allow:true, free:false, diff:2, dlabel:"易しい",
+    hours:"50〜80時間", hoursMin:50,
+    rate:"約60〜70%",
+    cost:"約5,610円", costNum:5610,
+    summary:"一般社員・若手担当者レベルを対象。マーケティングの基本概念・4P・市場調査・顧客行動の基礎を体系的に習得できる。マーケティング職に就いたら最初に目指すべき入門国家検定。"
+  },
+  // ===== リスト外 =====
+  {
+    name:"Salesforce Marketing Cloud Engagement Consultant",
+    org:"Salesforce（Trailhead）",
+    url:"https://trailhead.salesforce.com/en/credentials/marketingcloudconsultant",
+    type:"out", allow:false, free:false, diff:4, dlabel:"難しい",
+    hours:"200〜300時間", hoursMin:200,
+    rate:"非公開",
+    cost:"約30,000円（USD 200）", costNum:30000,
+    summary:"リスト内「Email Specialist」の上位資格。Marketing Cloud全体の設計・実装・コンサルティングスキルを認定。Email Specialist取得後のステップアップとして位置づけられ、実案件での経験が合格の鍵。"
+  },
+  {
+    name:"マーケティング検定 1級",
+    org:"公益社団法人 日本マーケティング協会（JMA）",
+    url:"https://www.jma-jp.org/marken/",
+    type:"out", allow:false, free:false, diff:4, dlabel:"難しい",
+    hours:"200〜300時間", hoursMin:200,
+    rate:"約20〜30%",
+    cost:"18,700円", costNum:18700,
+    summary:"「他企業からスカウトされるマーケティング・リーダー」レベルを認定。戦略的マーケティング・ブランド管理・デジタルマーケティング・グローバル展開まで高度な知識が問われる。合格者は「Marketing Specialist」に認定。"
+  },
+  {
+    name:"マーケティング・ビジネス実務検定 A級",
+    org:"国際実務マーケティング協会（IMMA）",
+    url:"https://www.marke.jp/",
+    type:"out", allow:false, free:false, diff:4, dlabel:"難しい",
+    hours:"150〜200時間", hoursMin:150,
+    rate:"約35〜45%",
+    cost:"12,760円", costNum:12760,
+    summary:"戦略立案・意思決定・マネジメントレベルを認定。試験は会場受験（東京・大阪・名古屋）のみ。B級・C級の知識をベースに実務事例への応用力が問われる3科目総合試験。"
+  },
+  {
+    name:"ウェブ解析士マスター",
+    org:"一般社団法人 ウェブ解析士協会（WACA）",
+    url:"https://www.waca.associates/jp/",
+    type:"out", allow:false, free:false, diff:4, dlabel:"難しい",
+    hours:"300時間以上", hoursMin:300,
+    rate:"非公開",
+    cost:"別途費用（認定講座受講必須）", costNum:99999,
+    summary:"ウェブ解析士資格の最上位。Webマーケティング領域での教育・コンサルティング能力を認定。法人向け研修の実施ができるレベルが求められ、実務演習・講義課題も含む。"
+  },
+  {
+    name:"SEO検定 1級",
+    org:"一般社団法人 全日本SEO協会",
+    url:"https://www.ajsa.or.jp/kentei/seo/",
+    type:"out", allow:false, free:false, diff:3, dlabel:"普通",
+    hours:"60〜100時間", hoursMin:60,
+    rate:"約30〜40%",
+    cost:"9,900円", costNum:9900,
+    summary:"SEO検定の最上位。Googleアルゴリズムの仕組み・コアアップデート対応・テクニカルSEO・被リンク戦略・構造化データまで高度な知識を認定。検索流入を担うデジタルマーケター必携。"
+  },
+  {
+    name:"マーケティング検定 2級",
+    org:"公益社団法人 日本マーケティング協会（JMA）",
+    url:"https://www.jma-jp.org/marken/",
+    type:"out", allow:false, free:false, diff:3, dlabel:"普通",
+    hours:"60〜100時間", hoursMin:60,
+    rate:"約50〜55%",
+    cost:"9,900円", costNum:9900,
+    summary:"「社会で活躍できるマーケター」レベルを認定。STP・4P・デジタルマーケティング・消費者行動・調査手法など実務で使うマーケティング知識を幅広く問われる。マーケター志望者に最適な中核資格。"
+  },
+  {
+    name:"マーケティング・ビジネス実務検定 B級",
+    org:"国際実務マーケティング協会（IMMA）",
+    url:"https://www.marke.jp/",
+    type:"out", allow:false, free:false, diff:3, dlabel:"普通",
+    hours:"60〜100時間", hoursMin:60,
+    rate:"約50〜60%",
+    cost:"7,480円", costNum:7480,
+    summary:"マーケティング業務の運営・実務対応ができるレベルを認定。Web試験で受験可能。戦略・リサーチ・製品開発・流通・プロモーションなど実務横断的な2科目試験。"
+  },
+  {
+    name:"上級ウェブ解析士",
+    org:"一般社団法人 ウェブ解析士協会（WACA）",
+    url:"https://www.waca.associates/jp/",
+    type:"out", allow:false, free:false, diff:3, dlabel:"普通",
+    hours:"100〜150時間", hoursMin:100,
+    rate:"非公開",
+    cost:"別途費用（認定講座受講必須）", costNum:99999,
+    summary:"KPI設計・アクセス解析レポーティング・クライアント提案能力を認定。マーケティング戦略とWebデータ分析を組み合わせた実践スキルを習得。認定講座の受講が必須。"
+  },
+  {
+    name:"Meta Blueprint 認定資格",
+    org:"Meta（Facebook / Instagram）",
+    url:"https://www.facebook.com/business/learn/certification",
+    type:"out", allow:false, free:false, diff:3, dlabel:"普通",
+    hours:"40〜80時間", hoursMin:40,
+    rate:"非公開",
+    cost:"約20,000〜27,000円（USD 150〜180）", costNum:22000,
+    summary:"Facebook・Instagramを含むMetaプラットフォームの広告専門知識を認定。マーケティングサイエンス・クリエイティブ戦略・メディアプランニング・メディアバイイング等の種別あり。日本語受験対応の種別もある（一部）。"
+  },
+  {
+    name:"SEO検定 2級",
+    org:"一般社団法人 全日本SEO協会",
+    url:"https://www.ajsa.or.jp/kentei/seo/",
+    type:"out", allow:false, free:false, diff:3, dlabel:"普通",
+    hours:"40〜60時間", hoursMin:40,
+    rate:"約45〜55%",
+    cost:"8,800円", costNum:8800,
+    summary:"内部リンク設計・コンテンツ最適化・SEOツール活用・サイト構造設計を学ぶ中級レベル。1級受験前の通過点として位置づけられることが多く、SEO担当者として実務に従事する人向け。"
+  },
+  {
+    name:"マーケティング検定 3級",
+    org:"公益社団法人 日本マーケティング協会（JMA）",
+    url:"https://www.jma-jp.org/marken/",
+    type:"out", allow:false, free:false, diff:2, dlabel:"易しい",
+    hours:"30〜50時間", hoursMin:30,
+    rate:"約70〜75%",
+    cost:"6,600円", costNum:6600,
+    summary:"マーケティング初学者・就職内定者・全部門スタッフを対象に基礎概念を測定。マーケティングとは何か・4P・ブランド・市場調査の基礎を体系的に学べる。まずここから始めるのが最短ルート。"
+  },
+  {
+    name:"マーケティング・ビジネス実務検定 C級",
+    org:"国際実務マーケティング協会（IMMA）",
+    url:"https://www.marke.jp/",
+    type:"out", allow:false, free:false, diff:2, dlabel:"易しい",
+    hours:"30〜50時間", hoursMin:30,
+    rate:"約75〜85%",
+    cost:"6,270円", costNum:6270,
+    summary:"マーケティングの基本概念・全体像を理解し定型業務を遂行できるレベルを認定。Web試験で受験可能。マーケティング・ビジネス実務検定シリーズの入門ポジション。"
+  },
+  {
+    name:"ウェブ解析士",
+    org:"一般社団法人 ウェブ解析士協会（WACA）",
+    url:"https://www.waca.associates/jp/",
+    type:"out", allow:false, free:false, diff:2, dlabel:"易しい",
+    hours:"30〜60時間", hoursMin:30,
+    rate:"約60〜70%",
+    cost:"17,600円（試験費用）", costNum:17600,
+    summary:"WebサイトのGA4等を使ったアクセスデータ分析・KPI設定・マーケティング施策への反映を認定。Webマーケターの登竜門として国内で広く認知された民間資格。試験はCBT形式。"
+  },
+  {
+    name:"ネットマーケティング検定",
+    org:"サーティファイ",
+    url:"https://www.sikaku.gr.jp/nm/",
+    type:"out", allow:false, free:false, diff:2, dlabel:"易しい",
+    hours:"30〜50時間", hoursMin:30,
+    rate:"約60〜70%",
+    cost:"約5,500円", costNum:5500,
+    summary:"Webを活用したマーケティング戦略・SEO/SEM・オンライン広告・EC運営の基礎知識を認定。デジタルマーケティング全般の概要を一通り理解したい人向け。在宅受験可能。"
+  },
+  {
+    name:"Google アナリティクス4（GA4）認定資格",
+    org:"Google（Skillshop）",
+    url:"https://skillshop.withgoogle.com/",
+    type:"out", allow:false, free:true, diff:2, dlabel:"易しい",
+    hours:"20〜40時間", hoursMin:20,
+    rate:"非公開",
+    cost:"無料", costNum:0,
+    summary:"GA4の基本概念・計測設定・レポート作成・分析手法を認定するGoogle公式資格。有効期限1年（更新は無料再受験）。デジタルマーケターとして必須のデータ分析能力を証明できる。"
+  },
+  {
+    name:"Yahoo!広告認定資格",
+    org:"Yahoo! JAPAN",
+    url:"https://ads-help.yahoo-net.jp/s/article/H000044529",
+    type:"out", allow:false, free:true, diff:2, dlabel:"易しい",
+    hours:"10〜20時間", hoursMin:10,
+    rate:"非公開",
+    cost:"無料", costNum:0,
+    summary:"Yahoo!広告（検索広告・ディスプレイ広告）の仕組み・配信設定・効果測定を認定。Yahoo!広告キャンパスで学習から受験まで完結。Google広告と並ぶ国内主要媒体を網羅するために取得したい資格。"
+  },
+  {
+    name:"SEO検定 3級",
+    org:"一般社団法人 全日本SEO協会",
+    url:"https://www.ajsa.or.jp/kentei/seo/",
+    type:"out", allow:false, free:false, diff:2, dlabel:"易しい",
+    hours:"20〜40時間", hoursMin:20,
+    rate:"約60〜70%",
+    cost:"7,700円", costNum:7700,
+    summary:"SEOの基礎的な仕組み・キーワード選定・コンテンツ作成の基本を学ぶ初級レベル。Webコンテンツ担当者や初めてSEOを学ぶ人向け。4級合格後のステップアップとして推奨。"
+  },
+  {
+    name:"HubSpot Academy 認定資格（各種）",
+    org:"HubSpot",
+    url:"https://academy.hubspot.jp/certification-overview",
+    type:"out", allow:false, free:true, diff:1, dlabel:"入門",
+    hours:"5〜15時間（各種）", hoursMin:5,
+    rate:"比較的高め",
+    cost:"無料", costNum:0,
+    summary:"インバウンドマーケティング・コンテンツマーケティング・SNSマーケティング・Eメールマーケティング等の認定資格を無料で取得可能。日本語コンテンツあり。CRM/MAの概念を学ぶ入口として最適。"
+  },
+  {
+    name:"Google 広告認定資格（各種）",
+    org:"Google（Skillshop）",
+    url:"https://skillshop.withgoogle.com/",
+    type:"out", allow:false, free:true, diff:1, dlabel:"入門",
+    hours:"10〜20時間（各種）", hoursMin:10,
+    rate:"非公開",
+    cost:"無料", costNum:0,
+    summary:"検索広告・ディスプレイ広告・動画広告（YouTube）・ショッピング広告・アプリ広告の各種認定資格。Google公式・無料で取得でき、デジタル広告運用の基礎を証明できる。有効期限1年。"
+  },
+  {
+    name:"SEO検定 4級",
+    org:"一般社団法人 全日本SEO協会",
+    url:"https://www.ajsa.or.jp/kentei/seo/",
+    type:"out", allow:false, free:false, diff:1, dlabel:"入門",
+    hours:"10〜20時間", hoursMin:10,
+    rate:"約80〜90%",
+    cost:"6,600円", costNum:6600,
+    summary:"SEOの基本的な考え方・検索エンジンの仕組み・HTMLの基礎・Googleの評価基準の入門知識を問う最も易しいSEO検定。Web担当者・コンテンツライター・ブロガーなど初学者に最適。"
+  },
+];
+
+const DLABELS = ["","入門","易しい","普通","難しい","超難関"];
+const DCLASS  = ["","d1","d2","d3","d4","d5"];
+const BDCLASS = ["","bd1","bd2","bd3","bd4","bd5"];
+const DCOLORS = ["","var(--d1)","var(--d2)","var(--d3)","var(--d4)","var(--d5)"];
+
+let fType="all", fDiff="all", fFree="all";
+let sortBy="diff-asc";
+
+const SORT_CONFIG = {
+  "diff-asc":   { label:"難易度：低い順",   fn:(a,b)=> a.diff!==b.diff ? a.diff-b.diff : (a.allow&&!b.allow?-1:1) },
+  "diff-desc":  { label:"難易度：高い順",   fn:(a,b)=> a.diff!==b.diff ? b.diff-a.diff : (a.allow&&!b.allow?-1:1) },
+  "allow-first":{ label:"資格手当あり優先", fn:(a,b)=> a.allow!==b.allow ? (a.allow?-1:1) : a.diff-b.diff },
+  "free-first": { label:"無料優先",         fn:(a,b)=> a.free!==b.free  ? (a.free?-1:1)  : a.diff-b.diff },
+  "hours-asc":  { label:"勉強時間：短い順", fn:(a,b)=> a.hoursMin-b.hoursMin },
+  "hours-desc": { label:"勉強時間：長い順", fn:(a,b)=> b.hoursMin-a.hoursMin },
+  "cost-asc":   { label:"費用：安い順",     fn:(a,b)=> a.costNum-b.costNum },
+  "cost-desc":  { label:"費用：高い順",     fn:(a,b)=> b.costNum-a.costNum },
+};
+
+function stars(d){
+  let s="";
+  for(let i=1;i<=5;i++) s += i<=d ? "★" : `<span class="s-empty">★</span>`;
+  return `<span class="stars">${s}</span>`;
+}
+
+function makeCard(c){
+  const div = document.createElement("div");
+  div.className = `cert-card ${DCLASS[c.diff]}`;
+  const typeBadge  = c.type==="in" ? `<span class="badge b-in"><i class="ph-bold ph-medal" style="font-size:.75rem;"></i> リスト内</span>` : `<span class="badge b-out"><i class="ph-bold ph-graduation-cap" style="font-size:.75rem;"></i> リスト外</span>`;
+  const allowBadge = c.allow ? `<span class="badge b-allow"><i class="ph-bold ph-currency-jpy" style="font-size:.75rem;"></i> 資格手当有</span>` : "";
+  const freeBadge  = c.free  ? `<span class="badge b-free"><i class="ph-bold ph-gift" style="font-size:.75rem;"></i> 無料</span>` : "";
+
+  // 入門・易しいは学習ページへのリンクを追加
+  const studyIds = {
+    "HubSpot Academy 認定資格（各種）":"hubspot",
+    "Google 広告認定資格（各種）":"google_ads",
+    "SEO検定 4級":"seo4",
+    "ビジネス・キャリア検定 3級（マーケティング区分）":"bizcareer3",
+    "マーケティング検定 3級":"marken3",
+    "マーケティング・ビジネス実務検定 C級":"imma_c",
+    "ウェブ解析士":"waca",
+    "ネットマーケティング検定":"netmk",
+    "Google アナリティクス4（GA4）認定資格":"ga4",
+    "Yahoo!広告認定資格":"yahoo_ads",
+    "SEO検定 3級":"seo3",
+  };
+  const studyId = (c.diff<=2) ? studyIds[c.name] : null;
+  const studyBtn = studyId
+    ? `<a href="study.html#${studyId}" class="study-btn"><i class="ph-bold ph-book-open-text" style="font-size:.85rem;"></i> 学習する</a>`
+    : "";
+
+  const linkHtml = c.url
+    ? `<a href="${c.url}" target="_blank" rel="noopener noreferrer" class="card-link"><i class="ph-bold ph-arrow-square-out" style="font-size:.78rem;"></i> 公式サイト</a>`
+    : `<span class="card-link-none">各大学院の公式サイトをご参照ください</span>`;
+
+  div.innerHTML = `
+    <div class="card-top">
+      <div class="badges">
+        <span class="badge ${BDCLASS[c.diff]}">${c.dlabel}</span>
+        ${stars(c.diff)}
+        ${typeBadge}${allowBadge}${freeBadge}
+      </div>
+      <div class="card-name">${c.name}</div>
+      <div class="card-org"><i class="ph-duotone ph-buildings" style="font-size:.9rem;color:var(--sage);"></i> ${c.org}</div>
+    </div>
+    <div class="card-body">
+      <div class="card-summary">${c.summary}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">${studyBtn}${linkHtml}</div>
+      <div class="info-grid">
+        <div class="info-box">
+          <div class="info-lbl"><i class="ph-bold ph-clock" style="color:var(--sage);"></i> 目安勉強時間</div>
+          <div class="info-val">${c.hours}</div>
+        </div>
+        <div class="info-box">
+          <div class="info-lbl"><i class="ph-bold ph-chart-bar" style="color:var(--sage);"></i> 合格率（目安）</div>
+          <div class="info-val">${c.rate}</div>
+        </div>
+        <div class="info-box span2">
+          <div class="info-lbl"><i class="ph-bold ph-currency-jpy" style="color:var(--coral);"></i> 受験費用</div>
+          <div class="info-val ${c.free?"free-color":""}">${c.cost}</div>
+        </div>
+      </div>
+    </div>`;
+  return div;
+}
+
+function makeSectionHdr(label, color){
+  const div = document.createElement("div");
+  div.className = "sec-hdr";
+  div.innerHTML = `<div class="sec-line"></div><h2 style="color:${color}">${label}</h2><div class="sec-line"></div>`;
+  return div;
+}
+
+function render(){
+  const grid = document.getElementById("grid");
+  [...grid.querySelectorAll(".cert-card,.sec-hdr,.sort-badge")].forEach(el=>el.remove());
+
+  let list = DATA.filter(c=>{
+    const tm = fType==="all" || c.type===fType;
+    const dm = fDiff==="all" || c.diff===parseInt(fDiff);
+    const fm = fFree==="all" || (fFree==="free"&&c.free) || (fFree==="paid"&&!c.free);
+    return tm && dm && fm;
+  });
+
+  document.getElementById("cnt-total").textContent = list.length;
+
+  const noResult = document.getElementById("no-result");
+  if(list.length===0){ noResult.classList.add("show"); return; }
+  noResult.classList.remove("show");
+
+  list = [...list].sort(SORT_CONFIG[sortBy].fn);
+
+  const badge = document.createElement("div");
+  badge.className = "sort-badge";
+  badge.style.gridColumn = "1/-1";
+  badge.innerHTML = `<i class="ph-bold ph-arrows-down-up" style="font-size:.85rem;"></i> ソート中：${SORT_CONFIG[sortBy].label}`;
+  grid.insertBefore(badge, noResult);
+
+  const showDiffHdr  = sortBy==="diff-asc"  || sortBy==="diff-desc";
+  const showAllowHdr = sortBy==="allow-first";
+  const showFreeHdr  = sortBy==="free-first";
+
+  let lastKey = null;
+  list.forEach(c=>{
+    let key=null, hdrLabel="", hdrColor="#666";
+    if(showDiffHdr){
+      key=c.diff;
+      hdrLabel=`${DLABELS[c.diff]} ${"★".repeat(c.diff)}${"☆".repeat(5-c.diff)}`;
+      hdrColor=DCOLORS[c.diff];
+    } else if(showAllowHdr){
+      key=c.allow?"allow":"no";
+      hdrLabel=c.allow?"💰 資格手当あり":"資格手当なし";
+      hdrColor=c.allow?"#065f46":"#6b7280";
+    } else if(showFreeHdr){
+      key=c.free?"free":"paid";
+      hdrLabel=c.free?"🆓 無料":"💳 有料";
+      hdrColor=c.free?"#1d4ed8":"#374151";
+    }
+    if(key!==null && key!==lastKey){
+      grid.insertBefore(makeSectionHdr(hdrLabel,hdrColor), noResult);
+      lastKey=key;
+    }
+    grid.insertBefore(makeCard(c), noResult);
+  });
+}
+
+document.querySelectorAll("[data-f]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const f=btn.dataset.f, v=btn.dataset.v;
+    document.querySelectorAll(`[data-f="${f}"]`).forEach(b=>b.classList.remove("factive"));
+    btn.classList.add("factive");
+    if(f==="type") fType=v;
+    else if(f==="diff") fDiff=v;
+    else if(f==="free") fFree=v;
+    render();
+  });
+});
+
+document.querySelectorAll("[data-s]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll("[data-s]").forEach(b=>b.classList.remove("sactive"));
+    btn.classList.add("sactive");
+    sortBy=btn.dataset.s;
+    render();
+  });
+});
+
+render();
+</script>
+</body>
+</html>
