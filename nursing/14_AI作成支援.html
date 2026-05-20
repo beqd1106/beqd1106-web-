@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI作成支援 — 障碍者福祉事業所 運営ガイド</title>
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#F0956A">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+/* ================================================================
+   AI作成支援ページ 専用スタイル
+================================================================ */
+
+/* ── タブ ── */
+.ai-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+}
+.ai-tab {
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: 2px solid var(--border);
+  background: var(--card);
+  color: var(--text-mid);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+  user-select: none;
+}
+.ai-tab:hover { border-color: var(--coral-mid); color: var(--coral-dark); }
+.ai-tab.active {
+  background: var(--coral);
+  border-color: var(--coral);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(240,149,106,0.35);
+}
+.ai-tab-group-label {
+  width: 100%;
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--text-light);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0.5rem 0 0.15rem;
+}
+
+/* ── パネル ── */
+.ai-panel { display: none; }
+.ai-panel.active { display: block; }
+
+/* ── フォーム ── */
+.ai-form { display: flex; flex-direction: column; gap: 1rem; }
+.ai-field { display: flex; flex-direction: column; gap: 0.3rem; }
+.ai-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.ai-label .req {
+  font-size: 0.65rem;
+  background: var(--danger);
+  color: #fff;
+  padding: 0.05rem 0.35rem;
+  border-radius: 999px;
+}
+.ai-label .opt {
+  font-size: 0.65rem;
+  background: var(--blk-mint);
+  color: #4a7a5e;
+  padding: 0.05rem 0.35rem;
+  border-radius: 999px;
+}
+.ai-hint {
+  font-size: 0.72rem;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+.ai-input, .ai-select, .ai-textarea {
+  border: 2px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 0.6rem 0.85rem;
+  font-size: 0.88rem;
+  font-family: inherit;
+  color: var(--text);
+  background: #fff;
+  transition: border-color 0.18s;
+  width: 100%;
+  box-sizing: border-box;
+}
+.ai-input:focus, .ai-select:focus, .ai-textarea:focus {
+  outline: none;
+  border-color: var(--coral-mid);
+  box-shadow: 0 0 0 3px rgba(240,149,106,0.12);
+}
+.ai-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+.ai-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+@media (max-width: 600px) { .ai-row { grid-template-columns: 1fr; } }
+.ai-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; }
+@media (max-width: 700px) { .ai-row-3 { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 460px) { .ai-row-3 { grid-template-columns: 1fr; } }
+
+/* チェックボックスグループ */
+.ai-checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.ai-checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.7rem;
+  border: 2px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+.ai-checkbox-group label:hover { border-color: var(--coral-mid); }
+.ai-checkbox-group input[type=checkbox]:checked + span { color: var(--coral-dark); }
+.ai-checkbox-group label:has(input:checked) {
+  background: var(--coral-light);
+  border-color: var(--coral-mid);
+}
+
+/* ラジオグループ */
+.ai-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.ai-radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.8rem;
+  border: 2px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+.ai-radio-group label:has(input:checked) {
+  background: var(--coral-light);
+  border-color: var(--coral);
+  font-weight: 700;
+}
+
+/* ── 生成ボタン ── */
+.ai-generate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  background: linear-gradient(135deg, var(--coral), #E07A48);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(240,149,106,0.4);
+  letter-spacing: 0.03em;
+}
+.ai-generate-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(240,149,106,0.5); }
+.ai-generate-btn:active { transform: translateY(0); }
+.ai-generate-btn:disabled {
+  background: var(--border);
+  color: var(--text-light);
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+.ai-generate-btn .spinner {
+  width: 18px; height: 18px;
+  border: 3px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: none;
+}
+.ai-generate-btn.loading .spinner { display: block; }
+.ai-generate-btn.loading .btn-icon { display: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── 出力エリア ── */
+.ai-output-wrap {
+  margin-top: 1.5rem;
+  display: none;
+}
+.ai-output-wrap.visible { display: block; }
+.ai-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.ai-output-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-mid);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.ai-output-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.ai-action-btn {
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  border: 2px solid var(--border);
+  background: var(--card);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.ai-action-btn:hover { border-color: var(--coral-mid); color: var(--coral-dark); }
+.ai-action-btn.primary-action {
+  background: var(--blk-mint);
+  border-color: #9DC4AE;
+  color: #4a7a5e;
+}
+.ai-output-box {
+  border: 2px solid var(--border);
+  border-radius: var(--r);
+  padding: 1.25rem 1.5rem;
+  background: #FEFCFA;
+  font-size: 0.88rem;
+  line-height: 1.8;
+  color: var(--text);
+  min-height: 120px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+.ai-output-box.streaming { border-color: var(--coral-light); }
+.ai-output-box h2, .ai-output-box h3 {
+  margin: 1rem 0 0.4rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 2px solid var(--coral-light);
+  color: var(--coral-dark);
+}
+.ai-output-box h2 { font-size: 1rem; }
+.ai-output-box h3 { font-size: 0.9rem; }
+.ai-output-box ul, .ai-output-box ol {
+  margin: 0.4rem 0 0.4rem 1.4rem;
+}
+.ai-output-box li { margin-bottom: 0.2rem; }
+.ai-output-box strong { color: var(--coral-dark); }
+.ai-output-box table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  margin: 0.75rem 0;
+}
+.ai-output-box th {
+  background: var(--coral-light);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border: 1px solid var(--coral-mid);
+}
+.ai-output-box td {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--border);
+  vertical-align: top;
+}
+
+/* ストリーミングカーソル */
+.stream-cursor::after {
+  content: '▌';
+  color: var(--coral);
+  animation: blink 0.8s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ── エラー表示 ── */
+.ai-error {
+  background: var(--danger-light);
+  border: 2px solid var(--danger);
+  border-radius: var(--r-sm);
+  padding: 0.75rem 1rem;
+  font-size: 0.82rem;
+  color: #c0504f;
+  font-weight: 600;
+}
+
+/* ── 使い方ガイド ── */
+.ai-guide {
+  background: var(--blk-sky);
+  border-radius: var(--r-sm);
+  padding: 0.75rem 1rem;
+  font-size: 0.78rem;
+  color: #2a4a6e;
+  line-height: 1.6;
+  border-left: 4px solid #7aafd4;
+}
+.ai-guide strong { color: #1a3a5e; }
+
+/* ── 機能カード（TOP選択） ── */
+.ai-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.ai-feature-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--r);
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-align: center;
+}
+.ai-feature-card:hover {
+  border-color: var(--coral-mid);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+.ai-feature-card.doc-type { border-top: 4px solid var(--coral); }
+.ai-feature-card.tool-type { border-top: 4px solid var(--secondary); }
+.ai-feature-card-icon { font-size: 1.8rem; margin-bottom: 0.4rem; }
+.ai-feature-card-title { font-size: 0.82rem; font-weight: 800; color: var(--text); }
+.ai-feature-card-tag {
+  font-size: 0.65rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  margin-top: 0.3rem;
+  display: inline-block;
+}
+.ai-feature-card.doc-type .ai-feature-card-tag { background: var(--coral-light); color: var(--coral-dark); }
+.ai-feature-card.tool-type .ai-feature-card-tag { background: var(--blk-mint); color: #4a7a5e; }
+
+/* ── 注意事項バナー ── */
+.ai-notice {
+  background: var(--warning-light);
+  border: 2px solid var(--warning);
+  border-radius: var(--r-sm);
+  padding: 0.65rem 1rem;
+  font-size: 0.76rem;
+  color: #7a5a10;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+/* ── 評価ボタン ── */
+.ai-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
+  color: var(--text-light);
+}
+.ai-rating-btn {
+  background: none;
+  border: 2px solid var(--border);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.ai-rating-btn:hover { border-color: var(--coral-mid); }
+
+/* ── モデル表示バッジ ── */
+.model-badge {
+  font-size: 0.65rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-weight: 700;
+}
+.model-badge.quality { background: var(--blk-lavender); color: #6040a0; }
+.model-badge.fast { background: var(--blk-mint); color: #4a7a5e; }
+
+/* ── セクション区切り ── */
+.ai-section-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+.ai-section-divider::before, .ai-section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.ai-section-divider span {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+/* ── 文字数カウンター ── */
+.char-counter {
+  text-align: right;
+  font-size: 0.68rem;
+  color: var(--text-light);
+  margin-top: 0.15rem;
+}
+.char-counter.warn { color: var(--warning); }
+
+@media print {
+  .site-header, .site-nav, .ai-tabs, .ai-form, .ai-generate-btn,
+  .ai-output-actions, .ai-guide, .ai-notice, .page-hero { display: none !important; }
+  .ai-output-box { border: none; padding: 0; }
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="index.html" class="site-logo">🏥 障碍者福祉 運営ガイド</a>
+  <nav class="site-nav">
+    <a href="index.html">TOP</a>
+    <a href="01_法令・制度.html">⚖️ 法令</a>
+    <a href="02_必要書類.html">📋 書類</a>
+    <a href="03_管理業務.html">📅 管理</a>
+    <a href="04_京都府・手続き.html">🏛️ 京都府</a>
+    <a href="05_請求業務.html">💴 請求</a>
+    <a href="13_障害介護サービス.html">🏠 介護</a>
+    <a href="06_就労継続A型.html">🏢 A型</a>
+    <a href="07_就労継続B型.html">🏭 B型</a>
+    <a href="08_相談支援.html">💬 相談</a>
+    <a href="09_監査対応.html">🔍 監査</a>
+    <a href="10_収入向上.html">📈 収入</a>
+    <a href="11_年間スケジュール.html">📆 年間</a>
+    <a href="12_QA.html">❓ Q&amp;A</a>
+    <a href="14_AI作成支援.html" class="active" style="background:var(--blk-lavender);color:#6040a0;border:1px solid #c0a0e0;">✨ AI支援</a>
+    <a href="フォーマット/index.html" style="background:var(--coral-light);color:var(--coral-dark);border:1px solid var(--coral-mid);">📁 様式DL</a>
+  </nav>
+</header>
+
+<div class="page-hero" style="background:linear-gradient(135deg,#F0EBF8 0%,#E8E0F4 50%,#EDE8F8 100%);">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge" style="background:#E8E0F4;color:#6040a0;border-color:#c0a0e0;">✨ AI作成支援</div>
+      <h1 style="color:#3a2060;">書類・計画書を<br>AIが自動作成</h1>
+      <p style="color:#5a4080;">個別支援計画・アセスメント・モニタリングなど<br>実務書類をAIが下書き。スタッフの負担を大幅削減。</p>
+      <div class="ai-notice" style="margin-top:1.25rem;max-width:520px;">
+        <span>⚠️</span>
+        <span><strong>ご注意：</strong>AI出力は下書きです。内容の正確性・適切性は必ず担当者が確認・修正してください。個人情報の入力はお控えください。</span>
+      </div>
+    </div>
+    <div class="hero-img" style="display:flex;align-items:center;justify-content:center;font-size:5rem;opacity:0.4;">✨</div>
+  </div>
+</div>
+
+<main class="container">
+
+  <!-- タブナビ -->
+  <div class="card">
+    <div class="ai-tabs" id="ai-tabs">
+      <div class="ai-tab-group-label">📄 書類自動生成（5種）</div>
+      <button class="ai-tab active" data-panel="plan_shuro">📝 個別支援計画（就労）</button>
+      <button class="ai-tab" data-panel="plan_kyotaku">🏠 個別支援計画（居宅）</button>
+      <button class="ai-tab" data-panel="assessment">🔍 アセスメント</button>
+      <button class="ai-tab" data-panel="monitoring">📊 モニタリング報告</button>
+      <button class="ai-tab" data-panel="nursing_report">🩺 看護記録・サマリー</button>
+      <div class="ai-tab-group-label">🛠️ AI分析ツール（7種）</div>
+      <button class="ai-tab" data-panel="kasan_check">💰 加算算定チェック</button>
+      <button class="ai-tab" data-panel="claim_check">📋 請求エラーチェック</button>
+      <button class="ai-tab" data-panel="law_summary">⚖️ 法令要約・Q&amp;A</button>
+      <button class="ai-tab" data-panel="incident_docs">⚡ 事故報告書</button>
+      <button class="ai-tab" data-panel="wage_plan">💴 工賃向上計画</button>
+      <button class="ai-tab" data-panel="easy_read">📖 わかりやすい説明文</button>
+      <button class="ai-tab" data-panel="staff_sim">👥 人員配置シミュレーション</button>
+    </div>
+
+    <!-- ======================================================
+         ① 個別支援計画書（就労継続支援A型・B型）
+    ====================================================== -->
+    <div class="ai-panel active" id="panel-plan_shuro">
+      <div class="ai-guide">
+        <strong>📝 個別支援計画書（就労継続支援A型・B型）</strong><br>
+        利用者の情報を入力すると、法令基準（基準省令第58条）に準拠した個別支援計画書の下書きを生成します。
+        ICF視点・ストレングスベース・SMART目標を自動反映。
+        <span class="model-badge quality" style="margin-left:0.4rem;">高品質モード</span>
+      </div>
+      <div class="ai-form" style="margin-top:1rem;">
+        <div class="ai-row">
+          <div class="ai-field">
+            <label class="ai-label">サービス種別 <span class="req">必須</span></label>
+            <select class="ai-select" id="ps-type">
+              <option value="A型">就労継続支援A型</option>
+              <option value="B型">就労継続支援B型</option>
+            </select>
+          </div>
+          <div class="ai-field">
+            <label class="ai-label">年齢・性別 <span class="req">必須</span></label>
+            <input class="ai-input" id="ps-age" type="text" placeholder="例：32歳・男性">
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">障害の種別・診断名 <span class="req">必須</span></label>
+          <div class="ai-checkbox-group" id="ps-disability">
+            <label><input type="checkbox" value="身体障害"><span>身体障害</span></label>
+            <label><input type="checkbox" value="知的障害"><span>知的障害</span></label>
+            <label><input type="checkbox" value="精神障害"><span>精神障害（精神疾患）</span></label>
+            <label><input type="checkbox" value="発達障害"><span>発達障害（ASD/ADHD等）</span></label>
+            <label><input type="checkbox" value="難病"><span>難病</span></label>
+          </div>
+          <input class="ai-input" id="ps-diagnosis" type="text" placeholder="具体的な診断名（例：統合失調症、F20.0）" style="margin-top:0.4rem;">
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">障害支援区分</label>
+          <div class="ai-radio-group">
+            <label><input type="radio" name="ps-level" value="区分なし"><span>区分なし</span></label>
+            <label><input type="radio" name="ps-level" value="区分1"><span>区分1</span></label>
+            <label><input type="radio" name="ps-level" value="区分2"><span>区分2</span></label>
+            <label><input type="radio" name="ps-level" value="区分3" checked><span>区分3</span></label>
+            <label><input type="radio" name="ps-level" value="区分4"><span>区分4</span></label>
+            <label><input type="radio" name="ps-level" value="区分5"><span>区分5</span></label>
+            <label><input type="radio" name="ps-level" value="区分6"><span>区分6</span></label>
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">本人の意向・希望（本人の言葉で） <span class="req">必須</span></label>
+          <textarea class="ai-textarea" id="ps-hope" placeholder="例：「ゆっくりでも自分のペースで仕事をしたい。お金を貯めて旅行に行きたい。人と話すのは苦手だが、できる仕事を見つけたい」"></textarea>
+          <div class="char-counter" id="ps-hope-count">0字</div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">生活状況・ADL</label>
+          <textarea class="ai-textarea" id="ps-adl" placeholder="例：一人暮らし。入浴は自立。調理は簡単なもののみ可。服薬は自己管理。外出は電車で可能。金銭管理に支援が必要。" style="min-height:70px;"></textarea>
+        </div>
+        <div class="ai-row">
+          <div class="ai-field">
+            <label class="ai-label">現在の就労状況・作業内容</label>
+            <textarea class="ai-textarea" id="ps-work" placeholder="例：梱包作業・清掃・データ入力。集中力は30分程度。指示は口頭と文字の両方が効果的。" style="min-height:70px;"></textarea>
+          </div>
+          <div class="ai-field">
+            <label class="ai-label">本人の強み・できること</label>
+            <textarea class="ai-textarea" id="ps-strengths" placeholder="例：几帳面で丁寧な作業が得意。音楽が好きで職場の雰囲気を和ませる。記憶力が良い。" style="min-height:70px;"></textarea>
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">現在の課題・支援ニーズ</label>
+          <textarea class="ai-textarea" id="ps-issues" placeholder="例：対人緊張が強く、困ったときに申し出ることが難しい。疲労の自覚が乏しく、疲れても休憩を申し出ない。体調の波がある。" style="min-height:70px;"></textarea>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">医療・薬物療法の状況</label>
+          <input class="ai-input" id="ps-medical" type="text" placeholder="例：〇〇クリニック通院中、月2回。リスペリドン服用。主治医との連携あり。">
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">家族・環境の状況 <span class="opt">任意</span></label>
+          <input class="ai-input" id="ps-family" type="text" placeholder="例：両親と同居。母が主な支援者。父は障害への理解が薄い。近隣との関係は良好。">
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">計画期間</label>
+          <div class="ai-radio-group">
+            <label><input type="radio" name="ps-period" value="6ヶ月"><span>6ヶ月</span></label>
+            <label><input type="radio" name="ps-period" value="1年" checked><span>1年</span></label>
+          </div>
+        </div>
+        <button class="ai-generate-btn" onclick="generateAI('plan_shuro')">
+          <span class="btn-icon">✨</span>
+          <div class="spinner"></div>
+          個別支援計画書を生成する
+        </button>
+        <div class="ai-output-wrap" id="output-plan_shuro">
+          <div class="ai-output-header">
+            <div class="ai-output-title">📄 生成結果 <span class="model-badge quality">高品質</span></div>
+            <div class="ai-output-actions">
+              <button class="ai-action-btn primary-action" onclick="copyOutput('plan_shuro')">📋 コピー</button>
+              <button class="ai-action-btn" onclick="printOutput('plan_shuro')">🖨️ 印刷</button>
+              <button class="ai-action-btn" onclick="clearOutput('plan_shuro')">🗑️ クリア</button>
+            </div>
+          </div>
+          <div class="ai-output-box" id="output-box-plan_shuro"></div>
+          <div class="ai-rating">
+            この結果は役に立ちましたか？
+            <button class="ai-rating-btn" onclick="rateOutput('plan_shuro', 'good')">👍 良い</button>
+            <button class="ai-rating-btn" onclick="rateOutput('plan_shuro', 'bad')">👎 改善が必要</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================
+         ② 個別支援計画書（居宅介護・同行援護等）
+    ====================================================== -->
+    <div class="ai-panel" id="panel-plan_kyotaku">
+      <div class="ai-guide">
+        <strong>🏠 個別支援計画書（居宅介護・同行援護・行動援護・重度訪問介護）</strong><br>
+        訪問系サービスの個別支援計画書。基準省令第24条準拠。リスク管理・緊急対応手順を必ず含めた実務レベルの計画書を生成。
+        <span class="model-badge quality" style="margin-left:0.4rem;">高品質モード</span>
+      </div>
+      <div class="ai-form" style="margin-top:1rem;">
+        <div class="ai-field">
+          <label class="ai-label">サービス種別 <span class="req">必須</span></label>
+          <div class="ai-checkbox-group" id="pk-service">
+            <label><input type="checkbox" value="居宅介護" checked><span>🏠 居宅介護</span></label>
+            <label><input type="checkbox" value="同行援護"><span>🚶 同行援護</span></label>
+            <label><input type="checkbox" value="行動援護"><span>🤝 行動援護</span></label>
+            <label><input type="checkbox" value="重度訪問介護"><span>🛏️ 重度訪問介護</span></label>
+          </div>
+        </div>
+        <div class="ai-row">
+          <div class="ai-field">
+            <label class="ai-label">年齢・性別 <span class="req">必須</span></label>
+            <input class="ai-input" id="pk-age" type="text" placeholder="例：45歳・女性">
+          </div>
+          <div class="ai-field">
+            <label class="ai-label">障害支援区分 <span class="req">必須</span></label>
+            <select class="ai-select" id="pk-level">
+              <option value="区分2">区分2</option>
+              <option value="区分3">区分3</option>
+              <option value="区分4" selected>区分4</option>
+              <option value="区分5">区分5</option>
+              <option value="区分6">区分6</option>
+            </select>
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">障害の状況・診断名 <span class="req">必須</span></label>
+          <input class="ai-input" id="pk-diagnosis" type="text" placeholder="例：脳性麻痺（痙直型四肢麻痺）、コミュニケーション困難、車椅子使用">
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">本人の意向・希望する生活 <span class="req">必須</span></label>
+          <textarea class="ai-textarea" id="pk-hope" placeholder="例：「地域で暮らし続けたい。友人と外出する機会を増やしたい。入浴は毎日したい。」"></textarea>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">ADL詳細（身体介護の必要度）<span class="req">必須</span></label>
+          <div class="ai-row">
+            <div>
+              <div style="font-size:0.75rem;font-weight:700;color:var(--text-mid);margin-bottom:0.3rem;">基本動作</div>
+              <div class="ai-checkbox-group">
+                <label><input type="checkbox" value="寝返り介助" class="pk-adl"><span>寝返り</span></label>
+                <label><input type="checkbox" value="起き上がり介助" class="pk-adl"><span>起き上がり</span></label>
+                <label><input type="checkbox" value="移乗介助" class="pk-adl"><span>移乗</span></label>
+                <label><input type="checkbox" value="歩行介助" class="pk-adl"><span>歩行</span></label>
+                <label><input type="checkbox" value="車椅子操作介助" class="pk-adl"><span>車椅子</span></label>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:0.75rem;font-weight:700;color:var(--text-mid);margin-bottom:0.3rem;">セルフケア</div>
+              <div class="ai-checkbox-group">
+                <label><input type="checkbox" value="食事介助" class="pk-adl"><span>食事</span></label>
+                <label><input type="checkbox" value="整容介助" class="pk-adl"><span>整容</span></label>
+                <label><input type="checkbox" value="入浴介助" class="pk-adl" checked><span>入浴</span></label>
+                <label><input type="checkbox" value="排泄介助" class="pk-adl" checked><span>排泄</span></label>
+                <label><input type="checkbox" value="更衣介助" class="pk-adl"><span>更衣</span></label>
+              </div>
+            </div>
+          </div>
+          <div class="ai-checkbox-group" style="margin-top:0.4rem;">
+            <label><input type="checkbox" value="調理" class="pk-adl"><span>調理</span></label>
+            <label><input type="checkbox" value="買い物同行" class="pk-adl"><span>買い物</span></label>
+            <label><input type="checkbox" value="洗濯" class="pk-adl"><span>洗濯</span></label>
+            <label><input type="checkbox" value="掃除" class="pk-adl"><span>掃除</span></label>
+            <label><input type="checkbox" value="服薬管理" class="pk-adl"><span>服薬管理</span></label>
+            <label><input type="checkbox" value="通院同行" class="pk-adl"><span>通院同行</span></label>
+            <label><input type="checkbox" value="外出同行" class="pk-adl"><span>外出同行</span></label>
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">リスク・注意事項 <span class="req">必須</span></label>
+          <div class="ai-checkbox-group">
+            <label><input type="checkbox" value="転倒リスク高" class="pk-risk"><span>転倒リスク高</span></label>
+            <label><input type="checkbox" value="誤嚥リスク" class="pk-risk"><span>誤嚥リスク</span></label>
+            <label><input type="checkbox" value="褥瘡リスク" class="pk-risk"><span>褥瘡リスク</span></label>
+            <label><input type="checkbox" value="行動障害" class="pk-risk"><span>行動障害</span></label>
+            <label><input type="checkbox" value="てんかん発作" class="pk-risk"><span>てんかん</span></label>
+            <label><input type="checkbox" value="パニック" class="pk-risk"><span>パニック</span></label>
+            <label><input type="checkbox" value="自傷他害" class="pk-risk"><span>自傷・他害</span></label>
+            <label><input type="checkbox" value="医療的ケア必要" class="pk-risk"><span>医療的ケア</span></label>
+          </div>
+          <textarea class="ai-textarea" id="pk-risk-detail" placeholder="リスクの具体的な状況・過去の事故歴等" style="margin-top:0.4rem;min-height:60px;"></textarea>
+        </div>
+        <div class="ai-row">
+          <div class="ai-field">
+            <label class="ai-label">サービス提供時間・頻度</label>
+            <input class="ai-input" id="pk-schedule" type="text" placeholder="例：月〜金 9:00-11:00（2時間/日）、入浴は火・木・土">
+          </div>
+          <div class="ai-field">
+            <label class="ai-label">家族・緊急連絡先の状況</label>
+            <input class="ai-input" id="pk-family" type="text" placeholder="例：長男（同居）。日中は不在。緊急時は携帯に連絡。">
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">医療連携状況</label>
+          <input class="ai-input" id="pk-medical" type="text" placeholder="例：〇〇病院リハビリ外来月1回。訪問看護週2回。主治医：山田先生（内科）">
+        </div>
+        <button class="ai-generate-btn" onclick="generateAI('plan_kyotaku')">
+          <span class="btn-icon">✨</span>
+          <div class="spinner"></div>
+          個別支援計画書（居宅）を生成する
+        </button>
+        <div class="ai-output-wrap" id="output-plan_kyotaku">
+          <div class="ai-output-header">
+            <div class="ai-output-title">📄 生成結果 <span class="model-badge quality">高品質</span></div>
+            <div class="ai-output-actions">
+              <button class="ai-action-btn primary-action" onclick="copyOutput('plan_kyotaku')">📋 コピー</button>
+              <button class="ai-action-btn" onclick="printOutput('plan_kyotaku')">🖨️ 印刷</button>
+              <button class="ai-action-btn" onclick="clearOutput('plan_kyotaku')">🗑️ クリア</button>
+            </div>
+          </div>
+          <div class="ai-output-box" id="output-box-plan_kyotaku"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================
+         ③ アセスメントシート
+    ====================================================== -->
+    <div class="ai-panel" id="panel-assessment">
+      <div class="ai-guide">
+        <strong>🔍 アセスメントシート（ICF準拠）</strong><br>
+        ICF（国際生活機能分類）の視点でアセスメントを構造化。心身機能・活動・参加・環境因子・個人因子を網羅的に評価します。
+        <span class="model-badge quality" style="margin-left:0.4rem;">高品質モード</span>
+      </div>
+      <div class="ai-form" style="margin-top:1rem;">
+        <div class="ai-row">
+          <div class="ai-field">
+            <label class="ai-label">利用サービス <span class="req">必須</span></label>
+            <select class="ai-select" id="as-service">
+              <option value="就労継続A型">就労継続支援A型</option>
+              <option value="就労継続B型">就労継続支援B型</option>
+              <option value="居宅介護">居宅介護</option>
+              <option value="同行援護">同行援護</option>
+              <option value="行動援護">行動援護</option>
+              <option value="重度訪問介護">重度訪問介護</option>
+              <option value="相談支援">相談支援</option>
+              <option value="訪問看護">訪問看護</option>
+            </select>
+          </div>
+          <div class="ai-field">
+            <label class="ai-label">年齢・性別・障害種別 <span class="req">必須</span></label>
+            <input class="ai-input" id="as-basic" type="text" placeholder="例：28歳・男性・精神障害（統合失調症）">
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">【心身機能・身体構造】診断・症状・服薬 <span class="req">必須</span></label>
+          <textarea class="ai-textarea" id="as-body" placeholder="例：統合失調症（陽性症状は安定）。抗精神病薬（リスペリドン4mg）服用。睡眠障害あり。体重増加傾向。糖尿病の既往なし。"></textarea>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">【活動】ADL・IADL・コミュニケーション <span class="req">必須</span></label>
+          <textarea class="ai-textarea" id="as-activity" placeholder="例：ADL自立。食事・入浴・排泄は自力。調理は簡単なものは可能。金銭管理は計算が苦手で支援要。電車利用可。読み書き：日常会話レベル。コミュニケーション：初対面は緊張するが関係ができれば良好。"></textarea>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">【参加】社会参加・余暇・就労状況</label>
+          <textarea class="ai-textarea" id="as-participation" placeholder="例：現在無職。以前はスーパーでアルバイト経験あり（3年継続）。友人は少ないが SNSで交流。地域行事への参加意欲あり。" style="min-height:70px;"></textarea>
+        </div>
+        <div class="ai-row">
+          <div class="ai-field">
+            <label class="ai-label">【環境因子】住環境・家族・支援者</label>
+            <textarea class="ai-textarea" id="as-environment" placeholder="例：母と二人暮らし。父は他界。母は協力的だが高齢で体調不安定。アパート2階・エレベーターなし。近隣スーパーまで徒歩5分。" style="min-height:80px;"></textarea>
+          </div>
+          <div class="ai-field">
+            <label class="ai-label">【本人の強み・関心・大切にしていること】</label>
+            <textarea class="ai-textarea" id="as-strengths" placeholder="例：几帳面で約束を守れる。料理が好き。アニメ・漫画が趣味で詳しい。働いてお金を貯めることへの意欲が高い。" style="min-height:80px;"></textarea>
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">本人・家族の主訴（困っていること・希望）<span class="req">必須</span></label>
+          <textarea class="ai-textarea" id="as-complaint" placeholder="例：（本人）「自分のペースで働きたい。友達を作りたい」（母）「将来一人でも生活できるようになってほしい。服薬を忘れないか心配」"></textarea>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">現在利用中の他サービス</label>
+          <input class="ai-input" id="as-other" type="text" placeholder="例：相談支援（計画相談）、デイケア週2回、訪問看護なし">
+        </div>
+        <button class="ai-generate-btn" onclick="generateAI('assessment')">
+          <span class="btn-icon">✨</span>
+          <div class="spinner"></div>
+          アセスメントシートを生成する
+        </button>
+        <div class="ai-output-wrap" id="output-assessment">
+          <div class="ai-output-header">
+            <div class="ai-output-title">📄 生成結果 <span class="model-badge quality">高品質</span></div>
+            <div class="ai-output-actions">
+              <button class="ai-action-btn primary-action" onclick="copyOutput('assessment')">📋 コピー</button>
+              <button class="ai-action-btn" onclick="printOutput('assessment')">🖨️ 印刷</button>
+              <button class="ai-action-btn" onclick="clearOutput('assessment')">🗑️ クリア</button>
+            </div>
+          </div>
+          <div class="ai-output-box" id="output-box-assessment"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================
+         ④ モニタリング報告書
+    ====================================================== -->
+    <div class="ai-panel" id="panel-monitoring">
+      <div class="ai-guide">
+        <strong>📊 モニタリング報告書</strong><br>
+        計画の実施状況・目標達成度・課題・今後の方針を構造的に記述。相談支援専門員への報告書としても活用できます。
+        <span class="model-badge quality" style="margin-left:0.4rem;">高品質モード</span>
+      </div>
+      <div class="ai-form" style="margin-top:1rem;">
+        <div class="ai-row">
+          <div class="ai-field">
+            <label class="ai-label">サービス種別 <span class="req">必須</span></label>
+            <select class="ai-select" id="mn-service">
+              <option value="就労継続A型">就労継続支援A型</option>
+              <option value="就労継続B型">就労継続支援B型</option>
+              <option value="居宅介護">居宅介護</option>
+              <option value="同行援護">同行援護</option>
+              <option value="行動援護">行動援護</option>
+              <option value="重度訪問介護">重度訪問介護</option>
+            </select>
+          </div>
+          <div class="ai-field">
+            <label class="ai-label">モニタリング期間</label>
+            <input class="ai-input" id="mn-period" type="text" placeholder="例：2025年10月〜2026年3月（6ヶ月）">
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">長期目標の達成状況 <span class="req">必須</span></label>
+          <textarea class="ai-textarea" id="mn-long-goal" placeholder="長期目標と現状を入力&#10;例：【目標】週5日安定して就労継続支援を利用し、一般就労への移行に向けて作業スキルを身につける&#10;【状況】週4〜5日の利用が続き、遅刻・欠席は月1〜2回に減少。梱包作業の速度が2割向上した。"></textarea>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">短期目標の達成状況 <span class="req">必須</span></label>
+          <textarea class="ai-textarea" id="mn-short-goal" placeholder="短期目標と現状を入力&#10;例：【目標①】困ったときにスタッフに相談できる→達成度：部分達成。声掛けがあれば相談できるが、自発的な相談は難しい&#10;【目標②】毎日服薬できる→達成度：達成。自己管理で継続できている"></textarea>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">生活全体の変化・気になること</label>
+          <textarea class="ai-textarea" id="mn-life" placeholder="例：睡眠が安定してきた。体重が+3kg増加し、食事指導が必要。母の体調悪化で送迎が不安定。友人との外出が1回実現した。" style="min-height:70px;"></textarea>
+        </div>
+        <div class="ai-row">
+          <div class="ai-field">
+            <label class="ai-label">本人の意向（現状の気持ち）</label>
+            <textarea class="ai-textarea" id="mn-hope" placeholder="例：「ここに来るのが楽しい。もう少し時間を増やしたい。一人暮らしをいつかしたい」" style="min-height:70px;"></textarea>
+          </div>
+          <div class="ai-field">
+            <label class="ai-label">家族・関係者からの意見</label>
+            <textarea class="ai-textarea" id="mn-family-opinion" placeholder="例：（母）「表情が明るくなった。でも体重が増えて心配」（主治医）「安定しているので現状維持でよい」" style="min-height:70px;"></textarea>
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">今後の課題・方針変更の有無</label>
+          <textarea class="ai-textarea" id="mn-next" placeholder="例：相談スキルの強化が引き続き課題。次期計画では個別面談の頻度を月2回→月4回に増やす。母の体調悪化に備え、緊急時対応の確認が必要。" style="min-height:70px;"></textarea>
+        </div>
+        <button class="ai-generate-btn" onclick="generateAI('monitoring')">
+          <span class="btn-icon">✨</span>
+          <div class="spinner"></div>
+          モニタリング報告書を生成する
+        </button>
+        <div class="ai-output-wrap" id="output-monitoring">
+          <div class="ai-output-header">
+            <div class="ai-output-title">📄 生成結果 <span class="model-badge quality">高品質</span></div>
+            <div class="ai-output-actions">
+              <button class="ai-action-btn primary-action" onclick="copyOutput('monitoring')">📋 コピー</button>
+              <button class="ai-action-btn" onclick="printOutput('monitoring')">🖨️ 印刷</button>
+              <button class="ai-action-btn" onclick="clearOutput('monitoring')">🗑️ クリア</button>
+            </div>
+          </div>
+          <div class="ai-output-box" id="output-box-monitoring"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================
+         ⑤ 看護記録・サマリー
+    ====================================================== -->
+    <div class="ai-panel" id="panel-nursing_report">
+      <div class="ai-guide">
+        <strong>🩺 看護記録・看護サマリー（訪問看護）</strong><br>
+        訪問看護の記録（経過記録・看護サマリー）を生成します。SOAP形式または叙述体に対応。病院・施設への情報提供書としても活用できます。
+        <span class="model-badge quality" style="margin-left:0.4rem;">高品質モード</span>
+      </div>
+      <div class="ai-form" style="margin-top:1rem;">
+        <div class="ai-row">
+          <div class="ai-field">
+            <label class="ai-label">記録の種類 <span class="req">必須</span></label>
+            <div class="ai-radio-group">
+              <label><input type="radio" name="nr-type" value="SOAP形式の経過記録" checked><span>SOAP経過記録</span></label>
+              <label><input type="radio" name="nr-type" value="看護サマリー（退院・転院時）"><span>看護サマリー</span></label>
+              <label><input type="radio" name="nr-type" value="情報提供書（病院・施設向け）"><span>情報提供書</span></label>
+            </div>
+          </div>
+          <div class="ai-field">
+            <label class="ai-label">年齢・性別・主傷病 <span class="req">必須</span></label>
+            <input class="ai-input" id="nr-patient" type="text" placeholder="例：72歳・女性・脳梗塞後遺症（左片麻痺）、高血圧症">
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">バイタルサイン・身体所見 <span class="req">必須</span></label>
+          <div class="ai-row">
+            <input class="ai-input" id="nr-bp" type="text" placeholder="血圧 例：142/88 mmHg">
+            <input class="ai-input" id="nr-pulse" type="text" placeholder="脈拍 例：72回/分・整">
+            <input class="ai-input" id="nr-temp" type="text" placeholder="体温 例：36.4℃">
+            <input class="ai-input" id="nr-spo2" type="text" placeholder="SpO2 例：97%（室内気）">
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">今回の訪問の主な観察・処置 <span class="req">必須</span></label>
+          <textarea class="ai-textarea" id="nr-observation" placeholder="例：褥瘡処置（仙骨部 2×3cm、深さII度、浸出液少量、ポリウレタンフォーム交換）。左下肢浮腫軽度あり。関節可動域訓練実施。家族（長女）に体位変換の指導。"></textarea>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">本人・家族の訴え・様子</label>
+          <textarea class="ai-textarea" id="nr-subj" placeholder="例：（本人）「腰の痛みは昨日より少し楽」（長女）「夜間の介護が疲れてきた。ショートステイを使いたい」" style="min-height:70px;"></textarea>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">看護問題・評価・次回の計画</label>
+          <textarea class="ai-textarea" id="nr-plan" placeholder="例：【問題】褥瘡悪化リスク継続、介護者負担増大&#10;【評価】創部は改善傾向。家族の疲弊サインあり。&#10;【計画】次回はMSWと連携してショートステイ導入を検討。ケアマネへ報告予定。" style="min-height:80px;"></textarea>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">利用中のサービス・処方薬</label>
+          <input class="ai-input" id="nr-meds" type="text" placeholder="例：アムロジピン5mg、ワーファリン2mg、アリセプト5mg。ヘルパー週3回、デイサービス週2回">
+        </div>
+        <button class="ai-generate-btn" onclick="generateAI('nursing_report')">
+          <span class="btn-icon">✨</span>
+          <div class="spinner"></div>
+          看護記録を生成する
+        </button>
+        <div class="ai-output-wrap" id="output-nursing_report">
+          <div class="ai-output-header">
+            <div class="ai-output-title">📄 生成結果 <span class="model-badge quality">高品質</span></div>
+            <div class="ai-output-actions">
+              <button class="ai-action-btn primary-action" onclick="copyOutput('nursing_report')">📋 コピー</button>
+              <button class="ai-action-btn" onclick="printOutput('nursing_report')">🖨️ 印刷</button>
+              <button class="ai-action-btn" onclick="clearOutput('nursing_report')">🗑️ クリア</button>
+            </div>
+          </div>
+          <div class="ai-output-box" id="output-box-nursing_report"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================
+         ⑥ 加算算定チェッカー
+    ====================================================== -->
+    <div class="ai-panel" id="panel-kasan_check">
+      <div class="ai-guide">
+        <strong>💰 加算算定チェッカー</strong><br>
+        事業所の状況を入力すると、算定可能な加算・未算定の加算・算定要件の不足点を診断します。報酬改定にも対応。
+        <span class="model-badge fast" style="margin-left:0.4rem;">高速モード</span>
+      </div>
+      <div class="ai-form" style="margin-top:1rem;">
+        <div class="ai-field">
+          <label class="ai-label">事業所種別 <span class="req">必須</span></label>
+          <div class="ai-checkbox-group" id="kc-service">
+            <label><input type="checkbox" value="訪問看護"><span>🩺 訪問看護</span></label>
+            <label><input type="checkbox" value="居宅介護" checked><span>🏠 居宅介護</span></label>
+            <label><input type="checkbox" value="同行援護"><span>🚶 同行援護</span></label>
+            <label><input type="checkbox" value="行動援護"><span>🤝 行動援護</span></label>
+            <label><input type="checkbox" value="重度訪問介護"><span>🛏️ 重度訪問介護</span></label>
+            <label><input type="checkbox" value="就労継続A型"><span>🏢 就労継続A型</span></label>
+            <label><input type="checkbox" value="就労継続B型"><span>🏭 就労継続B型</span></label>
+            <label><input type="checkbox" value="相談支援"><span>💬 相談支援</span></label>
+          </div>
+        </div>
+        <div class="ai-section-divider"><span>スタッフ状況</span></div>
+        <div class="ai-row">
+          <div class="ai-field">
+            <label class="ai-label">管理者・サビ管・サ責の資格</label>
+            <textarea class="ai-textarea" id="kc-staff" placeholder="例：サービス管理責任者1名（実務経験8年・研修修了）、サービス提供責任者2名（介護福祉士・ホームヘルパー2級各1名）、訪問介護員5名" style="min-height:70px;"></textarea>
+          </div>
+          <div class="ai-field">
+            <label class="ai-label">特定の資格保有者</label>
+            <div class="ai-checkbox-group" id="kc-qualification">
+              <label><input type="checkbox" value="社会福祉士"><span>社会福祉士</span></label>
+              <label><input type="checkbox" value="精神保健福祉士"><span>精神保健福祉士</span></label>
+              <label><input type="checkbox" value="作業療法士"><span>作業療法士</span></label>
+              <label><input type="checkbox" value="就労支援員"><span>就労支援員</span></label>
+              <label><input type="checkbox" value="強度行動障害支援者養成研修修了"><span>強度行動障害支援研修</span></label>
+              <label><input type="checkbox" value="喀痰吸引等研修修了"><span>喀痰吸引等研修</span></label>
+              <label><input type="checkbox" value="同行援護従業者養成研修"><span>同行援護従業者研修</span></label>
+              <label><input type="checkbox" value="行動援護従業者養成研修"><span>行動援護従業者研修</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="ai-section-divider"><span>体制・取り組み</span></div>
+        <div class="ai-field">
+          <label class="ai-label">現在取り組んでいること（チェック）</label>
+          <div class="ai-checkbox-group" id="kc-initiatives">
+            <label><input type="checkbox" value="BCPを策定している"><span>BCP策定済み</span></label>
+            <label><input type="checkbox" value="虐待防止委員会を設置している"><span>虐待防止委員会</span></label>
+            <label><input type="checkbox" value="身体拘束廃止委員会を設置している"><span>身体拘束廃止委員会</span></label>
+            <label><input type="checkbox" value="感染症対策委員会を設置している"><span>感染症対策委員会</span></label>
+            <label><input type="checkbox" value="ICTを活用した記録システムを導入している"><span>ICT記録システム</span></label>
+            <label><input type="checkbox" value="カンファレンスを月1回以上実施している"><span>月1回以上カンファレンス</span></label>
+            <label><input type="checkbox" value="処遇改善加算を算定している"><span>処遇改善加算算定中</span></label>
+            <label><input type="checkbox" value="福祉専門職員配置等加算を算定している"><span>福祉専門職員配置加算</span></label>
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">現在の利用者状況</label>
+          <textarea class="ai-textarea" id="kc-users" placeholder="例：利用者15名。うち区分4以上が8名。医療的ケア利用者3名。重度障害者（区分5〜6）が5名。就労移行実績が過去1年で2名。平均工賃が15,000円/月。" style="min-height:70px;"></textarea>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">その他・特記事項</label>
+          <textarea class="ai-textarea" id="kc-other" placeholder="例：処遇改善加算はⅠを算定中。送迎は事業所マイクロバスで実施。医師との連携で主治医連絡加算を一部算定。" style="min-height:60px;"></textarea>
+        </div>
+        <button class="ai-generate-btn" onclick="generateAI('kasan_check')">
+          <span class="btn-icon">💰</span>
+          <div class="spinner"></div>
+          加算算定を診断する
+        </button>
+        <div class="ai-output-wrap" id="output-kasan_check">
+          <div class="ai-output-header">
+            <div class="ai-output-title">💰 加算診断結果 <span class="model-badge fast">高速</span></div>
+            <div class="ai-output-actions">
+              <button class="ai-action-btn primary-action" onclick="copyOutput('kasan_check')">📋 コピー</button>
+              <button class="ai-action-btn" onclick="clearOutput('kasan_check')">🗑️ クリア</button>
+            </div>
+          </div>
+          <div class="ai-output-box" id="output-box-kasan_check"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================
+         ⑦ 請求エラーチェック
+    ====================================================== -->
+    <div class="ai-panel" id="panel-claim_check">
+      <div class="ai-guide">
+        <strong>📋 請求エラーチェッカー</strong><br>
+        請求データや算定根拠を入力すると、返戻・過誤請求につながりやすいエラーを検出します。国保連審査の観点から指摘します。
+        <span class="model-badge fast" style="margin-left:0.4rem;">高速モード</span>
+      </div>
+      <div class="ai-form" style="margin-top:1rem;">
+        <div class="ai-row">
+          <div class="ai-field">
+            <label class="ai-label">サービス種別 <span class="req">必須</span></label>
+            <select class="ai-select" id="cc-service">
+              <option value="訪問看護">訪問看護</option>
+              <option value="居宅介護">居宅介護</option>
+              <option value="同行援護">同行援護</option>
+              <option value="行動援護">行動援護</option>
+              <option value="重度訪問介護">重度訪問介護</option>
+              <option value="就労継続支援A型">就労継続支援A型</option>
+              <option value="就労継続支援B型">就労継続支援B型</option>
+              <option value="相談支援">相談支援</option>
+            </select>
+          </div>
+          <div class="ai-field">
+            <label class="ai-label">対象月</label>
+            <input class="ai-input" id="cc-month" type="month">
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">算定した加算・単位数の内容 <span class="req">必須</span></label>
+          <textarea class="ai-textarea" id="cc-claims" placeholder="例：&#10;・基本報酬：居宅介護（身体介護1時間）× 20回 = 3,260単位×20&#10;・処遇改善加算Ⅰ：上乗せ算定&#10;・福祉専門職員配置等加算Ⅰ（社会福祉士常勤1名）&#10;・重度障害者支援加算（区分6・支援計画あり）"></textarea>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">人員体制・算定根拠</label>
+          <textarea class="ai-textarea" id="cc-basis" placeholder="例：サービス提供責任者：常勤1名（介護福祉士）。訪問介護員：常勤換算3.0以上。特定事業所加算の算定なし。社会福祉士は常勤で週40時間勤務。" style="min-height:70px;"></textarea>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">気になる点・エラーが出た内容</label>
+          <textarea class="ai-textarea" id="cc-concern" placeholder="例：先月、重度障害者支援加算で返戻が来た。支援計画は作成していたが、添付漏れだったかもしれない。今月は同じ状況で算定しようとしている。" style="min-height:70px;"></textarea>
+        </div>
+        <button class="ai-generate-btn" onclick="generateAI('claim_check')">
+          <span class="btn-icon">📋</span>
+          <div class="spinner"></div>
+          請求エラーを診断する
+        </button>
+        <div class="ai-output-wrap" id="output-claim_check">
+          <div class="ai-output-header">
+            <div class="ai-output-title">📋 請求診断結果 <span class="model-badge fast">高速</span></div>
+            <div class="ai-output-actions">
+              <button class="ai-action-btn primary-action" onclick="copyOutput('claim_check')">📋 コピー</button>
+              <button class="ai-action-btn" onclick="clearOutput('claim_check')">🗑️ クリア</button>
+            </div>
+          </div>
+          <div class="ai-output-box" id="output-box-claim_check"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================
+         ⑧ 法令要約・Q&A
+    ====================================================== -->
+    <div class="ai-panel" id="panel-law_summary">
+      <div class="ai-guide">
+        <strong>⚖️ 法令要約・Q&Aアシスタント</strong><br>
+        障害福祉・訪問看護の法令・通知・解釈について分かりやすく解説します。実地指導対策・疑問点の解消に活用できます。
+        <span class="model-badge fast" style="margin-left:0.4rem;">高速モード</span>
+      </div>
+      <div class="ai-form" style="margin-top:1rem;">
+        <div class="ai-field">
+          <label class="ai-label">質問の種類</label>
+          <div class="ai-radio-group">
+            <label><input type="radio" name="ls-type" value="法令・通知の要約" checked><span>法令・通知の要約</span></label>
+            <label><input type="radio" name="ls-type" value="実務上の疑問・Q&A"><span>実務上のQ&A</span></label>
+            <label><input type="radio" name="ls-type" value="実地指導・監査対策"><span>実地指導・監査対策</span></label>
+            <label><input type="radio" name="ls-type" value="算定要件の確認"><span>算定要件の確認</span></label>
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">関係するサービス・法令分野 <span class="req">必須</span></label>
+          <div class="ai-checkbox-group" id="ls-area">
+            <label><input type="checkbox" value="障害者総合支援法"><span>障害者総合支援法</span></label>
+            <label><input type="checkbox" value="訪問看護・医療保険"><span>訪問看護・医療保険</span></label>
+            <label><input type="checkbox" value="指定基準省令"><span>指定基準省令</span></label>
+            <label><input type="checkbox" value="報酬告示・解釈通知"><span>報酬告示・解釈通知</span></label>
+            <label><input type="checkbox" value="処遇改善加算"><span>処遇改善加算</span></label>
+            <label><input type="checkbox" value="BCP・感染症対策"><span>BCP・感染症対策</span></label>
+            <label><input type="checkbox" value="個人情報・記録管理"><span>個人情報・記録管理</span></label>
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">質問内容 <span class="req">必須</span></label>
+          <textarea class="ai-textarea" id="ls-question" placeholder="例：就労継続支援B型の送迎加算について教えてください。算定要件と、事業所で注意すべき点を知りたいです。&#10;&#10;または：先日の実地指導で「モニタリングの頻度が足りない」と指摘されました。居宅介護の計画相談モニタリングは何ヶ月に1回実施が必要ですか？" style="min-height:100px;"></textarea>
+          <div class="char-counter" id="ls-question-count">0字</div>
+        </div>
+        <button class="ai-generate-btn" onclick="generateAI('law_summary')">
+          <span class="btn-icon">⚖️</span>
+          <div class="spinner"></div>
+          法令・Q&Aを調べる
+        </button>
+        <div class="ai-output-wrap" id="output-law_summary">
+          <div class="ai-output-header">
+            <div class="ai-output-title">⚖️ 回答 <span class="model-badge fast">高速</span></div>
+            <div class="ai-output-actions">
+              <button class="ai-action-btn primary-action" onclick="copyOutput('law_summary')">📋 コピー</button>
+              <button class="ai-action-btn" onclick="clearOutput('law_summary')">🗑️ クリア</button>
+            </div>
+          </div>
+          <div class="ai-output-box" id="output-box-law_summary"></div>
+          <div class="ai-notice" style="margin-top:0.75rem;">
+            <span>⚠️</span>
+            <span>AI回答は参考情報です。法令・通知は改定されることがあります。実際の運営判断は厚生労働省・都道府県の最新情報をご確認ください。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================
+         ⑨ 事故報告書
+    ====================================================== -->
+    <div class="ai-panel" id="panel-incident_docs">
+      <div class="ai-guide">
+        <strong>⚡ 事故・ヒヤリハット報告書</strong><br>
+        事故の状況を入力すると、報告書・再発防止策・行政報告用文書を自動生成します。5W1H・因果分析・対策立案まで対応。
+        <span class="model-badge fast" style="margin-left:0.4rem;">高速モード</span>
+      </div>
+      <div class="ai-form" style="margin-top:1rem;">
+        <div class="ai-row">
+          <div class="ai-field">
+            <label class="ai-label">事故の種類 <span class="req">必須</span></label>
+            <select class="ai-select" id="inc-type">
+              <option value="転倒・転落">転倒・転落</option>
+              <option value="誤薬">誤薬</option>
+              <option value="誤嚥・窒息">誤嚥・窒息</option>
+              <option value="離設・行方不明">離設・行方不明</option>
+              <option value="送迎中の事故">送迎中の事故</option>
+              <option value="利用者間トラブル">利用者間トラブル</option>
+              <option value="スタッフによる不適切対応">スタッフによる不適切対応</option>
+              <option value="ヒヤリハット">ヒヤリハット</option>
+              <option value="その他">その他</option>
+            </select>
+          </div>
+          <div class="ai-field">
+            <label class="ai-label">レベル（重傷度）</label>
+            <div class="ai-radio-group">
+              <label><input type="radio" name="inc-level" value="ヒヤリハット（無傷）" checked><span>ヒヤリ</span></label>
+              <label><input type="radio" name="inc-level" value="軽症（治療不要）"><span>軽症</span></label>
+              <label><input type="radio" name="inc-level" value="中等症（医療機関受診）"><span>中等症</span></label>
+              <label><input type="radio" name="inc-level" value="重症（入院）"><span>重症</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="ai-row">
+          <div class="ai-field">
+            <label class="ai-label">発生日時・場所</label>
+            <input class="ai-input" id="inc-when" type="text" placeholder="例：2026年5月15日（木）14:30頃、食堂にて">
+          </div>
+          <div class="ai-field">
+            <label class="ai-label">当時のスタッフ状況</label>
+            <input class="ai-input" id="inc-staff" type="text" placeholder="例：スタッフ2名で利用者10名を対応中。Aさんは他の利用者の介助中。">
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">事故の状況・経緯 <span class="req">必須</span></label>
+          <textarea class="ai-textarea" id="inc-situation" placeholder="例：昼食後、Aさん（70代・要介護2・転倒リスクあり）がトイレへ向かおうとした際、スリッパが脱げかかった状態で廊下を歩き、滑って転倒した。スタッフが気づき声をかけたが間に合わなかった。右膝に擦過傷あり。本人は「痛くない」と言っているが、右膝に発赤あり。"></textarea>
+        </div>
+        <div class="ai-row">
+          <div class="ai-field">
+            <label class="ai-label">発見者・初期対応</label>
+            <textarea class="ai-textarea" id="inc-response" placeholder="例：B職員が発見。バイタル確認（BP134/82、P78、SpO2 98%）。管理者へ報告。本人・家族へ説明。受診は家族と相談の上翌日に。" style="min-height:70px;"></textarea>
+          </div>
+          <div class="ai-field">
+            <label class="ai-label">当事者の状況（障害・リスク因子）</label>
+            <textarea class="ai-textarea" id="inc-person" placeholder="例：脳梗塞後遺症（右片麻痺）、要介護2、転倒歴3ヶ月前に1回あり、抗凝固薬服用中。" style="min-height:70px;"></textarea>
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">報告書の目的 <span class="req">必須</span></label>
+          <div class="ai-checkbox-group" id="inc-purpose">
+            <label><input type="checkbox" value="社内報告・記録" checked><span>社内記録</span></label>
+            <label><input type="checkbox" value="行政（都道府県・市区町村）への報告"><span>行政報告</span></label>
+            <label><input type="checkbox" value="家族への説明文書"><span>家族説明</span></label>
+            <label><input type="checkbox" value="再発防止策の立案"><span>再発防止策</span></label>
+          </div>
+        </div>
+        <button class="ai-generate-btn" onclick="generateAI('incident_docs')">
+          <span class="btn-icon">⚡</span>
+          <div class="spinner"></div>
+          事故報告書を生成する
+        </button>
+        <div class="ai-output-wrap" id="output-incident_docs">
+          <div class="ai-output-header">
+            <div class="ai-output-title">⚡ 生成結果 <span class="model-badge fast">高速</span></div>
+            <div class="ai-output-actions">
+              <button class="ai-action-btn primary-action" onclick="copyOutput('incident_docs')">📋 コピー</button>
+              <button class="ai-action-btn" onclick="printOutput('incident_docs')">🖨️ 印刷</button>
+              <button class="ai-action-btn" onclick="clearOutput('incident_docs')">🗑️ クリア</button>
+            </div>
+          </div>
+          <div class="ai-output-box" id="output-box-incident_docs"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================
+         ⑩ 工賃向上計画
+    ====================================================== -->
+    <div class="ai-panel" id="panel-wage_plan">
+      <div class="ai-guide">
+        <strong>💴 工賃向上計画（就労継続支援B型）</strong><br>
+        都道府県知事へ提出する工賃向上計画書（年度計画・実績報告）の下書きを生成します。目標工賃達成加算の算定要件も確認できます。
+        <span class="model-badge quality" style="margin-left:0.4rem;">高品質モード</span>
+      </div>
+      <div class="ai-form" style="margin-top:1rem;">
+        <div class="ai-row">
+          <div class="ai-field">
+            <label class="ai-label">事業所の作業種別 <span class="req">必須</span></label>
+            <div class="ai-checkbox-group" id="wp-work">
+              <label><input type="checkbox" value="農業・園芸"><span>農業・園芸</span></label>
+              <label><input type="checkbox" value="食品加工・製造"><span>食品加工</span></label>
+              <label><input type="checkbox" value="クリーニング・清掃"><span>清掃・クリーニング</span></label>
+              <label><input type="checkbox" value="縫製・ハンドメイド"><span>縫製・ハンドメイド</span></label>
+              <label><input type="checkbox" value="データ入力・事務"><span>データ入力</span></label>
+              <label><input type="checkbox" value="梱包・軽作業"><span>梱包・軽作業</span></label>
+              <label><input type="checkbox" value="カフェ・飲食"><span>カフェ・飲食</span></label>
+              <label><input type="checkbox" value="印刷・製本"><span>印刷・製本</span></label>
+              <label><input type="checkbox" value="ECサイト販売"><span>EC販売</span></label>
+            </div>
+          </div>
+          <div class="ai-field">
+            <label class="ai-label">現在の工賃状況 <span class="req">必須</span></label>
+            <div class="ai-row-3">
+              <div>
+                <div style="font-size:0.72rem;color:var(--text-mid);margin-bottom:0.2rem;">平均月額工賃</div>
+                <input class="ai-input" id="wp-wage-now" type="text" placeholder="例：12,500円">
+              </div>
+              <div>
+                <div style="font-size:0.72rem;color:var(--text-mid);margin-bottom:0.2rem;">目標月額工賃</div>
+                <input class="ai-input" id="wp-wage-target" type="text" placeholder="例：16,000円">
+              </div>
+              <div>
+                <div style="font-size:0.72rem;color:var(--text-mid);margin-bottom:0.2rem;">計画年度</div>
+                <input class="ai-input" id="wp-year" type="text" placeholder="例：2026年度">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">利用者数・稼働状況 <span class="req">必須</span></label>
+          <textarea class="ai-textarea" id="wp-users" placeholder="例：利用者登録20名・平均稼働15名・平均稼働率75%。日平均利用者10名。作業時間：1日4時間×5日。" style="min-height:70px;"></textarea>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">現在の取り組み・販路</label>
+          <textarea class="ai-textarea" id="wp-current" placeholder="例：地域のスーパー2店舗に農産物を週3回納入。Creemaでハンドメイド販売（月売上2万円程度）。近隣企業から年賀状印刷を受注。" style="min-height:70px;"></textarea>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">課題・強み</label>
+          <textarea class="ai-textarea" id="wp-challenges" placeholder="例：【課題】品質にばらつきがある。販路が少ない。繁忙期と閑散期の差が大きい。&#10;【強み】丁寧な作業。地元農家と連携できる。施設が駅近で集客しやすい。" style="min-height:70px;"></textarea>
+        </div>
+        <button class="ai-generate-btn" onclick="generateAI('wage_plan')">
+          <span class="btn-icon">💴</span>
+          <div class="spinner"></div>
+          工賃向上計画を生成する
+        </button>
+        <div class="ai-output-wrap" id="output-wage_plan">
+          <div class="ai-output-header">
+            <div class="ai-output-title">💴 生成結果 <span class="model-badge quality">高品質</span></div>
+            <div class="ai-output-actions">
+              <button class="ai-action-btn primary-action" onclick="copyOutput('wage_plan')">📋 コピー</button>
+              <button class="ai-action-btn" onclick="printOutput('wage_plan')">🖨️ 印刷</button>
+              <button class="ai-action-btn" onclick="clearOutput('wage_plan')">🗑️ クリア</button>
+            </div>
+          </div>
+          <div class="ai-output-box" id="output-box-wage_plan"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================
+         ⑪ わかりやすい説明文
+    ====================================================== -->
+    <div class="ai-panel" id="panel-easy_read">
+      <div class="ai-guide">
+        <strong>📖 わかりやすい説明文ジェネレーター</strong><br>
+        専門的な内容をわかりやすい言葉に変換。利用者・家族向けの説明文書、同意書の説明文、サービス案内文などを作成します。
+        <span class="model-badge fast" style="margin-left:0.4rem;">高速モード</span>
+      </div>
+      <div class="ai-form" style="margin-top:1rem;">
+        <div class="ai-field">
+          <label class="ai-label">変換の目的 <span class="req">必須</span></label>
+          <div class="ai-radio-group">
+            <label><input type="radio" name="er-purpose" value="利用者向けのわかりやすい説明文（易しい言葉）" checked><span>利用者向け（易しい言葉）</span></label>
+            <label><input type="radio" name="er-purpose" value="家族・支援者向けの説明文"><span>家族・支援者向け</span></label>
+            <label><input type="radio" name="er-purpose" value="サービス案内・チラシ文"><span>サービス案内・チラシ</span></label>
+            <label><input type="radio" name="er-purpose" value="同意書の説明文（個人情報・サービス内容）"><span>同意書の説明文</span></label>
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">対象読者 <span class="req">必須</span></label>
+          <div class="ai-radio-group">
+            <label><input type="radio" name="er-reader" value="知的障害のある方（小学生レベルの文章）" checked><span>知的障害（小学生レベル）</span></label>
+            <label><input type="radio" name="er-reader" value="精神障害のある方（わかりやすく・でも丁寧に）"><span>精神障害（丁寧・簡潔）</span></label>
+            <label><input type="radio" name="er-reader" value="高齢者・一般の方（大きな文字・ゆっくりした説明）"><span>高齢者・一般</span></label>
+            <label><input type="radio" name="er-reader" value="視覚障害のある方（音声読み上げを意識）"><span>視覚障害（音声対応）</span></label>
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">変換したい内容 <span class="req">必須</span></label>
+          <textarea class="ai-textarea" id="er-content" placeholder="例：個別支援計画の内容説明、サービスの利用ルール、緊急時の対応方法、処遇改善加算について、行動援護のサービス内容、など。&#10;&#10;または、変換したい文章をそのまま貼り付けてください：&#10;&#10;「個別支援計画書とは、障害福祉サービスの利用者が抱えるニーズを的確に把握し、サービスの適切な提供に資するため、サービス管理責任者が作成する計画書です...」" style="min-height:120px;"></textarea>
+          <div class="char-counter" id="er-content-count">0字</div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">追加の要望 <span class="opt">任意</span></label>
+          <input class="ai-input" id="er-request" type="text" placeholder="例：箇条書きにして、絵文字を使って、ふりがなをつけて、A4一枚に収まるように">
+        </div>
+        <button class="ai-generate-btn" onclick="generateAI('easy_read')">
+          <span class="btn-icon">📖</span>
+          <div class="spinner"></div>
+          わかりやすい文章に変換する
+        </button>
+        <div class="ai-output-wrap" id="output-easy_read">
+          <div class="ai-output-header">
+            <div class="ai-output-title">📖 変換結果 <span class="model-badge fast">高速</span></div>
+            <div class="ai-output-actions">
+              <button class="ai-action-btn primary-action" onclick="copyOutput('easy_read')">📋 コピー</button>
+              <button class="ai-action-btn" onclick="printOutput('easy_read')">🖨️ 印刷</button>
+              <button class="ai-action-btn" onclick="clearOutput('easy_read')">🗑️ クリア</button>
+            </div>
+          </div>
+          <div class="ai-output-box" id="output-box-easy_read"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================
+         ⑫ 人員配置シミュレーション
+    ====================================================== -->
+    <div class="ai-panel" id="panel-staff_sim">
+      <div class="ai-guide">
+        <strong>👥 人員配置シミュレーター</strong><br>
+        スタッフ数・資格・利用者数を入力すると、法定人員基準の適否・加算算定可否・人員不足リスク・採用計画のアドバイスを提示します。
+        <span class="model-badge fast" style="margin-left:0.4rem;">高速モード</span>
+      </div>
+      <div class="ai-form" style="margin-top:1rem;">
+        <div class="ai-field">
+          <label class="ai-label">事業所種別 <span class="req">必須</span></label>
+          <div class="ai-checkbox-group" id="ss-service">
+            <label><input type="checkbox" value="訪問看護" checked><span>🩺 訪問看護</span></label>
+            <label><input type="checkbox" value="居宅介護"><span>🏠 居宅介護</span></label>
+            <label><input type="checkbox" value="同行援護"><span>🚶 同行援護</span></label>
+            <label><input type="checkbox" value="行動援護"><span>🤝 行動援護</span></label>
+            <label><input type="checkbox" value="重度訪問介護"><span>🛏️ 重度訪問介護</span></label>
+            <label><input type="checkbox" value="就労継続A型"><span>🏢 就労継続A型</span></label>
+            <label><input type="checkbox" value="就労継続B型"><span>🏭 就労継続B型</span></label>
+            <label><input type="checkbox" value="相談支援"><span>💬 相談支援</span></label>
+          </div>
+        </div>
+        <div class="ai-section-divider"><span>現在のスタッフ状況</span></div>
+        <div class="ai-field">
+          <label class="ai-label">管理者・責任者 <span class="req">必須</span></label>
+          <textarea class="ai-textarea" id="ss-manager" placeholder="例：&#10;管理者：1名（看護師・常勤・管理専従）&#10;サービス管理責任者：1名（実務経験8年・研修修了・常勤専従）&#10;サービス提供責任者：2名（介護福祉士1名・ホームヘルパー2級1名・常勤）" style="min-height:80px;"></textarea>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">直接支援スタッフ <span class="req">必須</span></label>
+          <textarea class="ai-textarea" id="ss-staff" placeholder="例：&#10;看護師：常勤2名・非常勤1名（週3日）&#10;准看護師：非常勤1名（週2日）&#10;訪問介護員2級：常勤2名・非常勤3名&#10;理学療法士：非常勤1名（週2日）" style="min-height:80px;"></textarea>
+        </div>
+        <div class="ai-section-divider"><span>利用者・稼働状況</span></div>
+        <div class="ai-row-3">
+          <div class="ai-field">
+            <label class="ai-label">登録利用者数 <span class="req">必須</span></label>
+            <input class="ai-input" id="ss-users" type="text" placeholder="例：25名">
+          </div>
+          <div class="ai-field">
+            <label class="ai-label">日平均利用者数</label>
+            <input class="ai-input" id="ss-daily" type="text" placeholder="例：15名">
+          </div>
+          <div class="ai-field">
+            <label class="ai-label">定員</label>
+            <input class="ai-input" id="ss-capacity" type="text" placeholder="例：20名">
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-label">今後の見通し・課題</label>
+          <textarea class="ai-textarea" id="ss-future" placeholder="例：3ヶ月後に利用者を5名増やす予定。スタッフ1名が育児休業取得予定（6月〜）。加算算定拡大も検討中。採用は難航している。" style="min-height:70px;"></textarea>
+        </div>
+        <button class="ai-generate-btn" onclick="generateAI('staff_sim')">
+          <span class="btn-icon">👥</span>
+          <div class="spinner"></div>
+          人員配置を診断する
+        </button>
+        <div class="ai-output-wrap" id="output-staff_sim">
+          <div class="ai-output-header">
+            <div class="ai-output-title">👥 診断結果 <span class="model-badge fast">高速</span></div>
+            <div class="ai-output-actions">
+              <button class="ai-action-btn primary-action" onclick="copyOutput('staff_sim')">📋 コピー</button>
+              <button class="ai-action-btn" onclick="clearOutput('staff_sim')">🗑️ クリア</button>
+            </div>
+          </div>
+          <div class="ai-output-box" id="output-box-staff_sim"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /card -->
+</main>
+
+<footer>
+  <p>障碍者福祉事業所 運営ガイド — AI作成支援</p>
+  <p>※ AI出力は下書きです。最終的な書類は必ず専門家が確認・修正してください。個人情報は入力しないでください。</p>
+</footer>
+
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+<script>
+/* ================================================================
+   AI作成支援 — メインスクリプト
+================================================================ */
+
+// ── タブ切り替え ──────────────────────────────────
+(function(){
+  var tabs = document.querySelectorAll('.ai-tab');
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      var panel = tab.dataset.panel;
+      tabs.forEach(function(t){ t.classList.remove('active'); });
+      tab.classList.add('active');
+      document.querySelectorAll('.ai-panel').forEach(function(p){ p.classList.remove('active'); });
+      var target = document.getElementById('panel-' + panel);
+      if (target) target.classList.add('active');
+    });
+  });
+})();
+
+// ── 文字数カウンター ─────────────────────────────
+(function(){
+  var pairs = [
+    ['ps-hope', 'ps-hope-count'],
+    ['ls-question', 'ls-question-count'],
+    ['er-content', 'er-content-count'],
+  ];
+  pairs.forEach(function(pair) {
+    var el = document.getElementById(pair[0]);
+    var counter = document.getElementById(pair[1]);
+    if (!el || !counter) return;
+    el.addEventListener('input', function() {
+      var n = el.value.length;
+      counter.textContent = n + '字';
+      counter.className = 'char-counter' + (n > 500 ? ' warn' : '');
+    });
+  });
+})();
+
+// ── フォームデータ収集 ────────────────────────────
+function collectFormData(feature) {
+  var data = { feature: feature };
+
+  function val(id) {
+    var el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+  }
+  function radios(name) {
+    var el = document.querySelector('input[name="' + name + '"]:checked');
+    return el ? el.value : '';
+  }
+  function checks(cls) {
+    var els = document.querySelectorAll('.' + cls + ':checked');
+    return Array.from(els).map(function(e){ return e.value; });
+  }
+  function checksById(id) {
+    var container = document.getElementById(id);
+    if (!container) return [];
+    var els = container.querySelectorAll('input[type=checkbox]:checked');
+    return Array.from(els).map(function(e){ return e.value; });
+  }
+
+  if (feature === 'plan_shuro') {
+    data.serviceType = val('ps-type') || document.querySelector('#panel-plan_shuro .ai-select')?.value;
+    data.age = val('ps-age');
+    data.disabilities = checksById('ps-disability');
+    data.diagnosis = val('ps-diagnosis');
+    data.level = radios('ps-level');
+    data.hope = val('ps-hope');
+    data.adl = val('ps-adl');
+    data.work = val('ps-work');
+    data.strengths = val('ps-strengths');
+    data.issues = val('ps-issues');
+    data.medical = val('ps-medical');
+    data.family = val('ps-family');
+    data.period = radios('ps-period');
+  } else if (feature === 'plan_kyotaku') {
+    data.services = checksById('pk-service');
+    data.age = val('pk-age');
+    data.level = val('pk-level');
+    data.diagnosis = val('pk-diagnosis');
+    data.hope = val('pk-hope');
+    data.adl = checks('pk-adl');
+    data.risks = checks('pk-risk');
+    data.riskDetail = val('pk-risk-detail');
+    data.schedule = val('pk-schedule');
+    data.family = val('pk-family');
+    data.medical = val('pk-medical');
+  } else if (feature === 'assessment') {
+    data.service = val('as-service');
+    data.basic = val('as-basic');
+    data.body = val('as-body');
+    data.activity = val('as-activity');
+    data.participation = val('as-participation');
+    data.environment = val('as-environment');
+    data.strengths = val('as-strengths');
+    data.complaint = val('as-complaint');
+    data.other = val('as-other');
+  } else if (feature === 'monitoring') {
+    data.service = val('mn-service');
+    data.period = val('mn-period');
+    data.longGoal = val('mn-long-goal');
+    data.shortGoal = val('mn-short-goal');
+    data.lifeChange = val('mn-life');
+    data.hope = val('mn-hope');
+    data.familyOpinion = val('mn-family-opinion');
+    data.nextPlan = val('mn-next');
+  } else if (feature === 'nursing_report') {
+    data.recordType = radios('nr-type');
+    data.patient = val('nr-patient');
+    data.bp = val('nr-bp');
+    data.pulse = val('nr-pulse');
+    data.temp = val('nr-temp');
+    data.spo2 = val('nr-spo2');
+    data.observation = val('nr-observation');
+    data.subj = val('nr-subj');
+    data.plan = val('nr-plan');
+    data.meds = val('nr-meds');
+  } else if (feature === 'kasan_check') {
+    data.services = checksById('kc-service');
+    data.staff = val('kc-staff');
+    data.qualifications = checksById('kc-qualification');
+    data.initiatives = checksById('kc-initiatives');
+    data.users = val('kc-users');
+    data.other = val('kc-other');
+  } else if (feature === 'claim_check') {
+    data.service = val('cc-service');
+    data.month = val('cc-month');
+    data.claims = val('cc-claims');
+    data.basis = val('cc-basis');
+    data.concern = val('cc-concern');
+  } else if (feature === 'law_summary') {
+    data.qtype = radios('ls-type');
+    data.areas = checksById('ls-area');
+    data.question = val('ls-question');
+  } else if (feature === 'incident_docs') {
+    data.incidentType = val('inc-type');
+    data.level = radios('inc-level');
+    data.when = val('inc-when');
+    data.staffStatus = val('inc-staff');
+    data.situation = val('inc-situation');
+    data.response = val('inc-response');
+    data.person = val('inc-person');
+    data.purpose = checksById('inc-purpose');
+  } else if (feature === 'wage_plan') {
+    data.workTypes = checksById('wp-work');
+    data.wageNow = val('wp-wage-now');
+    data.wageTarget = val('wp-wage-target');
+    data.year = val('wp-year');
+    data.users = val('wp-users');
+    data.current = val('wp-current');
+    data.challenges = val('wp-challenges');
+  } else if (feature === 'easy_read') {
+    data.purpose = radios('er-purpose');
+    data.reader = radios('er-reader');
+    data.content = val('er-content');
+    data.request = val('er-request');
+  } else if (feature === 'staff_sim') {
+    data.services = checksById('ss-service');
+    data.manager = val('ss-manager');
+    data.staff = val('ss-staff');
+    data.users = val('ss-users');
+    data.daily = val('ss-daily');
+    data.capacity = val('ss-capacity');
+    data.future = val('ss-future');
+  }
+
+  return data;
+}
+
+// ── バリデーション ────────────────────────────────
+var REQUIRED_FIELDS = {
+  plan_shuro:    ['age', 'hope'],
+  plan_kyotaku:  ['age', 'diagnosis', 'hope'],
+  assessment:    ['basic', 'body', 'activity', 'complaint'],
+  monitoring:    ['longGoal', 'shortGoal'],
+  nursing_report:['patient', 'observation'],
+  kasan_check:   [],
+  claim_check:   ['claims'],
+  law_summary:   ['question'],
+  incident_docs: ['situation'],
+  wage_plan:     ['wageNow', 'wageTarget'],
+  easy_read:     ['content'],
+  staff_sim:     ['manager', 'staff', 'users'],
+};
+
+function validate(feature, data) {
+  var required = REQUIRED_FIELDS[feature] || [];
+  for (var i = 0; i < required.length; i++) {
+    var key = required[i];
+    var v = data[key];
+    if (!v || (Array.isArray(v) && v.length === 0)) {
+      return '必須項目が入力されていません。';
+    }
+  }
+  return null;
+}
+
+// ── マークダウン → HTML（簡易） ───────────────────
+function renderMarkdown(text) {
+  return text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/^#{3}\s+(.+)$/gm, '<h3>$1</h3>')
+    .replace(/^#{2}\s+(.+)$/gm, '<h2>$1</h2>')
+    .replace(/^#{1}\s+(.+)$/gm, '<h2>$1</h2>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^[-・]\s+(.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>\n?)+/g, function(m){ return '<ul>' + m + '</ul>'; })
+    .replace(/\n{2,}/g, '\n\n')
+    .replace(/\n/g, '<br>');
+}
+
+// ── メイン生成関数 ────────────────────────────────
+function generateAI(feature) {
+  var data = collectFormData(feature);
+
+  var err = validate(feature, data);
+  if (err) {
+    showError(feature, err);
+    return;
+  }
+
+  var outputWrap = document.getElementById('output-' + feature);
+  var outputBox  = document.getElementById('output-box-' + feature);
+  var btn = document.querySelector('#panel-' + feature + ' .ai-generate-btn');
+
+  outputBox.innerHTML = '';
+  outputBox.className = 'ai-output-box streaming stream-cursor';
+  outputWrap.classList.add('visible');
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  var rawText = '';
+
+  fetch('/api/ai/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
+  .then(function(res) {
+    if (!res.ok) {
+      return res.json().then(function(j) { throw new Error(j.error || 'APIエラー: ' + res.status); });
+    }
+    var reader = res.body.getReader();
+    var decoder = new TextDecoder();
+    var buf = '';
+
+    function pump() {
+      return reader.read().then(function(result) {
+        if (result.done) {
+          outputBox.className = 'ai-output-box';
+          outputBox.innerHTML = renderMarkdown(rawText);
+          btn.disabled = false;
+          btn.classList.remove('loading');
+          return;
+        }
+        buf += decoder.decode(result.value, { stream: true });
+        var lines = buf.split('\n');
+        buf = lines.pop();
+        lines.forEach(function(line) {
+          if (!line.startsWith('data: ')) return;
+          var payload = line.slice(6).trim();
+          if (payload === '[DONE]') return;
+          try {
+            var obj = JSON.parse(payload);
+            var delta = obj.delta && obj.delta.text ? obj.delta.text : '';
+            if (delta) {
+              rawText += delta;
+              outputBox.textContent = rawText;
+              outputBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          } catch(e) {}
+        });
+        return pump();
+      });
+    }
+    return pump();
+  })
+  .catch(function(e) {
+    outputBox.className = 'ai-output-box';
+    outputBox.innerHTML = '<div class="ai-error">⚠️ ' + (e.message || 'エラーが発生しました') + '</div>';
+    btn.disabled = false;
+    btn.classList.remove('loading');
+  });
+}
+
+function showError(feature, msg) {
+  var outputWrap = document.getElementById('output-' + feature);
+  var outputBox  = document.getElementById('output-box-' + feature);
+  outputBox.className = 'ai-output-box';
+  outputBox.innerHTML = '<div class="ai-error">⚠️ ' + msg + '</div>';
+  outputWrap.classList.add('visible');
+}
+
+// ── コピー ────────────────────────────────────────
+function copyOutput(feature) {
+  var box = document.getElementById('output-box-' + feature);
+  var text = box.innerText || box.textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = box.closest('.ai-output-wrap').querySelector('.primary-action');
+    var orig = btn.textContent;
+    btn.textContent = '✅ コピーしました';
+    setTimeout(function(){ btn.textContent = orig; }, 2000);
+  });
+}
+
+// ── 印刷 ─────────────────────────────────────────
+function printOutput(feature) {
+  var box = document.getElementById('output-box-' + feature);
+  var win = window.open('', '_blank');
+  win.document.write([
+    '<!DOCTYPE html><html lang="ja"><head>',
+    '<meta charset="UTF-8">',
+    '<title>AI生成書類</title>',
+    '<style>',
+    'body { font-family: "Hiragino Sans","Noto Sans JP",sans-serif; font-size:11pt; line-height:1.8; margin:2cm; color:#111; }',
+    'h2 { font-size:13pt; border-bottom:2px solid #ccc; padding-bottom:4px; margin-top:1.5em; }',
+    'h3 { font-size:11pt; margin-top:1em; }',
+    'ul { margin-left:1.5em; }',
+    'strong { font-weight:bold; }',
+    '@media print { body { margin:1cm; } }',
+    '</style></head><body>',
+    box.innerHTML,
+    '</body></html>',
+  ].join(''));
+  win.document.close();
+  win.focus();
+  setTimeout(function(){ win.print(); }, 500);
+}
+
+// ── クリア ────────────────────────────────────────
+function clearOutput(feature) {
+  document.getElementById('output-box-' + feature).innerHTML = '';
+  document.getElementById('output-' + feature).classList.remove('visible');
+}
+
+// ── 評価 ─────────────────────────────────────────
+function rateOutput(feature, type) {
+  var msg = type === 'good' ? '👍 フィードバックありがとうございます！' : '👎 改善のフィードバックをありがとうございます。';
+  var ratingEl = document.querySelector('#output-' + feature + ' .ai-rating');
+  if (ratingEl) ratingEl.innerHTML = '<span style="color:var(--text-mid);font-size:0.78rem;">' + msg + '</span>';
+}
+</script>
+</body>
+</html>
