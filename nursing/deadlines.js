@@ -93,9 +93,9 @@
     var el = document.getElementById('deadline-widget');
     if (!el) return;
 
-    var items = getUpcoming(45);
+    var items = getUpcoming(10);
     if (items.length === 0) {
-      el.innerHTML = '<div class="dl-widget-empty">今後45日以内に迫った締切はありません ✅</div>';
+      el.innerHTML = '<div class="dl-widget-empty">今後10日以内に迫った締切はありません ✅</div>';
       return;
     }
 
