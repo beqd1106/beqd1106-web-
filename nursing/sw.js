@@ -2,7 +2,7 @@
    Service Worker — 障碍者福祉事業所 運営ガイド
    キャッシュファーストで主要リソースをオフライン対応する
 ================================================================ */
-const CACHE_NAME = 'fukushi-guide-v1';
+const CACHE_NAME = 'fukushi-guide-v5';
 
 // オフラインでも使えるようにキャッシュするファイル
 const PRECACHE = [
@@ -15,8 +15,6 @@ const PRECACHE = [
   '/nursing/table-responsive.js',
   '/nursing/search.js',
   '/nursing/search-data.js',
-  '/nursing/checklist.js',
-  '/nursing/simulator.js',
   '/nursing/deadlines.js',
   '/nursing/01_法令・制度.html',
   '/nursing/02_必要書類.html',
@@ -30,6 +28,10 @@ const PRECACHE = [
   '/nursing/10_収入向上.html',
   '/nursing/11_年間スケジュール.html',
   '/nursing/12_QA.html',
+  '/nursing/13_障害介護サービス.html',
+  '/nursing/14_AI作成支援.html',
+  '/nursing/15_データ管理.html',
+  '/nursing/16_実地指導チェックリスト.html',
   '/nursing/フォーマット/index.html',
 ];
 
@@ -65,18 +67,22 @@ self.addEventListener('fetch', function (event) {
   if (!url.startsWith(self.location.origin)) return;
 
   var isHTML = event.request.destination === 'document';
+  // news.js / deadlines.js は常に最新を取得（キャッシュしない）
+  var isLiveData = /\/(news|deadlines)\.js/.test(url);
 
   event.respondWith(
-    isHTML
-      // HTMLはネットワーク優先（最新コンテンツ）、失敗時はキャッシュ
+    (isHTML || isLiveData)
+      // HTML・動的JSはネットワーク優先、失敗時はキャッシュ
       ? fetch(event.request).then(function (res) {
-          var clone = res.clone();
-          caches.open(CACHE_NAME).then(function (c) { c.put(event.request, clone); });
+          if (!isLiveData) {
+            var clone = res.clone();
+            caches.open(CACHE_NAME).then(function (c) { c.put(event.request, clone); });
+          }
           return res;
         }).catch(function () {
           return caches.match(event.request);
         })
-      // JS/CSS/画像はキャッシュ優先
+      // CSS/その他JSは キャッシュ優先
       : caches.match(event.request).then(function (cached) {
           return cached || fetch(event.request).then(function (res) {
             var clone = res.clone();
