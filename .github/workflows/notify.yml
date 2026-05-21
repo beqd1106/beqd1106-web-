@@ -1,0 +1,39 @@
+name: 締切・期限通知メール
+
+on:
+  schedule:
+    # 毎朝 9:00 JST（00:00 UTC）
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    # GitHub Actions タブから手動送信も可能
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run notification script
+        env:
+          NOTIFY_EMAIL:       ${{ secrets.NOTIFY_EMAIL }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          GMAIL_FROM:         ${{ secrets.GMAIL_FROM }}
+          RENDER_API_URL:     ${{ secrets.RENDER_API_URL }}
+          SPREADSHEET_ID:     ${{ secrets.SPREADSHEET_ID }}
+        run: python nursing/scripts/notify.py
+
+      - name: Summary
+        run: |
+          echo "## 📬 通知結果" >> $GITHUB_STEP_SUMMARY
+          echo "実行日時: $(TZ=Asia/Tokyo date +'%Y-%m-%d %H:%M JST')" >> $GITHUB_STEP_SUMMARY

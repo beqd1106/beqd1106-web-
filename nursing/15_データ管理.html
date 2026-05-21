@@ -179,6 +179,7 @@
     <a href="12_QA.html">❓ Q&amp;A</a>
     <a href="14_AI作成支援.html">✨ AI支援</a>
     <a href="15_データ管理.html" class="active" style="background:var(--blk-mint);color:var(--success);">📊 データ</a>
+    <a href="16_実地指導チェックリスト.html" style="color:#B71C1C;font-weight:600;">✅ 指導</a>
     <a href="フォーマット/index.html">📁 様式DL</a>
   </nav>
 </header>
@@ -211,6 +212,7 @@
     <button class="dm-tab" data-panel="monthly">📅 月次データ入力</button>
     <button class="dm-tab" data-panel="users">👥 利用者一覧</button>
     <button class="dm-tab" data-panel="additions">💰 加算管理</button>
+    <button class="dm-tab" data-panel="staff">👤 スタッフ管理</button>
     <button class="dm-tab" data-panel="setup">⚙️ 設定</button>
   </div>
 
@@ -537,6 +539,74 @@
     </div>
   </div>
 
+
+  <!-- スタッフ管理 -->
+  <div class="dm-panel" id="panel-staff">
+    <div class="card">
+      <div class="section-header" style="margin-bottom:1rem;">
+        <span class="icon">👤</span>
+        <h2>スタッフ管理 <span class="section-badge badge-sheets">Google Sheets</span></h2>
+      </div>
+      <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:1rem;">
+        資格有効期限が90日以内→オレンジ、30日以内→赤でアラート表示します。
+      </p>
+      <div class="dm-form">
+        <div class="dm-row">
+          <div class="dm-field"><label class="dm-label">スタッフID</label><input class="dm-input" id="st-id" placeholder="例：ST001"></div>
+          <div class="dm-field"><label class="dm-label">職種・役職</label>
+            <select class="dm-select" id="st-role">
+              <option>管理者</option><option>サービス管理責任者（サビ管）</option>
+              <option>サービス提供責任者（サ責）</option><option>訪問看護師（常勤）</option>
+              <option>訪問看護師（非常勤）</option><option>准看護師</option>
+              <option>理学療法士</option><option>作業療法士</option>
+              <option>訪問介護員</option><option>生活支援員</option>
+              <option>職業指導員</option><option>相談支援専門員</option>
+            </select>
+          </div>
+        </div>
+        <div class="dm-row">
+          <div class="dm-field"><label class="dm-label">雇用形態</label>
+            <select class="dm-select" id="st-type"><option>常勤（専従）</option><option>常勤（兼務）</option><option>非常勤</option></select>
+          </div>
+          <div class="dm-field"><label class="dm-label">週所定労働時間</label><input class="dm-input" type="number" id="st-hours" placeholder="例：40"></div>
+        </div>
+        <div class="dm-row">
+          <div class="dm-field"><label class="dm-label">主な資格</label>
+            <select class="dm-select" id="st-license">
+              <option>介護福祉士</option><option>看護師</option><option>准看護師</option>
+              <option>理学療法士</option><option>作業療法士</option><option>社会福祉士</option>
+              <option>精神保健福祉士</option><option>相談支援専門員研修修了</option>
+              <option>サビ管研修修了</option><option>ホームヘルパー2級</option>
+              <option>行動援護従業者研修修了</option><option>同行援護従業者研修修了</option>
+            </select>
+          </div>
+          <div class="dm-field"><label class="dm-label">資格証有効期限（更新資格のみ）</label><input class="dm-input" type="date" id="st-license-exp"></div>
+        </div>
+        <div class="dm-row">
+          <div class="dm-field"><label class="dm-label">サビ管研修 更新期限</label><input class="dm-input" type="date" id="st-sabikan-exp"></div>
+          <div class="dm-field"><label class="dm-label">入職日</label><input class="dm-input" type="date" id="st-join"></div>
+        </div>
+        <div style="display:flex;gap:0.75rem;align-items:center;">
+          <button class="dm-submit" onclick="saveStaff()">💾 保存</button>
+          <span id="staff-save-msg" style="font-size:0.82rem;color:var(--success);"></span>
+        </div>
+      </div>
+      <div style="margin-top:1.5rem;">
+        <div style="font-size:0.85rem;font-weight:700;color:var(--text-mid);margin-bottom:0.5rem;">
+          スタッフ一覧
+          <button onclick="loadStaff()" style="background:none;border:1px solid var(--border);border-radius:999px;padding:0.15rem 0.6rem;font-size:0.72rem;cursor:pointer;margin-left:0.5rem;">🔄 更新</button>
+        </div>
+        <div class="dm-table-wrap">
+          <table class="dm-table">
+            <thead><tr><th>ID</th><th>職種</th><th>雇用形態</th><th>主な資格</th><th>資格有効期限</th><th>サビ管更新期限</th></tr></thead>
+            <tbody id="staff-tbody"><tr><td colspan="6" style="text-align:center;color:var(--text-light);padding:1.5rem;">読み込み中...</td></tr></tbody>
+          </table>
+        </div>
+        <div id="staff-alerts"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ======================================================
        設定
   ====================================================== -->
@@ -850,11 +920,66 @@ function renderAddTable(rows) {
   }).join('') : '<tr><td colspan="4" style="text-align:center;color:var(--text-light);padding:1.5rem;">データがありません</td></tr>';
 }
 
+
+// スタッフ管理
+function saveStaff() {
+  var id=getSheetId(), msg=document.getElementById('staff-save-msg');
+  var sid=document.getElementById('st-id').value;
+  if (!sid){ msg.textContent='ID必須'; msg.style.color='var(--warning)'; return; }
+  var row=[sid,document.getElementById('st-role').value,document.getElementById('st-type').value,
+    document.getElementById('st-hours').value,document.getElementById('st-license').value,
+    document.getElementById('st-license-exp').value,document.getElementById('st-sabikan-exp').value,
+    document.getElementById('st-join').value];
+  var headers=['ID','職種','雇用形態','週所定時間','主な資格','資格有効期限','サビ管更新期限','入職日'];
+  var saved=JSON.parse(localStorage.getItem('staff_data')||'[]');
+  saved=saved.filter(function(r){return r[0]!==sid;}); saved.unshift(row);
+  localStorage.setItem('staff_data',JSON.stringify(saved));
+  renderStaffTable(saved);
+  msg.textContent='✅ 保存済み'; msg.style.color='var(--success)';
+  if (!id) return;
+  fetch(API_BASE+'/sheets/write',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({spreadsheet_id:id,tab:'スタッフ管理',row:row,headers:headers})});
+}
+function loadStaff() {
+  var saved=JSON.parse(localStorage.getItem('staff_data')||'[]');
+  if(saved.length){renderStaffTable(saved);return;}
+  var id=getSheetId(); if(!id){renderStaffTable([]);return;}
+  fetch(API_BASE+'/sheets/read',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({spreadsheet_id:id,tab:'スタッフ管理'})})
+  .then(function(r){return r.json();})
+  .then(function(d){renderStaffTable((d.data||[]).map(function(r){return Object.values(r);}));})
+  .catch(function(){renderStaffTable([]);});
+}
+function renderStaffTable(rows) {
+  var tbody=document.getElementById('staff-tbody');
+  var today=new Date(); today.setHours(0,0,0,0);
+  var alerts=[];
+  tbody.innerHTML=rows.length ? rows.slice(0,30).map(function(r){
+    return '<tr>'+r.slice(0,6).map(function(v,i){
+      var style='';
+      if((i===4||i===5)&&v){
+        var exp=new Date(v); exp.setHours(0,0,0,0);
+        var diff=Math.round((exp-today)/86400000);
+        if(diff<=30){style='background:#FDE8E8;color:#B71C1C;font-weight:700;'; alerts.push({name:r[0],role:r[1],field:i===4?'資格':'サビ管',exp:v,diff:diff});}
+        else if(diff<=90){style='background:var(--warning-light);color:#7a5a10;font-weight:700;';}
+      }
+      return '<td style="'+style+'">'+(v||'')+'</td>';
+    }).join('')+'</tr>';
+  }).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--text-light);padding:1.5rem;">データがありません</td></tr>';
+  var alertEl=document.getElementById('staff-alerts');
+  if(alerts.length){
+    alertEl.innerHTML='<div style="background:var(--danger-light);border:2px solid var(--danger);border-radius:var(--r-sm);padding:0.75rem 1rem;margin-top:0.75rem;">'+
+      '<div style="font-weight:700;font-size:0.85rem;color:#B71C1C;margin-bottom:0.4rem;">⚠️ 期限切れ間近のスタッフ</div>'+
+      alerts.map(function(a){return '<div style="font-size:0.8rem;padding:0.2rem 0;border-bottom:1px solid #f0c0c0;">'+a.name+'('+a.role+') '+a.field+'：'+a.exp+' <strong>'+(a.diff<=0?'期限切れ！':a.diff+'日後')+'</strong></div>';}).join('')+'</div>';
+  } else { alertEl.innerHTML=''; }
+}
+
 // ── 初期化 ────────────────────────────────────────────────
 checkApiStatus();
 loadMonthlyData();
 loadUsers();
 renderAddTable(JSON.parse(localStorage.getItem('add_data')||'[]'));
+loadStaff();
 </script>
 </body>
 </html>

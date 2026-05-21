@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>実地指導チェックリスト — 障碍者福祉事業所 運営ガイド</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ================================================================
+   実地指導チェックリスト 専用スタイル
+================================================================ */
+.cl-progress-wrap {
+  background:var(--card); border:2px solid var(--border);
+  border-radius:var(--r); padding:1.25rem 1.5rem; margin-bottom:1.5rem;
+}
+.cl-progress-title {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;
+}
+.cl-progress-title h2 { font-size:1.05rem; margin:0; }
+.cl-score {
+  font-size:1.6rem; font-weight:900; color:var(--coral-dark);
+}
+.cl-bar-bg {
+  background:var(--border); border-radius:999px; height:14px;
+  overflow:hidden; margin-bottom:0.4rem;
+}
+.cl-bar {
+  height:100%; border-radius:999px;
+  background:linear-gradient(90deg,var(--coral),var(--success));
+  transition:width 0.4s ease;
+}
+.cl-legend {
+  display:flex; gap:1rem; font-size:0.75rem;
+  color:var(--text-mid); flex-wrap:wrap;
+}
+.cl-legend span { display:flex; align-items:center; gap:0.3rem; }
+
+/* カテゴリ */
+.cl-category { margin-bottom:1.25rem; }
+.cl-category-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0.65rem 1rem; background:var(--coral-light);
+  border-left:5px solid var(--coral); border-radius:0 var(--r-sm) var(--r-sm) 0;
+  cursor:pointer; user-select:none; gap:0.5rem;
+}
+.cl-category-header h3 {
+  font-size:0.92rem; margin:0; color:var(--coral-dark);
+  display:flex; align-items:center; gap:0.5rem;
+}
+.cl-cat-score {
+  font-size:0.78rem; font-weight:700; color:var(--coral-dark);
+  background:#fff; padding:0.15rem 0.6rem; border-radius:999px;
+  white-space:nowrap;
+}
+.cl-category-body { padding:0.5rem 0; display:block; }
+.cl-category.collapsed .cl-category-body { display:none; }
+.cl-chevron { transition:transform 0.2s; font-size:0.8rem; }
+.cl-category.collapsed .cl-chevron { transform:rotate(-90deg); }
+
+/* チェック項目 */
+.cl-item {
+  display:flex; align-items:flex-start; gap:0.75rem;
+  padding:0.6rem 0.75rem; border-radius:var(--r-sm);
+  cursor:pointer; transition:background 0.15s; border-bottom:1px solid var(--border);
+}
+.cl-item:last-child { border-bottom:none; }
+.cl-item:hover { background:var(--coral-light); }
+.cl-item.checked { background:var(--success-light); }
+.cl-item.na { background:var(--blk-sky); opacity:0.7; }
+
+.cl-check {
+  width:22px; height:22px; flex-shrink:0;
+  border:2px solid var(--border); border-radius:6px;
+  display:flex; align-items:center; justify-content:center;
+  margin-top:0.1rem; transition:all 0.15s; background:#fff;
+}
+.cl-item.checked .cl-check {
+  background:var(--success); border-color:var(--success); color:#fff;
+}
+.cl-item.na .cl-check {
+  background:#b0c8d8; border-color:#b0c8d8; color:#fff;
+}
+
+.cl-text { flex:1; }
+.cl-text-main { font-size:0.86rem; color:var(--text); line-height:1.5; }
+.cl-text-sub  { font-size:0.74rem; color:var(--text-mid); margin-top:0.2rem; line-height:1.4; }
+
+.cl-level {
+  font-size:0.63rem; padding:0.1rem 0.4rem; border-radius:999px;
+  font-weight:800; flex-shrink:0; align-self:flex-start; margin-top:0.15rem;
+}
+.level-must    { background:#FDE8E8; color:#B71C1C; }
+.level-warning { background:var(--warning-light); color:#7a5a10; }
+.level-info    { background:var(--info-light); color:#005a8e; }
+
+/* アクションバー */
+.cl-actions {
+  display:flex; gap:0.5rem; flex-wrap:wrap;
+  margin-bottom:1.25rem; align-items:center;
+}
+.cl-btn {
+  padding:0.4rem 1rem; border-radius:999px; font-size:0.8rem;
+  font-weight:700; cursor:pointer; border:2px solid var(--border);
+  background:var(--card); color:var(--text-mid); transition:all 0.15s;
+}
+.cl-btn:hover { border-color:var(--coral-mid); color:var(--coral-dark); }
+.cl-btn.primary { background:var(--coral); border-color:var(--coral); color:#fff; }
+.cl-btn.danger  { background:var(--danger-light); border-color:var(--danger); color:#B71C1C; }
+
+/* 未チェック一覧 */
+.cl-todo-list { margin-top:1rem; }
+.cl-todo-item {
+  display:flex; align-items:flex-start; gap:0.5rem;
+  padding:0.5rem 0.75rem; font-size:0.82rem; border-bottom:1px solid var(--border);
+}
+.cl-todo-badge {
+  font-size:0.63rem; padding:0.1rem 0.4rem; border-radius:999px;
+  font-weight:800; flex-shrink:0; margin-top:0.15rem;
+}
+
+/* 印刷ボタン */
+@media print {
+  .site-header,.site-nav,.page-hero,.cl-actions,.cl-btn { display:none!important; }
+  .cl-item { page-break-inside:avoid; }
+  .cl-category-body { display:block!important; }
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="index.html" class="site-logo">🏥 障碍者福祉 運営ガイド</a>
+  <nav class="site-nav">
+    <a href="index.html">TOP</a>
+    <a href="01_法令・制度.html">⚖️ 法令</a>
+    <a href="02_必要書類.html">📋 書類</a>
+    <a href="03_管理業務.html">📅 管理</a>
+    <a href="04_京都府・手続き.html">🏛️ 京都府</a>
+    <a href="05_請求業務.html">💴 請求</a>
+    <a href="13_障害介護サービス.html">🏠 介護</a>
+    <a href="06_就労継続A型.html">🏢 A型</a>
+    <a href="07_就労継続B型.html">🏭 B型</a>
+    <a href="08_相談支援.html">💬 相談</a>
+    <a href="09_監査対応.html">🔍 監査</a>
+    <a href="10_収入向上.html">📈 収入</a>
+    <a href="11_年間スケジュール.html">📆 年間</a>
+    <a href="12_QA.html">❓ Q&amp;A</a>
+    <a href="14_AI作成支援.html">✨ AI支援</a>
+    <a href="15_データ管理.html" style="color:var(--success);font-weight:600;">📊 データ</a>
+    <a href="16_実地指導チェックリスト.html" class="active" style="color:#B71C1C;font-weight:600;">✅ 指導</a>
+    <a href="フォーマット/index.html">📁 様式DL</a>
+  </nav>
+</header>
+
+<div class="page-hero" style="background:linear-gradient(135deg,#FFF0E0 0%,#FDE8D0 50%,#FFF4E8 100%);">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge" style="background:#FDE8D0;color:#B71C1C;border-color:#F09070;">✅ 実地指導チェックリスト</div>
+      <h1 style="color:#5a1a0a;">実地指導・監査に備える<br>完全チェックリスト</h1>
+      <p style="color:#7a3020;">書類・人員・運営・加算・委員会設置まで<br>75項目を網羅。進捗はLocalStorageに自動保存。</p>
+    </div>
+    <div class="hero-img" style="font-size:5rem;opacity:0.25;">📋</div>
+  </div>
+</div>
+
+<main class="container">
+
+  <!-- 進捗バー -->
+  <div class="cl-progress-wrap">
+    <div class="cl-progress-title">
+      <h2>⏳ 準備状況</h2>
+      <div><span class="cl-score" id="score-pct">0%</span> <span style="font-size:0.82rem;color:var(--text-mid);">（<span id="score-num">0/75</span>項目完了）</span></div>
+    </div>
+    <div class="cl-bar-bg"><div class="cl-bar" id="progress-bar" style="width:0%"></div></div>
+    <div class="cl-legend">
+      <span>🟢 完了（チェック済み）</span>
+      <span>🔲 未完了</span>
+      <span>🔵 該当なし（N/A）</span>
+    </div>
+  </div>
+
+  <!-- アクションバー -->
+  <div class="cl-actions">
+    <button class="cl-btn primary" onclick="window.print()">🖨️ 印刷</button>
+    <button class="cl-btn" onclick="showTodo()">❌ 未完了一覧</button>
+    <button class="cl-btn" onclick="checkAll()">✅ 全てチェック</button>
+    <button class="cl-btn danger" onclick="resetAll()">🗑️ リセット</button>
+    <span id="save-msg" style="font-size:0.78rem;color:var(--success);"></span>
+  </div>
+
+  <!-- チェックリスト本体 -->
+  <div id="checklist"></div>
+
+  <!-- 未完了一覧モーダル -->
+  <div id="todo-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.4);overflow-y:auto;">
+    <div style="background:#fff;max-width:680px;margin:2rem auto;border-radius:var(--r-lg);padding:1.5rem;position:relative;">
+      <button onclick="document.getElementById('todo-modal').style.display='none'"
+              style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.4rem;cursor:pointer;">✕</button>
+      <h2 style="margin:0 0 1rem;color:var(--coral-dark);">❌ 未完了項目一覧</h2>
+      <div id="todo-content"></div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>障碍者福祉事業所 運営ガイド — 実地指導チェックリスト</p>
+  <p>※ チェックリストは参考情報です。実際の指導内容は担当窓口にご確認ください。</p>
+</footer>
+
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+<script>
+/* ================================================================
+   実地指導チェックリスト データ定義
+   level: 'must'=必須(赤) / 'warning'=要注意(黄) / 'info'=推奨(青)
+================================================================ */
+var CHECKLIST = [
+  {
+    id: 'doc', icon: '📄', title: '書類・記録関係',
+    items: [
+      { id:'d01', text:'個別支援計画書が全利用者分作成されている', sub:'サービス管理責任者が作成。本人署名・同意書が添付されている', level:'must' },
+      { id:'d02', text:'個別支援計画の見直し（モニタリング）が定期的に行われている', sub:'就労継続：6ヶ月ごと / 居宅介護：少なくとも6ヶ月ごと。記録が残っている', level:'must' },
+      { id:'d03', text:'サービス提供記録（支援記録）が毎回作成されている', sub:'提供日・支援内容・特記事項・担当者名を記録。利用者又は家族への確認', level:'must' },
+      { id:'d04', text:'業務日誌・申し送り記録が作成されている', sub:'日々の業務内容・特記事項・スタッフ間の引継ぎ記録', level:'must' },
+      { id:'d05', text:'カンファレンス記録が月1回以上作成されている', sub:'参加者・協議内容・決定事項を記録。利用者の状況確認が目的', level:'must' },
+      { id:'d06', text:'苦情申し出・解決のための体制を整備している', sub:'苦情受付担当者・苦情解決責任者を設置。苦情対応記録を保管', level:'must' },
+      { id:'d07', text:'事故報告書・ヒヤリハット記録を管理している', sub:'発生状況・対応内容・再発防止策を記録。行政への報告が必要な場合は提出', level:'must' },
+      { id:'d08', text:'アセスメント記録が利用開始前に作成されている', sub:'利用者の状況・ニーズ・本人の意向を聴き取り記録', level:'must' },
+      { id:'d09', text:'利用者ファイルに必要書類が整理・保管されている', sub:'申請書類・受給者証のコピー・重要事項説明書・契約書・同意書', level:'must' },
+      { id:'d10', text:'書類の保管期間（5年）を守っている', sub:'サービス終了後5年間の保管義務。電子保存も可（要件あり）', level:'must' },
+      { id:'d11', text:'訪問看護指示書が有効期間内（6ヶ月）のものを使用している', sub:'主治医の指示書。期限切れは不正請求になる。更新漏れに注意', level:'must' },
+      { id:'d12', text:'訪問看護計画書・報告書を毎月作成し主治医に提出している', sub:'月1回の計画書・報告書作成と主治医への提出は法定義務', level:'must' },
+    ]
+  },
+  {
+    id: 'staff', icon: '👥', title: '人員基準関係',
+    items: [
+      { id:'s01', text:'管理者が常勤・専従で配置されている', sub:'他の職務との兼務は原則不可。管理業務に専従していることが必要', level:'must' },
+      { id:'s02', text:'サービス管理責任者（サビ管）が基準を満たして配置されている', sub:'実務経験年数・研修修了の要件を満たしているか確認。資格証明書の保管', level:'must' },
+      { id:'s03', text:'サービス提供責任者（サ責）が要件を満たして配置されている', sub:'居宅介護：利用者40名に1名以上（常勤換算）', level:'must' },
+      { id:'s04', text:'常勤換算数が法定基準を満たしている', sub:'毎月の勤務実績で計算。基準を下回った場合は減算対象', level:'must' },
+      { id:'s05', text:'全スタッフの資格証・免許証のコピーが保管されている', sub:'介護福祉士・訪問看護師・ヘルパー等の資格証。有効期限の確認', level:'must' },
+      { id:'s06', text:'スタッフの勤務形態一覧表が整備されている', sub:'常勤・非常勤の区分・週所定労働時間を記載。実態と一致していること', level:'must' },
+      { id:'s07', text:'訪問看護ステーション：看護師等が常勤換算2.5人以上いる', sub:'1人は常勤の看護師。准看護師のみの構成は不可', level:'must' },
+      { id:'s08', text:'研修受講記録（虐待防止・感染症・BCP等）を保管している', sub:'年1回以上の実施が義務。スタッフ全員の参加記録が必要', level:'must' },
+      { id:'s09', text:'健康診断（年1回）の記録を管理している', sub:'スタッフの健康管理義務。結核検診も推奨', level:'warning' },
+    ]
+  },
+  {
+    id: 'ops', icon: '🏛️', title: '運営・手続き関係',
+    items: [
+      { id:'o01', text:'重要事項説明書が最新の内容に更新されている', sub:'変更があった場合は書面で利用者に説明し同意を得ること', level:'must' },
+      { id:'o02', text:'運営規程が整備・掲示されている', sub:'事業の目的・営業日時・利用料・サービス内容等を記載', level:'must' },
+      { id:'o03', text:'契約書が全利用者と締結されている', sub:'利用者又は保護者の署名・押印あり。内容が重要事項説明書と一致していること', level:'must' },
+      { id:'o04', text:'利用者負担額（上限管理）を正しく管理している', sub:'月額負担上限の管理票。複数事業所利用時は上限管理者を確認', level:'must' },
+      { id:'o05', text:'指定更新の期限を把握・管理している', sub:'指定期限の6年ごと更新。期限切れは指定取消相当', level:'must' },
+      { id:'o06', text:'変更届が必要な事項を速やかに届け出ている', sub:'管理者・サビ管・住所等の変更は10日以内に届出', level:'must' },
+      { id:'o07', text:'事業所の平面図・設備基準を満たしている', sub:'事務室・相談室・トイレ等の設置基準。実際の設備と一致していること', level:'warning' },
+      { id:'o08', text:'個人情報保護方針を策定・掲示し同意書を取得している', sub:'利用者からの個人情報同意書が全員分ある', level:'must' },
+      { id:'o09', text:'身体拘束廃止の取り組みを行っている', sub:'身体拘束等の適正化委員会を設置。年2回以上の研修実施', level:'must' },
+      { id:'o10', text:'当該月の利用者在籍状況と請求データが一致している', sub:'実績記録と請求データの突合。虚偽請求防止のため必ず確認', level:'must' },
+    ]
+  },
+  {
+    id: 'kasan', icon: '💰', title: '加算・体制届関係',
+    items: [
+      { id:'k01', text:'処遇改善加算の計画書を4月15日までに提出している', sub:'提出先：京都府/京都市の担当窓口。提出控えを保管', level:'must' },
+      { id:'k02', text:'処遇改善加算の実績報告書を7月31日までに提出している', sub:'前年度（4月〜3月）の実績。未提出は加算返還の対象', level:'must' },
+      { id:'k03', text:'処遇改善加算の賃金改善計画が実際に実施されている', sub:'計画書に記載した賃金改善が実際に行われていること。証拠書類を保管', level:'must' },
+      { id:'k04', text:'体制届が必要な加算について届出が完了している', sub:'特定事業所加算・24時間対応体制加算・福祉専門職員加算等', level:'must' },
+      { id:'k05', text:'体制届の有効期間内であることを確認している', sub:'体制届は毎年4月に更新が必要なものがある', level:'must' },
+      { id:'k06', text:'加算の算定要件（人員・設備・運営）を満たし続けている', sub:'届出後も要件を継続して満たしていること。要件を外れた場合は速やかに届け出', level:'must' },
+      { id:'k07', text:'目標工賃達成加算（B型）：工賃向上計画を提出している', sub:'毎年4月15日締切。目標工賃の実績が過去3年の都道府県平均以上', level:'warning' },
+      { id:'k08', text:'就労移行支援体制加算：前年度の実績（一般就労移行者数）を確認している', sub:'毎年4月上旬に実績に基づく体制届の更新が必要', level:'warning' },
+      { id:'k09', text:'訪問看護：24時間対応体制の実態が整備されている', sub:'24時間連絡・緊急訪問体制。当番制の記録・連絡先の整備', level:'warning' },
+    ]
+  },
+  {
+    id: 'committee', icon: '🏛️', title: '委員会・計画関係',
+    items: [
+      { id:'c01', text:'虐待防止委員会を設置し定期的に開催している', sub:'虐待防止委員会：管理者・サビ管・スタッフ等で構成。年2回以上の開催', level:'must' },
+      { id:'c02', text:'虐待防止研修を年2回以上実施している', sub:'スタッフ全員の参加。研修記録・参加者名簿を保管', level:'must' },
+      { id:'c03', text:'虐待防止責任者を選任している', sub:'管理者が担当することが多い。名称・役割を明確にする', level:'must' },
+      { id:'c04', text:'身体拘束廃止委員会を設置し定期的に開催している', sub:'廃止に向けた取り組みの検討。開催記録を保管', level:'must' },
+      { id:'c05', text:'感染症対策委員会を設置・開催し、マニュアルを整備している', sub:'感染症発生時の対応手順。年2回以上の研修。スタッフへの周知', level:'must' },
+      { id:'c06', text:'BCP（業務継続計画）を策定している', sub:'自然災害・感染症に対応した2種類のBCPが必要。義務化済み（経過措置終了）', level:'must' },
+      { id:'c07', text:'BCPに基づく訓練を年1回以上実施している', sub:'訓練の記録・参加者名簿を保管。訓練後の計画見直しを実施', level:'must' },
+      { id:'c08', text:'ハラスメント防止方針を策定・周知している', sub:'カスタマーハラスメント・パワハラ対応方針。スタッフへの周知と相談窓口の設置', level:'warning' },
+      { id:'c09', text:'リスクマネジメント委員会を設置している', sub:'ヒヤリハット・事故の分析と再発防止策の検討', level:'info' },
+    ]
+  },
+  {
+    id: 'billing', icon: '💴', title: '請求・給付管理',
+    items: [
+      { id:'b01', text:'国保連への請求データと実績記録が一致している', sub:'提供日・時間・内容の一致を毎月確認。返戻・過誤の原因になる', level:'must' },
+      { id:'b02', text:'利用者の受給者証の有効期限・支給量を確認している', sub:'有効期限切れ・支給量超過は不正請求。毎月確認を徹底', level:'must' },
+      { id:'b03', text:'月額上限管理が正しく行われている', sub:'上限管理事業所の確認・管理結果の記録。上限を超えた場合の対応', level:'must' },
+      { id:'b04', text:'返戻・過誤が発生した場合の対応手順が整備されている', sub:'国保連からの返戻通知の確認→原因究明→再請求の手順', level:'warning' },
+      { id:'b05', text:'訪問看護：訪問日ごとのサービス提供記録が作成されている', sub:'訪問時間・看護内容・バイタル・担当看護師を記録', level:'must' },
+      { id:'b06', text:'居宅介護：サービス提供記録に利用者確認印（署名）がある', sub:'ヘルパーと利用者の両名のサインが法定義務', level:'must' },
+      { id:'b07', text:'同一建物減算の対象か確認している', sub:'同一建物居住者が一定数以上の場合は減算。漏れると過誤請求', level:'warning' },
+    ]
+  },
+  {
+    id: 'safety', icon: '🛡️', title: '安全・緊急対応',
+    items: [
+      { id:'sa01', text:'緊急時対応マニュアルを整備している', sub:'急変時・救急対応・医療機関への搬送手順。スタッフ全員に周知', level:'must' },
+      { id:'sa02', text:'緊急連絡先一覧（利用者・家族・主治医・協力医療機関）が整備されている', sub:'最新情報に更新されていること。各スタッフが確認できる場所に保管', level:'must' },
+      { id:'sa03', text:'防火・避難訓練を年2回以上実施している', sub:'消防署への報告。訓練記録の保管。避難経路の掲示', level:'must' },
+      { id:'sa04', text:'ヒヤリハット報告書を月1回以上分析・集計している', sub:'件数・内容の集計。スタッフへのフィードバック。再発防止策の立案', level:'warning' },
+      { id:'sa05', text:'医療的ケア利用者への対応体制が整備されている', sub:'喀痰吸引等の研修修了者が配置されているか。主治医との連携体制', level:'warning' },
+      { id:'sa06', text:'AED・救急セットが整備・点検されている', sub:'設置場所の周知。定期点検の記録', level:'info' },
+    ]
+  },
+];
+
+/* ================================================================
+   ローカルストレージキー
+================================================================ */
+var LS_KEY = 'jichi_checklist_v2';
+
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); }
+  catch(e) { return {}; }
+}
+function saveState(state) {
+  localStorage.setItem(LS_KEY, JSON.stringify(state));
+  document.getElementById('save-msg').textContent = '💾 自動保存しました';
+  setTimeout(function(){ document.getElementById('save-msg').textContent=''; }, 2000);
+}
+
+/* ================================================================
+   レンダリング
+================================================================ */
+function renderChecklist() {
+  var state = loadState();
+  var wrap  = document.getElementById('checklist');
+  wrap.innerHTML = '';
+
+  CHECKLIST.forEach(function(cat) {
+    var total   = cat.items.length;
+    var checked = cat.items.filter(function(it){ return state[it.id]==='checked'; }).length;
+    var na      = cat.items.filter(function(it){ return state[it.id]==='na'; }).length;
+    var done    = checked + na;
+
+    var catEl = document.createElement('div');
+    catEl.className = 'card cl-category';
+    catEl.id = 'cat-' + cat.id;
+
+    catEl.innerHTML = [
+      '<div class="cl-category-header" onclick="toggleCategory(\''+cat.id+'\')">',
+      '  <h3>' + cat.icon + ' ' + cat.title + '</h3>',
+      '  <div style="display:flex;align-items:center;gap:0.5rem;">',
+      '    <span class="cl-cat-score">' + done + '/' + total + '</span>',
+      '    <span class="cl-chevron">▼</span>',
+      '  </div>',
+      '</div>',
+      '<div class="cl-category-body">',
+      cat.items.map(function(item) {
+        var st = state[item.id] || '';
+        var cls = st === 'checked' ? ' checked' : st === 'na' ? ' na' : '';
+        var icon = st === 'checked' ? '✓' : st === 'na' ? '―' : '';
+        var levelLabel = { must:'必須', warning:'要注意', info:'推奨' }[item.level];
+        return [
+          '<div class="cl-item' + cls + '" id="item-' + item.id + '" onclick="toggleItem(\'' + item.id + '\')">',
+          '  <div class="cl-check">' + icon + '</div>',
+          '  <div class="cl-text">',
+          '    <div class="cl-text-main">' + item.text + '</div>',
+          item.sub ? '<div class="cl-text-sub">' + item.sub + '</div>' : '',
+          '  </div>',
+          '  <span class="cl-level level-' + item.level + '">' + levelLabel + '</span>',
+          '</div>',
+        ].join('');
+      }).join(''),
+      '</div>',
+    ].join('');
+
+    wrap.appendChild(catEl);
+  });
+
+  updateProgress(state);
+}
+
+/* ================================================================
+   インタラクション
+================================================================ */
+function toggleItem(id) {
+  var state = loadState();
+  var cur   = state[id] || '';
+  // 未チェック → チェック済み → N/A → 未チェック
+  if      (cur === '')        state[id] = 'checked';
+  else if (cur === 'checked') state[id] = 'na';
+  else                        delete state[id];
+  saveState(state);
+  var el = document.getElementById('item-' + id);
+  if (state[id] === 'checked') {
+    el.className = 'cl-item checked';
+    el.querySelector('.cl-check').textContent = '✓';
+  } else if (state[id] === 'na') {
+    el.className = 'cl-item na';
+    el.querySelector('.cl-check').textContent = '―';
+  } else {
+    el.className = 'cl-item';
+    el.querySelector('.cl-check').textContent = '';
+  }
+  updateProgress(state);
+  updateCatScore();
+}
+
+function updateCatScore() {
+  var state = loadState();
+  CHECKLIST.forEach(function(cat) {
+    var done  = cat.items.filter(function(it){ return state[it.id]; }).length;
+    var total = cat.items.length;
+    var scoreEl = document.querySelector('#cat-' + cat.id + ' .cl-cat-score');
+    if (scoreEl) scoreEl.textContent = done + '/' + total;
+  });
+}
+
+function toggleCategory(id) {
+  document.getElementById('cat-' + id).classList.toggle('collapsed');
+}
+
+function updateProgress(state) {
+  var allItems = CHECKLIST.flatMap(function(c){ return c.items; });
+  var total    = allItems.length;
+  var done     = allItems.filter(function(it){ return state[it.id]; }).length;
+  var pct      = Math.round(done / total * 100);
+  document.getElementById('score-pct').textContent  = pct + '%';
+  document.getElementById('score-num').textContent  = done + '/' + total;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  // 色変更
+  var bar = document.getElementById('progress-bar');
+  if      (pct >= 90) bar.style.background = 'linear-gradient(90deg,#7DC49A,#4CAF50)';
+  else if (pct >= 60) bar.style.background = 'linear-gradient(90deg,var(--coral),#F0BE6A)';
+  else                bar.style.background = 'linear-gradient(90deg,var(--danger),var(--coral))';
+}
+
+function checkAll() {
+  var state = loadState();
+  CHECKLIST.forEach(function(cat) {
+    cat.items.forEach(function(it){ state[it.id] = 'checked'; });
+  });
+  saveState(state);
+  renderChecklist();
+}
+
+function resetAll() {
+  if (!confirm('全てのチェックをリセットしますか？')) return;
+  localStorage.removeItem(LS_KEY);
+  renderChecklist();
+}
+
+function showTodo() {
+  var state   = loadState();
+  var mustItems = [], warnItems = [], infoItems = [];
+
+  CHECKLIST.forEach(function(cat) {
+    cat.items.forEach(function(item) {
+      if (!state[item.id]) {
+        var entry = { cat: cat.title, text: item.text, level: item.level };
+        if (item.level === 'must')    mustItems.push(entry);
+        else if (item.level === 'warning') warnItems.push(entry);
+        else infoItems.push(entry);
+      }
+    });
+  });
+
+  var html = '';
+  function renderSection(items, label, cls) {
+    if (!items.length) return '';
+    return '<div style="font-weight:700;font-size:0.82rem;margin:0.75rem 0 0.3rem;color:var(--text-mid);">' + label + '（' + items.length + '件）</div>' +
+      items.map(function(it) {
+        return '<div class="cl-todo-item">' +
+          '<span class="cl-todo-badge level-' + it.level + '">' + it.cat.slice(0,4) + '</span>' +
+          '<span style="font-size:0.83rem;">' + it.text + '</span></div>';
+      }).join('');
+  }
+
+  html += renderSection(mustItems, '🔴 必須', 'must');
+  html += renderSection(warnItems, '🟡 要注意', 'warning');
+  html += renderSection(infoItems, '🔵 推奨', 'info');
+
+  if (!html) html = '<div style="text-align:center;padding:2rem;color:var(--success);font-weight:700;">🎉 全項目完了しています！</div>';
+
+  document.getElementById('todo-content').innerHTML = html;
+  document.getElementById('todo-modal').style.display = 'block';
+}
+
+// 初期化
+renderChecklist();
+</script>
+</body>
+</html>
