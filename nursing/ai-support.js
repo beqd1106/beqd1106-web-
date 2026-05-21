@@ -461,7 +461,7 @@ function downloadFilledTemplate(feature) {
     if (typeof XLSX !== 'undefined') {
       fallbackSheetJS(feature, rawText, title, fileDate);
     } else {
-      alert('ダウンロードに失敗しました。しばらく待ってから再試行してください。\n（Renderサーバー起動中：約30秒）');
+      alert('ダウンロードに失敗しました。しばらく待ってから再試行してください。\n\n（Renderサーバー起動中：約30秒）');
     }
   })
   .finally(function() {
