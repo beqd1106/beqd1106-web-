@@ -317,13 +317,13 @@ function buildCheckRows(sections, dateStr, title) {
   ];
   sections.forEach(function(s) {
     var mark = '';
-    if (/✅/.test(s.title)||/問題なし|算定可/.test(s.title)) mark='✅';
-    else if (/⚠/.test(s.title)||/警告|要確認/.test(s.title)) mark='⚠️';
-    else if (/🔴/.test(s.title)||/エラー/.test(s.title)) mark='🔴';
-    else if (/🎯/.test(s.title)) mark='🎯';
-    else if (/❌/.test(s.title)) mark='❌';
-    else if (/📊/.test(s.title)) mark='📊';
-    else if (/🔧/.test(s.title)) mark='🔧';
+    if (s.title.includes('✅')||/問題なし|算定可/.test(s.title)) mark='✅';
+    else if (s.title.includes('⚠')||/警告|要確認/.test(s.title)) mark='⚠️';
+    else if (s.title.includes('🔴')||/エラー/.test(s.title)) mark='🔴';
+    else if (s.title.includes('🎯')) mark='🎯';
+    else if (s.title.includes('❌')) mark='❌';
+    else if (s.title.includes('📊')) mark='📊';
+    else if (s.title.includes('🔧')) mark='🔧';
     var t = s.title.replace(/[^\u0021-\u007E\u3000-\u9FFF\uFF00-\uFFEF\s]/g,'').trim();
     rows.push([mark, t, '']);
     s.lines.forEach(function(l) { rows.push(['', '', l]); });
