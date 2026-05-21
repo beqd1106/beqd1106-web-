@@ -1,8 +1,9 @@
+window.__AI_SUPPORT_V1 = true;
 /* ================================================================
-   AI作成支援 — メインスクリプト
+   AI作成支援 - --------
 ================================================================ */
 
-// ── タブ切り替え ──────────────────────────────────
+// -- --切-替- ----------------------------------
 (function(){
   var tabs = document.querySelectorAll('.ai-tab');
   tabs.forEach(function(tab) {
@@ -17,7 +18,7 @@
   });
 })();
 
-// ── 文字数カウンター ─────────────────────────────
+// -- 文字数----- -----------------------------
 (function(){
   var pairs = [
     ['ps-hope', 'ps-hope-count'],
@@ -36,7 +37,7 @@
   });
 })();
 
-// ── フォームデータ収集 ────────────────────────────
+// -- -------収集 ----------------------------
 function collectFormData(feature) {
   var data = { feature: feature };
 
@@ -167,7 +168,7 @@ function collectFormData(feature) {
   return data;
 }
 
-// ── バリデーション ────────────────────────────────
+// -- ------- --------------------------------
 var REQUIRED_FIELDS = {
   plan_shuro:    ['age', 'hope'],
   plan_kyotaku:  ['age', 'diagnosis', 'hope'],
@@ -195,7 +196,7 @@ function validate(feature, data) {
   return null;
 }
 
-// ── マークダウン → HTML（簡易） ───────────────────
+// -- ------ - HTML（簡易） -------------------
 function renderMarkdown(text) {
   return text
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
@@ -210,10 +211,10 @@ function renderMarkdown(text) {
 }
 
 
-// ── AI生成テキスト保存（Excel生成用）
+// -- AI生成----保存（Excel生成用）
 var AI_RAW_OUTPUT = {};
 
-// ── Markdown→セクション配列
+// -- Markdown------配列
 function parseMdSections(text) {
   var sections = [];
   var cur = null;
@@ -235,7 +236,7 @@ function parseMdSections(text) {
   return sections;
 }
 
-// ── ヘッダー行
+// -- ----行
 function makeHeaderRows(title, dateStr) {
   return [
     [title],
@@ -245,7 +246,7 @@ function makeHeaderRows(title, dateStr) {
   ];
 }
 
-// ── 列幅定義
+// -- 列幅定義
 var COL_WIDTHS = {
   plan_shuro:    [{wch:22},{wch:70}],
   plan_kyotaku:  [{wch:22},{wch:70}],
@@ -261,7 +262,7 @@ var COL_WIDTHS = {
   staff_sim:     [{wch:22},{wch:65}],
 };
 
-// ── アセスメント（ICF 4列）
+// -- ------（ICF 4列）
 function buildAssessmentRows(sections, dateStr) {
   var rows = [
     ['アセスメントシート（ICF準拠）'],
@@ -286,7 +287,7 @@ function buildAssessmentRows(sections, dateStr) {
   return rows;
 }
 
-// ── 看護記録（バイタル表付き）
+// -- 看護記録（----表付-）
 function buildNursingRows(sections, dateStr) {
   var rows = [
     ['看護記録・看護サマリー'],
@@ -306,7 +307,7 @@ function buildNursingRows(sections, dateStr) {
   return rows;
 }
 
-// ── 加算チェック・請求チェック（マーク表）
+// -- 加算-----請求----（---表）
 function buildCheckRows(sections, dateStr, title) {
   var rows = [
     [title],
@@ -331,7 +332,7 @@ function buildCheckRows(sections, dateStr, title) {
   return rows;
 }
 
-// ── 事故報告書（5W1H表付き）
+// -- 事故報告書（5W1H表付-）
 function buildIncidentRows(sections, dateStr) {
   var rows = [
     ['事故・ヒヤリハット報告書'],
@@ -351,7 +352,7 @@ function buildIncidentRows(sections, dateStr) {
   return rows;
 }
 
-// ── 工賃向上計画書（目標値テーブル付き）
+// -- 工賃向上計画書（目標値----付-）
 function buildWagePlanRows(sections, dateStr) {
   var rows = [
     ['工賃向上計画書（就労継続支援B型）'],
@@ -370,7 +371,7 @@ function buildWagePlanRows(sections, dateStr) {
   return rows;
 }
 
-// ── 人員配置（常勤換算テーブル付き）
+// -- 人員配置（常勤換算----付-）
 function buildStaffSimRows(sections, dateStr) {
   var rows = [
     ['人員配置シミュレーション診断レポート'],
@@ -391,7 +392,7 @@ function buildStaffSimRows(sections, dateStr) {
   return rows;
 }
 
-// ── 汎用2列レイアウト
+// -- 汎用2列-----
 function buildGenericRows(sections, dateStr, title) {
   var rows = makeHeaderRows(title, dateStr);
   sections.forEach(function(s) {
@@ -402,11 +403,11 @@ function buildGenericRows(sections, dateStr, title) {
   return rows;
 }
 
-// ── Render.com API URL ─────────────────────────────
-// デプロイ後に実際のURLに書き換えてください
+// -- Render.com API URL -----------------------------
+// ----後-実際-URL-書-換------
 var RENDER_API_URL = "https://beqd1106-fukushi-api.onrender.com";
 
-// ── メイン：Excelダウンロード（Render API経由）
+// -- ---：Excel------（Render API経由）
 function downloadFilledTemplate(feature) {
   var rawText = AI_RAW_OUTPUT[feature];
   if (!rawText) {
@@ -422,12 +423,12 @@ function downloadFilledTemplate(feature) {
   var today   = new Date();
   var fileDate= today.getFullYear() + String(today.getMonth()+1).padStart(2,'0') + String(today.getDate()).padStart(2,'0');
 
-  // ボタンをローディング状態に
+  // ----------状態-
   var btn = event && event.target;
   var origText = btn ? btn.textContent : '';
   if (btn) { btn.textContent = '⏳ 生成中...'; btn.disabled = true; }
 
-  // Form データも送信（テンプレート固有の入力値に使用）
+  // Form ----送信（------固有-入力値-使用）
   var formData = {};
   try { formData = collectFormData(feature) || {}; } catch(e) {}
 
@@ -455,7 +456,7 @@ function downloadFilledTemplate(feature) {
     URL.revokeObjectURL(url);
   })
   .catch(function(err) {
-    // Render がスリープ中の場合はフォールバック（SheetJS）
+    // Render -----中-場合--------（SheetJS）
     console.warn('Render API unavailable, falling back to SheetJS:', err);
     if (typeof XLSX !== 'undefined') {
       fallbackSheetJS(feature, rawText, title, fileDate);
@@ -469,7 +470,7 @@ function downloadFilledTemplate(feature) {
   });
 }
 
-// ── フォールバック：SheetJS（Renderがスリープ中の場合）
+// -- -------：SheetJS（Render-----中-場合）
 function fallbackSheetJS(feature, rawText, title, fileDate) {
   var sections = parseMdSections(rawText);
   var rows = buildGenericRows(sections, new Date().getFullYear() + '年' + (new Date().getMonth()+1) + '月' + new Date().getDate() + '日', title);
@@ -482,7 +483,7 @@ function fallbackSheetJS(feature, rawText, title, fileDate) {
 }
 
 
-// ── メイン生成関数 ────────────────────────────────
+// -- ---生成関数 --------------------------------
 function generateAI(feature) {
   var data = collectFormData(feature);
 
@@ -520,7 +521,7 @@ function generateAI(feature) {
     function pump() {
       return reader.read().then(function(result) {
         if (result.done) {
-          AI_RAW_OUTPUT[feature] = rawText;  // Excel生成用に保存
+          AI_RAW_OUTPUT[feature] = rawText;  // Excel生成用-保存
           outputBox.className = 'ai-output-box';
           outputBox.innerHTML = renderMarkdown(rawText);
           btn.disabled = false;
@@ -539,7 +540,7 @@ function generateAI(feature) {
             var delta = obj.response || (obj.delta && obj.delta.text) || '';
             if (delta) {
               rawText += delta;
-              // ストリーミング中はシンプルなHTMLレンダリング（改行を保持）
+              // -------中------HTML------（改行-保持）
               outputBox.innerHTML = rawText
                 .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
                 .replace(/^##\s+(.+)$/gm,'<strong style="display:block;margin-top:0.8em;color:var(--coral-dark);">$1</strong>')
@@ -570,7 +571,7 @@ function showError(feature, msg) {
   outputWrap.classList.add('visible');
 }
 
-// ── コピー ────────────────────────────────────────
+// -- --- ----------------------------------------
 function copyOutput(feature) {
   var box = document.getElementById('output-box-' + feature);
   var text = box.innerText || box.textContent;
@@ -582,7 +583,7 @@ function copyOutput(feature) {
   });
 }
 
-// ── 印刷 ─────────────────────────────────────────
+// -- 印刷 -----------------------------------------
 function printOutput(feature) {
   var box = document.getElementById('output-box-' + feature);
   var win = window.open('', '_blank');
@@ -606,20 +607,20 @@ function printOutput(feature) {
   setTimeout(function(){ win.print(); }, 500);
 }
 
-// ── クリア ────────────────────────────────────────
+// -- --- ----------------------------------------
 function clearOutput(feature) {
   document.getElementById('output-box-' + feature).innerHTML = '';
   document.getElementById('output-' + feature).classList.remove('visible');
 }
 
-// ── 評価 ─────────────────────────────────────────
+// -- 評価 -----------------------------------------
 function rateOutput(feature, type) {
   var msg = type === 'good' ? '👍 フィードバックありがとうございます！' : '👎 改善のフィードバックをありがとうございます。';
   var ratingEl = document.querySelector('#output-' + feature + ' .ai-rating');
   if (ratingEl) ratingEl.innerHTML = '<span style="color:var(--text-mid);font-size:0.78rem;">' + msg + '</span>';
 }
 
-// ── 書類タイトル定義 ─────────────────────────────
+// -- 書類----定義 -----------------------------
 var FEATURE_TITLES = {
   plan_shuro:     '個別支援計画書（就労継続支援）',
   plan_kyotaku:   '個別支援計画書（居宅介護）',
@@ -635,7 +636,7 @@ var FEATURE_TITLES = {
   staff_sim:      '人員配置診断レポート',
 };
 
-// ── Word（HTML形式）でダウンロード ───────────────
+// -- Word（HTML形式）------- ---------------
 function downloadOutput(feature) {
   var box   = document.getElementById('output-box-' + feature);
   var inner = box.innerHTML;
@@ -682,11 +683,11 @@ function downloadOutput(feature) {
 '  <p class="doc-notice">※ これはAI（Llama 3.1）が生成した下書きです。内容は必ず担当者が確認・修正のうえご使用ください。</p>\n' +
 '</div>\n' +
 inner + '\n' +
-'<div class="doc-footer">AI作成支援 — 障碍者福祉事業所 運営ガイド | beqd1106.com/nursing/ | 生成日時：' + dateStr + '</div>\n' +
+'<div class="doc-footer">AI作成支援 - 障碍者福祉事業所 運営ガイド | beqd1106.com/nursing/ | 生成日時：' + dateStr + '</div>\n' +
 '</body>\n' +
 '</html>';
 
-  var bom  = '﻿'; // BOM付きUTF-8（Wordが文字化けしないように）
+  var bom  = '﻿'; // BOM付-UTF-8（Word-文字化-------）
   var blob = new Blob([bom + html], { type: 'application/msword;charset=utf-8' });
   var url  = URL.createObjectURL(blob);
   var a    = document.createElement('a');
