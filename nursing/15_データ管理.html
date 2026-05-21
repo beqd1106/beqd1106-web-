@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データ管理・グラフ — 障碍者福祉事業所 運営ガイド</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ================================================================
+   データ管理ページ 専用スタイル
+================================================================ */
+.dm-tabs { display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:1.5rem; }
+.dm-tab {
+  padding:0.45rem 0.9rem; border-radius:999px;
+  border:2px solid var(--border); background:var(--card);
+  color:var(--text-mid); font-size:0.78rem; font-weight:700;
+  cursor:pointer; transition:all 0.18s; white-space:nowrap;
+}
+.dm-tab:hover { border-color:var(--coral-mid); color:var(--coral-dark); }
+.dm-tab.active { background:var(--coral); border-color:var(--coral); color:#fff; box-shadow:0 2px 8px rgba(240,149,106,.35); }
+.dm-panel { display:none; }
+.dm-panel.active { display:block; }
+
+/* 設定バナー */
+.setup-banner {
+  background:var(--blk-lavender); border:2px solid #c0a0e0;
+  border-radius:var(--r); padding:1.25rem 1.5rem;
+  display:flex; gap:1rem; align-items:flex-start; margin-bottom:1.5rem;
+}
+.setup-banner .setup-icon { font-size:2rem; flex-shrink:0; }
+.setup-banner h3 { font-size:1rem; color:#4020a0; margin:0 0 0.4rem; }
+.setup-banner p  { font-size:0.82rem; color:#6040a0; margin:0 0 0.75rem; line-height:1.6; }
+.setup-steps { list-style:none; padding:0; margin:0; }
+.setup-steps li {
+  font-size:0.8rem; color:#6040a0; padding:0.3rem 0;
+  display:flex; align-items:flex-start; gap:0.5rem;
+}
+.step-num {
+  background:#6040a0; color:#fff; border-radius:50%;
+  width:1.3rem; height:1.3rem; display:flex; align-items:center;
+  justify-content:center; font-size:0.65rem; font-weight:800;
+  flex-shrink:0; margin-top:0.05rem;
+}
+
+/* スプレッドシートID入力 */
+.sheet-id-input {
+  display:flex; gap:0.5rem; align-items:center;
+  background:#fff; border:2px solid #c0a0e0;
+  border-radius:var(--r-sm); padding:0.5rem 0.75rem;
+  margin-top:0.75rem; flex-wrap:wrap;
+}
+.sheet-id-input input {
+  flex:1; border:none; outline:none; font-size:0.85rem;
+  font-family:monospace; color:var(--text); min-width:200px;
+}
+.sheet-id-input button {
+  background:#6040a0; color:#fff; border:none;
+  border-radius:var(--r-sm); padding:0.35rem 0.85rem;
+  font-size:0.78rem; font-weight:700; cursor:pointer;
+}
+
+/* テーブル */
+.dm-table-wrap { overflow-x:auto; margin:1rem 0; }
+.dm-table {
+  width:100%; border-collapse:collapse;
+  font-size:0.84rem; min-width:600px;
+}
+.dm-table th {
+  background:var(--coral-light); color:var(--coral-dark);
+  font-weight:700; padding:0.55rem 0.75rem;
+  border:1px solid var(--coral-mid); text-align:left;
+  white-space:nowrap;
+}
+.dm-table td {
+  padding:0.45rem 0.75rem; border:1px solid var(--border);
+  vertical-align:top; line-height:1.5;
+}
+.dm-table tr:nth-child(even) td { background:#FFF8F4; }
+.dm-table tr:hover td { background:var(--coral-light); }
+
+/* フォーム */
+.dm-form { display:flex; flex-direction:column; gap:0.75rem; }
+.dm-field { display:flex; flex-direction:column; gap:0.25rem; }
+.dm-label { font-size:0.8rem; font-weight:700; color:var(--text); }
+.dm-input, .dm-select {
+  border:2px solid var(--border); border-radius:var(--r-sm);
+  padding:0.55rem 0.8rem; font-size:0.88rem;
+  font-family:inherit; color:var(--text); background:#fff;
+  transition:border-color 0.18s;
+}
+.dm-input:focus, .dm-select:focus {
+  outline:none; border-color:var(--coral-mid);
+  box-shadow:0 0 0 3px rgba(240,149,106,.12);
+}
+.dm-row { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
+@media(max-width:600px){ .dm-row { grid-template-columns:1fr; } }
+.dm-submit {
+  padding:0.7rem 1.5rem; background:var(--coral);
+  color:#fff; border:none; border-radius:999px;
+  font-size:0.9rem; font-weight:800; cursor:pointer;
+  transition:all 0.2s; align-self:flex-start;
+}
+.dm-submit:hover { background:var(--coral-dark); }
+
+/* グラフエリア */
+.chart-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:1.25rem; margin-top:1rem;
+}
+@media(max-width:768px){ .chart-grid { grid-template-columns:1fr; } }
+.chart-card {
+  background:var(--card); border:2px solid var(--border);
+  border-radius:var(--r); padding:1rem; overflow:hidden;
+}
+.chart-card h3 {
+  font-size:0.88rem; color:var(--coral-dark); margin:0 0 0.75rem;
+  display:flex; align-items:center; gap:0.4rem;
+}
+.chart-card img { width:100%; border-radius:var(--r-sm); }
+.chart-loading {
+  height:200px; display:flex; align-items:center;
+  justify-content:center; color:var(--text-light);
+  font-size:0.85rem; background:var(--bg); border-radius:var(--r-sm);
+}
+
+/* 手動入力グラフ */
+.manual-data-area {
+  background:var(--blk-cream); border-radius:var(--r-sm);
+  padding:1rem; margin-bottom:1rem;
+}
+.manual-data-area textarea {
+  width:100%; border:2px solid var(--border); border-radius:var(--r-sm);
+  padding:0.6rem 0.8rem; font-size:0.82rem; font-family:monospace;
+  resize:vertical; min-height:120px; box-sizing:border-box;
+}
+.chart-btn {
+  padding:0.5rem 1.25rem; background:var(--coral);
+  color:#fff; border:none; border-radius:999px;
+  font-size:0.84rem; font-weight:700; cursor:pointer;
+  margin-top:0.5rem; transition:all 0.18s;
+}
+.chart-btn:hover { background:var(--coral-dark); }
+
+/* ステータス表示 */
+.api-status {
+  display:inline-flex; align-items:center; gap:0.4rem;
+  font-size:0.75rem; padding:0.25rem 0.7rem;
+  border-radius:999px; font-weight:700;
+}
+.api-status.ok  { background:var(--success-light); color:var(--success); }
+.api-status.err { background:var(--danger-light);  color:var(--danger);  }
+.api-status.chk { background:var(--warning-light); color:#7a5a10; }
+
+.section-badge {
+  display:inline-block; font-size:0.65rem; font-weight:800;
+  padding:0.1rem 0.45rem; border-radius:999px; margin-left:0.4rem;
+}
+.badge-sheets { background:var(--blk-mint); color:var(--success); }
+.badge-local  { background:var(--blk-cream); color:#7a5a10; }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="index.html" class="site-logo">🏥 障碍者福祉 運営ガイド</a>
+  <nav class="site-nav">
+    <a href="index.html">TOP</a>
+    <a href="01_法令・制度.html">⚖️ 法令</a>
+    <a href="02_必要書類.html">📋 書類</a>
+    <a href="03_管理業務.html">📅 管理</a>
+    <a href="04_京都府・手続き.html">🏛️ 京都府</a>
+    <a href="05_請求業務.html">💴 請求</a>
+    <a href="13_障害介護サービス.html">🏠 介護</a>
+    <a href="06_就労継続A型.html">🏢 A型</a>
+    <a href="07_就労継続B型.html">🏭 B型</a>
+    <a href="08_相談支援.html">💬 相談</a>
+    <a href="09_監査対応.html">🔍 監査</a>
+    <a href="10_収入向上.html">📈 収入</a>
+    <a href="11_年間スケジュール.html">📆 年間</a>
+    <a href="12_QA.html">❓ Q&amp;A</a>
+    <a href="14_AI作成支援.html">✨ AI支援</a>
+    <a href="15_データ管理.html" class="active" style="background:var(--blk-mint);color:var(--success);">📊 データ</a>
+    <a href="フォーマット/index.html">📁 様式DL</a>
+  </nav>
+</header>
+
+<div class="page-hero" style="background:linear-gradient(135deg,#E8F8EE 0%,#D8F0E0 50%,#E8F5EE 100%);">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge" style="background:#D8F0E0;color:var(--success);border-color:#9DC4AE;">📊 データ管理</div>
+      <h1 style="color:#1a4a2e;">利用者・工賃・稼働率を<br>一括管理・グラフ化</h1>
+      <p style="color:#2a6a3e;">Google Sheetsと連携して月次データを記録。<br>稼働率・工賃推移・収益をグラフで可視化。</p>
+    </div>
+    <div class="hero-img" style="font-size:4rem;opacity:0.3;">📊</div>
+  </div>
+</div>
+
+<main class="container">
+
+  <!-- API状態 -->
+  <div class="card" style="margin-bottom:1.25rem;padding:0.85rem 1.25rem;">
+    <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+      <span style="font-size:0.82rem;font-weight:700;color:var(--text-mid);">API状態：</span>
+      <span class="api-status chk" id="api-status-badge">⏳ 確認中...</span>
+      <span style="font-size:0.78rem;color:var(--text-light);" id="sheets-status-text"></span>
+    </div>
+  </div>
+
+  <!-- タブ -->
+  <div class="dm-tabs">
+    <button class="dm-tab active" data-panel="charts">📈 グラフ表示</button>
+    <button class="dm-tab" data-panel="monthly">📅 月次データ入力</button>
+    <button class="dm-tab" data-panel="users">👥 利用者一覧</button>
+    <button class="dm-tab" data-panel="additions">💰 加算管理</button>
+    <button class="dm-tab" data-panel="setup">⚙️ 設定</button>
+  </div>
+
+  <!-- ======================================================
+       グラフ表示
+  ====================================================== -->
+  <div class="dm-panel active" id="panel-charts">
+
+    <!-- 手動データでグラフ生成 -->
+    <div class="card" style="margin-bottom:1.25rem;">
+      <div class="section-header" style="margin-bottom:0.75rem;">
+        <span class="icon">📈</span>
+        <h2>グラフ生成 <span class="section-badge badge-local">手動入力</span></h2>
+      </div>
+      <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:1rem;">
+        CSVまたはJSON形式でデータを入力してグラフを生成できます。Google Sheets連携後は自動取得になります。
+      </p>
+
+      <div class="chart-grid">
+
+        <!-- 工賃推移 -->
+        <div class="chart-card">
+          <h3>💴 工賃推移グラフ</h3>
+          <div class="manual-data-area">
+            <div style="font-size:0.75rem;color:var(--text-mid);margin-bottom:0.4rem;">月,平均工賃,目標（CSV形式）</div>
+            <textarea id="wage-data" placeholder="2025/04,12500,16000
+2025/05,13200,16000
+2025/06,13800,16000
+2025/07,14100,16000
+2025/08,14500,16000
+2025/09,15200,16000"></textarea>
+            <button class="chart-btn" onclick="generateChart('wage','wage-data','wage-chart')">📊 グラフ生成</button>
+          </div>
+          <div id="wage-chart" class="chart-loading">データを入力してグラフ生成ボタンを押してください</div>
+        </div>
+
+        <!-- 稼働率 -->
+        <div class="chart-card">
+          <h3>📅 稼働率・利用者数</h3>
+          <div class="manual-data-area">
+            <div style="font-size:0.75rem;color:var(--text-mid);margin-bottom:0.4rem;">月,稼働率,利用者数（CSV形式）</div>
+            <textarea id="util-data" placeholder="2025/04,75.2,15
+2025/05,78.5,16
+2025/06,82.1,17
+2025/07,79.3,16
+2025/08,85.0,18
+2025/09,88.2,19"></textarea>
+            <button class="chart-btn" onclick="generateChart('utilization','util-data','util-chart')">📊 グラフ生成</button>
+          </div>
+          <div id="util-chart" class="chart-loading">データを入力してグラフ生成ボタンを押してください</div>
+        </div>
+
+        <!-- 加算状況 -->
+        <div class="chart-card">
+          <h3>💰 加算取得状況</h3>
+          <div class="manual-data-area">
+            <div style="font-size:0.75rem;color:var(--text-mid);margin-bottom:0.4rem;">加算名,単価,取得（true/false）</div>
+            <textarea id="add-data" placeholder="処遇改善加算Ⅰ,13.7,true
+福祉専門職員配置等加算Ⅰ,15,true
+目標工賃達成加算,109,false
+就労移行支援体制加算,27,true
+送迎加算（片道）,54,false"></textarea>
+            <button class="chart-btn" onclick="generateChart('additions','add-data','add-chart')">📊 グラフ生成</button>
+          </div>
+          <div id="add-chart" class="chart-loading">データを入力してグラフ生成ボタンを押してください</div>
+        </div>
+
+        <!-- 収益シミュレーション -->
+        <div class="chart-card">
+          <h3>💹 収益シミュレーション</h3>
+          <div class="manual-data-area">
+            <div style="font-size:0.75rem;color:var(--text-mid);margin-bottom:0.4rem;">月,基本報酬,加算合計,目標（CSV形式）</div>
+            <textarea id="rev-data" placeholder="2025/04,820000,95000,1000000
+2025/05,850000,98000,1000000
+2025/06,890000,102000,1000000
+2025/07,875000,99000,1000000
+2025/08,920000,108000,1050000
+2025/09,960000,115000,1050000"></textarea>
+            <button class="chart-btn" onclick="generateChart('revenue','rev-data','rev-chart')">📊 グラフ生成</button>
+          </div>
+          <div id="rev-chart" class="chart-loading">データを入力してグラフ生成ボタンを押してください</div>
+        </div>
+
+      </div><!-- /chart-grid -->
+    </div>
+  </div>
+
+  <!-- ======================================================
+       月次データ入力
+  ====================================================== -->
+  <div class="dm-panel" id="panel-monthly">
+    <div class="card">
+      <div class="section-header" style="margin-bottom:1rem;">
+        <span class="icon">📅</span>
+        <h2>月次データ入力 <span class="section-badge badge-sheets">Google Sheets</span></h2>
+      </div>
+
+      <div id="monthly-setup-warn" class="setup-banner" style="display:none;">
+        <div class="setup-icon">⚠️</div>
+        <div>
+          <h3>Google Sheets未連携</h3>
+          <p>「⚙️ 設定」タブでスプレッドシートIDを設定すると、データが自動保存されます。<br>
+          設定前でもローカルで入力→グラフ生成タブでグラフ化できます。</p>
+        </div>
+      </div>
+
+      <div class="dm-form">
+        <div class="dm-row">
+          <div class="dm-field">
+            <label class="dm-label">対象年月 <span style="color:var(--danger);font-size:0.7rem;">必須</span></label>
+            <input class="dm-input" type="month" id="mn-month">
+          </div>
+          <div class="dm-field">
+            <label class="dm-label">サービス種別</label>
+            <select class="dm-select" id="mn-service">
+              <option>就労継続支援B型</option>
+              <option>就労継続支援A型</option>
+              <option>居宅介護</option>
+              <option>訪問看護</option>
+              <option>相談支援</option>
+            </select>
+          </div>
+        </div>
+        <div class="dm-row">
+          <div class="dm-field">
+            <label class="dm-label">登録利用者数（名）</label>
+            <input class="dm-input" type="number" id="mn-registered" placeholder="例：20">
+          </div>
+          <div class="dm-field">
+            <label class="dm-label">実利用者数（名）</label>
+            <input class="dm-input" type="number" id="mn-actual" placeholder="例：15">
+          </div>
+        </div>
+        <div class="dm-row">
+          <div class="dm-field">
+            <label class="dm-label">稼働率（%）</label>
+            <input class="dm-input" type="number" step="0.1" id="mn-rate" placeholder="自動計算または手入力">
+          </div>
+          <div class="dm-field">
+            <label class="dm-label">平均月額工賃（円）<span style="font-size:0.7rem;color:var(--text-light);">B型のみ</span></label>
+            <input class="dm-input" type="number" id="mn-wage" placeholder="例：14500">
+          </div>
+        </div>
+        <div class="dm-row">
+          <div class="dm-field">
+            <label class="dm-label">基本報酬合計（円）</label>
+            <input class="dm-input" type="number" id="mn-base" placeholder="例：850000">
+          </div>
+          <div class="dm-field">
+            <label class="dm-label">加算合計（円）</label>
+            <input class="dm-input" type="number" id="mn-addition" placeholder="例：105000">
+          </div>
+        </div>
+        <div class="dm-field">
+          <label class="dm-label">備考</label>
+          <input class="dm-input" type="text" id="mn-note" placeholder="例：台風で2日休業あり">
+        </div>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;">
+          <button class="dm-submit" onclick="saveMonthly()">💾 保存する</button>
+          <span id="monthly-save-msg" style="font-size:0.82rem;color:var(--success);"></span>
+        </div>
+      </div>
+
+      <!-- 入力済みデータ一覧 -->
+      <div style="margin-top:1.5rem;">
+        <div style="font-size:0.85rem;font-weight:700;color:var(--text-mid);margin-bottom:0.5rem;">
+          保存済みデータ
+          <button onclick="loadMonthlyData()" style="background:none;border:1px solid var(--border);border-radius:999px;padding:0.15rem 0.6rem;font-size:0.72rem;cursor:pointer;margin-left:0.5rem;">🔄 更新</button>
+        </div>
+        <div class="dm-table-wrap">
+          <table class="dm-table" id="monthly-table">
+            <thead>
+              <tr><th>年月</th><th>サービス</th><th>登録数</th><th>実利用</th><th>稼働率</th><th>工賃</th><th>基本報酬</th><th>加算</th></tr>
+            </thead>
+            <tbody id="monthly-tbody">
+              <tr><td colspan="8" style="text-align:center;color:var(--text-light);padding:1.5rem;">データを読み込み中...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       利用者一覧
+  ====================================================== -->
+  <div class="dm-panel" id="panel-users">
+    <div class="card">
+      <div class="section-header" style="margin-bottom:1rem;">
+        <span class="icon">👥</span>
+        <h2>利用者一覧 <span class="section-badge badge-sheets">Google Sheets</span></h2>
+      </div>
+      <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:1rem;">⚠️ 個人情報のため、実名ではなくIDや仮名での管理を推奨します。</p>
+
+      <div class="dm-form">
+        <div class="dm-row">
+          <div class="dm-field">
+            <label class="dm-label">利用者ID</label>
+            <input class="dm-input" id="usr-id" placeholder="例：U001">
+          </div>
+          <div class="dm-field">
+            <label class="dm-label">サービス種別</label>
+            <select class="dm-select" id="usr-service">
+              <option>就労継続支援B型</option>
+              <option>就労継続支援A型</option>
+              <option>居宅介護</option>
+              <option>訪問看護</option>
+            </select>
+          </div>
+        </div>
+        <div class="dm-row">
+          <div class="dm-field">
+            <label class="dm-label">障害種別</label>
+            <select class="dm-select" id="usr-disability">
+              <option>精神障害</option>
+              <option>知的障害</option>
+              <option>身体障害</option>
+              <option>発達障害</option>
+              <option>難病</option>
+              <option>重複</option>
+            </select>
+          </div>
+          <div class="dm-field">
+            <label class="dm-label">障害支援区分</label>
+            <select class="dm-select" id="usr-level">
+              <option>区分なし</option><option>区分1</option><option>区分2</option>
+              <option>区分3</option><option>区分4</option><option>区分5</option><option>区分6</option>
+            </select>
+          </div>
+        </div>
+        <div class="dm-row">
+          <div class="dm-field">
+            <label class="dm-label">利用開始年月</label>
+            <input class="dm-input" type="month" id="usr-start">
+          </div>
+          <div class="dm-field">
+            <label class="dm-label">利用状況</label>
+            <select class="dm-select" id="usr-status">
+              <option>利用中</option><option>一時停止</option><option>終了</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;gap:0.75rem;align-items:center;">
+          <button class="dm-submit" onclick="saveUser()">💾 追加・更新</button>
+          <span id="user-save-msg" style="font-size:0.82rem;color:var(--success);"></span>
+        </div>
+      </div>
+
+      <div style="margin-top:1.5rem;">
+        <div style="font-size:0.85rem;font-weight:700;color:var(--text-mid);margin-bottom:0.5rem;">
+          利用者一覧
+          <button onclick="loadUsers()" style="background:none;border:1px solid var(--border);border-radius:999px;padding:0.15rem 0.6rem;font-size:0.72rem;cursor:pointer;margin-left:0.5rem;">🔄 更新</button>
+        </div>
+        <div class="dm-table-wrap">
+          <table class="dm-table">
+            <thead><tr><th>ID</th><th>サービス</th><th>障害種別</th><th>支援区分</th><th>開始</th><th>状況</th></tr></thead>
+            <tbody id="user-tbody"><tr><td colspan="6" style="text-align:center;color:var(--text-light);padding:1.5rem;">読み込み中...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       加算管理
+  ====================================================== -->
+  <div class="dm-panel" id="panel-additions">
+    <div class="card">
+      <div class="section-header" style="margin-bottom:1rem;">
+        <span class="icon">💰</span>
+        <h2>加算取得管理 <span class="section-badge badge-sheets">Google Sheets</span></h2>
+      </div>
+
+      <div class="dm-form">
+        <div class="dm-row">
+          <div class="dm-field">
+            <label class="dm-label">加算名</label>
+            <select class="dm-select" id="add-name">
+              <option>処遇改善加算Ⅰ</option>
+              <option>処遇改善加算Ⅱ</option>
+              <option>福祉専門職員配置等加算Ⅰ</option>
+              <option>福祉専門職員配置等加算Ⅱ</option>
+              <option>目標工賃達成加算</option>
+              <option>就労移行支援体制加算</option>
+              <option>送迎加算（片道）</option>
+              <option>食事提供加算</option>
+              <option>24時間対応体制加算</option>
+              <option>特別管理加算Ⅰ</option>
+              <option>特別管理加算Ⅱ</option>
+            </select>
+          </div>
+          <div class="dm-field">
+            <label class="dm-label">単価（%または単位/日）</label>
+            <input class="dm-input" type="number" step="0.1" id="add-rate" placeholder="例：13.7">
+          </div>
+        </div>
+        <div class="dm-row">
+          <div class="dm-field">
+            <label class="dm-label">取得状況</label>
+            <select class="dm-select" id="add-status">
+              <option value="true">✅ 取得中</option>
+              <option value="false">❌ 未取得</option>
+            </select>
+          </div>
+          <div class="dm-field">
+            <label class="dm-label">体制届提出日</label>
+            <input class="dm-input" type="date" id="add-date">
+          </div>
+        </div>
+        <div style="display:flex;gap:0.75rem;align-items:center;">
+          <button class="dm-submit" onclick="saveAddition()">💾 保存</button>
+          <span id="add-save-msg" style="font-size:0.82rem;color:var(--success);"></span>
+        </div>
+      </div>
+
+      <div style="margin-top:1.25rem;">
+        <div class="dm-table-wrap">
+          <table class="dm-table">
+            <thead><tr><th>加算名</th><th>単価</th><th>取得状況</th><th>体制届提出日</th></tr></thead>
+            <tbody id="add-tbody"><tr><td colspan="4" style="text-align:center;color:var(--text-light);padding:1.5rem;">読み込み中...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       設定
+  ====================================================== -->
+  <div class="dm-panel" id="panel-setup">
+    <div class="card">
+      <div class="section-header" style="margin-bottom:1rem;">
+        <span class="icon">⚙️</span><h2>Google Sheets 連携設定</h2>
+      </div>
+
+      <div class="setup-banner">
+        <div class="setup-icon">📋</div>
+        <div style="flex:1;">
+          <h3>初回セットアップ手順</h3>
+          <ol class="setup-steps">
+            <li><span class="step-num">1</span><span><a href="https://console.cloud.google.com" target="_blank" style="color:#6040a0;">Google Cloud Console</a> でプロジェクト作成 → Google Sheets API を有効化</span></li>
+            <li><span class="step-num">2</span><span>「IAM と管理」→「サービスアカウント」でアカウント作成 → JSONキーをダウンロード</span></li>
+            <li><span class="step-num">3</span><span>Render.com の「Environment」→ 変数名 <code style="background:#fff;padding:0.1rem 0.3rem;border-radius:4px;">GOOGLE_CREDENTIALS_JSON</code> に JSONの中身をそのまま貼り付け</span></li>
+            <li><span class="step-num">4</span><span>Google Sheetsで新規スプレッドシートを作成 → サービスアカウントのメールアドレスを「編集者」として共有</span></li>
+            <li><span class="step-num">5</span><span>スプレッドシートのURL（<code>spreadsheets/d/<strong>ここがID</strong>/edit</code>）のIDを下に入力</span></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="dm-field" style="margin-top:1rem;">
+        <label class="dm-label">スプレッドシートID</label>
+        <div class="sheet-id-input">
+          <input type="text" id="sheet-id-input" placeholder="例：1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms">
+          <button onclick="saveSheetId()">保存</button>
+        </div>
+        <div style="font-size:0.75rem;color:var(--text-light);margin-top:0.3rem;">このIDはブラウザのLocalStorageに保存されます（サーバーには送信されません）</div>
+      </div>
+
+      <div style="margin-top:1rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <button class="dm-submit" style="background:var(--success);" onclick="testConnection()">🔌 接続テスト</button>
+        <span id="conn-test-msg" style="font-size:0.82rem;align-self:center;"></span>
+      </div>
+
+      <div style="margin-top:1.5rem;padding:1rem;background:var(--blk-cream);border-radius:var(--r-sm);">
+        <div style="font-size:0.8rem;font-weight:700;color:var(--text-mid);margin-bottom:0.5rem;">自動作成されるシート</div>
+        <div style="font-size:0.78rem;color:var(--text-mid);line-height:2;">
+          📅 <strong>月次データ</strong>：稼働率・利用者数・工賃・収益の月別記録<br>
+          👥 <strong>利用者一覧</strong>：サービス種別・障害種別・支援区分の管理台帳<br>
+          💰 <strong>加算管理</strong>：取得中の加算と体制届の記録
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>障碍者福祉事業所 運営ガイド — データ管理</p>
+</footer>
+
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+<script>
+/* ================================================================
+   データ管理ページ スクリプト
+================================================================ */
+
+var API_BASE = "https://beqd1106-fukushi-api.onrender.com";
+var SHEET_ID_KEY = "fukushi_sheet_id";
+
+// ── タブ切り替え ──────────────────────────────────────────
+(function() {
+  document.querySelectorAll('.dm-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.dm-tab').forEach(function(t){ t.classList.remove('active'); });
+      document.querySelectorAll('.dm-panel').forEach(function(p){ p.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
+      if (tab.dataset.panel === 'setup') {
+        var saved = localStorage.getItem(SHEET_ID_KEY) || '';
+        document.getElementById('sheet-id-input').value = saved;
+      }
+    });
+  });
+})();
+
+// ── API状態確認 ───────────────────────────────────────────
+function checkApiStatus() {
+  var badge = document.getElementById('api-status-badge');
+  var text  = document.getElementById('sheets-status-text');
+  fetch(API_BASE + '/health')
+    .then(function(r){ return r.json(); })
+    .then(function(d) {
+      badge.className = 'api-status ok';
+      badge.textContent = '✅ API稼働中';
+      if (d.sheets_enabled) {
+        text.textContent = '｜ Google Sheets連携：有効';
+        text.style.color = 'var(--success)';
+      } else {
+        text.textContent = '｜ Google Sheets連携：未設定（グラフのみ利用可）';
+        text.style.color = 'var(--warning)';
+        document.getElementById('monthly-setup-warn').style.display = 'flex';
+      }
+    })
+    .catch(function() {
+      badge.className = 'api-status err';
+      badge.textContent = '❌ API未応答（起動中の可能性あり）';
+      setTimeout(checkApiStatus, 30000);
+    });
+}
+
+// ── CSV→JSON変換 ─────────────────────────────────────────
+function csvToRecords(csvText, colNames) {
+  var lines = csvText.trim().split('\n').filter(function(l){ return l.trim(); });
+  return lines.map(function(line) {
+    var vals = line.split(',').map(function(v){ return v.trim(); });
+    var obj = {};
+    colNames.forEach(function(name, i) {
+      var v = vals[i] || '';
+      if (!isNaN(v) && v !== '') obj[name] = parseFloat(v);
+      else if (v === 'true') obj[name] = true;
+      else if (v === 'false') obj[name] = false;
+      else obj[name] = v;
+    });
+    return obj;
+  });
+}
+
+// ── グラフ生成 ────────────────────────────────────────────
+var CHART_COLS = {
+  wage:        ['月','平均工賃','目標'],
+  utilization: ['月','稼働率','利用者数'],
+  additions:   ['加算名','単価','取得'],
+  revenue:     ['月','基本報酬','加算合計','目標'],
+};
+
+function generateChart(type, inputId, outputId) {
+  var csv     = document.getElementById(inputId).value;
+  var outEl   = document.getElementById(outputId);
+  var cols    = CHART_COLS[type];
+  var records = csvToRecords(csv, cols);
+  if (!records.length) {
+    outEl.textContent = 'データを入力してください'; return;
+  }
+  outEl.innerHTML = '<div class="chart-loading">⏳ グラフ生成中...</div>';
+
+  fetch(API_BASE + '/chart', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ chart_type: type, records: records }),
+  })
+  .then(function(r) {
+    if (!r.ok) throw new Error('API error ' + r.status);
+    return r.blob();
+  })
+  .then(function(blob) {
+    var url = URL.createObjectURL(blob);
+    outEl.innerHTML = '<img src="' + url + '" alt="' + type + ' chart" style="width:100%;border-radius:8px;">';
+  })
+  .catch(function(e) {
+    outEl.textContent = '⚠️ グラフ生成に失敗しました。APIが起動中の場合は30秒後に再試行してください。';
+  });
+}
+
+// ── スプレッドシートID ─────────────────────────────────────
+function getSheetId() { return localStorage.getItem(SHEET_ID_KEY) || ''; }
+function saveSheetId() {
+  var v = document.getElementById('sheet-id-input').value.trim();
+  localStorage.setItem(SHEET_ID_KEY, v);
+  alert('保存しました！');
+}
+
+// ── 接続テスト ─────────────────────────────────────────────
+function testConnection() {
+  var id  = getSheetId();
+  var msg = document.getElementById('conn-test-msg');
+  if (!id) { msg.textContent = '⚠️ スプレッドシートIDを入力してください'; msg.style.color='var(--warning)'; return; }
+  msg.textContent = '⏳ 接続確認中...'; msg.style.color = 'var(--text-mid)';
+  fetch(API_BASE + '/sheets/read', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ spreadsheet_id: id, tab: '月次データ' }),
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(d) {
+    if (d.ok !== false) { msg.textContent = '✅ 接続成功！'; msg.style.color = 'var(--success)'; }
+    else throw new Error(d.detail || 'エラー');
+  })
+  .catch(function(e) {
+    msg.textContent = '❌ 接続失敗：' + e.message; msg.style.color = 'var(--danger)';
+  });
+}
+
+// ── 月次データ保存 ────────────────────────────────────────
+function saveMonthly() {
+  var id = getSheetId();
+  var month    = document.getElementById('mn-month').value;
+  var service  = document.getElementById('mn-service').value;
+  var reg      = document.getElementById('mn-registered').value;
+  var actual   = document.getElementById('mn-actual').value;
+  var rate     = document.getElementById('mn-rate').value || (reg && actual ? (actual/reg*100).toFixed(1) : '');
+  var wage     = document.getElementById('mn-wage').value;
+  var base     = document.getElementById('mn-base').value;
+  var addition = document.getElementById('mn-addition').value;
+  var note     = document.getElementById('mn-note').value;
+  var msg      = document.getElementById('monthly-save-msg');
+
+  if (!month) { msg.textContent = '⚠️ 年月を入力してください'; msg.style.color='var(--warning)'; return; }
+
+  var row = [month, service, reg, actual, rate, wage, base, addition, note];
+  var headers = ['年月','サービス','登録利用者数','実利用者数','稼働率','平均工賃','基本報酬','加算合計','備考'];
+
+  // LocalStorageにも保存
+  var saved = JSON.parse(localStorage.getItem('monthly_data') || '[]');
+  saved = saved.filter(function(r){ return !(r[0]===month && r[1]===service); });
+  saved.unshift(row);
+  localStorage.setItem('monthly_data', JSON.stringify(saved));
+  renderMonthlyTable(saved);
+  msg.textContent = '✅ ローカル保存済み'; msg.style.color = 'var(--success)';
+
+  if (!id) return;
+  fetch(API_BASE + '/sheets/write', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ spreadsheet_id: id, tab: '月次データ', row: row, headers: headers }),
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(){ msg.textContent = '✅ Sheetsにも保存しました！'; })
+  .catch(function(){ /* localのみ保存は成功済み */ });
+}
+
+function loadMonthlyData() {
+  var saved = JSON.parse(localStorage.getItem('monthly_data') || '[]');
+  if (saved.length) { renderMonthlyTable(saved); return; }
+  var id = getSheetId();
+  if (!id) { renderMonthlyTable([]); return; }
+  fetch(API_BASE + '/sheets/read', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ spreadsheet_id: id, tab: '月次データ' }),
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(d) {
+    var rows = (d.data || []).map(function(r){ return Object.values(r); });
+    renderMonthlyTable(rows);
+  })
+  .catch(function(){ renderMonthlyTable([]); });
+}
+
+function renderMonthlyTable(rows) {
+  var tbody = document.getElementById('monthly-tbody');
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--text-light);padding:1.5rem;">データがありません</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rows.slice(0,20).map(function(r) {
+    return '<tr>' + r.slice(0,8).map(function(v){ return '<td>' + (v||'') + '</td>'; }).join('') + '</tr>';
+  }).join('');
+}
+
+// ── 利用者保存・読み込み ──────────────────────────────────
+function saveUser() {
+  var id=getSheetId(), msg=document.getElementById('user-save-msg');
+  var uid=document.getElementById('usr-id').value;
+  if (!uid){ msg.textContent='⚠️ IDを入力してください'; msg.style.color='var(--warning)'; return; }
+  var row=[uid,document.getElementById('usr-service').value,document.getElementById('usr-disability').value,
+           document.getElementById('usr-level').value,document.getElementById('usr-start').value,
+           document.getElementById('usr-status').value];
+  var headers=['ID','サービス','障害種別','支援区分','開始','状況'];
+  var saved=JSON.parse(localStorage.getItem('user_data')||'[]');
+  saved=saved.filter(function(r){return r[0]!==uid;}); saved.unshift(row);
+  localStorage.setItem('user_data',JSON.stringify(saved));
+  renderUserTable(saved); msg.textContent='✅ 保存済み'; msg.style.color='var(--success)';
+  if (!id) return;
+  fetch(API_BASE+'/sheets/write',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({spreadsheet_id:id,tab:'利用者一覧',row:row,headers:headers})});
+}
+
+function loadUsers() {
+  var saved=JSON.parse(localStorage.getItem('user_data')||'[]');
+  if (saved.length){renderUserTable(saved);return;}
+  var id=getSheetId(); if(!id){renderUserTable([]);return;}
+  fetch(API_BASE+'/sheets/read',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({spreadsheet_id:id,tab:'利用者一覧'})})
+  .then(function(r){return r.json();})
+  .then(function(d){renderUserTable((d.data||[]).map(function(r){return Object.values(r);}));})
+  .catch(function(){renderUserTable([]);});
+}
+
+function renderUserTable(rows) {
+  var tbody=document.getElementById('user-tbody');
+  tbody.innerHTML=rows.length ? rows.slice(0,50).map(function(r){
+    return '<tr>'+r.slice(0,6).map(function(v){return '<td>'+(v||'')+'</td>';}).join('')+'</tr>';
+  }).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--text-light);padding:1.5rem;">データがありません</td></tr>';
+}
+
+// ── 加算保存・読み込み ────────────────────────────────────
+function saveAddition() {
+  var id=getSheetId(), msg=document.getElementById('add-save-msg');
+  var name=document.getElementById('add-name').value;
+  var row=[name,document.getElementById('add-rate').value,document.getElementById('add-status').value,document.getElementById('add-date').value];
+  var headers=['加算名','単価','取得','体制届提出日'];
+  var saved=JSON.parse(localStorage.getItem('add_data')||'[]');
+  saved=saved.filter(function(r){return r[0]!==name;}); saved.unshift(row);
+  localStorage.setItem('add_data',JSON.stringify(saved));
+  renderAddTable(saved); msg.textContent='✅ 保存済み'; msg.style.color='var(--success)';
+  if (!id) return;
+  fetch(API_BASE+'/sheets/write',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({spreadsheet_id:id,tab:'加算管理',row:row,headers:headers})});
+}
+
+function renderAddTable(rows) {
+  var tbody=document.getElementById('add-tbody');
+  tbody.innerHTML=rows.length ? rows.slice(0,20).map(function(r){
+    var acquired=r[2]==='true'||r[2]===true;
+    return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td style="color:'+(acquired?'var(--success)':'var(--danger)')+';font-weight:700;">'+(acquired?'✅ 取得中':'❌ 未取得')+'</td><td>'+r[3]+'</td></tr>';
+  }).join('') : '<tr><td colspan="4" style="text-align:center;color:var(--text-light);padding:1.5rem;">データがありません</td></tr>';
+}
+
+// ── 初期化 ────────────────────────────────────────────────
+checkApiStatus();
+loadMonthlyData();
+loadUsers();
+renderAddTable(JSON.parse(localStorage.getItem('add_data')||'[]'));
+</script>
+</body>
+</html>

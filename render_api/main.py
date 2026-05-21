@@ -1,6 +1,6 @@
 """
 beqd1106 福祉ガイド — Python API サーバー (Render.com)
-Excel書類生成 + 将来：Google Sheets連携・グラフ生成
+Excel書類生成 + Google Sheets連携 + グラフ自動生成
 """
 
 from fastapi import FastAPI
@@ -12,9 +12,19 @@ from openpyxl.styles import (
     Font, PatternFill, Border, Side, Alignment
 )
 from openpyxl.utils import get_column_letter
-import io, re
+import io, re, os
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Any
+from fastapi import Query, HTTPException
+from fastapi.responses import Response
+
+# Google Sheets / グラフ（設定済みの場合のみ使用）
+SHEETS_ENABLED = bool(os.environ.get("GOOGLE_CREDENTIALS_JSON"))
+try:
+    import sheets_helper as sh
+    import graph_helper  as gh
+except ImportError:
+    SHEETS_ENABLED = False
 
 # ================================================================
 app = FastAPI(title="福祉ガイド API", version="1.0.0")
@@ -638,6 +648,118 @@ async def fill_excel(req: ExcelRequest):
     )
 
 
+
+# ================================================================
+# Google Sheets 連携エンドポイント
+# ================================================================
+
+class SheetsReadRequest(BaseModel):
+    spreadsheet_id: str
+    tab: str
+
+class SheetsWriteRequest(BaseModel):
+    spreadsheet_id: str
+    tab: str
+    row: list
+    headers: list = []
+
+class SheetsUpdateRequest(BaseModel):
+    spreadsheet_id: str
+    tab: str
+    key_col: str
+    key_val: str
+    updates: dict
+
+@app.get("/sheets/status")
+def sheets_status():
+    return {"enabled": SHEETS_ENABLED,
+            "message": "Google Sheets連携が有効です" if SHEETS_ENABLED
+                       else "GOOGLE_CREDENTIALS_JSON が未設定です"}
+
+@app.post("/sheets/read")
+def sheets_read(req: SheetsReadRequest):
+    if not SHEETS_ENABLED:
+        raise HTTPException(503, "Google Sheets未設定")
+    try:
+        data = sh.read_all(req.spreadsheet_id, req.tab)
+        return {"ok": True, "data": data, "count": len(data)}
+    except Exception as e:
+        raise HTTPException(500, str(e))
+
+@app.post("/sheets/write")
+def sheets_write(req: SheetsWriteRequest):
+    if not SHEETS_ENABLED:
+        raise HTTPException(503, "Google Sheets未設定")
+    try:
+        if req.headers:
+            sh.ensure_headers(req.spreadsheet_id, req.tab, req.headers)
+        sh.append_row(req.spreadsheet_id, req.tab, req.row)
+        return {"ok": True}
+    except Exception as e:
+        raise HTTPException(500, str(e))
+
+@app.post("/sheets/update")
+def sheets_update(req: SheetsUpdateRequest):
+    if not SHEETS_ENABLED:
+        raise HTTPException(503, "Google Sheets未設定")
+    try:
+        found = sh.update_row(req.spreadsheet_id, req.tab,
+                              req.key_col, req.key_val, req.updates)
+        return {"ok": True, "updated": found}
+    except Exception as e:
+        raise HTTPException(500, str(e))
+
+# ================================================================
+# グラフ生成エンドポイント
+# ================================================================
+
+class ChartRequest(BaseModel):
+    chart_type: str          # wage / utilization / additions / revenue
+    records: list[dict]
+    title: str = ""
+
+@app.post("/chart")
+def generate_chart(req: ChartRequest):
+    """データを受け取りPNG画像を返す"""
+    if not SHEETS_ENABLED:
+        # Sheetsなしでもグラフは生成可能（データを直接受け取る）
+        pass
+    try:
+        if   req.chart_type == "wage":        buf = gh.chart_wage(req.records)
+        elif req.chart_type == "utilization": buf = gh.chart_utilization(req.records)
+        elif req.chart_type == "additions":   buf = gh.chart_additions(req.records)
+        elif req.chart_type == "revenue":     buf = gh.chart_revenue(req.records)
+        else:
+            raise HTTPException(400, f"不明なグラフタイプ: {req.chart_type}")
+        return Response(content=buf.read(), media_type="image/png")
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, str(e))
+
+@app.post("/chart/from-sheets")
+def chart_from_sheets(
+    chart_type: str,
+    spreadsheet_id: str,
+    tab: str
+):
+    """Google Sheetsからデータを読んでグラフ生成"""
+    if not SHEETS_ENABLED:
+        raise HTTPException(503, "Google Sheets未設定")
+    try:
+        records = sh.read_all(spreadsheet_id, tab)
+        if   chart_type == "wage":        buf = gh.chart_wage(records)
+        elif chart_type == "utilization": buf = gh.chart_utilization(records)
+        elif chart_type == "additions":   buf = gh.chart_additions(records)
+        elif chart_type == "revenue":     buf = gh.chart_revenue(records)
+        else:
+            raise HTTPException(400, f"不明なグラフタイプ: {chart_type}")
+        return Response(content=buf.read(), media_type="image/png")
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, str(e))
+
 @app.get("/health")
 def health():
-    return {"status": "ok", "service": "beqd1106-fukushi-api"}
+    return {"status": "ok", "service": "beqd1106-fukushi-api", "sheets_enabled": SHEETS_ENABLED, "version": "2.0.0"}
