@@ -33,22 +33,68 @@
   </nav>
 </header>
 
-<div class="page-hero">
+<div class="page-hero has-photo">
+  <div class="hero-ring"></div>
   <div class="hero-inner">
     <div class="hero-text">
       <div class="hero-badge">🏥 障碍者福祉 運営ガイド</div>
       <h1>訪問看護・就労継続支援<br>運営の全てがここに</h1>
-      <p>京都で障碍者（身体・精神・知的）を対象とした事業所を運営するための<br>法令・書類・管理・請求・監査対応を一冊にまとめました。</p>
-      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1.5rem;">
+      <p style="color:var(--text-mid);font-size:clamp(0.88rem,1.5vw+0.3rem,1rem);line-height:1.8;max-width:480px;">京都で障碍者（身体・精神・知的）を対象とした事業所を運営するための<br>法令・書類・管理・請求・監査対応を一冊にまとめました。</p>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1.75rem;">
         <a href="01_法令・制度.html" class="btn-primary">⚖️ 法令・制度を見る</a>
         <a href="14_AI作成支援.html" class="btn-secondary">✨ AI作成支援を試す</a>
         <a href="フォーマット/index.html" class="btn-secondary">📁 様式をダウンロード</a>
       </div>
     </div>
-    <div class="hero-img">
-      <img src="images/hero_nurse.png" alt="訪問看護イラスト">
+    <div class="hero-img" style="position:relative;">
+      <img src="images/hero_desk.jpg" alt="書類作成イメージ"
+           style="border-radius:var(--r-lg);box-shadow:var(--shadow-xl);width:100%;max-width:420px;object-fit:cover;aspect-ratio:4/3;opacity:0.95;">
+      <!-- フローティングバッジ -->
+      <div style="position:absolute;bottom:-1rem;left:-1rem;background:#fff;border-radius:var(--r);padding:0.7rem 1rem;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;font-weight:700;color:var(--coral-dark);white-space:nowrap;">
+        <span style="font-size:1.2rem;">📚</span> 16ページ・75チェック項目収録
+      </div>
     </div>
   </div>
+</div>
+
+<!-- ウェーブ区切り -->
+<div class="wave-divider" aria-hidden="true">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,30 C240,60 480,0 720,30 C960,60 1200,0 1440,30 L1440,60 L0,60 Z" fill="#FAFAF8"/>
+  </svg>
+</div>
+
+<!-- 統計バー（giftee方式） -->
+<div class="stats-section">
+  <div class="stats-grid">
+    <div class="stat-item">
+      <span class="stat-num" data-count="16" data-unit="">0</span>
+      <span class="stat-unit">ページ</span>
+      <span class="stat-label">コンテンツ収録数</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-count="56" data-unit="">0</span>
+      <span class="stat-unit">種類</span>
+      <span class="stat-label">様式テンプレート</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-count="75" data-unit="">0</span>
+      <span class="stat-unit">項目</span>
+      <span class="stat-label">実地指導チェックリスト</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-count="12" data-unit="">0</span>
+      <span class="stat-unit">機能</span>
+      <span class="stat-label">AI書類作成支援</span>
+    </div>
+  </div>
+</div>
+
+<!-- ウェーブ（戻り） -->
+<div class="wave-divider" aria-hidden="true" style="transform:scaleY(-1);margin-bottom:-1px;">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,30 C240,60 480,0 720,30 C960,60 1200,0 1440,30 L1440,60 L0,60 Z" fill="#2A2020"/>
+  </svg>
 </div>
 
 <main class="container">
