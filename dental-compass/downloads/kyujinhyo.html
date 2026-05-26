@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スタッフ求人票テンプレート | 歯科経営コンパス</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', sans-serif; font-size: 10.5pt; color: #1a1a1a; background: #f9f9f9; }
+  .page { max-width: 210mm; margin: 0 auto; background: white; padding: 18mm 16mm; }
+  .clinic-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6mm; padding-bottom: 5mm; border-bottom: 2px solid #0d2137; }
+  .clinic-name-big { font-size: 18pt; font-weight: 700; color: #0d2137; }
+  .clinic-tag { background: #00c9a7; color: white; border-radius: 4px; padding: 3px 10px; font-size: 10pt; font-weight: 700; }
+  .section-title { font-size: 11pt; font-weight: 700; color: white; background: #9b59b6; padding: 5px 10px; margin: 5mm 0 3mm; }
+  .form-group { margin-bottom: 3mm; }
+  .form-label { font-size: 9pt; font-weight: 600; color: #555; margin-bottom: 2px; display: block; }
+  .form-line { border-bottom: 1px solid #555; min-height: 22px; margin-bottom: 1mm; }
+  .form-box { border: 1px solid #ccc; min-height: 44px; width: 100%; padding: 5px; }
+  .form-box-lg { border: 1px solid #ccc; min-height: 80px; width: 100%; padding: 5px; }
+  .form-row { display: grid; gap: 6mm; }
+  .form-row-2 { grid-template-columns: 1fr 1fr; }
+  .form-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 4mm; font-size: 9.5pt; }
+  table th { background: #374151; color: white; padding: 5px 8px; text-align: left; width: 35%; }
+  table td { border: 1px solid #ccc; padding: 6px 8px; }
+  .point-list { list-style: none; font-size: 10pt; }
+  .point-list li { padding: 4px 0; border-bottom: 1px dashed #e0e0e0; display: flex; gap: 8px; }
+  .point-list li::before { content: '▶'; color: #9b59b6; font-size: 8pt; margin-top: 3px; flex-shrink: 0; }
+  .checkbox-list { list-style: none; font-size: 10pt; line-height: 2; }
+  .checkbox-list li::before { content: '□ '; font-size: 11pt; }
+  .staff-voice { background: #f3e8ff; border-left: 4px solid #9b59b6; border-radius: 0 8px 8px 0; padding: 10px 14px; margin-bottom: 4mm; font-size: 10pt; line-height: 1.7; }
+  .staff-voice .name { font-size: 8.5pt; color: #777; margin-top: 4px; }
+  .notice-box { background: #fff8e1; border: 1px solid #f59e0b; border-radius: 6px; padding: 8px 12px; font-size: 9pt; margin-top: 4mm; line-height: 1.7; }
+  .footnote { font-size: 8pt; color: #666; margin-top: 8mm; border-top: 1px solid #ddd; padding-top: 3mm; line-height: 1.7; }
+  .btn-print { position: fixed; top: 20px; right: 20px; background: #0d2137; color: white; border: none; padding: 10px 20px; border-radius: 999px; font-size: 13px; cursor: pointer; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; }
+  .btn-back { position: fixed; top: 20px; left: 20px; background: #f0f0f0; color: #333; border: none; padding: 10px 18px; border-radius: 999px; font-size: 13px; cursor: pointer; text-decoration: none; display: inline-block; }
+  @media print {
+    body { background: white; }
+    .page { padding: 8mm 12mm; max-width: none; }
+    .btn-print, .btn-back { display: none; }
+    table th, .section-title { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .staff-voice { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<a href="../index.html" class="btn-back">← 戻る</a>
+<button class="btn-print" onclick="window.print()">🖨️ 印刷 / PDF保存</button>
+
+<div class="page">
+  <div class="clinic-header">
+    <div>
+      <div class="clinic-name-big">　　　　歯科クリニック</div>
+      <div style="font-size:9pt;color:#666;margin-top:3px;">〒　　　-　　　　　TEL：　　　　　　　HP：</div>
+    </div>
+    <div class="clinic-tag">スタッフ募集</div>
+  </div>
+
+  <div class="section-title">1. 募集要項</div>
+  <table>
+    <tr><th>募集職種</th><td>（例：歯科衛生士 / 歯科助手 / 受付・トリートメントコーディネーター）</td></tr>
+    <tr><th>雇用形態</th><td>正社員 ・ パート・アルバイト ・ 契約社員</td></tr>
+    <tr><th>給与・時給</th><td>月給　　　　円〜（経験・能力に応じて決定）/ 時給　　　　円〜</td></tr>
+    <tr><th>昇給・賞与</th><td>昇給：年1回　　賞与：年　回（業績連動）</td></tr>
+    <tr><th>勤務地</th><td></td></tr>
+    <tr><th>勤務時間</th><td>（例）9:00〜13:00 / 14:00〜18:00（休憩60分）</td></tr>
+    <tr><th>診療日・休診日</th><td>（例）月〜土診療・水曜・日曜・祝日休診</td></tr>
+    <tr><th>必須資格</th><td>（例：歯科衛生士免許 必須 / 歯科助手・受付は資格不問）</td></tr>
+    <tr><th>歓迎する経験</th><td></td></tr>
+  </table>
+
+  <div class="section-title">2. 待遇・福利厚生</div>
+  <ul class="checkbox-list">
+    <li>交通費支給（上限　　円/月）</li>
+    <li>社会保険完備（健康保険・厚生年金・雇用保険・労災保険）</li>
+    <li>有給休暇あり（法定通り）</li>
+    <li>産前産後休暇・育児休業取得実績あり</li>
+    <li>制服貸与</li>
+    <li>院内研修・勉強会あり（外部研修参加支援）</li>
+    <li>駐車場あり（無料）</li>
+    <li>スタッフ割引（診療費）あり</li>
+    <li>試用期間：　　ヶ月（同条件）</li>
+  </ul>
+
+  <div class="section-title">3. 医院の強み・特徴</div>
+  <ul class="point-list">
+    <li>（例）最新設備（歯科用CT・口腔内スキャナー・CAD/CAM）完備</li>
+    <li>（例）予防歯科・口腔機能管理に力を入れており、衛生士が主役になれる職場</li>
+    <li>（例）完全個室のカウンセリングルームがあり、患者さんとじっくり向き合える</li>
+    <li>（例）残業少なめ・ほぼ定時退勤（残業月平均　　時間）</li>
+    <li>（例）スタッフ平均在籍年数　　年。離職率が低く、長く働ける環境</li>
+    <li></li>
+  </ul>
+
+  <div class="section-title">4. 院長メッセージ</div>
+  <div class="form-box-lg">（院長の人柄・診療理念・スタッフへの思いを記載。採用担当者が最も読むポイントです。）</div>
+
+  <div class="section-title">5. スタッフの声（任意）</div>
+  <div class="staff-voice">
+    「（働いてみてよかったこと・職場の雰囲気など、現スタッフのリアルな声を記載）」<br>
+    <div class="name">― 歯科衛生士　〇〇　勤続　年</div>
+  </div>
+
+  <div class="section-title">6. 1日のスケジュール例</div>
+  <table>
+    <tr><th>時間</th><td>（例）9:00　業務開始・器具準備 → 9:30〜診療開始 → 13:00〜昼休憩 → 14:00〜午後診療 → 18:00　診療終了・片付け → 18:30　退勤</td></tr>
+  </table>
+
+  <div class="section-title">7. 応募方法・選考フロー</div>
+  <table>
+    <tr><th>応募方法</th><td>📞 お電話にてご連絡ください（TEL：　　　　　　）または HPの応募フォームから</td></tr>
+    <tr><th>選考フロー</th><td>書類選考 → 面接（1〜2回） → 内定（見学・体験勤務も歓迎）</td></tr>
+    <tr><th>担当者</th><td>（氏名・役職）</td></tr>
+    <tr><th>受付時間</th><td>（例）9:00〜18:00（休診日を除く）</td></tr>
+  </table>
+
+  <div class="notice-box">
+    💡 <strong>ご応募の前に、医院見学・体験勤務も歓迎します。</strong><br>
+    職場の雰囲気を実際に体験してから応募を決めていただいて構いません。お気軽にお問い合わせください。
+  </div>
+
+  <div class="footnote">
+    ※ 本テンプレートはハローワーク・求人サイト・SNS等でのご使用を想定した雛形です。<br>
+    ※ 求人情報の虚偽記載は「職業安定法」違反になります。実際の労働条件を正確に記載してください。<br>
+    ※ 有料職業紹介・求人サイト掲載時は各媒体の規定に従ってください。<br>
+    出典：職業安定法 / 歯科経営コンパス 無料テンプレート（2026年版）
+  </div>
+</div>
+</body>
+</html>

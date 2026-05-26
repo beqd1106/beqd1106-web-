@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>施設基準 自己点検チェックシート（令和8年度対応） | 歯科経営コンパス</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', sans-serif; font-size: 10.5pt; color: #1a1a1a; background: #f9f9f9; }
+  .page { max-width: 210mm; margin: 0 auto; background: white; padding: 18mm 16mm; }
+  .print-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5mm; padding-bottom: 4mm; border-bottom: 2px solid #0d2137; }
+  .doc-title { font-size: 15pt; font-weight: 700; color: #0d2137; }
+  .site-name { font-size: 8pt; color: #888; }
+  .notice { background: #e8f4f8; border-left: 4px solid #3b9eca; padding: 7px 12px; font-size: 9pt; margin-bottom: 6mm; line-height: 1.6; }
+  .section-title { font-size: 11pt; font-weight: 700; color: white; background: #0d2137; padding: 5px 10px; margin: 6mm 0 3mm; }
+  .add-title { font-size: 10pt; font-weight: 700; color: #0d2137; border-bottom: 2px solid #00c9a7; padding-bottom: 3px; margin: 5mm 0 2mm; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 4mm; font-size: 9.5pt; }
+  table thead th { background: #374151; color: white; padding: 5px 8px; text-align: left; }
+  table tbody tr:nth-child(even) { background: #f7f9fb; }
+  table td { border: 1px solid #ccc; padding: 5px 8px; vertical-align: top; }
+  table td.check-col { text-align: center; width: 50px; font-size: 13pt; }
+  table td.req { font-size: 8.5pt; }
+  .tag-required { background: #e74c3c; color: white; border-radius: 3px; padding: 1px 5px; font-size: 8pt; }
+  .tag-opt { background: #3b9eca; color: white; border-radius: 3px; padding: 1px 5px; font-size: 8pt; }
+  .note { font-size: 8.5pt; color: #555; }
+  .score-area { border: 2px solid #0d2137; border-radius: 8px; padding: 10px 16px; margin: 6mm 0; display: flex; gap: 20px; align-items: center; }
+  .score-area .label { font-size: 10pt; color: #555; }
+  .score-area .val { font-size: 22pt; font-weight: 700; color: #0d2137; }
+  .footnote { font-size: 8pt; color: #666; margin-top: 8mm; border-top: 1px solid #ddd; padding-top: 3mm; line-height: 1.7; }
+  .btn-print { position: fixed; top: 20px; right: 20px; background: #0d2137; color: white; border: none; padding: 10px 20px; border-radius: 999px; font-size: 13px; cursor: pointer; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; }
+  .btn-back { position: fixed; top: 20px; left: 20px; background: #f0f0f0; color: #333; border: none; padding: 10px 18px; border-radius: 999px; font-size: 13px; cursor: pointer; text-decoration: none; display: inline-block; }
+  @media print {
+    body { background: white; }
+    .page { padding: 8mm 12mm; max-width: none; }
+    .btn-print, .btn-back { display: none; }
+    table thead th, .section-title { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<a href="../index.html" class="btn-back">← 戻る</a>
+<button class="btn-print" onclick="window.print()">🖨️ 印刷 / PDF保存</button>
+
+<div class="page">
+  <div class="print-header">
+    <div class="doc-title">施設基準 自己点検チェックシート</div>
+    <div class="site-name">令和8年度改定対応 | 歯科経営コンパス</div>
+  </div>
+
+  <div class="notice">
+    📋 令和8年度（2026年）診療報酬改定対応版。施設基準届出前・算定継続管理に活用してください。<br>
+    点検日：　　　年　　月　　日　　医院名：　　　　　　　　　　　点検者：
+  </div>
+
+  <div class="section-title">A. 医療安全・感染対策（令和8年度：外来環から分離）</div>
+
+  <div class="add-title">歯科外来診療医療安全対策加算1（10点/初診）</div>
+  <table>
+    <thead><tr><th>確認項目</th><th>状況</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>AEDを診療所内に設置している</td><td class="check-col">□</td><td class="req">必須要件</td></tr>
+      <tr><td>医療安全研修を年2回以上実施・記録している</td><td class="check-col">□</td><td class="req">記録保管必須</td></tr>
+      <tr><td>緊急時対応手順書（マニュアル）を整備している</td><td class="check-col">□</td><td class="req"></td></tr>
+      <tr><td>緊急薬品（エピネフリン等）を常備している</td><td class="check-col">□</td><td class="req"></td></tr>
+      <tr><td>医療安全対策担当者を選任している</td><td class="check-col">□</td><td class="req"></td></tr>
+    </tbody>
+  </table>
+
+  <div class="add-title">歯科外来診療感染対策加算1（10点/初診）</div>
+  <table>
+    <thead><tr><th>確認項目</th><th>状況</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>感染防止対策研修を年2回以上実施・記録している</td><td class="check-col">□</td><td class="req">記録保管必須</td></tr>
+      <tr><td>標準予防策に基づく手指衛生が実施されている</td><td class="check-col">□</td><td class="req"></td></tr>
+      <tr><td>ハンドピース患者ごと滅菌が実施されている</td><td class="check-col">□</td><td class="req">法的義務</td></tr>
+      <tr><td>滅菌器の定期的な点検・記録がある</td><td class="check-col">□</td><td class="req"></td></tr>
+      <tr><td>院内感染対策マニュアルを整備している</td><td class="check-col">□</td><td class="req"></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">B. かかりつけ歯科医機能強化型（か強診）</div>
+  <table>
+    <thead><tr><th>確認項目</th><th>状況</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>歯科疾患管理料を過去1年間に100回以上算定している</td><td class="check-col">□</td><td class="req">算定実績確認</td></tr>
+      <tr><td>歯科訪問診療1または2を過去1年間に24回以上算定している</td><td class="check-col">□</td><td class="req"></td></tr>
+      <tr><td>フッ化物局所応用の実績がある（過去1年）</td><td class="check-col">□</td><td class="req"></td></tr>
+      <tr><td>歯科衛生士が常勤1名以上いる</td><td class="check-col">□</td><td class="req"></td></tr>
+      <tr><td>院長・衛生士ともに必要な研修を修了している</td><td class="check-col">□</td><td class="req">証明書保管</td></tr>
+      <tr><td>口腔機能発達不全症・低下症の管理実績がある</td><td class="check-col">□</td><td class="req">令和8年度追加</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">C. 口腔機能管理関連（令和8年度改定）</div>
+  <table>
+    <thead><tr><th>確認項目</th><th>状況</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>口腔機能管理料（検査あり・90点）の体制が整っている</td><td class="check-col">□</td><td class="req">令和8年度改定</td></tr>
+      <tr><td>口腔機能実地指導料（46点）の届出：衛生士の研修修了</td><td class="check-col">□</td><td class="req">新設加算</td></tr>
+      <tr><td>口腔機能検査（舌圧・咬合力・咀嚼能力等）を実施できる</td><td class="check-col">□</td><td class="req"></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">D. 医療DX・光学印象</div>
+  <table>
+    <thead><tr><th>確認項目</th><th>状況</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>マイナ保険証対応（顔認証カードリーダー設置済み）</td><td class="check-col">□</td><td class="req">義務化対応</td></tr>
+      <tr><td>医療DX推進体制整備加算の届出をしている（または準備中）</td><td class="check-col">□</td><td class="req"></td></tr>
+      <tr><td>光学印象採得装置（口腔内スキャナー）を保有している</td><td class="check-col">□</td><td class="req">+50点の要件</td></tr>
+      <tr><td>歯科補綴治療3年以上の歯科医師が在籍している</td><td class="check-col">□</td><td class="req">光学印象算定要件</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">E. 在宅・訪問歯科（歯援診）</div>
+  <table>
+    <thead><tr><th>確認項目</th><th>状況</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>在宅療養支援歯科診療所（歯援診）の届出をしている</td><td class="check-col">□</td><td class="req"></td></tr>
+      <tr><td>訪問歯科診療の月次実績を記録・モニタリングしている</td><td class="check-col">□</td><td class="req">令和8年度：月次評価に変更</td></tr>
+      <tr><td>携帯型歯科診療器材（ポータブルユニット等）を保有している</td><td class="check-col">□</td><td class="req"></td></tr>
+    </tbody>
+  </table>
+
+  <div class="score-area">
+    <div><div class="label">チェック数</div><div class="val" id="score">　　</div></div>
+    <div><div class="label">合計項目数</div><div class="val">22</div></div>
+    <div style="flex:1;"><div class="label">点検コメント・改善要因</div><div style="border:1px solid #ccc;min-height:30px;padding:5px;"></div></div>
+  </div>
+
+  <div class="footnote">
+    ※ 本チェックシートは令和8年度（2026年6月1日施行）診療報酬改定に基づき作成した参考資料です。<br>
+    ※ 実際の施設基準の算定可否は、地方厚生局への届出および承認が必要です。<br>
+    ※ 施設基準の要件は改定ごとに変わりますので、厚生労働省・地方厚生局の最新通知を必ずご確認ください。<br>
+    出典：令和8年度診療報酬改定告示・通知（2026年3月5日） / 歯科経営コンパス 無料テンプレート
+  </div>
+</div>
+</body>
+</html>

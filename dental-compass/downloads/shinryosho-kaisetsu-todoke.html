@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>診療所開設届 記入例 | 歯科経営コンパス</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', sans-serif; font-size: 11pt; color: #1a1a1a; background: #f9f9f9; }
+  .page { max-width: 210mm; margin: 0 auto; background: white; padding: 20mm 18mm; }
+  .print-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6mm; padding-bottom: 4mm; border-bottom: 2px solid #0d2137; }
+  .print-header .site-name { font-size: 8pt; color: #888; }
+  .print-header .doc-title { font-size: 16pt; font-weight: 700; color: #0d2137; }
+  .notice { background: #e8f4f8; border-left: 4px solid #3b9eca; padding: 8px 12px; font-size: 9pt; margin-bottom: 8mm; line-height: 1.6; }
+  .section-title { font-size: 11pt; font-weight: 700; color: #0d2137; background: #eef2f7; padding: 4px 10px; margin: 6mm 0 3mm; border-left: 3px solid #00c9a7; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 4mm; }
+  table th { background: #0d2137; color: white; font-size: 9pt; padding: 5px 8px; text-align: left; width: 40%; }
+  table td { border: 1px solid #ccc; padding: 7px 8px; font-size: 10pt; min-height: 24px; }
+  table td.example { color: #555; font-style: italic; font-size: 9pt; }
+  table td.blank { height: 24px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+  .label { font-size: 9pt; color: #555; margin-bottom: 2mm; }
+  .field { border: 1px solid #ccc; min-height: 20px; padding: 5px 8px; font-size: 10pt; margin-bottom: 3mm; }
+  .field-lg { border: 1px solid #ccc; min-height: 40px; padding: 5px 8px; font-size: 10pt; margin-bottom: 3mm; }
+  .checkbox-list { list-style: none; font-size: 10pt; line-height: 2; }
+  .checkbox-list li::before { content: '□ '; font-size: 11pt; }
+  .seal-area { text-align: right; margin-top: 8mm; font-size: 10pt; }
+  .seal-box { display: inline-block; border: 2px solid #ccc; width: 40px; height: 40px; margin-left: 8px; vertical-align: middle; }
+  .footnote { font-size: 8pt; color: #666; margin-top: 10mm; border-top: 1px solid #ddd; padding-top: 4mm; line-height: 1.7; }
+  .btn-print { position: fixed; top: 20px; right: 20px; background: #0d2137; color: white; border: none; padding: 10px 20px; border-radius: 999px; font-size: 13px; cursor: pointer; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; }
+  .btn-back { position: fixed; top: 20px; left: 20px; background: #f0f0f0; color: #333; border: none; padding: 10px 18px; border-radius: 999px; font-size: 13px; cursor: pointer; text-decoration: none; display: inline-block; }
+  @media print {
+    body { background: white; }
+    .page { padding: 10mm 15mm; max-width: none; }
+    .btn-print, .btn-back { display: none; }
+    table th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section-title { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<a href="../index.html" class="btn-back">← 戻る</a>
+<button class="btn-print" onclick="window.print()">🖨️ 印刷 / PDF保存</button>
+
+<div class="page">
+  <div class="print-header">
+    <div class="doc-title">診療所 開設届出書（記入例）</div>
+    <div class="site-name">歯科経営コンパス ― 無料テンプレート</div>
+  </div>
+
+  <div class="notice">
+    ⚠️ 本様式は参考例です。実際の届出は各都道府県保健所・政令市・中核市の指定様式を必ずご使用ください。<br>
+    根拠法：医療法第8条（診療所開設後10日以内に届出）
+  </div>
+
+  <div class="section-title">1. 届出事項</div>
+  <table>
+    <tr><th>診療所の名称</th><td>（例）〇〇歯科クリニック</td></tr>
+    <tr><th>所在地（郵便番号）</th><td></td></tr>
+    <tr><th>所在地（住所）</th><td></td></tr>
+    <tr><th>電話番号</th><td></td></tr>
+    <tr><th>診療科目</th><td>（例）歯科、小児歯科、矯正歯科、口腔外科</td></tr>
+    <tr><th>病床数</th><td>（一般診療所は「なし」）</td></tr>
+    <tr><th>開設年月日</th><td>　　年　　月　　日</td></tr>
+    <tr><th>診療日・診療時間</th><td>（例）月〜土 9:00〜13:00 / 14:00〜18:00（水・日休）</td></tr>
+  </table>
+
+  <div class="section-title">2. 開設者の情報（個人開設の場合）</div>
+  <table>
+    <tr><th>氏名（フリガナ）</th><td></td></tr>
+    <tr><th>生年月日</th><td>　　年　　月　　日</td></tr>
+    <tr><th>住所</th><td></td></tr>
+    <tr><th>免許の種別・番号</th><td>歯科医師免許　第　　　　号</td></tr>
+    <tr><th>免許取得年月日</th><td>　　年　　月　　日</td></tr>
+  </table>
+
+  <div class="section-title">3. 管理者の情報（開設者が管理者を兼ねる場合は「開設者と同じ」と記入）</div>
+  <table>
+    <tr><th>氏名（フリガナ）</th><td></td></tr>
+    <tr><th>生年月日</th><td>　　年　　月　　日</td></tr>
+    <tr><th>住所</th><td></td></tr>
+    <tr><th>免許の種別・番号</th><td>歯科医師免許　第　　　　号</td></tr>
+    <tr><th>備考</th><td>（開設者と同一の場合は「開設者兼管理者」と記載）</td></tr>
+  </table>
+
+  <div class="section-title">4. 構造・設備の概要</div>
+  <table>
+    <tr><th>建物の構造</th><td>（例）鉄筋コンクリート造　3階建ての1階部分</td></tr>
+    <tr><th>延床面積</th><td>約　　　㎡</td></tr>
+    <tr><th>診療室面積</th><td>約　　　㎡</td></tr>
+    <tr><th>待合室面積</th><td>約　　　㎡</td></tr>
+    <tr><th>歯科ユニット台数</th><td>　　台</td></tr>
+    <tr><th>X線装置</th><td>有 ・ 無（「有」の場合は別途X線装置設置届が必要）</td></tr>
+  </table>
+
+  <div class="section-title">5. 添付書類チェック</div>
+  <ul class="checkbox-list">
+    <li>診療所の平面図（縮尺記入・各室の用途を明記したもの）</li>
+    <li>管理者の医師（歯科医師）免許証の写し</li>
+    <li>建物の登記簿謄本または賃貸借契約書の写し</li>
+    <li>診療所の構造・設備の概要書</li>
+    <li>法人の場合：法人の定款・登記事項証明書</li>
+    <li>X線装置がある場合：X線装置設置届（別途）</li>
+  </ul>
+
+  <div class="seal-area">
+    　　　年　　月　　日<br><br>
+    届出者（開設者）氏名：　　　　　　　　　　　　　　　　　　㊞
+    <span class="seal-box"></span>
+  </div>
+
+  <div class="footnote">
+    ※ 届出の提出先：診療所所在地を管轄する保健所（都道府県・政令市・中核市）<br>
+    ※ 届出期限：開設の日から10日以内（医療法第8条）<br>
+    ※ 提出方法：窓口持参または郵送（保健所ごとに異なる場合あり）<br>
+    ※ 本記入例は一般的な内容を示したものです。必ず管轄保健所の指定様式・記入要領を確認してください。<br>
+    出典：医療法第8条 / 歯科経営コンパス 無料テンプレート（2026年版）
+  </div>
+</div>
+</body>
+</html>

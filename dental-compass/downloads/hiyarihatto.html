@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ヒヤリハット報告書 | 歯科経営コンパス</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', sans-serif; font-size: 10.5pt; color: #1a1a1a; background: #f9f9f9; }
+  .page { max-width: 210mm; margin: 0 auto; background: white; padding: 18mm 16mm; }
+  .print-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5mm; padding-bottom: 4mm; border-bottom: 2px solid #0d2137; }
+  .doc-title { font-size: 14pt; font-weight: 700; color: #0d2137; }
+  .site-name { font-size: 8pt; color: #888; }
+  .notice { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 8px 12px; font-size: 9pt; margin-bottom: 6mm; line-height: 1.6; }
+  .section-title { font-size: 10.5pt; font-weight: 700; color: white; background: #e74c3c; padding: 4px 10px; margin: 5mm 0 3mm; }
+  .form-group { margin-bottom: 3mm; }
+  .form-label { font-size: 9pt; color: #555; margin-bottom: 2px; display: block; font-weight: 600; }
+  .form-line { border-bottom: 1px solid #555; min-height: 22px; margin-bottom: 1mm; width: 100%; }
+  .form-box { border: 1px solid #ccc; min-height: 44px; width: 100%; padding: 5px; }
+  .form-box-lg { border: 1px solid #ccc; min-height: 60px; width: 100%; padding: 5px; }
+  .form-row { display: grid; gap: 6mm; }
+  .form-row-2 { grid-template-columns: 1fr 1fr; }
+  .form-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .radio-row { display: flex; gap: 16px; font-size: 10pt; align-items: center; flex-wrap: wrap; margin-top: 2px; }
+  .radio-row span::before { content: '○ '; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 4mm; font-size: 9.5pt; }
+  table th { background: #374151; color: white; padding: 5px 8px; text-align: left; }
+  table td { border: 1px solid #ccc; padding: 5px 8px; min-height: 24px; }
+  .level-bar { display: flex; gap: 3mm; margin-top: 3px; }
+  .level-item { border: 2px solid #ccc; border-radius: 4px; padding: 3px 10px; font-size: 9pt; font-weight: 700; }
+  .level-1 { border-color: #95a5a6; color: #7f8c8d; }
+  .level-2 { border-color: #3498db; color: #2980b9; }
+  .level-3 { border-color: #f39c12; color: #e67e22; }
+  .level-4 { border-color: #e74c3c; color: #c0392b; }
+  .sign-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6mm; margin-top: 6mm; }
+  .sign-box { border: 1px solid #ccc; padding: 6px 10px; }
+  .sign-box .label { font-size: 8.5pt; color: #555; }
+  .sign-box .line { border-bottom: 1px solid #333; min-height: 22px; margin-top: 4px; }
+  .watermark-num { font-size: 9pt; color: #999; text-align: right; margin-bottom: 3mm; }
+  .footnote { font-size: 8pt; color: #666; margin-top: 8mm; border-top: 1px solid #ddd; padding-top: 3mm; line-height: 1.7; }
+  .btn-print { position: fixed; top: 20px; right: 20px; background: #0d2137; color: white; border: none; padding: 10px 20px; border-radius: 999px; font-size: 13px; cursor: pointer; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; }
+  .btn-back { position: fixed; top: 20px; left: 20px; background: #f0f0f0; color: #333; border: none; padding: 10px 18px; border-radius: 999px; font-size: 13px; cursor: pointer; text-decoration: none; display: inline-block; }
+  @media print {
+    body { background: white; }
+    .page { padding: 8mm 12mm; max-width: none; }
+    .btn-print, .btn-back { display: none; }
+    table th, .section-title { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<a href="../index.html" class="btn-back">← 戻る</a>
+<button class="btn-print" onclick="window.print()">🖨️ 印刷 / PDF保存</button>
+
+<div class="page">
+  <div class="print-header">
+    <div class="doc-title">ヒヤリハット・インシデント 報告書</div>
+    <div class="site-name">医療安全管理 | 歯科経営コンパス</div>
+  </div>
+
+  <div class="watermark-num">報告書No.　　　　　（連番管理）</div>
+
+  <div class="notice">
+    ⚡ この報告書は「個人を責めるためではなく、組織でシステムを改善するため」のものです。<br>
+    発見・経験した方は積極的に記載してください。記録は医療安全ミーティングで共有・改善策を検討します。
+  </div>
+
+  <div class="section-title">1. 基本情報</div>
+  <div class="form-row form-row-3" style="margin-bottom:4mm;">
+    <div class="form-group">
+      <span class="form-label">発生日時</span>
+      <div class="form-line">　　年　　月　　日　　時　　分</div>
+    </div>
+    <div class="form-group">
+      <span class="form-label">報告日</span>
+      <div class="form-line">　　年　　月　　日</div>
+    </div>
+    <div class="form-group">
+      <span class="form-label">報告者（氏名・職種）</span>
+      <div class="form-line"></div>
+    </div>
+  </div>
+
+  <div class="form-row form-row-2" style="margin-bottom:4mm;">
+    <div class="form-group">
+      <span class="form-label">発生場所</span>
+      <div class="radio-row"><span>診療室</span><span>受付</span><span>待合室</span><span>廊下・トイレ</span><span>その他</span></div>
+    </div>
+    <div class="form-group">
+      <span class="form-label">発生時の状況</span>
+      <div class="radio-row"><span>診察中</span><span>処置中</span><span>会計時</span><span>その他</span></div>
+    </div>
+  </div>
+
+  <div class="section-title">2. 重大度レベル（該当に○）</div>
+  <div class="level-bar">
+    <div class="level-item level-1">レベル0：ヒヤリ（実害なし）</div>
+    <div class="level-item level-2">レベル1：患者への影響なし</div>
+    <div class="level-item level-3">レベル2：一過性の軽微な影響</div>
+    <div class="level-item level-4">レベル3：重篤な影響・医療行為が必要</div>
+  </div>
+
+  <div class="section-title" style="margin-top:5mm;">3. 事象の内容</div>
+  <div class="form-group">
+    <span class="form-label">何が起きたか（できるだけ具体的に）</span>
+    <div class="form-box-lg"></div>
+  </div>
+
+  <div class="form-row form-row-2" style="margin-bottom:4mm;">
+    <div class="form-group">
+      <span class="form-label">関係した患者（患者IDまたは初療日等）</span>
+      <div class="form-line">（個人情報に配慮し、IDのみ記載）</div>
+    </div>
+    <div class="form-group">
+      <span class="form-label">関係したスタッフ職種</span>
+      <div class="form-line"></div>
+    </div>
+  </div>
+
+  <div class="section-title">4. 原因分析（直接的原因・背景要因）</div>
+  <table>
+    <tr><th style="width:30%;">原因カテゴリ</th><th>具体的な内容</th></tr>
+    <tr><td>人的要因（知識・技術・判断等）</td><td style="min-height:24px;"></td></tr>
+    <tr><td>環境・物品要因</td><td></td></tr>
+    <tr><td>コミュニケーション要因</td><td></td></tr>
+    <tr><td>業務プロセス・手順書の問題</td><td></td></tr>
+    <tr><td>その他</td><td></td></tr>
+  </table>
+
+  <div class="section-title">5. 改善策・再発防止策</div>
+  <div class="form-group">
+    <span class="form-label">短期的改善策（今すぐできること）</span>
+    <div class="form-box"></div>
+  </div>
+  <div class="form-group">
+    <span class="form-label">中長期的改善策（仕組み・マニュアルの変更等）</span>
+    <div class="form-box"></div>
+  </div>
+  <div class="form-group">
+    <span class="form-label">改善担当者・期限</span>
+    <div class="form-line">担当：　　　　　　　　　　期限：　　年　　月　　日</div>
+  </div>
+
+  <div class="sign-row">
+    <div class="sign-box"><div class="label">報告者署名</div><div class="line"></div></div>
+    <div class="sign-box"><div class="label">上長確認（院長・主任）</div><div class="line"></div></div>
+    <div class="sign-box"><div class="label">安全委員会審議日</div><div class="line"></div></div>
+  </div>
+
+  <div class="footnote">
+    ※ 本報告書は医療安全管理体制（施設基準）の一環として保管・管理してください。<br>
+    ※ 個人が特定される情報は最小限とし、安全に保管してください。<br>
+    ※ 厚生労働省「医療安全管理体制の整備について」に準拠。<br>
+    出典：厚生労働省 医療安全管理通知 / 歯科経営コンパス 無料テンプレート（2026年版）
+  </div>
+</div>
+</body>
+</html>

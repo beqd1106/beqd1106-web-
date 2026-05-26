@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>医療広告 自己点検シート | 歯科経営コンパス</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', sans-serif; font-size: 10.5pt; color: #1a1a1a; background: #f9f9f9; }
+  .page { max-width: 210mm; margin: 0 auto; background: white; padding: 18mm 16mm; }
+  .print-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5mm; padding-bottom: 4mm; border-bottom: 2px solid #0d2137; }
+  .doc-title { font-size: 15pt; font-weight: 700; color: #0d2137; }
+  .site-name { font-size: 8pt; color: #888; }
+  .notice { background: #fdecea; border-left: 4px solid #e74c3c; padding: 8px 12px; font-size: 9pt; margin-bottom: 6mm; line-height: 1.6; }
+  .section-title { font-size: 11pt; font-weight: 700; color: white; background: #c0392b; padding: 5px 10px; margin: 6mm 0 3mm; }
+  .section-ok { font-size: 11pt; font-weight: 700; color: white; background: #27ae60; padding: 5px 10px; margin: 6mm 0 3mm; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 4mm; font-size: 9.5pt; }
+  table thead th { background: #374151; color: white; padding: 5px 8px; text-align: left; }
+  table tbody tr:nth-child(even) { background: #f7f9fb; }
+  table td { border: 1px solid #ccc; padding: 5px 8px; vertical-align: top; }
+  table td.check-col { text-align: center; width: 60px; }
+  table td.note-col { font-size: 8.5pt; color: #555; }
+  .ng { color: #c0392b; font-weight: 700; }
+  .ok { color: #27ae60; font-weight: 700; }
+  .input-area { border: 1px solid #ccc; min-height: 20px; padding: 4px 8px; margin: 2px 0; font-size: 10pt; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; }
+  .footnote { font-size: 8pt; color: #666; margin-top: 8mm; border-top: 1px solid #ddd; padding-top: 3mm; line-height: 1.7; }
+  .btn-print { position: fixed; top: 20px; right: 20px; background: #0d2137; color: white; border: none; padding: 10px 20px; border-radius: 999px; font-size: 13px; cursor: pointer; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; }
+  .btn-back { position: fixed; top: 20px; left: 20px; background: #f0f0f0; color: #333; border: none; padding: 10px 18px; border-radius: 999px; font-size: 13px; cursor: pointer; text-decoration: none; display: inline-block; }
+  @media print {
+    body { background: white; }
+    .page { padding: 8mm 12mm; max-width: none; }
+    .btn-print, .btn-back { display: none; }
+    table thead th, .section-title, .section-ok { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<a href="../index.html" class="btn-back">← 戻る</a>
+<button class="btn-print" onclick="window.print()">🖨️ 印刷 / PDF保存</button>
+
+<div class="page">
+  <div class="print-header">
+    <div class="doc-title">医療広告 自己点検シート</div>
+    <div class="site-name">厚生労働省ガイドライン準拠 | 歯科経営コンパス</div>
+  </div>
+
+  <div class="notice">
+    ⚠️ 医療法第6条の5に基づき、歯科医院のHP・SNS・チラシ・看板はすべて「広告」に該当します。<br>
+    点検日：　　　年　　月　　日　　医院名：　　　　　　　　　　　点検者：
+  </div>
+
+  <div class="section-title">❌ NG表現チェック（当てはまるものに✓）</div>
+  <table>
+    <thead><tr><th>NG表現パターン</th><th>該当</th><th>改善方法</th></tr></thead>
+    <tbody>
+      <tr><td>「日本一」「最高」「最先端」「最も〇〇」等の最上級表現</td><td class="check-col">□</td><td class="note-col">削除または客観的根拠のある表現に変更</td></tr>
+      <tr><td>「必ず治ります」「完治します」等の治癒を保証する表現</td><td class="check-col">□</td><td class="note-col">「改善が期待できます」等に変更</td></tr>
+      <tr><td>「他院より安い」「最安値」等の根拠のない比較広告</td><td class="check-col">□</td><td class="note-col">具体的な根拠がなければ削除</td></tr>
+      <tr><td>患者の体験談・口コミ（HPへの掲載）</td><td class="check-col">□</td><td class="note-col">限定解除要件を満たさない限り削除</td></tr>
+      <tr><td>Before/After写真（限定解除要件なしで掲載）</td><td class="check-col">□</td><td class="note-col">限定解除届出後に必要事項付記のうえ掲載</td></tr>
+      <tr><td>「〇〇専門医」等の公的認定でない資格の表示</td><td class="check-col">□</td><td class="note-col">学会認定専門医であれば記載可（認定名を正確に）</td></tr>
+      <tr><td>芸能人・著名人の推薦・体験談</td><td class="check-col">□</td><td class="note-col">原則禁止（景品表示法・医療広告規制）</td></tr>
+      <tr><td>「保険適用外なのに保険適用」等の誤解を招く表示</td><td class="check-col">□</td><td class="note-col">費用・適用区分を正確に記載</td></tr>
+      <tr><td>「〇〇できる唯一の医院」等の虚偽表示</td><td class="check-col">□</td><td class="note-col">削除</td></tr>
+      <tr><td>掲載写真に患者が映り込んでいる（同意なし）</td><td class="check-col">□</td><td class="note-col">書面同意または写真を差し替え</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-ok">✅ 必須表示チェック（自費診療ページ）</div>
+  <table>
+    <thead><tr><th>必要な表示項目</th><th>確認</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>治療の内容の説明（分かりやすい記載）</td><td class="check-col">□</td><td class="note-col">限定解除要件</td></tr>
+      <tr><td>費用（税込み総額）の明示</td><td class="check-col">□</td><td class="note-col">追加費用が発生する場合も記載</td></tr>
+      <tr><td>治療期間・回数の目安</td><td class="check-col">□</td><td class="note-col"></td></tr>
+      <tr><td>主なリスク・副作用の記載</td><td class="check-col">□</td><td class="note-col">必須（副作用ゼロと書いてはいけない）</td></tr>
+      <tr><td>「効果には個人差があります」の注記</td><td class="check-col">□</td><td class="note-col"></td></tr>
+      <tr><td>担当医師名・専門資格（学会認定等）</td><td class="check-col">□</td><td class="note-col">虚偽記載は不可</td></tr>
+      <tr><td>問い合わせ先・相談窓口の明示</td><td class="check-col">□</td><td class="note-col"></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-ok">✅ SNS・口コミ運用チェック</div>
+  <table>
+    <thead><tr><th>確認項目</th><th>確認</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>Instagram等の投稿内容に医療広告NGワードが含まれていない</td><td class="check-col">□</td><td class="note-col">SNSも広告規制対象</td></tr>
+      <tr><td>口コミ依頼時に謝礼・プレッシャーを与えていない</td><td class="check-col">□</td><td class="note-col">ステマ規制（景品表示法）に抵触のリスク</td></tr>
+      <tr><td>Googleマップ口コミ返信で患者を特定する情報を書いていない</td><td class="check-col">□</td><td class="note-col">個人情報保護法上の問題</td></tr>
+      <tr><td>スタッフのSNS投稿ルールを文書化している</td><td class="check-col">□</td><td class="note-col">SNSポリシーの整備</td></tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top:4mm;font-size:9.5pt;">
+    <strong>要改善事項メモ：</strong><br>
+    <div style="border:1px solid #ccc;min-height:50px;padding:6px;margin-top:4px;"></div>
+  </div>
+
+  <div class="footnote">
+    ※ 根拠法令：医療法第6条の5（医療広告の禁止事項）/ 医療広告ガイドライン（厚生労働省・最新版）<br>
+    ※ 限定解除要件：HPで「詳細情報の提供施設」として届出（都道府県に届出）した場合に一部規制緩和。<br>
+    ※ 令和5年10月施行：ステルスマーケティング規制（景品表示法改正）に注意。<br>
+    出典：厚生労働省「医療広告ガイドライン」/ 歯科経営コンパス 無料テンプレート（2026年版）
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>患者向け 治療計画書 | 歯科経営コンパス</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', sans-serif; font-size: 10.5pt; color: #1a1a1a; background: #f9f9f9; }
+  .page { max-width: 210mm; margin: 0 auto; background: white; padding: 18mm 16mm; }
+  .clinic-header { text-align: center; margin-bottom: 8mm; padding-bottom: 5mm; border-bottom: 2px solid #0d2137; }
+  .clinic-name { font-size: 16pt; font-weight: 700; color: #0d2137; margin-bottom: 3px; }
+  .clinic-info { font-size: 9pt; color: #666; }
+  .doc-title { font-size: 18pt; font-weight: 700; text-align: center; color: #0d2137; margin: 6mm 0 5mm; border: 2px solid #0d2137; padding: 8px; }
+  .patient-box { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; margin-bottom: 6mm; border: 1px solid #ccc; padding: 10px; }
+  .patient-field .label { font-size: 9pt; color: #555; font-weight: 600; margin-bottom: 2px; }
+  .patient-field .line { border-bottom: 1px solid #555; min-height: 22px; }
+  .section-title { font-size: 10.5pt; font-weight: 700; color: white; background: #0d2137; padding: 4px 10px; margin: 5mm 0 3mm; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 4mm; font-size: 9.5pt; }
+  table thead th { background: #374151; color: white; padding: 5px 8px; text-align: center; }
+  table tbody td { border: 1px solid #ccc; padding: 5px 8px; text-align: center; }
+  table tbody td:first-child { text-align: left; }
+  table tbody td.cost { font-weight: 700; }
+  .total-row td { background: #eef2f7 !important; font-weight: 700; }
+  .form-box { border: 1px solid #ccc; min-height: 44px; width: 100%; padding: 5px; font-size: 10pt; margin-bottom: 3mm; }
+  .form-label { font-size: 9pt; font-weight: 600; color: #555; margin-bottom: 2px; display: block; }
+  .consent-box { border: 2px solid #0d2137; border-radius: 6px; padding: 12px 16px; margin: 6mm 0; background: #f8f9fb; }
+  .consent-title { font-size: 11pt; font-weight: 700; color: #0d2137; margin-bottom: 6px; }
+  .consent-items { list-style: disc; padding-left: 1.5em; font-size: 10pt; line-height: 2; }
+  .sign-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; margin-top: 6mm; }
+  .sign-box { border: 1px solid #ccc; padding: 10px; }
+  .sign-box .label { font-size: 9pt; color: #555; margin-bottom: 4px; }
+  .sign-box .line { border-bottom: 1px solid #333; min-height: 30px; margin-top: 8px; }
+  .disclaimer { font-size: 8.5pt; color: #555; margin-top: 5mm; line-height: 1.7; border: 1px solid #e0e0e0; padding: 8px; background: #fafafa; }
+  .btn-print { position: fixed; top: 20px; right: 20px; background: #0d2137; color: white; border: none; padding: 10px 20px; border-radius: 999px; font-size: 13px; cursor: pointer; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; }
+  .btn-back { position: fixed; top: 20px; left: 20px; background: #f0f0f0; color: #333; border: none; padding: 10px 18px; border-radius: 999px; font-size: 13px; cursor: pointer; text-decoration: none; display: inline-block; }
+  @media print {
+    body { background: white; }
+    .page { padding: 8mm 12mm; max-width: none; }
+    .btn-print, .btn-back { display: none; }
+    table thead th, .section-title { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<a href="../index.html" class="btn-back">← 戻る</a>
+<button class="btn-print" onclick="window.print()">🖨️ 印刷 / PDF保存</button>
+
+<div class="page">
+  <div class="clinic-header">
+    <div class="clinic-name">　　　　歯科クリニック</div>
+    <div class="clinic-info">〒　　　-　　　　　住所：　　　　　　　　　　TEL：　　　　　　　　</div>
+  </div>
+
+  <div class="doc-title">治 療 計 画 書 ・ 費 用 説 明 書</div>
+
+  <div class="patient-box">
+    <div class="patient-field"><div class="label">患者氏名</div><div class="line"></div></div>
+    <div class="patient-field"><div class="label">生年月日</div><div class="line">　　年　　月　　日（　　歳）</div></div>
+    <div class="patient-field"><div class="label">担当歯科医師</div><div class="line"></div></div>
+    <div class="patient-field"><div class="label">説明日</div><div class="line">　　年　　月　　日</div></div>
+  </div>
+
+  <div class="section-title">1. 現在の状態（診断）</div>
+  <div class="form-box" style="min-height:50px;"></div>
+
+  <div class="section-title">2. 治療計画（推奨する治療）</div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:5%;">No.</th>
+        <th style="width:25%;">治療部位</th>
+        <th style="width:30%;">治療内容</th>
+        <th style="width:15%;">回数・期間</th>
+        <th style="width:12%;">区分</th>
+        <th style="width:13%;">費用（税込）</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td></td><td></td><td></td><td>保険 / 自費</td><td class="cost"></td></tr>
+      <tr><td>2</td><td></td><td></td><td></td><td>保険 / 自費</td><td class="cost"></td></tr>
+      <tr><td>3</td><td></td><td></td><td></td><td>保険 / 自費</td><td class="cost"></td></tr>
+      <tr><td>4</td><td></td><td></td><td></td><td>保険 / 自費</td><td class="cost"></td></tr>
+      <tr><td>5</td><td></td><td></td><td></td><td>保険 / 自費</td><td class="cost"></td></tr>
+      <tr class="total-row"><td colspan="5" style="text-align:right;">自費負担額合計（概算）</td><td class="cost">　　　　円</td></tr>
+      <tr class="total-row"><td colspan="5" style="text-align:right;">保険自己負担額合計（概算）</td><td class="cost">　　　　円</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:8.5pt;color:#777;margin-bottom:3mm;">※ 費用は概算です。診察の進行状況により変更が生じる場合があります。詳細は都度ご説明します。</p>
+
+  <div class="section-title">3. 治療のリスク・副作用・注意事項</div>
+  <div class="form-box" style="min-height:60px;">（例：インプラント：外科手術のリスク・術後腫脹・骨造成が必要な場合あり。矯正：治療期間中の歯みがきの難しさ・後戻りのリスク。セラミック：歯の切削が必要・耐久年数の目安 等）</div>
+
+  <div class="section-title">4. 治療を受けない場合の見込み</div>
+  <div class="form-box"></div>
+
+  <div class="section-title">5. その他の治療選択肢</div>
+  <div class="form-box">（例：保険適用の選択肢・より低侵襲な治療法等）</div>
+
+  <div class="consent-box">
+    <div class="consent-title">同 意 確 認 事 項</div>
+    <ul class="consent-items">
+      <li>上記の治療計画・費用・治療期間について、担当医から説明を受け、理解しました。</li>
+      <li>治療のリスク・副作用・合併症の可能性について説明を受けました。</li>
+      <li>治療を受けない場合の見込みについて説明を受けました。</li>
+      <li>不明な点については担当医に質問し、回答を受けました。</li>
+      <li>上記の内容に同意した上で、治療を受けることを希望します。</li>
+      <li>同意後も治療の途中で考えが変わった場合は、担当医に相談できることを了承しました。</li>
+    </ul>
+  </div>
+
+  <div class="sign-row">
+    <div class="sign-box">
+      <div class="label">患者署名（または保護者署名）</div>
+      <div class="line"></div>
+      <div style="font-size:8.5pt;color:#777;margin-top:4px;">　　　年　　月　　日</div>
+    </div>
+    <div class="sign-box">
+      <div class="label">担当歯科医師署名</div>
+      <div class="line"></div>
+      <div style="font-size:8.5pt;color:#777;margin-top:4px;">　　　年　　月　　日</div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    ※ 効果には個人差があります。治療結果を保証するものではありません。<br>
+    ※ 自費診療の費用は医院の自由診療費用規定に基づいています。事前にご確認ください。<br>
+    ※ 本書面は患者様・医院の双方で1部ずつ保管してください。
+  </div>
+</div>
+</body>
+</html>

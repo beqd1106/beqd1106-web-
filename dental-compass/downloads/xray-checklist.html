@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X線装置届出 チェックリスト | 歯科経営コンパス</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', sans-serif; font-size: 11pt; color: #1a1a1a; background: #f9f9f9; }
+  .page { max-width: 210mm; margin: 0 auto; background: white; padding: 20mm 18mm; }
+  .print-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6mm; padding-bottom: 4mm; border-bottom: 2px solid #0d2137; }
+  .print-header .site-name { font-size: 8pt; color: #888; }
+  .print-header .doc-title { font-size: 16pt; font-weight: 700; color: #0d2137; }
+  .notice { background: #fdecea; border-left: 4px solid #e74c3c; padding: 8px 12px; font-size: 9pt; margin-bottom: 8mm; line-height: 1.6; }
+  .section-title { font-size: 11pt; font-weight: 700; color: #0d2137; background: #eef2f7; padding: 4px 10px; margin: 6mm 0 3mm; border-left: 3px solid #00c9a7; }
+  .checklist { list-style: none; margin-bottom: 4mm; }
+  .checklist li { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; border-bottom: 1px dashed #e0e0e0; font-size: 10pt; line-height: 1.5; }
+  .checklist li .box { min-width: 16px; height: 16px; border: 2px solid #555; display: inline-block; margin-top: 2px; border-radius: 2px; }
+  .checklist li .note { font-size: 8.5pt; color: #666; display: block; margin-top: 2px; }
+  .danger { color: #c0392b; font-weight: 700; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 4mm; font-size: 10pt; }
+  table th { background: #0d2137; color: white; padding: 5px 8px; text-align: left; }
+  table td { border: 1px solid #ccc; padding: 6px 8px; }
+  table td:first-child { width: 60%; }
+  .timeline { list-style: none; }
+  .timeline li { display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 10pt; }
+  .timeline li .date { min-width: 100px; font-weight: 700; color: #0d2137; font-size: 9pt; }
+  .footnote { font-size: 8pt; color: #666; margin-top: 10mm; border-top: 1px solid #ddd; padding-top: 4mm; line-height: 1.7; }
+  .btn-print { position: fixed; top: 20px; right: 20px; background: #0d2137; color: white; border: none; padding: 10px 20px; border-radius: 999px; font-size: 13px; cursor: pointer; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; }
+  .btn-back { position: fixed; top: 20px; left: 20px; background: #f0f0f0; color: #333; border: none; padding: 10px 18px; border-radius: 999px; font-size: 13px; cursor: pointer; text-decoration: none; display: inline-block; }
+  @media print {
+    body { background: white; }
+    .page { padding: 10mm 15mm; max-width: none; }
+    .btn-print, .btn-back { display: none; }
+    table th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section-title { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<a href="../index.html" class="btn-back">← 戻る</a>
+<button class="btn-print" onclick="window.print()">🖨️ 印刷 / PDF保存</button>
+
+<div class="page">
+  <div class="print-header">
+    <div class="doc-title">X線装置届出 チェックリスト</div>
+    <div class="site-name">歯科経営コンパス ― 無料テンプレート</div>
+  </div>
+
+  <div class="notice">
+    🚨 <strong>重要：X線装置は使用開始30日前までに</strong>管轄保健所へ届出が必要です（医療法施行規則第30条の14）。<br>
+    工事スケジュールに組み込み、余裕を持って手続きしてください。
+  </div>
+
+  <div class="section-title">1. 届出が必要なX線装置の種類</div>
+  <ul class="checklist">
+    <li><span class="box"></span><div>パノラマX線装置（デジタル・アナログ問わず）<span class="note">歯科診療所では最も一般的。必ず届出が必要。</span></div></li>
+    <li><span class="box"></span><div>デンタルX線装置（口内法）<span class="note">1台ごとに届出が必要。</span></div></li>
+    <li><span class="box"></span><div>歯科用CT（CBCT）装置<span class="note">医療被ばく線量が高いため、設置基準が厳しい。</span></div></li>
+    <li><span class="box"></span><div>セファロ装置（矯正用）<span class="note">矯正を行う医院が対象。</span></div></li>
+  </ul>
+
+  <div class="section-title">2. 届出前チェック（設置工事前〜使用開始30日前）</div>
+  <ul class="checklist">
+    <li><span class="box"></span><div>管轄保健所の届出様式を入手した<span class="note">都道府県・政令市・中核市ごとに様式が異なる場合あり</span></div></li>
+    <li><span class="box"></span><div>放射線管理区域の設定計画を確認した<span class="note">電離放射線障害防止規則への対応（壁の鉛当量・遮蔽計算書）</span></div></li>
+    <li><span class="box"></span><div>防護計算書（遮蔽計算書）を工事業者から取得した</li>
+    <li><span class="box"></span><div>X線装置の仕様書・カタログを準備した</li>
+    <li><span class="box"></span><div>放射線管理責任者を選任した（院長兼任可）<span class="note">氏名・資格証明書が届出に必要な場合あり</span></div></li>
+    <li><span class="box"></span><div>平面図（X線装置設置場所の記載あり）を準備した</li>
+    <li><span class="box"></span><div>周辺環境図（管理区域と居住区域の境界）を準備した</li>
+  </ul>
+
+  <div class="section-title">3. 届出書類一覧</div>
+  <table>
+    <tr><th>書類</th><th>取得先・備考</th></tr>
+    <tr><td>X線装置設置届出書（指定様式）</td><td>管轄保健所ウェブサイトまたは窓口</td></tr>
+    <tr><td>X線装置の仕様書・カタログ</td><td>機器メーカーから取得</td></tr>
+    <tr><td>防護計算書（遮蔽設計書）</td><td>施工業者（X線専門業者）が作成</td></tr>
+    <tr><td>診療所平面図（装置設置場所明示）</td><td>設計業者が作成</td></tr>
+    <tr><td>放射線管理区域の境界を示す図面</td><td>施工業者が作成</td></tr>
+    <tr><td>管理者の歯科医師免許証（写し）</td><td>保健所確認用</td></tr>
+  </table>
+
+  <div class="section-title">4. 変更・廃止時の手続き</div>
+  <ul class="checklist">
+    <li><span class="box"></span><div>装置の入れ替え（同型でも機種変更）→ <span class="danger">変更届が必要</span></div></li>
+    <li><span class="box"></span><div>装置の移動（同室内の位置変更を含む）→ 保健所に要確認</div></li>
+    <li><span class="box"></span><div>装置の廃棄・撤去 → <span class="danger">廃止届を速やかに提出</span></div></li>
+    <li><span class="box"></span><div>閉院時 → 保険医療機関廃止届と合わせてX線廃止届も提出</div></li>
+  </ul>
+
+  <div class="section-title">5. スケジュール管理</div>
+  <ul class="timeline">
+    <li><span class="date">X−90日前〜</span><div>保健所へ事前相談・様式確認、機器メーカー確定</div></li>
+    <li><span class="date">X−60日前</span><div>防護計算書の作成依頼（施工業者）、平面図確定</div></li>
+    <li><span class="date">X−30日前</span><div><strong class="danger">届出書を保健所へ提出（締め切り）</strong></div></li>
+    <li><span class="date">X−14日前</span><div>保健所の立入検査（事前通知される場合あり）</div></li>
+    <li><span class="date">X日</span><div>使用開始（届出受理確認後）</div></li>
+  </ul>
+
+  <div class="footnote">
+    ※ X：使用開始日<br>
+    ※ 根拠法：医療法施行規則第30条の14（X線装置設置届出）/ 電離放射線障害防止規則<br>
+    ※ 届出様式・添付書類は都道府県・政令市・中核市によって異なります。必ず管轄保健所にご確認ください。<br>
+    出典：医療法施行規則 / 歯科経営コンパス 無料テンプレート（2026年版）
+  </div>
+</div>
+</body>
+</html>

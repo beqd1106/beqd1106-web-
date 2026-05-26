@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>医療安全研修 記録簿 | 歯科経営コンパス</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', sans-serif; font-size: 10.5pt; color: #1a1a1a; background: #f9f9f9; }
+  .page { max-width: 210mm; margin: 0 auto; background: white; padding: 18mm 16mm; }
+  .print-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5mm; padding-bottom: 4mm; border-bottom: 2px solid #0d2137; }
+  .doc-title { font-size: 14pt; font-weight: 700; color: #0d2137; }
+  .site-name { font-size: 8pt; color: #888; }
+  .notice { background: #e8f4f8; border-left: 4px solid #3b9eca; padding: 8px 12px; font-size: 9pt; margin-bottom: 6mm; line-height: 1.6; }
+  .section-title { font-size: 11pt; font-weight: 700; color: white; background: #0d2137; padding: 5px 10px; margin: 6mm 0 3mm; }
+  .form-group { margin-bottom: 4mm; }
+  .form-label { font-size: 9pt; color: #555; margin-bottom: 2px; display: block; }
+  .form-line { border-bottom: 1px solid #555; min-height: 22px; margin-bottom: 2mm; width: 100%; }
+  .form-box { border: 1px solid #ccc; min-height: 36px; width: 100%; padding: 4px; }
+  .form-row { display: grid; gap: 6mm; }
+  .form-row-2 { grid-template-columns: 1fr 1fr; }
+  .form-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 4mm; font-size: 9.5pt; }
+  table thead th { background: #374151; color: white; padding: 5px 8px; text-align: left; }
+  table tbody td { border: 1px solid #ccc; padding: 5px 8px; }
+  table td.center { text-align: center; }
+  .attendance-table { margin-bottom: 4mm; }
+  .attendance-table table td { height: 22px; }
+  .sign-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6mm; margin-top: 6mm; font-size: 10pt; }
+  .sign-box { border: 1px solid #ccc; padding: 8px 10px; }
+  .sign-box .label { font-size: 8.5pt; color: #555; }
+  .sign-box .line { border-bottom: 1px solid #333; min-height: 24px; margin-top: 4px; }
+  .divider { border-top: 3px dashed #ccc; margin: 8mm 0; padding-top: 6mm; }
+  .footnote { font-size: 8pt; color: #666; margin-top: 8mm; border-top: 1px solid #ddd; padding-top: 3mm; line-height: 1.7; }
+  .badge { display: inline-block; background: #3b9eca; color: white; border-radius: 4px; padding: 2px 8px; font-size: 9pt; font-weight: 700; margin-bottom: 3mm; }
+  .btn-print { position: fixed; top: 20px; right: 20px; background: #0d2137; color: white; border: none; padding: 10px 20px; border-radius: 999px; font-size: 13px; cursor: pointer; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; }
+  .btn-back { position: fixed; top: 20px; left: 20px; background: #f0f0f0; color: #333; border: none; padding: 10px 18px; border-radius: 999px; font-size: 13px; cursor: pointer; text-decoration: none; display: inline-block; }
+  @media print {
+    body { background: white; }
+    .page { padding: 8mm 12mm; max-width: none; }
+    .btn-print, .btn-back { display: none; }
+    table thead th, .section-title { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<a href="../index.html" class="btn-back">← 戻る</a>
+<button class="btn-print" onclick="window.print()">🖨️ 印刷 / PDF保存</button>
+
+<div class="page">
+  <div class="print-header">
+    <div class="doc-title">医療安全・感染対策研修 記録簿</div>
+    <div class="site-name">施設基準（年2回以上）対応 | 歯科経営コンパス</div>
+  </div>
+
+  <div class="notice">
+    📋 歯科外来診療医療安全対策加算・感染対策加算の施設基準として、年2回以上の研修実施と記録保管が必要です。<br>
+    医院名：　　　　　　　　　　　　年度：　　　年度
+  </div>
+
+  <!-- 第1回研修 -->
+  <div class="badge">第1回研修（上期）</div>
+  <div class="section-title">研修実施記録</div>
+
+  <div class="form-row form-row-3" style="margin-bottom:4mm;">
+    <div class="form-group">
+      <span class="form-label">実施日</span>
+      <div class="form-line"></div>
+    </div>
+    <div class="form-group">
+      <span class="form-label">実施時間</span>
+      <div class="form-line"></div>
+    </div>
+    <div class="form-group">
+      <span class="form-label">実施場所</span>
+      <div class="form-line"></div>
+    </div>
+  </div>
+
+  <div class="form-row form-row-2" style="margin-bottom:4mm;">
+    <div class="form-group">
+      <span class="form-label">研修テーマ（医療安全）</span>
+      <div class="form-line"></div>
+    </div>
+    <div class="form-group">
+      <span class="form-label">研修形式</span>
+      <div class="form-line">（例：院内勉強会・外部研修・e-ラーニング等）</div>
+    </div>
+  </div>
+
+  <div class="form-group" style="margin-bottom:4mm;">
+    <span class="form-label">研修内容の概要（医療安全）</span>
+    <div class="form-box" style="min-height:50px;"></div>
+  </div>
+
+  <div class="form-group" style="margin-bottom:4mm;">
+    <span class="form-label">研修内容の概要（感染対策）</span>
+    <div class="form-box" style="min-height:50px;"></div>
+  </div>
+
+  <div class="section-title">参加者名簿（第1回）</div>
+  <table class="attendance-table">
+    <thead><tr><th>No.</th><th>氏名</th><th>職種</th><th>署名</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td class="center">1</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="center">2</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="center">3</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="center">4</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="center">5</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="center">6</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="center">7</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="center">8</td><td></td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+
+  <div class="sign-row">
+    <div class="sign-box"><div class="label">研修責任者（院長）</div><div class="line"></div></div>
+    <div class="sign-box"><div class="label">講師氏名・所属</div><div class="line"></div></div>
+    <div class="sign-box"><div class="label">参加人数</div><div class="line">　　名（対象スタッフ全員：□）</div></div>
+  </div>
+
+  <!-- 第2回研修 -->
+  <div class="divider"></div>
+  <div class="badge">第2回研修（下期）</div>
+  <div class="section-title">研修実施記録</div>
+
+  <div class="form-row form-row-3" style="margin-bottom:4mm;">
+    <div class="form-group">
+      <span class="form-label">実施日</span>
+      <div class="form-line"></div>
+    </div>
+    <div class="form-group">
+      <span class="form-label">実施時間</span>
+      <div class="form-line"></div>
+    </div>
+    <div class="form-group">
+      <span class="form-label">実施場所</span>
+      <div class="form-line"></div>
+    </div>
+  </div>
+
+  <div class="form-row form-row-2" style="margin-bottom:4mm;">
+    <div class="form-group">
+      <span class="form-label">研修テーマ（医療安全）</span>
+      <div class="form-line"></div>
+    </div>
+    <div class="form-group">
+      <span class="form-label">研修形式</span>
+      <div class="form-line"></div>
+    </div>
+  </div>
+
+  <div class="form-group" style="margin-bottom:4mm;">
+    <span class="form-label">研修内容の概要</span>
+    <div class="form-box" style="min-height:50px;"></div>
+  </div>
+
+  <div class="section-title">参加者名簿（第2回）</div>
+  <table class="attendance-table">
+    <thead><tr><th>No.</th><th>氏名</th><th>職種</th><th>署名</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td class="center">1</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="center">2</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="center">3</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="center">4</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="center">5</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="center">6</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="center">7</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="center">8</td><td></td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+
+  <div class="sign-row">
+    <div class="sign-box"><div class="label">研修責任者（院長）</div><div class="line"></div></div>
+    <div class="sign-box"><div class="label">講師氏名・所属</div><div class="line"></div></div>
+    <div class="sign-box"><div class="label">参加人数</div><div class="line">　　名（対象スタッフ全員：□）</div></div>
+  </div>
+
+  <div class="footnote">
+    ※ 施設基準：医療安全研修・感染防止対策研修とも年2回以上の実施が必要。<br>
+    ※ 研修記録は施設基準の届出・更新時・厚生局の指導時に提示が求められます。少なくとも5年間は保管してください。<br>
+    ※ 外部研修受講（日本歯科医師会・歯科医師会等）の場合は修了証明書を添付。<br>
+    出典：令和8年度診療報酬改定 施設基準通知 / 歯科経営コンパス 無料テンプレート（2026年版）
+  </div>
+</div>
+</body>
+</html>

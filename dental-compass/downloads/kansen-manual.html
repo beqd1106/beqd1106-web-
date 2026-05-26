@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>院内感染対策マニュアル（テンプレート） | 歯科経営コンパス</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', sans-serif; font-size: 10.5pt; color: #1a1a1a; background: #f9f9f9; }
+  .page { max-width: 210mm; margin: 0 auto; background: white; padding: 18mm 16mm; }
+  .print-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5mm; padding-bottom: 4mm; border-bottom: 2px solid #0d2137; }
+  .doc-title { font-size: 14pt; font-weight: 700; color: #0d2137; }
+  .site-name { font-size: 8pt; color: #888; }
+  .notice { background: #e8f4e8; border-left: 4px solid #27ae60; padding: 8px 12px; font-size: 9pt; margin-bottom: 6mm; line-height: 1.6; }
+  .section-title { font-size: 11pt; font-weight: 700; color: white; background: #27ae60; padding: 5px 10px; margin: 6mm 0 3mm; }
+  .sub-title { font-size: 10pt; font-weight: 700; color: #27ae60; border-left: 3px solid #27ae60; padding-left: 8px; margin: 4mm 0 2mm; }
+  p { font-size: 10pt; line-height: 1.8; margin-bottom: 2mm; }
+  ul { list-style: disc; padding-left: 1.5em; font-size: 10pt; line-height: 1.9; margin-bottom: 3mm; }
+  ol { list-style: decimal; padding-left: 1.5em; font-size: 10pt; line-height: 1.9; margin-bottom: 3mm; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 4mm; font-size: 9.5pt; }
+  table thead th { background: #374151; color: white; padding: 5px 8px; text-align: left; }
+  table tbody tr:nth-child(even) { background: #f7f9fb; }
+  table td { border: 1px solid #ccc; padding: 5px 8px; }
+  .sign-area { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6mm; margin-top: 6mm; font-size: 10pt; }
+  .sign-box { border: 1px solid #ccc; padding: 6px 10px; }
+  .sign-box .label { font-size: 8.5pt; color: #555; margin-bottom: 4px; }
+  .sign-box .line { border-bottom: 1px solid #ccc; min-height: 20px; margin-top: 4px; }
+  .footnote { font-size: 8pt; color: #666; margin-top: 8mm; border-top: 1px solid #ddd; padding-top: 3mm; line-height: 1.7; }
+  .btn-print { position: fixed; top: 20px; right: 20px; background: #0d2137; color: white; border: none; padding: 10px 20px; border-radius: 999px; font-size: 13px; cursor: pointer; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; }
+  .btn-back { position: fixed; top: 20px; left: 20px; background: #f0f0f0; color: #333; border: none; padding: 10px 18px; border-radius: 999px; font-size: 13px; cursor: pointer; text-decoration: none; display: inline-block; }
+  @media print {
+    body { background: white; }
+    .page { padding: 8mm 12mm; max-width: none; }
+    .btn-print, .btn-back { display: none; }
+    table thead th, .section-title { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<a href="../index.html" class="btn-back">← 戻る</a>
+<button class="btn-print" onclick="window.print()">🖨️ 印刷 / PDF保存</button>
+
+<div class="page">
+  <div class="print-header">
+    <div class="doc-title">歯科診療所 院内感染対策マニュアル（テンプレート）</div>
+    <div class="site-name">歯科経営コンパス ― 無料テンプレート</div>
+  </div>
+
+  <div class="notice">
+    📋 本マニュアルは歯科外来診療感染対策加算の施設基準要件に対応した参考雛形です。<br>
+    医院名：　　　　　　　　　　　　策定日：　　　年　　月　　日　　管理者：
+  </div>
+
+  <div class="section-title">第1章 基本方針</div>
+  <p>当歯科診療所は、すべての患者・スタッフの安全を確保するため、医療法および厚生労働省通知に基づく感染対策を実施します。院長を感染対策責任者とし、全スタッフが感染対策に取り組む体制を整備します。</p>
+  <ul>
+    <li>標準予防策（スタンダードプリコーション）を全診療に適用する</li>
+    <li>感染対策に関する研修を年2回以上実施し、記録を保管する</li>
+    <li>感染事例が発生した場合は速やかに対応し、再発防止策を講じる</li>
+  </ul>
+
+  <div class="section-title">第2章 手指衛生</div>
+  <div class="sub-title">2-1 手指衛生の実施タイミング（WHO5モーメント準拠）</div>
+  <ol>
+    <li>患者に触れる前</li>
+    <li>清潔・無菌操作の前</li>
+    <li>体液に触れた後</li>
+    <li>患者に触れた後</li>
+    <li>患者周囲環境に触れた後</li>
+  </ol>
+  <div class="sub-title">2-2 手指衛生の方法</div>
+  <ul>
+    <li>速乾性アルコール手指消毒剤を使用（日常的な手指衛生）</li>
+    <li>目に見える汚染がある場合は流水と石けんで15秒以上洗浄</li>
+    <li>グローブ着用時も手指衛生を省略しない</li>
+  </ul>
+
+  <div class="section-title">第3章 個人防護具（PPE）</div>
+  <table>
+    <thead><tr><th>状況</th><th>必要なPPE</th><th>注意点</th></tr></thead>
+    <tbody>
+      <tr><td>通常の口腔内診察・処置</td><td>グローブ・マスク・ゴーグル（またはフェイスシールド）</td><td>患者ごとにグローブ交換</td></tr>
+      <tr><td>エアロゾル発生処置（超音波スケーラー・タービン等）</td><td>上記＋ガウン・口腔外バキューム</td><td>換気の確保</td></tr>
+      <tr><td>感染症患者（結核・インフルエンザ疑い等）</td><td>N95マスク・ゴーグル・ガウン・グローブ</td><td>個室対応・入室制限</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">第4章 器具・機器の滅菌・消毒</div>
+  <div class="sub-title">4-1 ハンドピース管理（法的義務）</div>
+  <ul>
+    <li><strong>患者ごとにハンドピース（タービン・エンジン）を交換・滅菌する（法的義務）</strong></li>
+    <li>クラスB（プレバキューム式）オートクレーブで滅菌を実施</li>
+    <li>滅菌記録（日時・温度・圧力・使用インジケーター）を毎日保管</li>
+    <li>滅菌器の生物学的インジケーター（バイオロジカルインジケーター）確認：月1回以上</li>
+  </ul>
+  <div class="sub-title">4-2 器具の分類と処理レベル</div>
+  <table>
+    <thead><tr><th>分類</th><th>例</th><th>処理方法</th></tr></thead>
+    <tbody>
+      <tr><td>クリティカル（粘膜・組織を貫通）</td><td>抜歯器具・メス・縫合針</td><td>高水準滅菌（オートクレーブ）</td></tr>
+      <tr><td>セミクリティカル（粘膜に接触）</td><td>ミラー・エキスプローラー・バキュームチップ</td><td>高水準消毒または滅菌</td></tr>
+      <tr><td>ノンクリティカル（皮膚のみ）</td><td>ユニット外面・フットコントローラー</td><td>中・低水準消毒（清拭）</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">第5章 環境清掃・廃棄物管理</div>
+  <ul>
+    <li>診療室ユニットの清拭消毒：患者ごとに実施（グローブ着用のまま）</li>
+    <li>待合室・トイレの清掃：1日1回以上（血液付着時は即時消毒）</li>
+    <li>鋭利物（使用済み針・メス等）：専用の耐貫通性廃棄容器に廃棄</li>
+    <li>感染性廃棄物：産業廃棄物業者（感染性廃棄物取扱い許可業者）に委託</li>
+    <li>廃棄物処理委託契約書・マニフェストを保管</li>
+  </ul>
+
+  <div class="section-title">第6章 研修・記録</div>
+  <table>
+    <thead><tr><th>研修内容</th><th>実施頻度</th><th>記録方法</th></tr></thead>
+    <tbody>
+      <tr><td>感染防止対策に関する基礎研修</td><td>年2回以上</td><td>研修記録簿に記録（別紙）</td></tr>
+      <tr><td>手指衛生の手技確認</td><td>年1回以上</td><td>チェックリストで確認</td></tr>
+      <tr><td>針刺し事故発生時の対応訓練</td><td>年1回以上</td><td>訓練記録</td></tr>
+    </tbody>
+  </table>
+
+  <div class="sign-area">
+    <div class="sign-box"><div class="label">策定責任者（院長）</div><div class="line"></div></div>
+    <div class="sign-box"><div class="label">感染対策担当者</div><div class="line"></div></div>
+    <div class="sign-box"><div class="label">改訂年月日</div><div class="line"></div></div>
+  </div>
+
+  <div class="footnote">
+    ※ 本マニュアルは参考雛形です。医院の実情に合わせて内容を修正してご使用ください。<br>
+    ※ 根拠：医療法施行規則第1条の11第2項 / 厚生労働省「歯科外来診療における院内感染対策について」<br>
+    ※ 感染対策加算の施設基準には本マニュアルの整備と年2回以上の研修実施が含まれます。<br>
+    出典：厚生労働省通知 / 歯科経営コンパス 無料テンプレート（2026年版）
+  </div>
+</div>
+</body>
+</html>
