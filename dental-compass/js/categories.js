@@ -546,7 +546,7 @@ function renderCategories() {
   });
 
   container.innerHTML = html;
-  initFadeObserver();
+  if (typeof initFadeObserver === 'function') initFadeObserver();
   if (typeof renderRevision2026Section === 'function') renderRevision2026Section();
 }
 
