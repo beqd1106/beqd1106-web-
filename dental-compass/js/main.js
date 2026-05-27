@@ -256,3 +256,13 @@ document.querySelectorAll('.tool-card .tool-card-icon').forEach((el, i) => {
 })();
 
 console.log('🦷 歯科経営コンパス — Loaded successfully');
+
+// ─── カード詳細 展開/折りたたみ ───
+function toggleCardDetail(card) {
+  const isOpen = card.classList.toggle('is-open');
+  // 他の開いているカードは閉じない（複数同時展開OK）
+  if (isOpen) {
+    // 展開後にScrollTriggerをリフレッシュ
+    ScrollTrigger.refresh();
+  }
+}
