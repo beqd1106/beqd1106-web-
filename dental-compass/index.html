@@ -365,56 +365,88 @@ function checkPw(){
   <div class="container" style="position:relative;z-index:2;">
     <span class="section-label fade-up">Management Diagnosis</span>
     <h2 class="section-title fade-up">経営スキャナー</h2>
-    <p class="section-desc scanner-desc fade-up">5つのKPIを入力するだけで、あなたの医院の経営状態をレーダーチャートで即診断。弱点と改善アクションを自動提示します。</p>
+    <p class="section-desc scanner-desc fade-up">8つの主要KPIを入力するだけで、あなたの医院の経営状態をレーダーチャートで即診断。業界平均との比較・リスク評価・改善アクションを自動提示します。</p>
 
     <div class="scanner-layout">
       <!-- 入力パネル -->
       <div class="scanner-inputs fade-up">
-        <h3 class="scanner-panel-title">現在の数値を入力</h3>
-
-        <div class="scan-item">
-          <div class="scan-item-header">
-            <label class="scan-label" for="s_labor">人件費率</label>
-            <span class="scan-ideal">目安 40〜45%</span>
-          </div>
-          <input type="range" id="s_labor" class="scan-slider" min="20" max="70" value="45">
-          <div class="scan-value-row"><span>20%</span><span class="scan-cur-val" id="s_labor_val">45%</span><span>70%</span></div>
+        <div class="scanner-panel-header">
+          <h3 class="scanner-panel-title">現在の数値を入力</h3>
+          <span class="scanner-panel-note">スライダーを動かして診断</span>
         </div>
 
-        <div class="scan-item">
-          <div class="scan-item-header">
-            <label class="scan-label" for="s_jihi">自費診療比率</label>
-            <span class="scan-ideal">目安 30%以上</span>
+        <div class="scan-items-grid">
+          <div class="scan-item">
+            <div class="scan-item-header">
+              <label class="scan-label" for="s_labor">人件費率</label>
+              <span class="scan-ideal">目安 40〜45%</span>
+            </div>
+            <input type="range" id="s_labor" class="scan-slider" min="20" max="70" value="45">
+            <div class="scan-value-row"><span>20%</span><span class="scan-cur-val" id="s_labor_val">45%</span><span>70%</span></div>
           </div>
-          <input type="range" id="s_jihi" class="scan-slider" min="0" max="80" value="20">
-          <div class="scan-value-row"><span>0%</span><span class="scan-cur-val" id="s_jihi_val">20%</span><span>80%</span></div>
-        </div>
 
-        <div class="scan-item">
-          <div class="scan-item-header">
-            <label class="scan-label" for="s_recall">リコール率</label>
-            <span class="scan-ideal">目安 60〜80%</span>
+          <div class="scan-item">
+            <div class="scan-item-header">
+              <label class="scan-label" for="s_jihi">自費診療比率</label>
+              <span class="scan-ideal">目安 30%以上</span>
+            </div>
+            <input type="range" id="s_jihi" class="scan-slider" min="0" max="80" value="20">
+            <div class="scan-value-row"><span>0%</span><span class="scan-cur-val" id="s_jihi_val">20%</span><span>80%</span></div>
           </div>
-          <input type="range" id="s_recall" class="scan-slider" min="10" max="100" value="50">
-          <div class="scan-value-row"><span>10%</span><span class="scan-cur-val" id="s_recall_val">50%</span><span>100%</span></div>
-        </div>
 
-        <div class="scan-item">
-          <div class="scan-item-header">
-            <label class="scan-label" for="s_material">材料費率</label>
-            <span class="scan-ideal">目安 10〜15%</span>
+          <div class="scan-item">
+            <div class="scan-item-header">
+              <label class="scan-label" for="s_recall">リコール率</label>
+              <span class="scan-ideal">目安 60〜80%</span>
+            </div>
+            <input type="range" id="s_recall" class="scan-slider" min="10" max="100" value="50">
+            <div class="scan-value-row"><span>10%</span><span class="scan-cur-val" id="s_recall_val">50%</span><span>100%</span></div>
           </div>
-          <input type="range" id="s_material" class="scan-slider" min="5" max="30" value="15">
-          <div class="scan-value-row"><span>5%</span><span class="scan-cur-val" id="s_material_val">15%</span><span>30%</span></div>
-        </div>
 
-        <div class="scan-item">
-          <div class="scan-item-header">
-            <label class="scan-label" for="s_profit">利益率</label>
-            <span class="scan-ideal">目安 15〜25%</span>
+          <div class="scan-item">
+            <div class="scan-item-header">
+              <label class="scan-label" for="s_material">材料費率</label>
+              <span class="scan-ideal">目安 10〜15%</span>
+            </div>
+            <input type="range" id="s_material" class="scan-slider" min="5" max="30" value="15">
+            <div class="scan-value-row"><span>5%</span><span class="scan-cur-val" id="s_material_val">15%</span><span>30%</span></div>
           </div>
-          <input type="range" id="s_profit" class="scan-slider" min="0" max="50" value="15">
-          <div class="scan-value-row"><span>0%</span><span class="scan-cur-val" id="s_profit_val">15%</span><span>50%</span></div>
+
+          <div class="scan-item">
+            <div class="scan-item-header">
+              <label class="scan-label" for="s_profit">利益率</label>
+              <span class="scan-ideal">目安 15〜25%</span>
+            </div>
+            <input type="range" id="s_profit" class="scan-slider" min="0" max="50" value="15">
+            <div class="scan-value-row"><span>0%</span><span class="scan-cur-val" id="s_profit_val">15%</span><span>50%</span></div>
+          </div>
+
+          <div class="scan-item">
+            <div class="scan-item-header">
+              <label class="scan-label" for="s_newpts">新患数/月</label>
+              <span class="scan-ideal">目安 30人以上</span>
+            </div>
+            <input type="range" id="s_newpts" class="scan-slider" min="0" max="80" value="25" data-unit="人/月">
+            <div class="scan-value-row"><span>0</span><span class="scan-cur-val" id="s_newpts_val">25人/月</span><span>80</span></div>
+          </div>
+
+          <div class="scan-item">
+            <div class="scan-item-header">
+              <label class="scan-label" for="s_cancel">キャンセル率</label>
+              <span class="scan-ideal">目安 10%以下</span>
+            </div>
+            <input type="range" id="s_cancel" class="scan-slider" min="0" max="40" value="15">
+            <div class="scan-value-row"><span>0%</span><span class="scan-cur-val" id="s_cancel_val">15%</span><span>40%</span></div>
+          </div>
+
+          <div class="scan-item">
+            <div class="scan-item-header">
+              <label class="scan-label" for="s_unit">ユニット稼働率</label>
+              <span class="scan-ideal">目安 80%以上</span>
+            </div>
+            <input type="range" id="s_unit" class="scan-slider" min="20" max="100" value="65">
+            <div class="scan-value-row"><span>20%</span><span class="scan-cur-val" id="s_unit_val">65%</span><span>100%</span></div>
+          </div>
         </div>
 
         <button id="scanBtn" class="btn-primary scan-btn">経営診断スタート</button>
@@ -425,6 +457,7 @@ function checkPw(){
         <canvas id="radarCanvas" class="radar-canvas"></canvas>
 
         <div id="scanResult" class="scan-result-body" style="display:none;">
+          <!-- スコア＋グレード -->
           <div class="scan-score-top">
             <div class="scan-score-ring">
               <span class="scan-score-num" id="scoreNum">0</span>
@@ -433,17 +466,48 @@ function checkPw(){
             <div class="scan-grade-info">
               <div class="scan-grade-badge" id="scoreGrade">--</div>
               <div class="scan-grade-label" id="scoreLabel">診断中...</div>
+              <span id="deltaBadge" class="delta-badge" style="display:none;"></span>
             </div>
           </div>
 
+          <!-- リスクメーター -->
+          <div class="risk-meter-section">
+            <div class="risk-meter-header">
+              <span class="risk-meter-title">経営リスク評価</span>
+              <span id="riskLabel" class="risk-label-text">--</span>
+            </div>
+            <div class="risk-bar-bg">
+              <div id="riskBar" class="risk-bar" style="width:0%"></div>
+            </div>
+            <div id="riskFlags" class="risk-flags"></div>
+          </div>
+
+          <!-- KPI詳細 -->
           <div class="kpi-section">
-            <h4 class="kpi-section-title">KPI 詳細スコア</h4>
+            <h4 class="kpi-section-title">KPI 詳細スコア <span class="kpi-legend"><span class="kpi-legend-bm"></span>業界平均</span></h4>
             <div id="kpiList" class="kpi-list"></div>
           </div>
 
+          <!-- 改善アクション -->
           <div class="rec-section">
-            <h4 class="rec-section-title">改善アクション TOP 3</h4>
+            <h4 class="rec-section-title">優先改善アクション TOP 3</h4>
             <div id="recList" class="rec-list"></div>
+          </div>
+        </div>
+
+        <!-- 履歴パネル -->
+        <div id="histPanel" class="hist-panel" style="display:none;">
+          <div class="hist-header">
+            <span class="hist-title">スキャン履歴（最大6回）</span>
+          </div>
+          <canvas id="histCanvas" class="hist-canvas"></canvas>
+          <div class="hist-entries">
+            <div class="hist-entry"><span class="hist-date"></span><span class="hist-score"></span><span class="hist-slash">pt</span></div>
+            <div class="hist-entry"><span class="hist-date"></span><span class="hist-score"></span><span class="hist-slash">pt</span></div>
+            <div class="hist-entry"><span class="hist-date"></span><span class="hist-score"></span><span class="hist-slash">pt</span></div>
+            <div class="hist-entry"><span class="hist-date"></span><span class="hist-score"></span><span class="hist-slash">pt</span></div>
+            <div class="hist-entry"><span class="hist-date"></span><span class="hist-score"></span><span class="hist-slash">pt</span></div>
+            <div class="hist-entry"><span class="hist-date"></span><span class="hist-score"></span><span class="hist-slash">pt</span></div>
           </div>
         </div>
       </div>
@@ -762,6 +826,7 @@ function checkPw(){
       <input type="text" id="searchInput" placeholder="キーワードで検索（例：自費、リコール、融資...）" autocomplete="off" spellcheck="false">
       <button id="searchClose" class="search-close-btn">ESC</button>
     </div>
+    <div id="searchCatFilter" class="search-cat-filter" style="display:none;"></div>
     <div id="searchResults" class="search-results">
       <p class="search-hint">キーワードを入力してください</p>
     </div>

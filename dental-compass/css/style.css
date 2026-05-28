@@ -1160,9 +1160,7 @@ h1, h2, h3, h4 {
   font-size: 1rem;
   font-weight: 700;
   color: rgba(255,255,255,0.9);
-  margin-bottom: 1.75rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(255,255,255,0.09);
+  margin-bottom: 0;
 }
 .scan-item {
   margin-bottom: 1.5rem;
@@ -1250,7 +1248,7 @@ h1, h2, h3, h4 {
 }
 .radar-canvas {
   width: 100%;
-  height: 320px;
+  height: 360px;
   display: block;
   background: rgba(255,255,255,0.025);
   border: 1px solid rgba(255,255,255,0.07);
@@ -1582,3 +1580,307 @@ h1, h2, h3, h4 {
   .search-footer { display: none; }
   .header-search-btn { width: 34px; height: 34px; }
 }
+
+/* ===================================================================
+   SCANNER v2 — 追加スタイル
+   =================================================================== */
+
+/* 入力パネルヘッダー */
+.scanner-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.scanner-panel-note {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.04em;
+}
+
+/* 2列スライダーグリッド */
+.scan-items-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.scan-item { margin-bottom: 0.75rem; }
+
+/* KPI bar — benchmark marker */
+.kpi-bar-bg {
+  position: relative;
+}
+.kpi-bar-bm {
+  position: absolute;
+  top: -2px;
+  width: 2px;
+  height: calc(100% + 4px);
+  background: rgba(201,168,76,0.7);
+  border-radius: 1px;
+  pointer-events: none;
+  z-index: 2;
+}
+.kpi-right {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.kpi-delta {
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.kpi-legend {
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.3);
+  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.kpi-legend-bm {
+  display: inline-block;
+  width: 12px;
+  height: 2px;
+  background: rgba(201,168,76,0.7);
+  border-radius: 1px;
+}
+
+/* rec-item layout */
+.rec-item-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+.rec-severity {
+  font-size: 0.65rem;
+  font-weight: 700;
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 0.1rem 0.45rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* リスクメーター */
+.risk-meter-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.1rem;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius-md);
+}
+.risk-meter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+.risk-meter-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.38);
+}
+.risk-label-text {
+  font-size: 0.82rem;
+  font-weight: 700;
+  transition: color 0.4s;
+}
+.risk-bar-bg {
+  height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 0.7rem;
+}
+.risk-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: background 0.4s;
+}
+.risk-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.risk-flag {
+  font-size: 0.68rem;
+  font-weight: 600;
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 0.12rem 0.5rem;
+  letter-spacing: 0.02em;
+}
+
+/* デルタバッジ */
+.delta-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin-top: 0.35rem;
+  letter-spacing: 0.03em;
+}
+
+/* 履歴パネル */
+.hist-panel {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-xl);
+  padding: 1.25rem 1.5rem;
+}
+.hist-header { margin-bottom: 0.75rem; }
+.hist-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.35);
+}
+.hist-canvas {
+  width: 100%;
+  height: 60px;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+.hist-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.hist-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+}
+.hist-date  { color: rgba(255,255,255,0.4); flex: 1; }
+.hist-score { font-weight: 700; font-size: 0.92rem; }
+.hist-slash { font-size: 0.65rem; color: rgba(255,255,255,0.3); }
+
+/* Scanner mobile v2 */
+@media (max-width: 900px) {
+  .scan-items-grid { grid-template-columns: 1fr 1fr; gap: 0.25rem 1rem; }
+}
+@media (max-width: 600px) {
+  .scan-items-grid { grid-template-columns: 1fr; }
+  .scan-item { margin-bottom: 0.5rem; }
+}
+
+/* ===================================================================
+   SEARCH v2 — 追加スタイル
+   =================================================================== */
+
+/* ハイライト */
+mark.sh {
+  background: rgba(0,201,167,0.25);
+  color: #00c9a7;
+  border-radius: 2px;
+  padding: 0 1px;
+  font-style: normal;
+}
+
+/* カテゴリフィルターピル */
+.search-cat-filter {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 0.4rem;
+  padding: 0.55rem 1.25rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  scrollbar-width: none;
+}
+.search-cat-filter::-webkit-scrollbar { display: none; }
+.cat-pill {
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 0.22rem 0.75rem;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.55);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.cat-pill span {
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 0 0.3rem;
+  margin-left: 0.25rem;
+  font-size: 0.65rem;
+}
+.cat-pill:hover {
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.85);
+}
+.cat-pill.active {
+  background: rgba(0,201,167,0.18);
+  border-color: rgba(0,201,167,0.4);
+  color: #00c9a7;
+}
+
+/* 検索結果 — スニペット */
+.sri-meta {
+  margin-bottom: 0.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.sri-cat-badge {
+  font-size: 0.66rem;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 0.1rem 0.45rem;
+  letter-spacing: 0.04em;
+}
+.sri-title  { font-size: 0.9rem; color: rgba(255,255,255,0.88); line-height: 1.4; }
+.sri-snippet {
+  font-size: 0.76rem;
+  color: rgba(255,255,255,0.38);
+  margin-top: 0.2rem;
+  line-height: 1.5;
+}
+.search-result-item.is-selected {
+  background: rgba(0,201,167,0.1);
+  outline: 1px solid rgba(0,201,167,0.25);
+}
+
+/* 最近の検索 */
+.search-recent-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem 0.25rem;
+}
+.search-recent-header {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.28);
+}
+.search-recent-clear {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.28);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s;
+}
+.search-recent-clear:hover { color: rgba(255,255,255,0.6); }
+.search-recent-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 1rem;
+}
+.search-recent-item svg { color: rgba(255,255,255,0.25); flex-shrink: 0; }
+.sri-recent-text { font-size: 0.88rem; color: rgba(255,255,255,0.65); }
