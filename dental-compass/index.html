@@ -116,11 +116,15 @@ function checkPw(){
             <a href="#cat-18" class="dropdown-item"><div class="di-icon">🚪</div>閉院・廃止手続き</a>
           </div>
         </li>
+        <li><a href="#scanner">スキャナー</a></li>
         <li><a href="#tools">ツール</a></li>
         <li><a href="#downloads">ダウンロード</a></li>
         <li><a href="#contact" class="nav-cta">無料相談</a></li>
       </ul>
     </nav>
+    <button class="search-trigger header-search-btn" aria-label="検索">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    </button>
     <button class="hamburger" id="hamburger" aria-label="メニュー">
       <span></span><span></span><span></span>
     </button>
@@ -149,6 +153,7 @@ function checkPw(){
     <li><a href="#cat-16" onclick="closeMobileNav()">🏢 医療法人化・分院展開</a></li>
     <li><a href="#cat-17" onclick="closeMobileNav()">🤝 事業承継・M&A</a></li>
     <li><a href="#cat-18" onclick="closeMobileNav()">🚪 閉院・廃止手続き</a></li>
+    <li><a href="#scanner" onclick="closeMobileNav()">経営スキャナー（レーダー診断）</a></li>
     <li><a href="#tools" onclick="closeMobileNav()">🔧 無料ツール10選</a></li>
     <li><a href="#downloads" onclick="closeMobileNav()">📥 書類テンプレート</a></li>
     <li><a href="#contact" onclick="closeMobileNav()" class="nav-cta" style="text-align:center;margin-top:1rem;">無料相談はこちら</a></li>
@@ -354,6 +359,97 @@ function checkPw(){
 <!-- categories.html をインクルードする想定でここに全カテゴリ記事 -->
 <!-- (別ファイル categories.js で動的に読み込まれる) -->
 <div id="cat-sections-container"></div>
+
+<!-- ========== SCANNER SECTION ========== -->
+<section id="scanner" class="scanner-section section noise">
+  <div class="container" style="position:relative;z-index:2;">
+    <span class="section-label fade-up">Management Diagnosis</span>
+    <h2 class="section-title fade-up">経営スキャナー</h2>
+    <p class="section-desc scanner-desc fade-up">5つのKPIを入力するだけで、あなたの医院の経営状態をレーダーチャートで即診断。弱点と改善アクションを自動提示します。</p>
+
+    <div class="scanner-layout">
+      <!-- 入力パネル -->
+      <div class="scanner-inputs fade-up">
+        <h3 class="scanner-panel-title">現在の数値を入力</h3>
+
+        <div class="scan-item">
+          <div class="scan-item-header">
+            <label class="scan-label" for="s_labor">人件費率</label>
+            <span class="scan-ideal">目安 40〜45%</span>
+          </div>
+          <input type="range" id="s_labor" class="scan-slider" min="20" max="70" value="45">
+          <div class="scan-value-row"><span>20%</span><span class="scan-cur-val" id="s_labor_val">45%</span><span>70%</span></div>
+        </div>
+
+        <div class="scan-item">
+          <div class="scan-item-header">
+            <label class="scan-label" for="s_jihi">自費診療比率</label>
+            <span class="scan-ideal">目安 30%以上</span>
+          </div>
+          <input type="range" id="s_jihi" class="scan-slider" min="0" max="80" value="20">
+          <div class="scan-value-row"><span>0%</span><span class="scan-cur-val" id="s_jihi_val">20%</span><span>80%</span></div>
+        </div>
+
+        <div class="scan-item">
+          <div class="scan-item-header">
+            <label class="scan-label" for="s_recall">リコール率</label>
+            <span class="scan-ideal">目安 60〜80%</span>
+          </div>
+          <input type="range" id="s_recall" class="scan-slider" min="10" max="100" value="50">
+          <div class="scan-value-row"><span>10%</span><span class="scan-cur-val" id="s_recall_val">50%</span><span>100%</span></div>
+        </div>
+
+        <div class="scan-item">
+          <div class="scan-item-header">
+            <label class="scan-label" for="s_material">材料費率</label>
+            <span class="scan-ideal">目安 10〜15%</span>
+          </div>
+          <input type="range" id="s_material" class="scan-slider" min="5" max="30" value="15">
+          <div class="scan-value-row"><span>5%</span><span class="scan-cur-val" id="s_material_val">15%</span><span>30%</span></div>
+        </div>
+
+        <div class="scan-item">
+          <div class="scan-item-header">
+            <label class="scan-label" for="s_profit">利益率</label>
+            <span class="scan-ideal">目安 15〜25%</span>
+          </div>
+          <input type="range" id="s_profit" class="scan-slider" min="0" max="50" value="15">
+          <div class="scan-value-row"><span>0%</span><span class="scan-cur-val" id="s_profit_val">15%</span><span>50%</span></div>
+        </div>
+
+        <button id="scanBtn" class="btn-primary scan-btn">経営診断スタート</button>
+      </div>
+
+      <!-- チャート＋結果パネル -->
+      <div class="scanner-outputs fade-up">
+        <canvas id="radarCanvas" class="radar-canvas"></canvas>
+
+        <div id="scanResult" class="scan-result-body" style="display:none;">
+          <div class="scan-score-top">
+            <div class="scan-score-ring">
+              <span class="scan-score-num" id="scoreNum">0</span>
+              <span class="scan-score-unit">/ 100</span>
+            </div>
+            <div class="scan-grade-info">
+              <div class="scan-grade-badge" id="scoreGrade">--</div>
+              <div class="scan-grade-label" id="scoreLabel">診断中...</div>
+            </div>
+          </div>
+
+          <div class="kpi-section">
+            <h4 class="kpi-section-title">KPI 詳細スコア</h4>
+            <div id="kpiList" class="kpi-list"></div>
+          </div>
+
+          <div class="rec-section">
+            <h4 class="rec-section-title">改善アクション TOP 3</h4>
+            <div id="recList" class="rec-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ========== TOOLS SECTION ========== -->
 <section id="tools" class="tools-section section noise">
@@ -657,6 +753,26 @@ function checkPw(){
 </footer>
 
 <!-- ========== MODALS ========== -->
+<!-- ========== SEARCH MODAL ========== -->
+<div id="searchOverlay" class="search-overlay"></div>
+<div id="searchModal" class="search-modal" role="dialog" aria-label="検索">
+  <div class="search-modal-inner">
+    <div class="search-bar">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="flex-shrink:0;color:rgba(255,255,255,0.4)"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="キーワードで検索（例：自費、リコール、融資...）" autocomplete="off" spellcheck="false">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results">
+      <p class="search-hint">キーワードを入力してください</p>
+    </div>
+    <div class="search-footer">
+      <span><kbd>↵</kbd> 選択</span>
+      <span><kbd>ESC</kbd> 閉じる</span>
+      <span><kbd>Ctrl K</kbd> 開く</span>
+    </div>
+  </div>
+</div>
+
 <div id="modalOverlay" class="modal-overlay" onclick="closeModalOnOverlay(event)">
   <div class="modal" id="modalContent">
     <div class="modal-header">
@@ -672,5 +788,7 @@ function checkPw(){
 <script src="js/categories.js"></script>
 <script src="js/tools.js"></script>
 <script src="js/main.js"></script>
+<script src="js/scanner.js"></script>
+<script src="js/search.js"></script>
 </body>
 </html>
