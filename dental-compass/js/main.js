@@ -221,6 +221,104 @@ document.getElementById('drawerTabs')?.addEventListener('click', e => {
   if (tab?.dataset.tab) switchDrawerTab(tab.dataset.tab);
 });
 
+// ─── カードホバープレビュー ───
+let _pvTimer;
+
+function showCardPreview(card) {
+  const preview = document.getElementById('cardPreview');
+  if (!preview) return;
+
+  const key      = card.dataset.cardKey;
+  const title    = card.dataset.cardTitle;
+  const catTitle = card.dataset.catTitle;
+  const catColor = card.dataset.catColor;
+
+  // カテゴリ・タイトル
+  const catEl = document.getElementById('cpCatLabel');
+  catEl.textContent   = catTitle || '';
+  catEl.style.color   = catColor || 'var(--teal)';
+  document.getElementById('cpTitle').textContent = title || '';
+
+  // リード文（CARD_DETAILS）
+  const data = typeof CARD_DETAILS !== 'undefined' ? CARD_DETAILS[key] : null;
+  const leadEl = document.getElementById('cpLead');
+  if (data?.lead) {
+    leadEl.textContent = data.lead.length > 110 ? data.lead.slice(0, 110) + '…' : data.lead;
+    leadEl.style.display = 'block';
+  } else {
+    leadEl.style.display = 'none';
+  }
+
+  // カードの items（先頭3件、リード文がないとき）
+  const parts    = key.split('-');
+  const cardIdx  = parseInt(parts[parts.length - 1]);
+  const catId    = parts.slice(0, -1).join('-');
+  const cat      = typeof CATEGORIES !== 'undefined' ? CATEGORIES.find(c => c.id === catId) : null;
+  const cardData = cat?.cards[cardIdx];
+  const itemsEl  = document.getElementById('cpItems');
+  if (!data?.lead && cardData?.items?.length) {
+    itemsEl.innerHTML = cardData.items.slice(0, 3).map(it => `<li>${it}</li>`).join('');
+    itemsEl.style.display = 'block';
+  } else {
+    itemsEl.style.display = 'none';
+  }
+
+  // 表示 & ポジション計算
+  preview.style.visibility = 'hidden';
+  preview.style.display    = 'block';
+  preview.style.opacity    = '0';
+
+  const rect  = card.getBoundingClientRect();
+  const vw    = window.innerWidth;
+  const vh    = window.innerHeight;
+  const pw    = preview.offsetWidth  || 270;
+  const ph    = preview.offsetHeight || 150;
+
+  let left, top;
+  if (rect.right + pw + 16 <= vw) {
+    left = rect.right + 12;
+    top  = rect.top + rect.height / 2 - ph / 2;
+  } else if (rect.left - pw - 12 >= 0) {
+    left = rect.left - pw - 12;
+    top  = rect.top + rect.height / 2 - ph / 2;
+  } else {
+    left = rect.left;
+    top  = rect.top - ph - 10;
+  }
+
+  preview.style.left       = `${Math.max(8, Math.min(vw - pw - 8, left))}px`;
+  preview.style.top        = `${Math.max(8, Math.min(vh - ph - 8, top))}px`;
+  preview.style.visibility = 'visible';
+  preview.style.opacity    = '1';
+}
+
+function hideCardPreview() {
+  const preview = document.getElementById('cardPreview');
+  if (!preview) return;
+  preview.style.opacity = '0';
+  setTimeout(() => { preview.style.display = 'none'; }, 180);
+}
+
+// ─── ホバーイベント（タッチデバイスは除外） ───
+(function initCardHoverPreview() {
+  if (!window.matchMedia('(hover: hover)').matches) return;
+
+  document.addEventListener('mouseover', e => {
+    if (window.innerWidth < 900) return;
+    const card = e.target.closest('.card-clickable');
+    if (!card) return;
+    clearTimeout(_pvTimer);
+    _pvTimer = setTimeout(() => showCardPreview(card), 280);
+  });
+
+  document.addEventListener('mouseout', e => {
+    const card = e.target.closest('.card-clickable');
+    if (!card || card.contains(e.relatedTarget)) return;
+    clearTimeout(_pvTimer);
+    hideCardPreview();
+  });
+})();
+
 // ─── ツールカードアイコンタイル色 ───
 const toolColors = [
   '#00c9a7', '#c9a84c', '#3b9eca', '#e74c3c',

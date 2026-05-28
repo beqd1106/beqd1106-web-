@@ -1947,6 +1947,74 @@ mark.sh {
   visibility: visible;
 }
 
+/* ─── Card Hover Preview ─── */
+.card-preview {
+  position: fixed;
+  z-index: 750;
+  width: 270px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 40px rgba(13, 33, 55, 0.14);
+  padding: 1rem 1.1rem;
+  pointer-events: none;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+.cp-cat-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+  color: var(--teal);
+}
+.cp-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+  font-family: 'Noto Serif JP', serif;
+}
+.cp-lead {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+.cp-items {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.cp-items li {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  padding-left: 1rem;
+  position: relative;
+  line-height: 1.5;
+}
+.cp-items li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--teal);
+  font-weight: 700;
+}
+.cp-hint {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--teal);
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--gray-100);
+}
+
 .card-drawer {
   position: fixed;
   top: 0;
