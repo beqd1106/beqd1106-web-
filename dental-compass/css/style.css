@@ -2067,4 +2067,194 @@ mark.sh {
     border-radius: 2px;
   }
 }
+
+/* ─── Drawer Tabs ─── */
+.drawer-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--gray-200);
+  flex-shrink: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.drawer-tabs::-webkit-scrollbar { display: none; }
+.drawer-tab {
+  padding: 0.65rem 1.1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  white-space: nowrap;
+  background: none;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.drawer-tab.is-active {
+  color: var(--teal);
+  border-bottom-color: var(--teal);
+}
+.drawer-tab:hover:not(.is-active) {
+  color: var(--navy);
+  background: var(--gray-50);
+}
+.drawer-panel { display: none; }
+.drawer-panel.is-active { display: block; }
+
+/* ─── Checklist ─── */
+.cl-progress {
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--gray-100);
+  margin-bottom: 0.75rem;
+}
+.cl-progress-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.cl-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+}
+.cl-count {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--teal);
+  transition: color 0.3s;
+}
+.cl-bar-bg {
+  height: 5px;
+  background: var(--gray-100);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.cl-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--teal-dark));
+  border-radius: 3px;
+  transition: width 0.35s var(--ease-smooth);
+}
+.cl-group-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  padding: 0.85rem 0 0.4rem;
+  border-top: 1px solid var(--gray-100);
+  margin-top: 0.35rem;
+}
+.cl-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.6rem 0.4rem;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.12s;
+}
+.cl-item:hover { background: var(--gray-50); }
+.cl-box {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--gray-200);
+  border-radius: 5px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  transition: border-color 0.15s, background 0.15s;
+  color: var(--white);
+}
+.cl-item.is-done .cl-box {
+  background: var(--teal);
+  border-color: var(--teal);
+}
+.cl-text {
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.6;
+  flex: 1;
+  transition: color 0.15s;
+}
+.cl-item.is-done .cl-text {
+  color: var(--gray-400);
+  text-decoration: line-through;
+  text-decoration-color: var(--gray-200);
+}
+.cl-hidden-cb { display: none; }
+.cl-complete {
+  margin-top: 1rem;
+  text-align: center;
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.9rem 1rem;
+  background: rgba(0, 201, 167, 0.07);
+  border: 1px solid rgba(0, 201, 167, 0.2);
+  border-radius: var(--radius);
+}
+
+/* ─── Drawer Tools Tab ─── */
+.dt-section-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-bottom: 0.65rem;
+}
+.dt-tool-card {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  cursor: pointer;
+  background: var(--white);
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+}
+.dt-tool-card:hover {
+  box-shadow: var(--shadow-sm);
+  border-color: var(--teal);
+  transform: translateY(-1px);
+}
+.dt-tool-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.dt-tool-body { flex: 1; min-width: 0; }
+.dt-tool-name { font-size: 0.88rem; font-weight: 700; color: var(--navy); }
+.dt-tool-desc { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.15rem; line-height: 1.5; }
+.dt-arrow { color: var(--teal); flex-shrink: 0; }
+.dt-related-list { display: flex; flex-direction: column; }
+.dt-related-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.dt-related-item:hover { background: var(--gray-50); }
+.dt-related-icon { font-size: 1rem; flex-shrink: 0; }
+.dt-related-title {
+  flex: 1;
+  font-size: 0.84rem;
+  color: var(--text);
+  line-height: 1.45;
+}
+.dt-related-item svg { color: var(--gray-400); flex-shrink: 0; }
 .sri-recent-text { font-size: 0.88rem; color: rgba(255,255,255,0.65); }

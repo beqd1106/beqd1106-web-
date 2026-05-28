@@ -860,7 +860,16 @@ function checkPw(){
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   </div>
-  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-tabs" id="drawerTabs">
+    <button class="drawer-tab is-active" data-tab="overview">概要</button>
+    <button class="drawer-tab" data-tab="checklist">チェックリスト</button>
+    <button class="drawer-tab" data-tab="tools">関連ツール</button>
+  </div>
+  <div class="drawer-body" id="drawerBody">
+    <div class="drawer-panel is-active" id="dpOverview"></div>
+    <div class="drawer-panel" id="dpChecklist"></div>
+    <div class="drawer-panel" id="dpTools"></div>
+  </div>
 </aside>
 
 <script src="js/revision2026.js"></script>

@@ -216,6 +216,10 @@ document.addEventListener('keydown', (e) => {
 });
 document.getElementById('cardDrawerOverlay')?.addEventListener('click', closeCardDrawer);
 document.getElementById('drawerCloseBtn')?.addEventListener('click', closeCardDrawer);
+document.getElementById('drawerTabs')?.addEventListener('click', e => {
+  const tab = e.target.closest('.drawer-tab');
+  if (tab?.dataset.tab) switchDrawerTab(tab.dataset.tab);
+});
 
 // ─── ツールカードアイコンタイル色 ───
 const toolColors = [
@@ -259,6 +263,19 @@ document.querySelectorAll('.tool-card .tool-card-icon').forEach((el, i) => {
 
 console.log('🦷 歯科経営コンパス — Loaded successfully');
 
+// ─── ドロワー ツールマップ ───
+const DRAWER_TOOL_MAP = {
+  'cat-01': { id: 'tool1',  label: '開業資金シミュレーター',   desc: '開業に必要な資金を自動計算・シミュレート' },
+  'cat-02': { id: 'tool2',  label: '月商・利益シミュレーター', desc: '月次収支の目標設定と収支試算' },
+  'cat-03': { id: 'tool3',  label: '開業スケジュール自動生成', desc: '段階別タスクリストを自動生成' },
+  'cat-04': { id: 'tool4',  label: '行政届出チェックリスト',   desc: '必要書類・窓口をまとめて確認' },
+  'cat-05': { id: 'tool5',  label: '施設基準・加算チェック',   desc: '算定可能な加算を自動診断' },
+  'cat-07': { id: 'tool10', label: '収益改善セルフチェック',   desc: '50項目で経営課題を可視化' },
+  'cat-08': { id: 'tool7',  label: '医療広告チェッカー',       desc: '広告文の適法性を即時確認' },
+  'cat-10': { id: 'tool9',  label: '求人票ジェネレーター',     desc: '採用力の高い求人票を自動生成' },
+  'cat-15': { id: 'tool6',  label: 'KPIダッシュボード',        desc: '経営指標をリアルタイム管理' },
+};
+
 // ─── カード詳細ドロワー ───
 function openCardDrawer(card) {
   const key      = card.dataset.cardKey;
@@ -266,24 +283,37 @@ function openCardDrawer(card) {
   const catTitle = card.dataset.catTitle;
   const catColor = card.dataset.catColor;
 
-  const drawer   = document.getElementById('cardDrawer');
-  const overlay  = document.getElementById('cardDrawerOverlay');
-  const titleEl  = document.getElementById('drawerTitle');
-  const catEl    = document.getElementById('drawerCatLabel');
-  const body     = document.getElementById('drawerBody');
-  const header   = document.getElementById('drawerHeader');
+  // catId・cardIdx を key から復元
+  const parts   = key.split('-');
+  const cardIdx = parseInt(parts[parts.length - 1]);
+  const catId   = parts.slice(0, -1).join('-');
 
-  titleEl.textContent = title || '';
-  catEl.textContent   = catTitle || '';
-  catEl.style.color   = catColor || 'var(--teal)';
+  const drawer  = document.getElementById('cardDrawer');
+  const overlay = document.getElementById('cardDrawerOverlay');
+  const header  = document.getElementById('drawerHeader');
+
+  document.getElementById('drawerTitle').textContent    = title || '';
+  document.getElementById('drawerCatLabel').textContent = catTitle || '';
+  document.getElementById('drawerCatLabel').style.color = catColor || 'var(--teal)';
   header.style.borderTopColor = catColor || 'var(--teal)';
 
   const data = (typeof CARD_DETAILS !== 'undefined') ? CARD_DETAILS[key] : null;
-  body.innerHTML = data
+
+  // タブ 1: 概要
+  document.getElementById('dpOverview').innerHTML = data
     ? buildDetailHtml(data)
     : '<p class="drawer-empty">詳細情報は近日公開予定です。</p>';
 
-  body.scrollTop = 0;
+  // タブ 2: チェックリスト
+  document.getElementById('dpChecklist').innerHTML = buildChecklistHtml(data, key);
+  initChecklist(key);
+
+  // タブ 3: 関連ツール
+  document.getElementById('dpTools').innerHTML = buildDrawerToolsHtml(catId, catColor, cardIdx);
+  initDrawerTools();
+
+  switchDrawerTab('overview');
+  document.getElementById('drawerBody').scrollTop = 0;
   drawer.classList.add('is-open');
   overlay.classList.add('is-open');
   document.body.style.overflow = 'hidden';
@@ -293,6 +323,173 @@ function closeCardDrawer() {
   document.getElementById('cardDrawer')?.classList.remove('is-open');
   document.getElementById('cardDrawerOverlay')?.classList.remove('is-open');
   document.body.style.overflow = '';
+}
+
+function switchDrawerTab(tab) {
+  document.querySelectorAll('.drawer-tab').forEach(t =>
+    t.classList.toggle('is-active', t.dataset.tab === tab)
+  );
+  const panelId = 'dp' + tab.charAt(0).toUpperCase() + tab.slice(1);
+  document.querySelectorAll('.drawer-panel').forEach(p =>
+    p.classList.toggle('is-active', p.id === panelId)
+  );
+  document.getElementById('drawerBody').scrollTop = 0;
+}
+
+// ─── チェックリスト生成 ───
+function buildChecklistHtml(data, key) {
+  if (!data?.sections) return '<p class="drawer-empty">このカードにはチェックリストがありません。</p>';
+
+  const items = [];
+  data.sections.forEach(sec => {
+    if (sec.type === 'list') {
+      if (sec.heading) items.push({ type: 'h', text: sec.heading });
+      sec.items.forEach(it => {
+        items.push({ type: 'i', text: typeof it === 'string' ? it : `${it.label}：${it.text}` });
+      });
+    }
+    if (sec.type === 'steps') {
+      if (sec.heading) items.push({ type: 'h', text: sec.heading });
+      sec.items.forEach(it => items.push({ type: 'i', text: it.title + (it.desc ? `：${it.desc}` : '') }));
+    }
+  });
+
+  const checkItems = items.filter(i => i.type === 'i');
+  if (!checkItems.length) return '<p class="drawer-empty">このカードにはチェックリストがありません。</p>';
+
+  let saved = [];
+  try { saved = JSON.parse(localStorage.getItem(`dc_cl_${key}`)) || []; } catch {}
+  const done  = saved.filter(Boolean).length;
+  const total = checkItems.length;
+  const pct   = total ? Math.round(done / total * 100) : 0;
+
+  const CHECK_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>';
+
+  let idx = 0;
+  let html = `
+    <div class="cl-progress">
+      <div class="cl-progress-top">
+        <span class="cl-label">チェック進捗</span>
+        <span class="cl-count" id="clCount">${done} / ${total} 完了</span>
+      </div>
+      <div class="cl-bar-bg"><div class="cl-bar" id="clBar" style="width:${pct}%"></div></div>
+    </div>
+    <div class="cl-list" data-key="${key}">`;
+
+  items.forEach(item => {
+    if (item.type === 'h') {
+      html += `<div class="cl-group-label">${item.text}</div>`;
+    } else {
+      const checked = !!saved[idx];
+      html += `<label class="cl-item${checked ? ' is-done' : ''}" data-idx="${idx}">
+        <span class="cl-box">${checked ? CHECK_SVG : ''}</span>
+        <span class="cl-text">${item.text}</span>
+        <input type="checkbox"${checked ? ' checked' : ''} class="cl-hidden-cb">
+      </label>`;
+      idx++;
+    }
+  });
+
+  html += '</div>';
+  if (pct === 100) html += '<div class="cl-complete">全項目チェック完了！</div>';
+  return html;
+}
+
+function initChecklist(key) {
+  const list = document.querySelector(`.cl-list[data-key="${key}"]`);
+  if (!list) return;
+
+  const CHECK_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>';
+  let saved = [];
+  try { saved = JSON.parse(localStorage.getItem(`dc_cl_${key}`)) || []; } catch {}
+
+  list.querySelectorAll('.cl-item').forEach(label => {
+    label.addEventListener('click', e => {
+      e.preventDefault();
+      const idx    = parseInt(label.dataset.idx);
+      const newVal = !saved[idx];
+      saved[idx]   = newVal;
+      try { localStorage.setItem(`dc_cl_${key}`, JSON.stringify(saved)); } catch {}
+
+      label.classList.toggle('is-done', newVal);
+      label.querySelector('.cl-box').innerHTML = newVal ? CHECK_SVG : '';
+
+      const total = list.querySelectorAll('.cl-item').length;
+      const done  = saved.filter(Boolean).length;
+      const pct   = Math.round(done / total * 100);
+      const countEl = document.getElementById('clCount');
+      const barEl   = document.getElementById('clBar');
+      if (countEl) countEl.textContent = `${done} / ${total} 完了`;
+      if (barEl)   barEl.style.width = `${pct}%`;
+
+      if (pct === 100 && !document.querySelector('.cl-complete')) {
+        list.insertAdjacentHTML('afterend', '<div class="cl-complete">全項目チェック完了！</div>');
+      }
+    });
+  });
+}
+
+// ─── 関連ツールタブ生成 ───
+function buildDrawerToolsHtml(catId, catColor, currentIdx) {
+  const tool = DRAWER_TOOL_MAP[catId];
+  let html = '';
+
+  if (tool) {
+    html += `
+      <div class="dt-section-label">このカテゴリのツール</div>
+      <div class="dt-tool-card" data-tool-id="${tool.id}">
+        <div class="dt-tool-icon" style="background:${catColor}18;color:${catColor}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <div class="dt-tool-body">
+          <div class="dt-tool-name">${tool.label}</div>
+          <div class="dt-tool-desc">${tool.desc}</div>
+        </div>
+        <svg class="dt-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>`;
+  } else {
+    html += '<p class="drawer-empty" style="margin-bottom:1.5rem;">このカテゴリに関連ツールはまだありません。</p>';
+  }
+
+  if (typeof CATEGORIES !== 'undefined') {
+    const cat     = CATEGORIES.find(c => c.id === catId);
+    const related = cat ? cat.cards.map((c, i) => ({ ...c, idx: i })).filter(c => c.idx !== currentIdx).slice(0, 4) : [];
+    if (related.length) {
+      html += `<div class="dt-section-label" style="margin-top:1.5rem;">同カテゴリの他の情報</div><div class="dt-related-list">`;
+      related.forEach(c => {
+        html += `<div class="dt-related-item" data-rel-key="${catId}-${c.idx}">
+          <span class="dt-related-icon">${c.icon}</span>
+          <span class="dt-related-title">${c.title}</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>`;
+      });
+      html += '</div>';
+    }
+  }
+
+  return html;
+}
+
+function initDrawerTools() {
+  document.querySelector('.dt-tool-card[data-tool-id]')?.addEventListener('click', function () {
+    const tid = this.dataset.toolId;
+    closeCardDrawer();
+    setTimeout(() => openModal(tid), 250);
+  });
+
+  document.querySelectorAll('.dt-related-item[data-rel-key]').forEach(el => {
+    el.addEventListener('click', () => {
+      const relKey = el.dataset.relKey;
+      closeCardDrawer();
+      setTimeout(() => {
+        const target = document.querySelector(`[data-card-key="${relKey}"]`);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(() => openCardDrawer(target), 650);
+        }
+      }, 250);
+    });
+  });
 }
 
 // ─── 旧: インライン展開（後方互換） ───
