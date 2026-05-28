@@ -338,21 +338,36 @@ function switchDrawerTab(tab) {
 
 // ─── チェックリスト生成 ───
 function buildChecklistHtml(data, key) {
-  if (!data?.sections) return '<p class="drawer-empty">このカードにはチェックリストがありません。</p>';
+  const parts    = key.split('-');
+  const cardIdx  = parseInt(parts[parts.length - 1]);
+  const catId    = parts.slice(0, -1).join('-');
 
   const items = [];
-  data.sections.forEach(sec => {
-    if (sec.type === 'list') {
-      if (sec.heading) items.push({ type: 'h', text: sec.heading });
-      sec.items.forEach(it => {
-        items.push({ type: 'i', text: typeof it === 'string' ? it : `${it.label}：${it.text}` });
-      });
+
+  // CARD_DETAILS の list/steps セクションを優先使用
+  if (data?.sections) {
+    data.sections.forEach(sec => {
+      if (sec.type === 'list') {
+        if (sec.heading) items.push({ type: 'h', text: sec.heading });
+        sec.items.forEach(it => {
+          items.push({ type: 'i', text: typeof it === 'string' ? it : `${it.label}：${it.text}` });
+        });
+      }
+      if (sec.type === 'steps') {
+        if (sec.heading) items.push({ type: 'h', text: sec.heading });
+        sec.items.forEach(it => items.push({ type: 'i', text: it.title + (it.desc ? `：${it.desc}` : '') }));
+      }
+    });
+  }
+
+  // フォールバック: カードの summary items をチェックリスト化
+  if (!items.some(i => i.type === 'i') && typeof CATEGORIES !== 'undefined') {
+    const cat  = CATEGORIES.find(c => c.id === catId);
+    const card = cat?.cards[cardIdx];
+    if (card?.items?.length) {
+      card.items.forEach(it => items.push({ type: 'i', text: it }));
     }
-    if (sec.type === 'steps') {
-      if (sec.heading) items.push({ type: 'h', text: sec.heading });
-      sec.items.forEach(it => items.push({ type: 'i', text: it.title + (it.desc ? `：${it.desc}` : '') }));
-    }
-  });
+  }
 
   const checkItems = items.filter(i => i.type === 'i');
   if (!checkItems.length) return '<p class="drawer-empty">このカードにはチェックリストがありません。</p>';
