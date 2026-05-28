@@ -212,8 +212,10 @@ ScrollTrigger.batch('.tool-card.fade-up', {
 
 // ─── キーボードショートカット ───
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Escape') { closeModal(); closeCardDrawer(); }
 });
+document.getElementById('cardDrawerOverlay')?.addEventListener('click', closeCardDrawer);
+document.getElementById('drawerCloseBtn')?.addEventListener('click', closeCardDrawer);
 
 // ─── ツールカードアイコンタイル色 ───
 const toolColors = [
@@ -257,12 +259,43 @@ document.querySelectorAll('.tool-card .tool-card-icon').forEach((el, i) => {
 
 console.log('🦷 歯科経営コンパス — Loaded successfully');
 
-// ─── カード詳細 展開/折りたたみ ───
+// ─── カード詳細ドロワー ───
+function openCardDrawer(card) {
+  const key      = card.dataset.cardKey;
+  const title    = card.dataset.cardTitle;
+  const catTitle = card.dataset.catTitle;
+  const catColor = card.dataset.catColor;
+
+  const drawer   = document.getElementById('cardDrawer');
+  const overlay  = document.getElementById('cardDrawerOverlay');
+  const titleEl  = document.getElementById('drawerTitle');
+  const catEl    = document.getElementById('drawerCatLabel');
+  const body     = document.getElementById('drawerBody');
+  const header   = document.getElementById('drawerHeader');
+
+  titleEl.textContent = title || '';
+  catEl.textContent   = catTitle || '';
+  catEl.style.color   = catColor || 'var(--teal)';
+  header.style.borderTopColor = catColor || 'var(--teal)';
+
+  const data = (typeof CARD_DETAILS !== 'undefined') ? CARD_DETAILS[key] : null;
+  body.innerHTML = data
+    ? buildDetailHtml(data)
+    : '<p class="drawer-empty">詳細情報は近日公開予定です。</p>';
+
+  body.scrollTop = 0;
+  drawer.classList.add('is-open');
+  overlay.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCardDrawer() {
+  document.getElementById('cardDrawer')?.classList.remove('is-open');
+  document.getElementById('cardDrawerOverlay')?.classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+
+// ─── 旧: インライン展開（後方互換） ───
 function toggleCardDetail(card) {
-  const isOpen = card.classList.toggle('is-open');
-  // 他の開いているカードは閉じない（複数同時展開OK）
-  if (isOpen) {
-    // 展開後にScrollTriggerをリフレッシュ
-    ScrollTrigger.refresh();
-  }
+  card.classList.toggle('is-open');
 }

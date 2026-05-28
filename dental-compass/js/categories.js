@@ -505,22 +505,41 @@ function renderCategories() {
         <span>${cat.alert.text}</span>
       </div>` : '';
 
-    const toolBadge = cat.id === 'cat-01' ? '<span class="tag green">→ 開業資金シミュレーター</span>' :
-                      cat.id === 'cat-02' ? '<span class="tag green">→ 月商・利益シミュレーター</span>' :
-                      cat.id === 'cat-03' ? '<span class="tag green">→ 開業スケジュール自動生成</span>' :
-                      cat.id === 'cat-04' ? '<span class="tag green">→ 行政届出チェックリスト</span>' :
-                      cat.id === 'cat-05' ? '<span class="tag green">→ 施設基準・加算チェックツール</span>' :
-                      cat.id === 'cat-06' ? '<span class="tag gold">令和8年度改定対応</span>' :
-                      cat.id === 'cat-07' ? '<span class="tag green">→ 収益改善セルフチェック</span>' :
-                      cat.id === 'cat-08' ? '<span class="tag green">→ 医療広告チェッカー</span>' :
-                      cat.id === 'cat-09' ? '<span class="tag green">→ 求人票ジェネレーター</span>' :
-                      cat.id === 'cat-14' ? '<span class="tag navy">セキュリティ対応</span>' : '';
+    const TOOL_MAP = {
+      'cat-01': { id: 'tool1', label: '🔧 開業資金シミュレーターを試す' },
+      'cat-02': { id: 'tool2', label: '🔧 月商・利益シミュレーターを試す' },
+      'cat-03': { id: 'tool3', label: '🔧 開業スケジュール自動生成を試す' },
+      'cat-04': { id: 'tool4', label: '🔧 行政届出チェックリストを試す' },
+      'cat-05': { id: 'tool5', label: '🔧 施設基準・加算チェックツールを試す' },
+      'cat-07': { id: 'tool10', label: '🔧 収益改善セルフチェックを試す' },
+      'cat-08': { id: 'tool7', label: '🔧 医療広告ガイドラインチェッカーを試す' },
+      'cat-10': { id: 'tool9', label: '🔧 求人票ジェネレーターを試す' },
+      'cat-15': { id: 'tool6', label: '🔧 KPIダッシュボードを試す' },
+    };
+    const toolEntry = TOOL_MAP[cat.id];
+    const toolBadge = toolEntry
+      ? `<button class="tool-link-badge" onclick="event.stopPropagation();openModal('${toolEntry.id}')">${toolEntry.label} →</button>`
+      : cat.id === 'cat-06' ? '<span class="tag gold">令和8年度改定対応</span>'
+      : cat.id === 'cat-14' ? '<span class="tag navy">セキュリティ対応</span>' : '';
 
-    const cardsHtml = cat.cards.map(card => `
-      <div class="info-card fade-up">
+    const cardsHtml = cat.cards.map((card, cardIdx) => {
+      const key = `${cat.id}-${cardIdx}`;
+      const hasDetail = typeof CARD_DETAILS !== 'undefined' && CARD_DETAILS[key];
+      const hintHtml = hasDetail
+        ? `<span class="card-expand-hint">詳しく見る <svg class="expand-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>`
+        : '';
+      return `
+      <div class="info-card fade-up${hasDetail ? ' card-clickable' : ''}"
+           ${hasDetail ? `onclick="openCardDrawer(this)"` : ''}
+           data-card-key="${key}"
+           data-card-title="${card.title}"
+           data-cat-title="${cat.title}"
+           data-cat-color="${cat.color}">
         <h4>${card.icon} ${card.title}</h4>
         <ul>${card.items.map(item => `<li>${item}</li>`).join('')}</ul>
-      </div>`).join('');
+        ${hintHtml}
+      </div>`;
+    }).join('');
 
     const revision2026Container = cat.id === 'cat-06' ? '<div id="revision2026-container" style="margin-top:2rem;"></div>' : '';
 
