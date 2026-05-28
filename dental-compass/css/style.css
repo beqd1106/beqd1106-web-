@@ -1386,13 +1386,38 @@ h1, h2, h3, h4 {
   line-height: 1.65;
   margin-bottom: 0.45rem;
 }
+.rec-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.45rem;
+}
 .rec-item-link {
   font-size: 0.77rem;
-  color: #00c9a7;
+  color: rgba(255,255,255,0.45);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 500;
+  transition: color 0.15s;
 }
-.rec-item-link:hover { text-decoration: underline; }
+.rec-item-link:hover { color: rgba(255,255,255,0.75); text-decoration: underline; }
+.rec-tool-btn {
+  font-size: 0.77rem;
+  font-weight: 700;
+  color: #00c9a7;
+  background: rgba(0,201,167,0.1);
+  border: 1px solid rgba(0,201,167,0.35);
+  border-radius: 6px;
+  padding: 0.25rem 0.75rem;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s, transform 0.15s;
+  letter-spacing: 0.01em;
+}
+.rec-tool-btn:hover {
+  background: rgba(0,201,167,0.22);
+  border-color: rgba(0,201,167,0.6);
+  transform: translateY(-1px);
+}
 .rec-perfect {
   font-size: 0.9rem;
   color: #00c9a7;

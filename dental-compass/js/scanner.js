@@ -9,12 +9,14 @@
     {
       key: 'labor',    label: '人件費管理',     shortLabel: '人件費',
       unit: '%',      catId: 'cat-10', ideal: '40〜45%',  benchmark: 42,
+      toolId: 'tool9', toolLabel: '求人票ジェネレーター',
       msgLow:  '人件費率が高すぎます。採用・評価制度を見直し、歯科衛生士の生産性向上が急務です。',
       msgHigh: '人件費率が低い場合、採用不足・スタッフ不足のリスクがあります。人材への投資を検討してください。',
     },
     {
       key: 'jihi',     label: '自費活用',       shortLabel: '自費',
       unit: '%',      catId: 'cat-07', ideal: '30%以上',  benchmark: 28,
+      toolId: 'tool10', toolLabel: '収益改善セルフチェック',
       msgLow: '自費比率の向上が収益改善の最重要課題です。カウンセリング強化と高単価メニュー整備を推奨します。',
     },
     {
@@ -25,12 +27,14 @@
     {
       key: 'material', label: '材料費管理',     shortLabel: '材料費',
       unit: '%',      catId: 'cat-15', ideal: '10〜15%',  benchmark: 13,
+      toolId: 'tool6', toolLabel: 'KPIダッシュボード',
       msgLow:  '材料費が高すぎます。在庫管理の適正化とベンダー交渉の見直しを推奨します。',
       msgHigh: '材料費が非常に低い場合、品質管理も合わせて確認してください。',
     },
     {
       key: 'profit',   label: '収益性',         shortLabel: '利益率',
       unit: '%',      catId: 'cat-15', ideal: '15〜25%',  benchmark: 17,
+      toolId: 'tool6', toolLabel: 'KPIダッシュボード',
       msgLow: '利益率の改善が急務です。自費強化・コスト最適化・KPI管理を同時に進めましょう。',
     },
     {
@@ -545,7 +549,10 @@
             const s   = Math.round(scores[a.key]);
             const sev = s < 40 ? '緊急' : s < 55 ? '要対応' : '改善推奨';
             const sc  = s < 40 ? '#e74c3c' : s < 55 ? '#e67e22' : '#c9a84c';
-            const msg = getMsg(a, inputs[a.key]) || '継続的な改善が必要です。';
+            const msg     = getMsg(a, inputs[a.key]) || '継続的な改善が必要です。';
+            const toolBtn = a.toolId
+              ? `<button class="rec-tool-btn" onclick="openModal('${a.toolId}')">→ ${a.toolLabel}</button>`
+              : '';
             return `
               <div class="rec-item" style="animation-delay:${0.8 + i * 0.12}s">
                 <div class="rec-num">${i + 1}</div>
@@ -555,7 +562,10 @@
                     <span class="rec-severity" style="color:${sc};border-color:${sc}55">${sev}</span>
                   </div>
                   <div class="rec-item-text">${msg}</div>
-                  <a href="#${a.catId}" class="rec-item-link" onclick="if(window.lenis){event.preventDefault();lenis.scrollTo(document.getElementById('${a.catId}'),{offset:-130,duration:1.2});}">詳しく見る →</a>
+                  <div class="rec-item-actions">
+                    <a href="#${a.catId}" class="rec-item-link" onclick="if(window.lenis){event.preventDefault();lenis.scrollTo(document.getElementById('${a.catId}'),{offset:-130,duration:1.2});}">詳しく見る →</a>
+                    ${toolBtn}
+                  </div>
                 </div>
               </div>`;
           }).join('')
