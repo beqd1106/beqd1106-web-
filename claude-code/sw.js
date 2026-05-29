@@ -1,4 +1,4 @@
-const CACHE = 'claude-code-guide-v1';
+const CACHE = 'claude-code-guide-v2';
 const ASSETS = [
   './',
   './index.html',

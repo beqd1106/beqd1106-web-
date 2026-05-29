@@ -427,6 +427,126 @@ html,body{
 .sw{width:100%;max-width:1080px}
 .sw-n{width:100%;max-width:960px}
 
+/* ========================================
+   MOBILE PORTRAIT RESPONSIVE
+======================================== */
+@media screen and (max-width:680px){
+
+  /* スライド本体: スクロール可能に */
+  .slide{
+    padding:44px 16px 88px;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    justify-content:flex-start;
+    align-items:stretch;
+    scroll-padding-bottom:88px;
+  }
+  .sw,.sw-n{max-width:100%}
+
+  /* ── グリッド: 全て1カラムに ── */
+  .g2,.g-2c,.g-lr{grid-template-columns:1fr!important;gap:12px!important}
+  .g3{grid-template-columns:1fr 1fr!important;gap:10px!important}
+  .g4{grid-template-columns:1fr 1fr!important;gap:8px!important}
+  .toc-g{grid-template-columns:1fr!important;gap:6px!important}
+
+  /* ── スライドヘッダー ── */
+  .sh{margin-bottom:14px}
+  .h1,.h2{font-size:1.3rem!important;margin-bottom:5px}
+  .h3{font-size:.92rem!important}
+  .lead{font-size:.78rem!important;line-height:1.7}
+
+  /* ── フィーチャーカード ── */
+  .fc{padding:12px}
+  .fc-icon{width:30px;height:30px;font-size:13px;margin-bottom:8px}
+  .fc-title{font-size:12px;margin-bottom:4px}
+  .fc-desc{font-size:10.5px}
+
+  /* ── ガラスカード ── */
+  .gc{padding:14px}
+
+  /* ── モデルカード ── */
+  .mc{padding:14px}
+  .mc-name{font-size:13px}
+  .mc-row{font-size:11px}
+
+  /* ── ターミナル ── */
+  .term{font-size:10px;max-height:260px;overflow-y:auto}
+  .term-body{padding:10px 12px;line-height:1.7}
+  .term-title{font-size:10px}
+
+  /* ── コードブロック ── */
+  .cblock{font-size:10px;padding:10px 12px;line-height:1.7}
+
+  /* ── コマンドグリッド: ラベルと説明を縦積み ── */
+  .cmd-row{grid-template-columns:1fr!important;gap:2px 0!important}
+  .cmd-k{font-size:10.5px;margin-bottom:0;display:inline-block}
+  .cmd-d{font-size:11px;padding-top:1px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.05)}
+
+  /* ── TOC ── */
+  .toc-i{padding:9px 12px}
+  .toc-n{font-size:10px}
+  .toc-t{font-size:11.5px}
+
+  /* ── MCP カード ── */
+  .mcp-c{padding:10px 8px}
+  .mcp-icon{font-size:16px;margin-bottom:5px}
+  .mcp-name{font-size:11px;margin-bottom:3px}
+  .mcp-desc{font-size:9.5px}
+
+  /* ── バレット ── */
+  .blist li{font-size:11.5px;gap:8px}
+
+  /* ── ステップ ── */
+  .step-n{width:26px;height:26px;font-size:12px}
+  .step-t{font-size:12.5px}
+  .step-d{font-size:11px}
+
+  /* ── チップ・ハイライト ── */
+  .tip-t{font-size:11px}
+  .hl-d{font-size:11px}
+
+  /* ── バッジ ── */
+  .badge{font-size:9.5px;padding:2px 7px}
+
+  /* ── KBD ── */
+  .kbd{font-size:10px;padding:2px 7px}
+
+  /* ── ナビ ── */
+  .nav-btn{padding:6px 18px;font-size:12px}
+  .dots{display:none}
+  .kbd-hint{display:none}
+  .counter{font-size:10px;bottom:22px;right:16px}
+
+  /* ── タイトルスライド ── */
+  .s1-wrap{padding-top:8px}
+  .s1-badge{margin-bottom:18px;font-size:10px}
+  .s1-main{font-size:clamp(3rem,16vw,4.5rem)!important;margin-bottom:10px}
+  .s1-sub{font-size:.95rem!important;margin-bottom:16px}
+  .s1-desc{font-size:.76rem!important;line-height:1.85;margin-bottom:20px}
+  .s1-tags{gap:6px}
+  .title-tag,.badge{font-size:9.5px}
+
+  /* ── カーソル非表示（タッチデバイス） ── */
+  .cur,.cur-f{display:none}
+
+  /* ── HL ボックス ── */
+  .hl{padding:12px 14px}
+  .tip{padding:10px 14px}
+
+  /* ── スクロールバー非表示（見た目） ── */
+  .slide::-webkit-scrollbar,.term::-webkit-scrollbar{width:3px}
+  .slide::-webkit-scrollbar-track{background:transparent}
+  .slide::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+}
+
+/* 極小スクリーン (iPhone SE等 375px以下) */
+@media screen and (max-width:400px){
+  .slide{padding:40px 12px 84px}
+  .h2{font-size:1.15rem!important}
+  .g3,.g4{grid-template-columns:1fr!important;gap:8px!important}
+  .fc-desc{font-size:10px}
+}
+
 </style>
 </head>
 <body>
