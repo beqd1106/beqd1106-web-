@@ -455,12 +455,14 @@ function openModal(toolId) {
   document.getElementById('modalBody').innerHTML = tool.html;
   document.getElementById('modalOverlay').classList.add('is-open');
   document.body.style.overflow = 'hidden';
+  if (typeof lenis !== 'undefined') lenis.stop();
   if (toolId === 't6Chart') t6Chart = null;
 }
 
 function closeModal() {
   document.getElementById('modalOverlay').classList.remove('is-open');
   document.body.style.overflow = '';
+  if (typeof lenis !== 'undefined') lenis.start();
   if (t6Chart) { t6Chart.destroy(); t6Chart = null; }
 }
 

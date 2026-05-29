@@ -415,12 +415,14 @@ function openCardDrawer(card) {
   drawer.classList.add('is-open');
   overlay.classList.add('is-open');
   document.body.style.overflow = 'hidden';
+  lenis.stop();
 }
 
 function closeCardDrawer() {
   document.getElementById('cardDrawer')?.classList.remove('is-open');
   document.getElementById('cardDrawerOverlay')?.classList.remove('is-open');
   document.body.style.overflow = '';
+  lenis.start();
 }
 
 function switchDrawerTab(tab) {
