@@ -54,7 +54,7 @@
 })();
 function checkPw(){
   var v=document.getElementById('pwInput').value;
-  if(v==='keitaasinagai'){
+  if(v==='19921106'){
     sessionStorage.setItem('dc_auth','ok');
     var g=document.getElementById('pwGate');
     g.style.transition='opacity 0.5s';g.style.opacity='0';
@@ -119,6 +119,7 @@ function checkPw(){
         <li><a href="#scanner">スキャナー</a></li>
         <li><a href="#tools">ツール</a></li>
         <li><a href="#downloads">ダウンロード</a></li>
+        <li><a href="dso.html" target="_blank">DSO解説</a></li>
         <li><a href="#contact" class="nav-cta">無料相談</a></li>
       </ul>
     </nav>
@@ -156,6 +157,7 @@ function checkPw(){
     <li><a href="#scanner" onclick="closeMobileNav()">経営スキャナー（レーダー診断）</a></li>
     <li><a href="#tools" onclick="closeMobileNav()">🔧 無料ツール10選</a></li>
     <li><a href="#downloads" onclick="closeMobileNav()">📥 書類テンプレート</a></li>
+    <li><a href="dso.html" target="_blank" onclick="closeMobileNav()">DSO解説（Dental Service Organization）</a></li>
     <li><a href="#contact" onclick="closeMobileNav()" class="nav-cta" style="text-align:center;margin-top:1rem;">無料相談はこちら</a></li>
   </ul>
 </nav>
@@ -353,6 +355,21 @@ function checkPw(){
         <p>廃止届・患者対応・カルテ保管・リース解約・スタッフ退職</p>
       </a>
     </div>
+
+    <!-- DSO解説バナー -->
+    <a href="dso.html" target="_blank" class="dso-banner fade-up" style="text-decoration:none;">
+      <div class="dso-banner-label">特集記事</div>
+      <div class="dso-banner-body">
+        <div class="dso-banner-title">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          DSO（Dental Service Organization）とは何か
+        </div>
+        <p class="dso-banner-desc">米国で急速に普及する歯科経営支援モデルの全貌。定義・法規制・日本のMSO活用まで徹底解説。ファクトチェック済み・一次ソースリンク付き。</p>
+      </div>
+      <div class="dso-banner-arrow">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
   </div>
 </section>
 
@@ -806,6 +823,7 @@ function checkPw(){
           <li><a href="#cat-16">医療法人化・分院展開</a></li>
           <li><a href="#cat-17">事業承継・M&A</a></li>
           <li><a href="#cat-18">閉院・廃止手続き</a></li>
+          <li><a href="dso.html" target="_blank">DSO解説（特集）</a></li>
         </ul>
       </div>
     </div>
