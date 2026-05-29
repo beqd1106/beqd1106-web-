@@ -1,0 +1,1522 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Claude Code">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#090B14">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+<title>Claude Code 完全ガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0);}
+
+:root{
+  --bg:#090B14;
+  --bg2:#0D1020;
+  --glass:rgba(255,255,255,0.05);
+  --glass-b:rgba(255,255,255,0.09);
+  --acc:#D97757;
+  --acc2:#9B6EF3;
+  --acc3:#22D3EE;
+  --acc4:#34D399;
+  --text:#E8EDF5;
+  --muted:#8892A4;
+  --term:#0D1117;
+  --code:#111827;
+  --ease-s:cubic-bezier(0.21,0.51,0.51,1);
+  --ease-sp:cubic-bezier(0.34,1.56,0.64,1);
+}
+
+html,body{
+  width:100%;height:100%;
+  overflow:hidden;
+  font-family:'Noto Sans JP',sans-serif;
+  font-feature-settings:'palt';
+  -webkit-font-smoothing:antialiased;
+  background:var(--bg);
+  color:var(--text);
+  letter-spacing:0.04em;
+}
+
+/* ── Aurora bg ── */
+.aurora{
+  position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 25%,rgba(217,119,87,.18) 0%,transparent 55%),
+    radial-gradient(ellipse 70% 55% at 85% 70%,rgba(155,110,243,.16) 0%,transparent 55%),
+    radial-gradient(ellipse 60% 45% at 55% 55%,rgba(34,211,238,.10) 0%,transparent 55%),
+    var(--bg);
+  animation:auroraMove 18s ease-in-out infinite;
+}
+@keyframes auroraMove{
+  0%,100%{background-position:0% 0%,100% 100%,50% 50%}
+  33%{background-position:30% 20%,70% 80%,60% 40%}
+  66%{background-position:70% 80%,20% 30%,40% 70%}
+}
+.noise{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+/* ── Custom cursor ── */
+.cur{
+  position:fixed;width:10px;height:10px;border-radius:50%;
+  background:var(--acc);pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);mix-blend-mode:normal;
+}
+.cur-f{
+  position:fixed;width:36px;height:36px;border-radius:50%;
+  border:1px solid rgba(217,119,87,.4);pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+}
+
+/* ── Progress bar ── */
+.prog{
+  position:fixed;top:0;left:0;height:2px;z-index:200;
+  background:linear-gradient(90deg,var(--acc),var(--acc2),var(--acc3));
+  transition:width .4s var(--ease-s);
+}
+
+/* ── Slide counter ── */
+.counter{
+  position:fixed;bottom:28px;right:36px;z-index:200;
+  font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);
+  display:flex;align-items:center;gap:4px;
+}
+.counter .cur-n{color:var(--acc);font-size:13px;font-weight:600}
+
+/* ── Nav ── */
+.nav{
+  position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+  z-index:200;display:flex;align-items:center;gap:12px;
+}
+.nav-btn{
+  background:var(--glass);
+  backdrop-filter:blur(12px);
+  border:1px solid var(--glass-b);
+  color:var(--text);
+  padding:8px 22px;border-radius:100px;
+  cursor:pointer;font-family:'Noto Sans JP',sans-serif;
+  font-size:13px;letter-spacing:0.06em;
+  transition:all .3s var(--ease-s);
+  position:relative;overflow:hidden;
+}
+.nav-btn::after{
+  content:'';position:absolute;inset:0;
+  background:rgba(255,255,255,.08);
+  transform:translateX(-100%);
+  transition:transform .3s var(--ease-s);
+}
+.nav-btn:hover::after{transform:translateX(0)}
+.nav-btn:hover{border-color:rgba(217,119,87,.4);transform:translateY(-2px)}
+.nav-btn:disabled{opacity:.3;cursor:not-allowed}
+
+.dots{display:flex;gap:6px;align-items:center}
+.dot{
+  width:5px;height:5px;border-radius:50%;
+  background:rgba(255,255,255,.2);
+  transition:all .3s var(--ease-s);cursor:pointer;
+}
+.dot.active{background:var(--acc);width:18px;border-radius:3px}
+
+/* kbd hint */
+.kbd-hint{
+  position:fixed;bottom:28px;left:36px;z-index:200;
+  font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.08em;
+}
+
+/* ── Slides ── */
+.pres{position:fixed;inset:0;z-index:10;overflow:hidden}
+
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:clamp(32px,5vh,64px) clamp(32px,6vw,96px) 80px;
+  opacity:0;pointer-events:none;
+  will-change:transform,opacity;
+}
+.slide.is-active{opacity:1;pointer-events:all}
+
+/* ── Common components ── */
+
+/* Tag */
+.tag{
+  display:inline-block;padding:3px 12px;
+  border-radius:100px;font-size:10px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:14px;
+}
+.tag-acc{background:rgba(217,119,87,.12);border:1px solid rgba(217,119,87,.3);color:var(--acc)}
+.tag-vio{background:rgba(155,110,243,.12);border:1px solid rgba(155,110,243,.3);color:var(--acc2)}
+.tag-cyn{background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.3);color:var(--acc3)}
+.tag-grn{background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.3);color:var(--acc4)}
+
+/* Heading */
+.h1{
+  font-family:'Noto Serif JP',serif;
+  font-size:clamp(2rem,4.5vw,3.8rem);
+  font-weight:700;line-height:1.25;
+  letter-spacing:.03em;margin-bottom:10px;
+}
+.h2{
+  font-family:'Noto Serif JP',serif;
+  font-size:clamp(1.6rem,3vw,2.6rem);
+  font-weight:700;line-height:1.3;
+  letter-spacing:.04em;margin-bottom:8px;
+}
+.h3{
+  font-family:'Noto Serif JP',serif;
+  font-size:clamp(1rem,1.6vw,1.4rem);
+  font-weight:600;letter-spacing:.05em;margin-bottom:8px;
+}
+.lead{
+  font-size:clamp(.85rem,1.2vw,1.05rem);
+  color:var(--muted);line-height:1.85;letter-spacing:.04em;
+}
+
+/* Gradient text */
+.grad{
+  background:linear-gradient(135deg,var(--acc) 0%,var(--acc2) 50%,var(--acc3) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+/* Glass card */
+.gc{
+  background:var(--glass);
+  backdrop-filter:blur(16px);
+  border:1px solid var(--glass-b);
+  border-radius:16px;padding:24px;
+  transition:background .3s var(--ease-s),border-color .3s var(--ease-s),transform .3s var(--ease-s),box-shadow .3s var(--ease-s);
+}
+.gc:hover{
+  background:rgba(255,255,255,.08);
+  border-color:rgba(217,119,87,.25);
+  transform:translateY(-3px);
+  box-shadow:0 16px 40px rgba(0,0,0,.3);
+}
+
+/* Feature card */
+.fc{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:20px;
+  transition:background .3s var(--ease-s),border-color .3s var(--ease-s),transform .3s var(--ease-s),box-shadow .3s var(--ease-s);
+}
+.fc:hover{
+  background:rgba(255,255,255,.07);
+  border-color:rgba(217,119,87,.25);
+  transform:translateY(-3px);
+  box-shadow:0 12px 32px rgba(0,0,0,.25);
+}
+.fc-icon{
+  width:38px;height:38px;border-radius:10px;
+  background:rgba(217,119,87,.12);border:1px solid rgba(217,119,87,.2);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:12px;font-size:16px;
+}
+.fc-title{font-size:14px;font-weight:700;margin-bottom:6px;letter-spacing:.04em}
+.fc-desc{font-size:11.5px;color:var(--muted);line-height:1.7;letter-spacing:.02em}
+
+/* Terminal */
+.term{
+  background:var(--term);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;overflow:hidden;
+  font-family:'Fira Code',monospace;font-size:12.5px;
+}
+.term-bar{
+  background:#1A1D2E;padding:10px 16px;
+  display:flex;align-items:center;gap:7px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.td{width:11px;height:11px;border-radius:50%}
+.td-r{background:#FF5F57}.td-y{background:#FFBD2E}.td-g{background:#28CA41}
+.term-title{font-size:11px;color:var(--muted);margin-left:8px;letter-spacing:.06em}
+.term-body{padding:16px 20px;line-height:1.9}
+.t-p{color:var(--acc4)}.t-c{color:var(--text)}.t-cm{color:#4B5563}
+.t-o{color:var(--muted)}.t-a{color:var(--acc)}.t-cy{color:var(--acc3)}
+.t-y{color:#FBBF24}.t-g{color:var(--acc4)}.t-v{color:var(--acc2)}
+.t-url{color:#60A5FA;text-decoration:underline}
+
+/* Grid layouts */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.g-2c{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+.g-lr{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center}
+
+/* Badge */
+.badge{
+  display:inline-block;padding:2px 9px;border-radius:5px;
+  font-family:'Fira Code',monospace;font-size:11px;font-weight:600;
+}
+.b-a{background:rgba(217,119,87,.15);border:1px solid rgba(217,119,87,.3);color:var(--acc)}
+.b-v{background:rgba(155,110,243,.15);border:1px solid rgba(155,110,243,.3);color:var(--acc2)}
+.b-c{background:rgba(34,211,238,.15);border:1px solid rgba(34,211,238,.3);color:var(--acc3)}
+.b-g{background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.3);color:var(--acc4)}
+
+/* Cmd grid */
+.cmd-row{
+  display:grid;grid-template-columns:auto 1fr;gap:8px 20px;
+  align-items:start;
+}
+.cmd-k{
+  font-family:'Fira Code',monospace;font-size:12px;color:var(--acc3);
+  white-space:nowrap;padding:3px 10px;
+  background:rgba(34,211,238,.07);border:1px solid rgba(34,211,238,.18);
+  border-radius:5px;
+}
+.cmd-d{font-size:12px;color:var(--muted);padding-top:4px;letter-spacing:.02em}
+
+/* Step */
+.step-list{display:flex;flex-direction:column;gap:14px}
+.step-item{display:flex;gap:16px;align-items:flex-start}
+.step-n{
+  width:30px;height:30px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;
+}
+.step-t{font-size:14px;font-weight:700;margin-bottom:3px;letter-spacing:.04em}
+.step-d{font-size:12px;color:var(--muted);line-height:1.6;letter-spacing:.02em}
+
+/* Bullet */
+.blist{list-style:none;display:flex;flex-direction:column;gap:10px}
+.blist li{display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.7;letter-spacing:.02em}
+.blist li::before{
+  content:'';width:5px;height:5px;border-radius:50%;
+  background:var(--acc);margin-top:7px;flex-shrink:0;
+}
+
+/* KBD */
+.kbd{
+  display:inline-block;padding:3px 10px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.14);
+  border-bottom:3px solid rgba(255,255,255,.18);
+  border-radius:5px;font-family:'Fira Code',monospace;
+  font-size:11px;color:var(--text);
+}
+
+/* Divider */
+.div{width:36px;height:2px;background:linear-gradient(90deg,var(--acc),transparent);margin:12px 0}
+
+/* Highlight box */
+.hl{
+  background:rgba(217,119,87,.07);
+  border:1px solid rgba(217,119,87,.18);
+  border-left:3px solid var(--acc);
+  border-radius:0 10px 10px 0;
+  padding:14px 18px;
+}
+.hl-t{font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--acc);margin-bottom:5px}
+.hl-d{font-size:12.5px;color:var(--muted);line-height:1.7;letter-spacing:.02em}
+
+/* Code block */
+.cblock{
+  background:var(--code);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;padding:16px 20px;
+  font-family:'Fira Code',monospace;font-size:12px;line-height:1.9;
+}
+.c-cm{color:#4B5563}.c-h{color:var(--acc);font-weight:600}
+.c-t{color:var(--text)}.c-v{color:var(--acc4)}.c-k{color:var(--acc3)}
+
+/* Model card */
+.mc{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:22px;
+  transition:background .3s var(--ease-s),transform .3s var(--ease-s),box-shadow .3s var(--ease-s);
+}
+.mc:hover{background:rgba(255,255,255,.07);transform:translateY(-3px)}
+.mc-name{font-family:'Fira Code',monospace;font-size:15px;font-weight:600;margin-bottom:6px}
+.mc-sub{font-size:11px;color:var(--muted);margin-bottom:16px}
+.mc-row{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.mc-l{color:var(--muted)}.mc-v{font-weight:600}
+
+/* Tip card */
+.tip{
+  background:rgba(34,211,238,.05);
+  border:1px solid rgba(34,211,238,.12);
+  border-left:3px solid var(--acc3);
+  border-radius:0 10px 10px 0;
+  padding:12px 16px;
+}
+.tip-n{font-size:10px;font-weight:700;color:var(--acc3);letter-spacing:.1em;margin-bottom:4px}
+.tip-t{font-size:12.5px;color:var(--muted);line-height:1.65;letter-spacing:.02em}
+
+/* TOC */
+.toc-g{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:860px}
+.toc-i{
+  display:flex;align-items:center;gap:12px;padding:11px 16px;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+  border-radius:9px;cursor:pointer;transition:all .3s var(--ease-s);
+}
+.toc-i{transition:background .3s var(--ease-s),border-color .3s var(--ease-s),transform .3s var(--ease-s)}
+.toc-i:hover{background:rgba(255,255,255,.07);border-color:rgba(217,119,87,.25);transform:translateX(4px)}
+.toc-n{font-family:'Fira Code',monospace;font-size:11px;color:var(--acc);width:22px;flex-shrink:0}
+.toc-t{font-size:12.5px;letter-spacing:.04em}
+
+/* MCP card */
+.mcp-c{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;padding:16px;
+  text-align:center;transition:all .3s var(--ease-s);
+}
+.mcp-c{transition:background .3s var(--ease-s),transform .3s var(--ease-s)}
+.mcp-c:hover{background:rgba(255,255,255,.08);transform:translateY(-2px)}
+.mcp-icon{font-size:22px;margin-bottom:8px}
+.mcp-name{font-size:13px;font-weight:700;margin-bottom:4px}
+.mcp-desc{font-size:11px;color:var(--muted);line-height:1.5}
+
+/* Slide-specific header area */
+.sh{text-align:center;margin-bottom:clamp(16px,3vh,36px)}
+
+/* Pulse dot */
+.pulse{
+  width:7px;height:7px;border-radius:50%;background:var(--acc);
+  animation:pulse 2s ease-in-out infinite;display:inline-block;margin-right:8px;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+/* ========================================
+   SLIDE 1: TITLE
+======================================== */
+.s1-wrap{text-align:center;max-width:900px}
+.s1-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 16px;border-radius:100px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  font-size:11px;color:var(--muted);letter-spacing:.1em;margin-bottom:28px;
+}
+.s1-main{
+  font-family:'Noto Serif JP',serif;
+  font-size:clamp(4rem,9vw,8rem);
+  font-weight:700;letter-spacing:.01em;line-height:1;
+  margin-bottom:14px;
+}
+.s1-sub{
+  font-family:'Noto Serif JP',serif;
+  font-size:clamp(1.2rem,2.5vw,2.2rem);
+  color:var(--muted);letter-spacing:.12em;margin-bottom:28px;
+}
+.s1-desc{
+  font-size:clamp(.85rem,1.1vw,.95rem);
+  color:var(--muted);line-height:2;max-width:520px;margin:0 auto 36px;
+}
+.s1-tags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+/* ========================================
+   SLIDE content widths
+======================================== */
+.sw{width:100%;max-width:1080px}
+.sw-n{width:100%;max-width:960px}
+
+</style>
+</head>
+<body>
+
+<div class="aurora"></div>
+<div class="noise"></div>
+<div class="cur" id="cur"></div>
+<div class="cur-f" id="curf"></div>
+<div class="prog" id="prog"></div>
+<div class="counter"><span class="cur-n" id="curn">01</span><span style="color:rgba(255,255,255,.2)">/</span><span id="tot">19</span></div>
+<div class="kbd-hint">← → キーで移動 &nbsp;|&nbsp; Space で次へ</div>
+
+<!-- ===================== SLIDES ===================== -->
+<div class="pres" id="pres">
+
+<!-- ────── SLIDE 1: TITLE ────── -->
+<section class="slide s1" data-idx="0">
+<div class="s1-wrap">
+  <div class="s1-badge"><span class="pulse"></span>Powered by Anthropic</div>
+  <h1 class="s1-main"><span class="grad">Claude Code</span></h1>
+  <p class="s1-sub">完全ガイド</p>
+  <p class="s1-desc">ターミナル上でAIアシスタントと対話し、<br>コーディングの体験を根本から変える次世代ツール</p>
+  <div class="s1-tags">
+    <span class="badge b-a">初心者向け</span>
+    <span class="badge b-v">インストールから応用まで</span>
+    <span class="badge b-c">全19スライド</span>
+    <span class="badge b-g">Claude Code 完全解説</span>
+  </div>
+</div>
+</section>
+
+<!-- ────── SLIDE 2: 目次 ────── -->
+<section class="slide s2" data-idx="1">
+<div class="sh">
+  <div class="tag tag-acc">Contents</div>
+  <h2 class="h2">このスライドで学べること</h2>
+</div>
+<div class="toc-g sw-n">
+  <div class="toc-i" data-go="2"><span class="toc-n">01</span><span class="toc-t">Claude Code とは何か</span></div>
+  <div class="toc-i" data-go="3"><span class="toc-n">02</span><span class="toc-t">なぜ Claude Code なのか</span></div>
+  <div class="toc-i" data-go="4"><span class="toc-n">03</span><span class="toc-t">インストール準備（前提条件）</span></div>
+  <div class="toc-i" data-go="5"><span class="toc-n">04</span><span class="toc-t">インストール手順（ステップ別）</span></div>
+  <div class="toc-i" data-go="6"><span class="toc-n">05</span><span class="toc-t">初回起動 & API キー設定</span></div>
+  <div class="toc-i" data-go="7"><span class="toc-n">06</span><span class="toc-t">できること① コード生成</span></div>
+  <div class="toc-i" data-go="8"><span class="toc-n">07</span><span class="toc-t">できること② バグ修正・デバッグ</span></div>
+  <div class="toc-i" data-go="9"><span class="toc-n">08</span><span class="toc-t">できること③ ファイル & Git 操作</span></div>
+  <div class="toc-i" data-go="10"><span class="toc-n">09</span><span class="toc-t">できること④ その他の機能</span></div>
+  <div class="toc-i" data-go="11"><span class="toc-n">10</span><span class="toc-t">スラッシュコマンド一覧</span></div>
+  <div class="toc-i" data-go="12"><span class="toc-n">11</span><span class="toc-t">CLAUDE.md の活用</span></div>
+  <div class="toc-i" data-go="13"><span class="toc-n">12</span><span class="toc-t">MCP サーバー連携</span></div>
+  <div class="toc-i" data-go="14"><span class="toc-n">13</span><span class="toc-t">Hooks & 拡張思考モード</span></div>
+  <div class="toc-i" data-go="15"><span class="toc-n">14</span><span class="toc-t">キーボードショートカット</span></div>
+  <div class="toc-i" data-go="16"><span class="toc-n">15</span><span class="toc-t">モデルと料金</span></div>
+  <div class="toc-i" data-go="17"><span class="toc-n">16</span><span class="toc-t">Tips & ベストプラクティス</span></div>
+  <div class="toc-i" data-go="18"><span class="toc-n">17</span><span class="toc-t">まとめ & 次のステップ</span></div>
+</div>
+</section>
+
+<!-- ────── SLIDE 3: WHAT IS ────── -->
+<section class="slide s3" data-idx="2">
+<div class="sh">
+  <div class="tag tag-acc">01</div>
+  <h2 class="h2">Claude Code とは？</h2>
+</div>
+<div class="g-lr sw">
+  <div>
+    <p class="lead" style="margin-bottom:20px">
+      <strong style="color:var(--text)">Anthropic</strong> が開発した<strong style="color:var(--acc)">AIパワードCLIツール</strong>。<br>
+      ターミナルを開いて <code class="badge b-c">claude</code> と打つだけで、<br>
+      AIアシスタントが開発作業を丸ごとサポートする。
+    </p>
+    <div class="blist">
+      <li>VSCodeやブラウザを開かずに<strong style="color:var(--text)">ターミナルから直接AIと対話</strong></li>
+      <li>プロジェクト内のファイルを<strong style="color:var(--text)">自分で読んでコンテキストを理解</strong>する</li>
+      <li>コードを書くだけでなく<strong style="color:var(--text)">実際にコマンドを実行</strong>して結果を確認</li>
+      <li>Git操作・テスト実行・ファイル作成まで<strong style="color:var(--text)">すべて対応</strong></li>
+      <li>IDEプラグイン不要・<strong style="color:var(--text)">どんな環境でも動く</strong></li>
+    </div>
+    <div class="hl" style="margin-top:20px">
+      <div class="hl-t">POINT</div>
+      <div class="hl-d">「コードを書いてくれるAI」ではなく、<br>開発作業全体を担う<strong style="color:var(--text)">AIペアプログラマー</strong>。</div>
+    </div>
+  </div>
+  <div class="term">
+    <div class="term-bar">
+      <div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div>
+      <span class="term-title">claude — terminal</span>
+    </div>
+    <div class="term-body">
+      <div><span class="t-p">❯</span> <span class="t-c">claude</span></div>
+      <div style="height:8px"></div>
+      <div><span class="t-cy">Claude Code</span> <span class="t-o">v1.9.3 — Anthropic</span></div>
+      <div><span class="t-g">✓</span> <span class="t-o">API key found</span></div>
+      <div style="height:8px"></div>
+      <div><span class="t-o">─────────────────────────────────</span></div>
+      <div style="height:8px"></div>
+      <div><span class="t-p">You:</span> <span class="t-c">ログイン機能をReactで実装して</span></div>
+      <div style="height:6px"></div>
+      <div><span class="t-v">Claude:</span> <span class="t-o">src/components/Login.tsx を確認中...</span></div>
+      <div><span class="t-o">      既存コードに合わせて実装します。</span></div>
+      <div style="height:6px"></div>
+      <div><span class="t-g">✓</span> <span class="t-o">src/components/Login.tsx を更新</span></div>
+      <div><span class="t-g">✓</span> <span class="t-o">src/hooks/useAuth.ts を作成</span></div>
+      <div><span class="t-g">✓</span> <span class="t-o">src/api/auth.ts を作成</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ────── SLIDE 4: WHY ────── -->
+<section class="slide s4" data-idx="3">
+<div class="sh">
+  <div class="tag tag-vio">02</div>
+  <h2 class="h2">なぜ Claude Code なのか</h2>
+  <p class="lead">従来のAIツールと何が違うのか</p>
+</div>
+<div class="g2 sw" style="grid-template-columns:1fr 1fr;gap:14px;max-width:960px">
+  <div class="fc">
+    <div class="fc-icon" style="background:rgba(217,119,87,.12)">🧠</div>
+    <div class="fc-title">プロジェクト全体を把握</div>
+    <div class="fc-desc">ファイルを自分で読んでコンテキストを理解。「このプロジェクト全体を見て修正して」という指示が通る。コピペ不要。</div>
+  </div>
+  <div class="fc">
+    <div class="fc-icon" style="background:rgba(155,110,243,.12);border-color:rgba(155,110,243,.2)">⚡</div>
+    <div class="fc-title">実際に動作を確認しながら進める</div>
+    <div class="fc-desc">コマンドを実行してエラーを確認し、自分で修正する。「動かしてみたら動かなかった」を自律的に解決。</div>
+  </div>
+  <div class="fc">
+    <div class="fc-icon" style="background:rgba(34,211,238,.12);border-color:rgba(34,211,238,.2)">💬</div>
+    <div class="fc-title">自然言語でコーディング</div>
+    <div class="fc-desc">「FastAPIでユーザー認証APIを作って」「このバグを直して」— 日本語でOK。コードの書き方を覚えなくても指示できる。</div>
+  </div>
+  <div class="fc">
+    <div class="fc-icon" style="background:rgba(52,211,153,.12);border-color:rgba(52,211,153,.2)">🔗</div>
+    <div class="fc-title">あらゆる作業をワンストップで</div>
+    <div class="fc-desc">コード生成・修正・テスト・Gitコミット・PR作成・ドキュメント生成まで。ツールを切り替える手間がない。</div>
+  </div>
+</div>
+<div class="hl sw" style="margin-top:18px;max-width:960px">
+  <div class="hl-t">従来のAIチャットとの違い</div>
+  <div class="hl-d">ChatGPTやClaud.aiはコードを「提案」するだけ。Claude Codeは実際にファイルを編集し、コマンドを実行し、結果を確認して自己修正まで行う。</div>
+</div>
+</section>
+
+<!-- ────── SLIDE 5: PREREQUISITES ────── -->
+<section class="slide s5" data-idx="4">
+<div class="sh">
+  <div class="tag tag-acc">03</div>
+  <h2 class="h2">インストール準備</h2>
+  <p class="lead">まずこれを確認しよう</p>
+</div>
+<div class="g-2c sw" style="gap:28px;max-width:900px">
+  <div>
+    <h3 class="h3" style="margin-bottom:16px">必要なもの</h3>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-n">1</div>
+        <div>
+          <div class="step-t">Node.js 18 以上</div>
+          <div class="step-d">JavaScriptランタイム。Claude Codeの実行環境。<br><span class="t-url" style="font-family:'Fira Code',monospace;font-size:11px">nodejs.org</span> から無料でダウンロード</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-n">2</div>
+        <div>
+          <div class="step-t">npm（Node.jsに同梱）</div>
+          <div class="step-d">パッケージ管理ツール。Node.jsをインストールすれば自動で入る。</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-n">3</div>
+        <div>
+          <div class="step-t">Anthropic APIキー</div>
+          <div class="step-d">有料アカウントが必要。<span style="font-family:'Fira Code',monospace;font-size:11px">console.anthropic.com</span> で取得。初回は$5のクレジットあり。</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-n" style="background:rgba(255,255,255,.1);font-size:11px">opt</div>
+        <div>
+          <div class="step-t">Git（任意・推奨）</div>
+          <div class="step-d">コミット・PR作成などGit連携機能を使う場合に必要。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <h3 class="h3" style="margin-bottom:16px">APIキーの取得方法</h3>
+    <div class="term">
+      <div class="term-bar">
+        <div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div>
+        <span class="term-title">手順</span>
+      </div>
+      <div class="term-body" style="font-size:12px;line-height:2">
+        <div><span class="t-a">1.</span> <span class="t-url">console.anthropic.com</span> にアクセス</div>
+        <div><span class="t-a">2.</span> <span class="t-c">アカウント作成（無料）</span></div>
+        <div><span class="t-a">3.</span> <span class="t-c">Settings → API Keys</span></div>
+        <div><span class="t-a">4.</span> <span class="t-c">「Create Key」をクリック</span></div>
+        <div><span class="t-a">5.</span> <span class="t-c">生成された</span> <span class="t-g">sk-ant-...</span> <span class="t-c">をコピー</span></div>
+        <div style="height:8px"></div>
+        <div><span class="t-cm">※ キーは一度しか表示されない</span></div>
+        <div><span class="t-cm">※ 安全な場所に保管すること</span></div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top:12px">
+      <div class="tip-n">TIP</div>
+      <div class="tip-t">Billing でクレジットカードを登録しておくとAPIが使えるようになる。月額の上限設定も忘れずに。</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ────── SLIDE 6: INSTALL ────── -->
+<section class="slide s6" data-idx="5">
+<div class="sh">
+  <div class="tag tag-acc">04</div>
+  <h2 class="h2">インストール手順</h2>
+  <p class="lead">コマンド3つで完了する</p>
+</div>
+<div class="g-2c sw" style="gap:28px;max-width:960px">
+  <div>
+    <div class="term">
+      <div class="term-bar">
+        <div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div>
+        <span class="term-title">Terminal</span>
+      </div>
+      <div class="term-body">
+        <div><span class="t-cm"># ステップ1: Node.jsバージョン確認</span></div>
+        <div><span class="t-p">❯</span> <span class="t-c">node --version</span></div>
+        <div><span class="t-g">v20.11.0</span> <span class="t-cm">← 18以上ならOK</span></div>
+        <div style="height:10px"></div>
+        <div><span class="t-cm"># ステップ2: Claude Codeをインストール</span></div>
+        <div><span class="t-p">❯</span> <span class="t-c">npm install -g @anthropic-ai/claude-code</span></div>
+        <div style="height:4px"></div>
+        <div><span class="t-o">added 132 packages in 8s</span></div>
+        <div><span class="t-g">✓ installed successfully</span></div>
+        <div style="height:10px"></div>
+        <div><span class="t-cm"># ステップ3: インストール確認</span></div>
+        <div><span class="t-p">❯</span> <span class="t-c">claude --version</span></div>
+        <div><span class="t-cy">@anthropic-ai/claude-code v1.9.3</span></div>
+        <div style="height:10px"></div>
+        <div><span class="t-cm"># ステップ4: ヘルプ確認</span></div>
+        <div><span class="t-p">❯</span> <span class="t-c">claude --help</span></div>
+        <div><span class="t-o">Usage: claude [options] [prompt]</span></div>
+        <div><span class="t-o">  Start Claude Code interactive session</span></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <h3 class="h3" style="margin-bottom:14px">インストール時の注意点</h3>
+    <div class="blist" style="margin-bottom:18px">
+      <li><strong style="color:var(--text)">-g フラグ</strong>はグローバルインストール。どこからでも <code class="badge b-c">claude</code> コマンドが使えるようになる</li>
+      <li>Windowsの場合は<strong style="color:var(--text)">PowerShell</strong>または<strong style="color:var(--text)">Windows Terminal</strong>を使用</li>
+      <li>権限エラーが出た場合は <code class="badge b-v">sudo npm install -g</code> を試す（Mac/Linux）</li>
+      <li>npmの代わりに <code class="badge b-a">pnpm</code> や <code class="badge b-a">yarn</code> も使える</li>
+    </div>
+    <div class="hl">
+      <div class="hl-t">Windows ユーザーへ</div>
+      <div class="hl-d">WSL2（Windows Subsystem for Linux）環境での使用を推奨。より安定して動作する。</div>
+    </div>
+    <div class="tip" style="margin-top:12px">
+      <div class="tip-n">アップデート方法</div>
+      <div class="tip-t"><code style="font-family:'Fira Code',monospace;font-size:11px">npm update -g @anthropic-ai/claude-code</code><br>で最新版に更新できる。定期的に確認しよう。</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ────── SLIDE 7: FIRST LAUNCH ────── -->
+<section class="slide s7" data-idx="6">
+<div class="sh">
+  <div class="tag tag-cyn">05</div>
+  <h2 class="h2">初回起動 & API キー設定</h2>
+</div>
+<div class="g-2c sw" style="gap:28px;max-width:960px">
+  <div>
+    <div class="term">
+      <div class="term-bar">
+        <div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div>
+        <span class="term-title">初回起動の流れ</span>
+      </div>
+      <div class="term-body">
+        <div><span class="t-cm"># Mac / Linux: APIキー設定</span></div>
+        <div><span class="t-p">❯</span> <span class="t-c">export ANTHROPIC_API_KEY=<span class="t-g">"sk-ant-..."</span></span></div>
+        <div style="height:6px"></div>
+        <div><span class="t-cm"># Windows (PowerShell)</span></div>
+        <div><span class="t-p">❯</span> <span class="t-c">$env:ANTHROPIC_API_KEY = <span class="t-g">"sk-ant-..."</span></span></div>
+        <div style="height:10px"></div>
+        <div><span class="t-cm"># プロジェクトフォルダへ移動して起動</span></div>
+        <div><span class="t-p">❯</span> <span class="t-c">cd my-project</span></div>
+        <div><span class="t-p">❯</span> <span class="t-c">claude</span></div>
+        <div style="height:8px"></div>
+        <div><span class="t-cy">Claude Code v1.9.3</span></div>
+        <div><span class="t-g">✓</span> <span class="t-o">API key validated</span></div>
+        <div><span class="t-g">✓</span> <span class="t-o">Project: my-project</span></div>
+        <div style="height:8px"></div>
+        <div><span class="t-o">How can I help you today?</span></div>
+        <div><span class="t-p">❯</span> <span style="animation:blink 1s step-end infinite;color:var(--text)">▌</span></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <h3 class="h3" style="margin-bottom:14px">APIキーを永続化する方法</h3>
+    <div class="cblock" style="margin-bottom:14px">
+      <div><span class="c-cm"># ~/.zshrc または ~/.bashrc に追記</span></div>
+      <div><span class="c-k">echo</span> <span class="c-v">'export ANTHROPIC_API_KEY="sk-ant-..."'</span> <span class="c-t">>> ~/.zshrc</span></div>
+      <div><span class="c-k">source</span> <span class="c-t">~/.zshrc</span></div>
+    </div>
+    <h3 class="h3" style="margin-bottom:14px">その他の設定方法</h3>
+    <div class="blist">
+      <li><code class="badge b-c">.env</code> ファイルにキーを記述（プロジェクト単位）</li>
+      <li><code class="badge b-a">claude configure</code> コマンドで対話的に設定</li>
+      <li><code class="badge b-v">~/.claude/.env</code> にグローバル設定</li>
+    </div>
+    <div class="tip" style="margin-top:16px">
+      <div class="tip-n">セキュリティ注意</div>
+      <div class="tip-t">APIキーはGitにコミットしないこと。<br>.gitignore に .env を追加しておこう。</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ────── SLIDE 8: CODE GEN ────── -->
+<section class="slide s8" data-idx="7">
+<div class="sh">
+  <div class="tag tag-acc">06</div>
+  <h2 class="h2">できること① コード生成</h2>
+  <p class="lead">自然言語でコードを書いてもらう</p>
+</div>
+<div class="sw" style="max-width:1000px">
+  <div class="g3" style="margin-bottom:16px">
+    <div class="gc">
+      <div class="tag tag-vio" style="margin-bottom:10px">フロントエンド</div>
+      <div class="cblock" style="margin-bottom:10px;font-size:11px">
+        <div><span class="c-cm">「Reactでユーザー一覧ページを</span></div>
+        <div><span class="c-cm">  SWRでデータ取得して作って」</span></div>
+      </div>
+      <div class="blist">
+        <li style="font-size:12px">コンポーネント・カスタムフック・型定義を自動生成</li>
+        <li style="font-size:12px">ローディング・エラー状態も実装</li>
+      </div>
+    </div>
+    <div class="gc">
+      <div class="tag tag-cyn" style="margin-bottom:10px">バックエンド</div>
+      <div class="cblock" style="margin-bottom:10px;font-size:11px">
+        <div><span class="c-cm">「FastAPIでCRUD APIを</span></div>
+        <div><span class="c-cm">  PostgreSQL付きで実装して」</span></div>
+      </div>
+      <div class="blist">
+        <li style="font-size:12px">ルーター・モデル・スキーマを一括生成</li>
+        <li style="font-size:12px">DB接続・マイグレーションも含む</li>
+      </div>
+    </div>
+    <div class="gc">
+      <div class="tag tag-grn" style="margin-bottom:10px">スクリプト</div>
+      <div class="cblock" style="margin-bottom:10px;font-size:11px">
+        <div><span class="c-cm">「このJSONをExcelに出力する</span></div>
+        <div><span class="c-cm">  Pythonスクリプト書いて」</span></div>
+      </div>
+      <div class="blist">
+        <li style="font-size:12px">openpyxlで書式付きExcel生成</li>
+        <li style="font-size:12px">エラーハンドリング込み</li>
+      </div>
+    </div>
+  </div>
+  <div class="hl">
+    <div class="hl-t">対応言語・フレームワーク</div>
+    <div class="hl-d" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+      <span class="badge b-a">Python</span><span class="badge b-v">TypeScript</span><span class="badge b-c">Go</span>
+      <span class="badge b-g">Rust</span><span class="badge b-a">React</span><span class="badge b-v">Next.js</span>
+      <span class="badge b-c">Vue</span><span class="badge b-g">FastAPI</span><span class="badge b-a">Django</span>
+      <span class="badge b-v">Swift</span><span class="badge b-c">Kotlin</span><span class="badge b-g">+ 多数</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ────── SLIDE 9: BUG FIX ────── -->
+<section class="slide s9" data-idx="8">
+<div class="sh">
+  <div class="tag tag-vio">07</div>
+  <h2 class="h2">できること② バグ修正・デバッグ</h2>
+</div>
+<div class="g-lr sw" style="max-width:1000px;gap:32px">
+  <div>
+    <h3 class="h3" style="margin-bottom:14px">使い方はシンプル</h3>
+    <div class="step-list" style="margin-bottom:18px">
+      <div class="step-item">
+        <div class="step-n">1</div>
+        <div>
+          <div class="step-t">エラーをそのまま貼り付ける</div>
+          <div class="step-d">整形・翻訳不要。コピペだけでOK</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-n">2</div>
+        <div>
+          <div class="step-t">Claudeが関連ファイルを自動で読む</div>
+          <div class="step-d">エラーのある行だけでなくプロジェクト全体を把握</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-n">3</div>
+        <div>
+          <div class="step-t">原因を特定して修正</div>
+          <div class="step-d">複数ファイルにわたる修正も一括で行う</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-n">4</div>
+        <div>
+          <div class="step-t">テストを実行して確認</div>
+          <div class="step-d">修正後にコマンドを実行して動作を自己確認</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="tip-n">こんな指示も通る</div>
+      <div class="tip-t">「パフォーマンスが遅い原因を調べて」<br>「セキュリティ的に問題ないか診断して」<br>「このコードを TypeScript に移行して」</div>
+    </div>
+  </div>
+  <div class="term">
+    <div class="term-bar">
+      <div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div>
+      <span class="term-title">デバッグ例</span>
+    </div>
+    <div class="term-body" style="font-size:12px">
+      <div><span class="t-p">You:</span> <span class="t-c">このエラーが出て困ってる:</span></div>
+      <div style="height:4px"></div>
+      <div><span style="color:#F87171">TypeError: Cannot read properties</span></div>
+      <div><span style="color:#F87171">  of undefined (reading 'map')</span></div>
+      <div><span style="color:#F87171">    at UserList.tsx:23:18</span></div>
+      <div style="height:8px"></div>
+      <div><span class="t-v">Claude:</span> <span class="t-o">UserList.tsx を確認しています...</span></div>
+      <div style="height:4px"></div>
+      <div><span class="t-o">  23行目: </span><span class="t-c">users.map(u => ...)</span></div>
+      <div><span class="t-o">  users が undefined の可能性があります。</span></div>
+      <div style="height:4px"></div>
+      <div><span class="t-o">  useUsers フックも確認中...</span></div>
+      <div><span class="t-o">  → APIレスポンス前に render されています。</span></div>
+      <div style="height:8px"></div>
+      <div><span class="t-v">Claude:</span> <span class="t-o">修正内容:</span></div>
+      <div><span class="t-g">  users?.map(u => ...)</span></div>
+      <div><span class="t-g">  + ローディング状態の追加</span></div>
+      <div style="height:4px"></div>
+      <div><span class="t-g">✓</span> <span class="t-o">UserList.tsx を更新しました</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ────── SLIDE 10: FILE & GIT ────── -->
+<section class="slide s10" data-idx="9">
+<div class="sh">
+  <div class="tag tag-cyn">08</div>
+  <h2 class="h2">できること③ ファイル & Git 操作</h2>
+</div>
+<div class="g-2c sw" style="gap:24px;max-width:1000px">
+  <div>
+    <h3 class="h3" style="margin-bottom:14px">ファイル操作</h3>
+    <div class="blist" style="margin-bottom:16px">
+      <li>ファイルの<strong style="color:var(--text)">作成・編集・削除・移動</strong></li>
+      <li>プロジェクトの<strong style="color:var(--text)">フォルダ構造を把握</strong>して最適な場所に配置</li>
+      <li><strong style="color:var(--text)">複数ファイル</strong>にわたる一括変更（リファクタリング等）</li>
+      <li>設定ファイル（tsconfig・eslint等）の<strong style="color:var(--text)">自動生成・更新</strong></li>
+    </div>
+    <div class="cblock" style="font-size:11.5px">
+      <div><span class="c-cm">「srcフォルダ配下の全.tsxを</span></div>
+      <div><span class="c-cm">  .tsx → .jsx に変換して」</span></div>
+      <div style="height:6px"></div>
+      <div><span class="c-k">→</span> <span class="c-v">34ファイルを一括変換</span></div>
+    </div>
+  </div>
+  <div>
+    <h3 class="h3" style="margin-bottom:14px">Git 操作</h3>
+    <div class="blist" style="margin-bottom:16px">
+      <li><strong style="color:var(--text)">コミットメッセージ</strong>を変更内容から自動生成</li>
+      <li><strong style="color:var(--text)">ブランチ作成</strong>・切り替え・マージ</li>
+      <li>GitHub CLIと連携して<strong style="color:var(--text)">PR作成</strong>まで自動化</li>
+      <li><strong style="color:var(--text)">コンフリクト解消</strong>の支援</li>
+      <li>git log / blame / diff の<strong style="color:var(--text)">解析・説明</strong></li>
+    </div>
+    <div class="cblock" style="font-size:11.5px">
+      <div><span class="c-cm">「変更内容を見てコミットして」</span></div>
+      <div style="height:6px"></div>
+      <div><span class="c-k">→</span> <span class="c-v">git add -p</span> <span class="c-t">で差分確認</span></div>
+      <div><span class="c-k">→</span> <span class="c-v">feat: ユーザー認証APIを追加</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ────── SLIDE 11: OTHER FEATURES ────── -->
+<section class="slide s11" data-idx="10">
+<div class="sh">
+  <div class="tag tag-grn">09</div>
+  <h2 class="h2">できること④ その他の機能</h2>
+</div>
+<div class="g3 sw" style="max-width:1000px">
+  <div class="fc">
+    <div class="fc-icon" style="background:rgba(155,110,243,.12);border-color:rgba(155,110,243,.2)">📖</div>
+    <div class="fc-title">コード説明・解読</div>
+    <div class="fc-desc">「このコードを初心者向けに説明して」「このアルゴリズムの計算量は？」複雑なコードを日本語でわかりやすく解説。</div>
+  </div>
+  <div class="fc">
+    <div class="fc-icon" style="background:rgba(34,211,238,.12);border-color:rgba(34,211,238,.2)">🧪</div>
+    <div class="fc-title">テスト自動生成</div>
+    <div class="fc-desc">「この関数のユニットテストをJestで書いて」。カバレッジ100%を目指した網羅的なテストケースを生成。</div>
+  </div>
+  <div class="fc">
+    <div class="fc-icon" style="background:rgba(52,211,153,.12);border-color:rgba(52,211,153,.2)">♻️</div>
+    <div class="fc-title">リファクタリング</div>
+    <div class="fc-desc">「このコードを関数に分割して」「DRYに書き直して」「TypeScript化して」コードの品質向上をサポート。</div>
+  </div>
+  <div class="fc">
+    <div class="fc-icon" style="background:rgba(217,119,87,.12)">📄</div>
+    <div class="fc-title">ドキュメント生成</div>
+    <div class="fc-desc">README.md・API仕様書・コメントの自動追加。コードを読んでドキュメントを自動生成する。</div>
+  </div>
+  <div class="fc">
+    <div class="fc-icon" style="background:rgba(155,110,243,.12);border-color:rgba(155,110,243,.2)">🔒</div>
+    <div class="fc-title">セキュリティ診断</div>
+    <div class="fc-desc">「このコードの脆弱性を指摘して」SQLインジェクション・XSS・認証漏れなどを検出してアドバイス。</div>
+  </div>
+  <div class="fc">
+    <div class="fc-icon" style="background:rgba(34,211,238,.12);border-color:rgba(34,211,238,.2)">🌐</div>
+    <div class="fc-title">Web検索との連携</div>
+    <div class="fc-desc">MCP設定でWebブラウジングも可能に。最新ドキュメントを参照しながらコーディング支援を行う。</div>
+  </div>
+</div>
+</section>
+
+<!-- ────── SLIDE 12: SLASH COMMANDS ────── -->
+<section class="slide s12" data-idx="11">
+<div class="sh">
+  <div class="tag tag-acc">10</div>
+  <h2 class="h2">スラッシュコマンド一覧</h2>
+  <p class="lead"><code class="badge b-c">/</code> を入力するとコマンドが補完される</p>
+</div>
+<div class="sw" style="max-width:1000px">
+  <div class="g-2c" style="gap:20px">
+    <div class="cmd-row" style="row-gap:12px">
+      <span class="cmd-k">/help</span><span class="cmd-d">ヘルプとコマンド一覧を表示</span>
+      <span class="cmd-k">/clear</span><span class="cmd-d">会話履歴をリセット（新しいコンテキストで開始）</span>
+      <span class="cmd-k">/diff</span><span class="cmd-d">現在の変更差分を表示</span>
+      <span class="cmd-k">/undo</span><span class="cmd-d">最後の変更を取り消し</span>
+      <span class="cmd-k">/review</span><span class="cmd-d">現在のブランチ差分をコードレビュー</span>
+      <span class="cmd-k">/init</span><span class="cmd-d">CLAUDE.md を自動生成（プロジェクト設定）</span>
+      <span class="cmd-k">/config</span><span class="cmd-d">設定の確認・変更</span>
+    </div>
+    <div class="cmd-row" style="row-gap:12px">
+      <span class="cmd-k">/cost</span><span class="cmd-d">このセッションのAPIコストを表示</span>
+      <span class="cmd-k">/doctor</span><span class="cmd-d">設定の診断チェック（トラブル時に使う）</span>
+      <span class="cmd-k">/think</span><span class="cmd-d">拡張思考モード（深い分析・複雑な問題向け）</span>
+      <span class="cmd-k">/compact</span><span class="cmd-d">会話履歴を要約して圧縮（コンテキスト節約）</span>
+      <span class="cmd-k">/model</span><span class="cmd-d">使用するAIモデルを切り替え</span>
+      <span class="cmd-k">/mcp</span><span class="cmd-d">MCP サーバーの管理・一覧表示</span>
+      <span class="cmd-k">/permissions</span><span class="cmd-d">ツール権限の確認・変更</span>
+    </div>
+  </div>
+  <div class="hl" style="margin-top:16px">
+    <div class="hl-t">実行権限について</div>
+    <div class="hl-d">Claude Code がコマンドやファイル変更を実行する前に、ユーザーに確認を求める。<code class="badge b-v">--dangerously-skip-permissions</code> で全自動化も可能（注意して使う）。</div>
+  </div>
+</div>
+</section>
+
+<!-- ────── SLIDE 13: CLAUDE.md ────── -->
+<section class="slide s13" data-idx="12">
+<div class="sh">
+  <div class="tag tag-vio">11</div>
+  <h2 class="h2">CLAUDE.md の活用</h2>
+  <p class="lead">プロジェクトのルールをAIに覚えさせる設定ファイル</p>
+</div>
+<div class="g-lr sw" style="max-width:1000px;gap:32px">
+  <div>
+    <h3 class="h3" style="margin-bottom:10px">CLAUDE.md とは？</h3>
+    <div class="blist" style="margin-bottom:16px">
+      <li>プロジェクトの<strong style="color:var(--text)">ルートに置くマークダウンファイル</strong></li>
+      <li>Claude が起動時に<strong style="color:var(--text)">自動で読み込む</strong>プロジェクト設定</li>
+      <li>チーム全員で<strong style="color:var(--text)">Gitに共有</strong>してコンテキストを統一</li>
+      <li><code class="badge b-c">/init</code> コマンドで<strong style="color:var(--text)">自動生成</strong>できる</li>
+    </div>
+    <div class="blist">
+      <li>書くこと: 技術スタック・コーディング規約</li>
+      <li>書くこと: よく使うコマンド・注意事項</li>
+      <li>書くこと: アーキテクチャの説明</li>
+      <li>書くこと: やってはいけないこと</li>
+    </div>
+    <div class="tip" style="margin-top:16px">
+      <div class="tip-n">効果</div>
+      <div class="tip-t">毎回「このプロジェクトはPythonを使っています」と説明せずに済む。チームで一貫したAI支援が受けられる。</div>
+    </div>
+  </div>
+  <div>
+    <div class="cblock">
+      <div><span class="c-h"># プロジェクト: EC サイト API</span></div>
+      <div style="height:8px"></div>
+      <div><span class="c-h">## 技術スタック</span></div>
+      <div><span class="c-k">-</span> <span class="c-t">Python 3.12 + FastAPI</span></div>
+      <div><span class="c-k">-</span> <span class="c-t">PostgreSQL 16 + SQLAlchemy 2.0</span></div>
+      <div><span class="c-k">-</span> <span class="c-t">テスト: pytest + httpx</span></div>
+      <div><span class="c-k">-</span> <span class="c-t">Linting: ruff, mypy</span></div>
+      <div style="height:8px"></div>
+      <div><span class="c-h">## コーディング規約</span></div>
+      <div><span class="c-k">-</span> <span class="c-t">コメントは日本語で書く</span></div>
+      <div><span class="c-k">-</span> <span class="c-t">型アノテーションを必須とする</span></div>
+      <div><span class="c-k">-</span> <span class="c-t">関数にはdocstringを必ず付ける</span></div>
+      <div style="height:8px"></div>
+      <div><span class="c-h">## よく使うコマンド</span></div>
+      <div><span class="c-v">uvicorn app.main:app --reload</span></div>
+      <div><span class="c-v">pytest tests/ -v</span></div>
+      <div style="height:8px"></div>
+      <div><span class="c-h">## 注意事項</span></div>
+      <div><span class="c-k">-</span> <span class="c-t">.env ファイルはGitにコミットしない</span></div>
+      <div><span class="c-k">-</span> <span class="c-t">本番DBには直接接続しない</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ────── SLIDE 14: MCP ────── -->
+<section class="slide s14" data-idx="13">
+<div class="sh">
+  <div class="tag tag-cyn">12</div>
+  <h2 class="h2">MCP サーバー連携</h2>
+  <p class="lead">Model Context Protocol — 外部サービスとClaudeを繋ぐ拡張機能</p>
+</div>
+<div class="sw" style="max-width:1000px">
+  <div class="g4" style="grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px">
+    <div class="mcp-c">
+      <div class="mcp-icon">🐙</div>
+      <div class="mcp-name">GitHub</div>
+      <div class="mcp-desc">リポジトリ操作・PR作成・Issue管理</div>
+    </div>
+    <div class="mcp-c">
+      <div class="mcp-icon">📧</div>
+      <div class="mcp-name">Gmail</div>
+      <div class="mcp-desc">メール送受信・検索・下書き作成</div>
+    </div>
+    <div class="mcp-c">
+      <div class="mcp-icon">📅</div>
+      <div class="mcp-name">Google Calendar</div>
+      <div class="mcp-desc">予定の確認・作成・更新</div>
+    </div>
+    <div class="mcp-c">
+      <div class="mcp-icon">📁</div>
+      <div class="mcp-name">Google Drive</div>
+      <div class="mcp-desc">ファイルの読み書き・検索</div>
+    </div>
+    <div class="mcp-c">
+      <div class="mcp-icon">🌐</div>
+      <div class="mcp-name">Playwright</div>
+      <div class="mcp-desc">ブラウザ操作・スクレイピング・E2Eテスト</div>
+    </div>
+    <div class="mcp-c">
+      <div class="mcp-icon">🗄️</div>
+      <div class="mcp-name">Database</div>
+      <div class="mcp-desc">PostgreSQL・MySQL・SQLiteへの直接クエリ</div>
+    </div>
+    <div class="mcp-c">
+      <div class="mcp-icon">🔍</div>
+      <div class="mcp-name">Web Search</div>
+      <div class="mcp-desc">リアルタイム情報取得・最新ドキュメント参照</div>
+    </div>
+    <div class="mcp-c">
+      <div class="mcp-icon">⚙️</div>
+      <div class="mcp-name">カスタム</div>
+      <div class="mcp-desc">自分でMCPサーバーを作って好きなAPIを繋げる</div>
+    </div>
+  </div>
+  <div class="g-2c" style="gap:16px">
+    <div class="term" style="font-size:12px">
+      <div class="term-bar">
+        <div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div>
+        <span class="term-title">MCPサーバーの追加</span>
+      </div>
+      <div class="term-body" style="font-size:12px">
+        <div><span class="t-p">❯</span> <span class="t-c">claude mcp add github</span></div>
+        <div><span class="t-g">✓</span> <span class="t-o">GitHub MCP server added</span></div>
+        <div style="height:6px"></div>
+        <div><span class="t-p">❯</span> <span class="t-c">claude mcp list</span></div>
+        <div><span class="t-cy">  github</span> <span class="t-o">— GitHub integration</span></div>
+        <div><span class="t-cy">  playwright</span> <span class="t-o">— Browser automation</span></div>
+      </div>
+    </div>
+    <div class="hl">
+      <div class="hl-t">活用例</div>
+      <div class="hl-d">「GitHubのIssue #123を読んで実装して」<br>「このバグ修正のPRを作って説明文も書いて」<br>「Google Calendarの今日の予定を教えて」</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ────── SLIDE 15: HOOKS & THINK ────── -->
+<section class="slide s15" data-idx="14">
+<div class="sh">
+  <div class="tag tag-acc">13</div>
+  <h2 class="h2">Hooks & 拡張思考モード</h2>
+</div>
+<div class="g-2c sw" style="gap:28px;max-width:1000px">
+  <div>
+    <h3 class="h3" style="margin-bottom:12px">Hooks — 自動化の仕組み</h3>
+    <p class="lead" style="margin-bottom:14px;font-size:12.5px">Claude がツールを実行する前後に、シェルコマンドを自動実行する機能。<code class="badge b-c">settings.json</code> で設定。</p>
+    <div class="blist" style="margin-bottom:16px">
+      <li><strong style="color:var(--text)">ファイル保存時</strong>に自動でコードフォーマット（prettier / ruff）</li>
+      <li><strong style="color:var(--text)">コミット前</strong>に自動でテスト実行</li>
+      <li><strong style="color:var(--text)">変更完了時</strong>にSlack通知を送る</li>
+      <li><strong style="color:var(--text)">Lint エラー</strong>を自動修正してから次に進む</li>
+    </div>
+    <div class="cblock" style="font-size:11.5px">
+      <div><span class="c-cm">// settings.json</span></div>
+      <div><span class="c-k">"hooks"</span><span class="c-t">: {</span></div>
+      <div><span class="c-t">  </span><span class="c-k">"PostToolUse"</span><span class="c-t">: [{</span></div>
+      <div><span class="c-t">    </span><span class="c-k">"matcher"</span><span class="c-t">: </span><span class="c-v">"Write"</span><span class="c-t">,</span></div>
+      <div><span class="c-t">    </span><span class="c-k">"hooks"</span><span class="c-t">: [{</span></div>
+      <div><span class="c-t">      </span><span class="c-k">"type"</span><span class="c-t">: </span><span class="c-v">"command"</span><span class="c-t">,</span></div>
+      <div><span class="c-t">      </span><span class="c-k">"command"</span><span class="c-t">: </span><span class="c-v">"npm run lint:fix"</span></div>
+      <div><span class="c-t">    }]</span></div>
+      <div><span class="c-t">  }]</span></div>
+      <div><span class="c-t">}</span></div>
+    </div>
+  </div>
+  <div>
+    <h3 class="h3" style="margin-bottom:12px">拡張思考モード（Extended Thinking）</h3>
+    <p class="lead" style="margin-bottom:14px;font-size:12.5px"><code class="badge b-v">/think</code> コマンドでClaudeが時間をかけて深く考えてから回答する。</p>
+    <div class="blist" style="margin-bottom:16px">
+      <li>複雑な<strong style="color:var(--text)">アーキテクチャ設計</strong>の検討</li>
+      <li>バグの<strong style="color:var(--text)">根本原因分析</strong></li>
+      <li><strong style="color:var(--text)">セキュリティ監査</strong>・脆弱性分析</li>
+      <li>トレードオフを考慮した<strong style="color:var(--text)">技術選定</strong></li>
+    </div>
+    <div class="term">
+      <div class="term-bar">
+        <div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div>
+        <span class="term-title">使い方</span>
+      </div>
+      <div class="term-body" style="font-size:12px">
+        <div><span class="t-p">You:</span> <span class="t-c">/think このAPIの設計を見直して</span></div>
+        <div style="height:6px"></div>
+        <div><span class="t-v">Claude: </span><span class="t-o">⟳ 深く考えています...</span></div>
+        <div><span class="t-o">  現在の設計の問題点を分析中</span></div>
+        <div><span class="t-o">  代替アーキテクチャを検討中</span></div>
+        <div style="height:4px"></div>
+        <div><span class="t-g">→ 詳細な設計提案と理由を提示</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ────── SLIDE 16: SHORTCUTS ────── -->
+<section class="slide s16" data-idx="15">
+<div class="sh">
+  <div class="tag tag-grn">14</div>
+  <h2 class="h2">キーボードショートカット</h2>
+  <p class="lead">覚えておくと作業効率が大幅アップ</p>
+</div>
+<div class="sw" style="max-width:900px">
+  <div class="g3" style="gap:12px;margin-bottom:18px">
+    <div class="gc" style="padding:18px">
+      <div style="font-size:11px;color:var(--muted);letter-spacing:.08em;margin-bottom:12px">基本操作</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px">
+          <span class="kbd">Ctrl + C</span><span style="color:var(--muted)">現在の処理を中断</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px">
+          <span class="kbd">Ctrl + L</span><span style="color:var(--muted)">画面をクリア</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px">
+          <span class="kbd">Ctrl + Z</span><span style="color:var(--muted)">操作を取り消し</span>
+        </div>
+      </div>
+    </div>
+    <div class="gc" style="padding:18px">
+      <div style="font-size:11px;color:var(--muted);letter-spacing:.08em;margin-bottom:12px">入力操作</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px">
+          <span class="kbd">↑ / ↓</span><span style="color:var(--muted)">入力履歴を移動</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px">
+          <span class="kbd">Shift + Enter</span><span style="color:var(--muted)">改行（複数行入力）</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px">
+          <span class="kbd">Tab</span><span style="color:var(--muted)">コマンド補完</span>
+        </div>
+      </div>
+    </div>
+    <div class="gc" style="padding:18px">
+      <div style="font-size:11px;color:var(--muted);letter-spacing:.08em;margin-bottom:12px">スラッシュ起動</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px">
+          <span class="kbd">/</span><span style="color:var(--muted)">コマンドメニュー</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px">
+          <span class="kbd">Esc</span><span style="color:var(--muted)">入力をキャンセル</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px">
+          <span class="kbd">Enter</span><span style="color:var(--muted)">送信・実行</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hl">
+    <div class="hl-t">権限プロンプトでのキー操作</div>
+    <div class="hl-d">
+      Claudeがファイル編集やコマンド実行を行う前に確認が表示される。<br>
+      <span class="kbd" style="margin:0 4px">y</span> 許可 &nbsp;
+      <span class="kbd" style="margin:0 4px">n</span> 拒否 &nbsp;
+      <span class="kbd" style="margin:0 4px">a</span> 今後同じ操作を常に許可 &nbsp;
+      <span class="kbd" style="margin:0 4px">?</span> 詳細を表示
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ────── SLIDE 17: MODELS ────── -->
+<section class="slide s17" data-idx="16">
+<div class="sh">
+  <div class="tag tag-vio">15</div>
+  <h2 class="h2">モデルと料金</h2>
+  <p class="lead">用途に合わせてモデルを選ぼう</p>
+</div>
+<div class="sw" style="max-width:980px">
+  <div class="g3" style="gap:16px;margin-bottom:18px">
+    <div class="mc" style="border-color:rgba(217,119,87,.25)">
+      <div class="mc-name" style="color:var(--acc)">Claude Opus 4.8</div>
+      <div class="mc-sub">最高性能モデル</div>
+      <div class="mc-row"><span class="mc-l">得意なこと</span><span class="mc-v" style="font-size:11px">複雑な設計・深い分析</span></div>
+      <div class="mc-row"><span class="mc-l">速度</span><span class="mc-v">やや遅め</span></div>
+      <div class="mc-row"><span class="mc-l">コスト</span><span class="mc-v" style="color:var(--acc)">高め</span></div>
+      <div class="mc-row"><span class="mc-l">推奨用途</span><span class="mc-v" style="font-size:11px">難解なバグ・設計相談</span></div>
+    </div>
+    <div class="mc" style="border-color:rgba(155,110,243,.4);background:rgba(155,110,243,.06)">
+      <div class="mc-name" style="color:var(--acc2)">Claude Sonnet 4.6</div>
+      <div class="mc-sub">バランス型（デフォルト推奨）</div>
+      <div class="mc-row"><span class="mc-l">得意なこと</span><span class="mc-v" style="font-size:11px">ほぼすべての開発タスク</span></div>
+      <div class="mc-row"><span class="mc-l">速度</span><span class="mc-v">速い</span></div>
+      <div class="mc-row"><span class="mc-l">コスト</span><span class="mc-v" style="color:var(--acc2)">中程度</span></div>
+      <div class="mc-row"><span class="mc-l">推奨用途</span><span class="mc-v" style="font-size:11px">日常的なコーディング全般</span></div>
+      <div style="margin-top:10px;text-align:center"><span class="badge b-v">デフォルト</span></div>
+    </div>
+    <div class="mc" style="border-color:rgba(52,211,153,.25)">
+      <div class="mc-name" style="color:var(--acc4)">Claude Haiku 4.5</div>
+      <div class="mc-sub">高速・軽量モデル</div>
+      <div class="mc-row"><span class="mc-l">得意なこと</span><span class="mc-v" style="font-size:11px">シンプルな変換・生成</span></div>
+      <div class="mc-row"><span class="mc-l">速度</span><span class="mc-v" style="color:var(--acc4)">最速</span></div>
+      <div class="mc-row"><span class="mc-l">コスト</span><span class="mc-v" style="color:var(--acc4)">安価</span></div>
+      <div class="mc-row"><span class="mc-l">推奨用途</span><span class="mc-v" style="font-size:11px">繰り返し作業・小タスク</span></div>
+    </div>
+  </div>
+  <div class="g-2c" style="gap:14px">
+    <div class="tip">
+      <div class="tip-n">モデル変更方法</div>
+      <div class="tip-t"><code style="font-family:'Fira Code',monospace">/model claude-opus-4-8</code><br>または <code style="font-family:'Fira Code',monospace">/model</code> でメニューから選択</div>
+    </div>
+    <div class="hl">
+      <div class="hl-t">料金の確認</div>
+      <div class="hl-d"><code class="badge b-c">/cost</code> コマンドで現在のセッションのAPIコストを確認できる。<br>console.anthropic.com のUsageで月額を管理しよう。</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ────── SLIDE 18: TIPS ────── -->
+<section class="slide s18" data-idx="17">
+<div class="sh">
+  <div class="tag tag-acc">16</div>
+  <h2 class="h2">Tips & ベストプラクティス</h2>
+  <p class="lead">使いこなすための8つのコツ</p>
+</div>
+<div class="g-2c sw" style="gap:12px;max-width:1000px">
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div class="tip">
+      <div class="tip-n">01 &nbsp;具体的な指示を出す</div>
+      <div class="tip-t">「ページ作って」より「useSWRでデータ取得するReactコンポーネントを作って、ローディング・エラー状態も実装して」のほうが的確な結果が得られる。</div>
+    </div>
+    <div class="tip">
+      <div class="tip-n">02 &nbsp;CLAUDE.md を最初に作る</div>
+      <div class="tip-t"><code style="font-family:'Fira Code',monospace">/init</code> で自動生成。毎回「このプロジェクトは〜」と説明せずに済む。チームで共有すれば全員のAI支援が統一される。</div>
+    </div>
+    <div class="tip">
+      <div class="tip-n">03 &nbsp;エラーはそのまま貼る</div>
+      <div class="tip-t">整形・翻訳は不要。スタックトレースをそのままコピペするだけ。Claudeが関連ファイルを自分で探して原因を特定する。</div>
+    </div>
+    <div class="tip">
+      <div class="tip-n">04 &nbsp;/clear で新鮮なコンテキストから</div>
+      <div class="tip-t">会話が長くなるとコンテキストが汚れて精度が下がる。話題が変わったら <code style="font-family:'Fira Code',monospace">/clear</code> でリセットしよう。</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div class="tip">
+      <div class="tip-n">05 &nbsp;大きなタスクは分割して依頼する</div>
+      <div class="tip-t">「ECサイトを全部作って」より「まずDB設計を、次に認証API、次に商品一覧API」と段階的に依頼するほうが品質が高い。</div>
+    </div>
+    <div class="tip">
+      <div class="tip-n">06 &nbsp;/think で複雑な問題を解かせる</div>
+      <div class="tip-t">アーキテクチャ設計・パフォーマンス問題・セキュリティ設計など、難しい問題には <code style="font-family:'Fira Code',monospace">/think</code> で深く考えさせる。</div>
+    </div>
+    <div class="tip">
+      <div class="tip-n">07 &nbsp;Git をこまめにコミット</div>
+      <div class="tip-t">AIが変更したコードは予期しない結果になることも。コミットを細かく積んでおくと <code style="font-family:'Fira Code',monospace">/undo</code> や git reset で安全に戻れる。</div>
+    </div>
+    <div class="tip">
+      <div class="tip-n">08 &nbsp;--dangerously-skip-permissions は慎重に</div>
+      <div class="tip-t">全操作を無確認で自動実行するモード。デモや実験には便利だが、本番コードや重要なファイルがある環境では使わないこと。</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ────── SLIDE 19: SUMMARY ────── -->
+<section class="slide s19" data-idx="18">
+<div class="sh">
+  <div class="tag tag-grn">まとめ</div>
+  <h2 class="h2">今日から始めよう</h2>
+</div>
+<div class="sw" style="max-width:960px">
+  <div class="g3" style="gap:14px;margin-bottom:22px">
+    <div class="fc" style="text-align:center;padding:24px 16px">
+      <div style="font-size:28px;margin-bottom:12px">1</div>
+      <div class="fc-title">APIキーを取得</div>
+      <div class="fc-desc">console.anthropic.com でアカウント作成してAPIキーを発行する</div>
+    </div>
+    <div class="fc" style="text-align:center;padding:24px 16px">
+      <div style="font-size:28px;margin-bottom:12px">2</div>
+      <div class="fc-title">インストール</div>
+      <div class="fc-desc"><code style="font-family:'Fira Code',monospace;font-size:11px">npm install -g @anthropic-ai/claude-code</code><br>1コマンドで完了</div>
+    </div>
+    <div class="fc" style="text-align:center;padding:24px 16px">
+      <div style="font-size:28px;margin-bottom:12px">3</div>
+      <div class="fc-title">プロジェクトで試す</div>
+      <div class="fc-desc">作業中のフォルダで <code style="font-family:'Fira Code',monospace;font-size:11px">claude</code> を実行して話しかけてみる</div>
+    </div>
+  </div>
+  <div class="gc" style="padding:24px">
+    <h3 class="h3" style="margin-bottom:16px;text-align:center">このスライドで学んだこと</h3>
+    <div class="g-2c" style="gap:0 40px">
+      <div class="blist">
+        <li>Claude Code = <strong style="color:var(--text)">AIペアプログラマー</strong></li>
+        <li>自然言語でコードを<strong style="color:var(--text)">生成・修正・デバッグ</strong></li>
+        <li><strong style="color:var(--text)">CLAUDE.md</strong> でプロジェクトを覚えさせる</li>
+        <li><strong style="color:var(--text)">MCP</strong> で外部サービスと連携</li>
+      </div>
+      <div class="blist">
+        <li><strong style="color:var(--text)">Git操作・テスト実行</strong>も自律的に</li>
+        <li><strong style="color:var(--text)">Hooks</strong> で自動化を設定</li>
+        <li><strong style="color:var(--text)">/think</strong> で深い思考を引き出す</li>
+        <li>公式ドキュメント: <span style="font-family:'Fira Code',monospace;font-size:11px;color:var(--acc3)">docs.anthropic.com</span></li>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+</div><!-- /pres -->
+
+<!-- ===================== NAV ===================== -->
+<nav class="nav">
+  <button class="nav-btn" id="prevBtn">← 前へ</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="nextBtn">次へ →</button>
+</nav>
+
+<!-- ===================== SCRIPT ===================== -->
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ── Custom Cursor ──
+const cur = document.getElementById('cur');
+const curf = document.getElementById('curf');
+window.addEventListener('mousemove', e => {
+  gsap.to(cur,  { x: e.clientX, y: e.clientY, duration: 0.1, ease: 'none' });
+  gsap.to(curf, { x: e.clientX, y: e.clientY, duration: 0.5, ease: 'power2.out' });
+});
+document.querySelectorAll('a,button,.toc-i,.mcp-c,.fc,.gc,.mc').forEach(el => {
+  el.addEventListener('mouseenter', () => gsap.to(curf, { scale: 2, duration: 0.3 }));
+  el.addEventListener('mouseleave', () => gsap.to(curf, { scale: 1, duration: 0.3 }));
+});
+
+// ── Presentation ──
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total = slides.length;
+let current = 0;
+let isAnimating = false;
+
+// Build dots
+const dotsEl = document.getElementById('dots');
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsEl.appendChild(d);
+});
+
+// Init: all hidden except first
+gsap.set(slides, { autoAlpha: 0, xPercent: 100 });
+gsap.set(slides[0], { autoAlpha: 1, xPercent: 0 });
+slides[0].classList.add('is-active');
+animateIn(slides[0]);
+
+function updateUI() {
+  document.getElementById('curn').textContent = String(current + 1).padStart(2, '0');
+  document.getElementById('prog').style.width = ((current + 1) / total * 100) + '%';
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total - 1;
+}
+
+function animateIn(slide) {
+  // Kill any lingering tweens on this slide's children
+  const allEls = slide.querySelectorAll('*');
+  gsap.killTweensOf(allEls);
+
+  const els = slide.querySelectorAll('.tag,.h2,.h1,.lead,.step-item,.blist,.term,.gc,.fc,.mc,.toc-i,.mcp-c,.cmd-row,.hl,.tip,.cblock');
+  gsap.fromTo(els,
+    { opacity: 0, y: 22 },
+    {
+      opacity: 1, y: 0, duration: 0.55,
+      stagger: 0.06, ease: 'power3.out', delay: 0.2,
+      clearProps: 'transform,opacity'
+    }
+  );
+  // Title slide special
+  const main = slide.querySelector('.s1-main');
+  if (main) {
+    gsap.killTweensOf(main);
+    gsap.fromTo(main, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power4.out', delay: 0.1, clearProps: 'transform,opacity' });
+  }
+}
+
+function goTo(idx, dir) {
+  if (isAnimating || idx === current || idx < 0 || idx >= total) return;
+  isAnimating = true;
+  const d = dir !== undefined ? dir : (idx > current ? 1 : -1);
+  const old = slides[current];
+  const next = slides[idx];
+
+  gsap.to(old, {
+    xPercent: d > 0 ? -100 : 100,
+    autoAlpha: 0, duration: 0.45, ease: 'power2.inOut',
+    onComplete() { old.classList.remove('is-active'); }
+  });
+  gsap.fromTo(next,
+    { xPercent: d > 0 ? 80 : -80, autoAlpha: 0 },
+    {
+      xPercent: 0, autoAlpha: 1, duration: 0.5, ease: 'power2.out', delay: 0.1,
+      onStart() { next.classList.add('is-active'); animateIn(next); },
+      onComplete() { isAnimating = false; }
+    }
+  );
+  current = idx;
+  updateUI();
+}
+
+document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1, -1));
+document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1, 1));
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1, 1); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1, -1); }
+});
+
+// TOC click navigation
+document.querySelectorAll('[data-go]').forEach(el => {
+  el.addEventListener('click', () => goTo(parseInt(el.dataset.go)));
+});
+
+// Touch swipe
+let tx = 0;
+document.addEventListener('touchstart', e => tx = e.touches[0].clientX, { passive: true });
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) goTo(dx < 0 ? current + 1 : current - 1, dx < 0 ? 1 : -1);
+}, { passive: true });
+
+// Aurora slow animation
+gsap.to('.aurora', {
+  '--angle': '360deg',
+  duration: 30, repeat: -1, ease: 'none'
+});
+
+updateUI();
+</script>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').then(r => console.log('SW registered')).catch(e => console.log('SW error', e));
+  });
+}
+</script>
+</body>
+</html>
+
