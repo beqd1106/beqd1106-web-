@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSO（Dental Service Organization）完全解説 | 歯科経営コンパス</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #0d2137;
+    --navy2:  #1a3a5c;
+    --teal:   #00c9a7;
+    --teal-d: #00a47e;
+    --gold:   #c9a84c;
+    --red:    #e74c3c;
+    --gray6:  #637282;
+    --gray2:  #e4e8ee;
+    --offwh:  #f5f7fa;
+    --white:  #ffffff;
+    --text:   #1a2532;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    line-height: 1.8;
+  }
+
+  /* ─── ナビ ─────────────────────────────── */
+  .site-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--navy);
+    border-bottom: 2px solid var(--teal);
+    padding: 0 2rem;
+    display: flex; align-items: center; gap: 1.5rem;
+    height: 56px;
+  }
+  .nav-back {
+    color: var(--teal); text-decoration: none;
+    font-size: 0.85rem; display: flex; align-items: center; gap: 0.4rem;
+    transition: opacity 0.2s;
+  }
+  .nav-back:hover { opacity: 0.75; }
+  .nav-sep { color: var(--navy2); }
+  .nav-current { color: rgba(255,255,255,0.7); font-size: 0.85rem; }
+
+  /* ─── ヒーロー ────────────────────────── */
+  .hero {
+    background: var(--navy);
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      135deg,
+      transparent, transparent 40px,
+      rgba(0,201,167,0.03) 40px, rgba(0,201,167,0.03) 80px
+    );
+  }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(0,201,167,0.15);
+    color: var(--teal);
+    border: 1px solid rgba(0,201,167,0.4);
+    border-radius: 100px;
+    padding: 0.3rem 1rem;
+    font-size: 0.8rem; letter-spacing: 0.08em;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    color: var(--white);
+    line-height: 1.35;
+    margin-bottom: 0.8rem;
+    position: relative;
+  }
+  .hero h1 span { color: var(--teal); }
+  .hero-sub {
+    color: rgba(255,255,255,0.65);
+    font-size: 1rem;
+    max-width: 600px; margin: 0 auto 2rem;
+  }
+  .hero-meta {
+    display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;
+    font-size: 0.82rem; color: rgba(255,255,255,0.5);
+  }
+  .hero-meta span { display: flex; align-items: center; gap: 0.3rem; }
+
+  /* ─── コンテンツ骨格 ────────────────── */
+  .page-wrapper {
+    max-width: 860px; margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  /* ─── 目次 ──────────────────────────── */
+  .toc {
+    background: var(--offwh);
+    border-left: 4px solid var(--teal);
+    border-radius: 0 8px 8px 0;
+    padding: 1.5rem 2rem;
+    margin-bottom: 3rem;
+  }
+  .toc-title {
+    font-size: 0.85rem; font-weight: 700;
+    color: var(--teal); letter-spacing: 0.06em;
+    margin-bottom: 0.8rem;
+  }
+  .toc ol { padding-left: 1.2em; }
+  .toc li { margin: 0.3rem 0; }
+  .toc a {
+    color: var(--navy2); text-decoration: none; font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+  .toc a:hover { color: var(--teal); }
+
+  /* ─── セクション ───────────────────── */
+  .section { margin-bottom: 4rem; }
+  .section-header {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--gray2);
+  }
+  .section-num {
+    width: 32px; height: 32px;
+    background: var(--teal);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .section h2 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.4rem; color: var(--navy);
+  }
+  .section p { margin-bottom: 1rem; font-size: 0.95rem; color: #2a3848; }
+  .section p:last-child { margin-bottom: 0; }
+
+  /* ─── 定義ボックス ─────────────────── */
+  .def-box {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    color: var(--white);
+  }
+  .def-box .def-label {
+    font-size: 0.75rem; color: var(--teal);
+    letter-spacing: 0.1em; font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .def-box .def-text {
+    font-size: 1rem; line-height: 1.9;
+    color: rgba(255,255,255,0.9);
+  }
+  .def-box .def-en {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    font-size: 0.85rem; color: rgba(255,255,255,0.5);
+    font-style: italic;
+  }
+
+  /* ─── カード群 ─────────────────────── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem; margin: 1.5rem 0;
+  }
+  .card-item {
+    background: var(--offwh);
+    border: 1px solid var(--gray2);
+    border-radius: 8px;
+    padding: 1.2rem;
+    border-top: 3px solid var(--teal);
+  }
+  .card-item.gold  { border-top-color: var(--gold); }
+  .card-item.navy  { border-top-color: var(--navy2); }
+  .card-item.red   { border-top-color: var(--red); }
+  .card-item h4 {
+    font-size: 0.9rem; font-weight: 700; color: var(--navy);
+    margin-bottom: 0.5rem;
+  }
+  .card-item p { font-size: 0.82rem; color: var(--gray6); margin: 0; }
+
+  /* ─── テーブル ─────────────────────── */
+  .table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  thead th {
+    background: var(--navy);
+    color: var(--white);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    font-weight: 700; font-size: 0.82rem;
+  }
+  tbody tr:nth-child(even) { background: var(--offwh); }
+  tbody td {
+    padding: 0.55rem 0.8rem;
+    border-bottom: 1px solid var(--gray2);
+    vertical-align: top;
+  }
+  tbody tr:hover { background: rgba(0,201,167,0.04); }
+  .td-hl { color: var(--teal); font-weight: 700; }
+
+  /* ─── 比較カード ────────────────────── */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem; margin: 1.5rem 0;
+  }
+  @media (max-width: 600px) { .compare-grid { grid-template-columns: 1fr; } }
+  .compare-col {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--gray2);
+  }
+  .compare-header {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem; font-weight: 700;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .compare-header.pro  { background: rgba(0,201,167,0.12); color: var(--teal-d); }
+  .compare-header.con  { background: rgba(231,76,60,0.1);  color: var(--red); }
+  .compare-body { padding: 1rem; }
+  .compare-body ul { padding-left: 1.2em; }
+  .compare-body li { font-size: 0.87rem; margin: 0.4rem 0; color: #2a3848; }
+
+  /* ─── ステップ ─────────────────────── */
+  .step-list { margin: 1.5rem 0; }
+  .step-item {
+    display: flex; gap: 1rem;
+    margin-bottom: 1.2rem;
+    align-items: flex-start;
+  }
+  .step-badge {
+    width: 36px; height: 36px;
+    background: var(--teal);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 700;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .step-body h4 { font-size: 0.95rem; color: var(--navy); margin-bottom: 0.2rem; }
+  .step-body p  { font-size: 0.87rem; color: var(--gray6); margin: 0; }
+
+  /* ─── 注意書き ─────────────────────── */
+  .alert {
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    margin: 1.5rem 0;
+    display: flex; gap: 0.75rem; align-items: flex-start;
+    font-size: 0.88rem;
+  }
+  .alert.warn {
+    background: rgba(201,168,76,0.1);
+    border-left: 4px solid var(--gold);
+    color: #5a4200;
+  }
+  .alert.info {
+    background: rgba(0,201,167,0.08);
+    border-left: 4px solid var(--teal);
+    color: #0a3a32;
+  }
+  .alert-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+  .alert p { margin: 0; }
+
+  /* ─── フッター ─────────────────────── */
+  .page-footer {
+    background: var(--navy);
+    padding: 2rem;
+    text-align: center;
+  }
+  .page-footer a {
+    color: var(--teal); text-decoration: none; font-size: 0.9rem;
+  }
+  .page-footer p { color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.5rem; }
+
+  /* ─── レスポンシブ ─────────────────── */
+  @media (max-width: 640px) {
+    .hero { padding: 3rem 1.2rem 2.5rem; }
+    .page-wrapper { padding: 2rem 1rem 4rem; }
+    .card-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ナビ -->
+<nav class="site-nav">
+  <a href="index.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    歯科経営コンパス
+  </a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">DSO（Dental Service Organization）</span>
+</nav>
+
+<!-- ヒーロー -->
+<header class="hero">
+  <div class="hero-tag">経営・組織戦略</div>
+  <h1>DSO<br><span>Dental Service Organization</span><br>完全解説</h1>
+  <p class="hero-sub">歯科版「経営支援組織」の仕組み・メリット・日本での実態を、歯科業界の文脈に沿って解説します</p>
+  <div class="hero-meta">
+    <span>情報基準日：2026年5月</span>
+    <span>対象：開業医・法人展開を検討中の院長</span>
+  </div>
+</header>
+
+<!-- 本文 -->
+<main class="page-wrapper">
+
+  <!-- 目次 -->
+  <nav class="toc" aria-label="目次">
+    <div class="toc-title">目次</div>
+    <ol>
+      <li><a href="#what">DSOとは何か</a></li>
+      <li><a href="#services">DSOが提供するサービス</a></li>
+      <li><a href="#types">DSOの主な類型</a></li>
+      <li><a href="#us-market">米国DSOの現状</a></li>
+      <li><a href="#japan">日本での実態と法的制約</a></li>
+      <li><a href="#mso">日本版MSO（Management Services Organization）モデル</a></li>
+      <li><a href="#pros-cons">メリット・デメリット</a></li>
+      <li><a href="#checklist">DSO/MSOを検討する際のチェックポイント</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1. DSOとは -->
+  <section class="section" id="what">
+    <div class="section-header">
+      <span class="section-num">1</span>
+      <h2>DSOとは何か</h2>
+    </div>
+
+    <div class="def-box">
+      <div class="def-label">定義</div>
+      <div class="def-text">
+        DSO（Dental Service Organization）とは、歯科医院の<strong>経営・管理業務を代行・支援する非臨床的な法人組織</strong>です。歯科医師は臨床に専念し、人事・経理・マーケティング・設備管理などのバックオフィス業務をDSOが担います。DSOそれ自体は歯科診療を行いません。
+      </div>
+      <div class="def-en">Dental Service Organization — a business entity that provides administrative, business, and management support services to dental practices, while clinical decisions remain with licensed dentists.</div>
+    </div>
+
+    <p>DSOは1990年代に米国で誕生し、現在は米国歯科市場における主要な組織形態の一つとなっています。歯科医師不足・経営コスト上昇・競争激化を背景に急成長し、プライベートエクイティ（PE）ファンドの投資先としても注目されています。</p>
+
+    <p>日本では医療法の制約（後述）があるため「DSO」という形態は直接成立しませんが、「MSO（Management Services Organization）」という類似モデルが普及し始めており、大手歯科グループや医療法人連合の実質的な運営形態として採用されています。</p>
+
+    <div class="alert info">
+      <span class="alert-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      </span>
+      <p>DSOとMSOはしばしば混用されますが、<strong>DSO＝米国型（診療所への出資を含む場合あり）</strong>、<strong>MSO＝管理サービスのみ提供する法人</strong>という使い分けが一般的です。日本文脈では「MSO」と表記される場合が多いです。</p>
+    </div>
+  </section>
+
+  <!-- 2. サービス -->
+  <section class="section" id="services">
+    <div class="section-header">
+      <span class="section-num">2</span>
+      <h2>DSOが提供するサービス</h2>
+    </div>
+
+    <p>DSOが引き受けるのは歯科医師の<strong>「本業以外の業務」</strong>です。提供範囲はDSOによって異なりますが、一般的に以下が含まれます。</p>
+
+    <div class="card-grid">
+      <div class="card-item">
+        <h4>人事・採用・教育</h4>
+        <p>スタッフ採用・給与計算・労務管理・研修プログラムの整備</p>
+      </div>
+      <div class="card-item gold">
+        <h4>マーケティング・集患</h4>
+        <p>Webサイト・SNS・広告運用・口コミ対策・ブランディング</p>
+      </div>
+      <div class="card-item navy">
+        <h4>経理・財務・請求</h4>
+        <p>レセプト請求・保険請求・資金調達支援・月次収支管理</p>
+      </div>
+      <div class="card-item">
+        <h4>IT・システム</h4>
+        <p>電子カルテ・予約システム・院内ネットワーク・セキュリティ</p>
+      </div>
+      <div class="card-item gold">
+        <h4>設備・物品購買</h4>
+        <p>医療機器・消耗品の一括購買によるコスト削減（スケールメリット）</p>
+      </div>
+      <div class="card-item navy">
+        <h4>施設管理・不動産</h4>
+        <p>物件交渉・内装管理・機器リース契約・修繕対応</p>
+      </div>
+      <div class="card-item">
+        <h4>コンプライアンス支援</h4>
+        <p>施設基準・法令遵守の管理、個別指導対策</p>
+      </div>
+      <div class="card-item gold">
+        <h4>データ分析・KPI管理</h4>
+        <p>経営指標の可視化・改善提案・ベンチマーク比較</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 類型 -->
+  <section class="section" id="types">
+    <div class="section-header">
+      <span class="section-num">3</span>
+      <h2>DSOの主な類型</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>類型</th>
+            <th>特徴</th>
+            <th>診療所の独立性</th>
+            <th>主な対象</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-hl">完全統合型</td>
+            <td>DSOが診療所の株式を取得（または経営支配）し、包括的に管理</td>
+            <td>低い（DSOの方針に従う）</td>
+            <td>大規模DSO、多店舗展開チェーン</td>
+          </tr>
+          <tr>
+            <td class="td-hl">提携型（Affiliated）</td>
+            <td>DSOと提携しつつ、歯科医師が経営上の独立性を維持</td>
+            <td>中程度</td>
+            <td>一定規模以上の開業医</td>
+          </tr>
+          <tr>
+            <td class="td-hl">サービス契約型（MSO型）</td>
+            <td>管理サービスのみ契約で提供。出資なし・経営決定権は院長</td>
+            <td>高い（日本で最も普及）</td>
+            <td>独立を保ちながら効率化したい医院</td>
+          </tr>
+          <tr>
+            <td class="td-hl">グループ共同型</td>
+            <td>複数の歯科医院が共同で管理法人を設立（歯科医師主導）</td>
+            <td>高い（自分たちで運営）</td>
+            <td>医療法人グループ・地域連合</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 4. 米国 -->
+  <section class="section" id="us-market">
+    <div class="section-header">
+      <span class="section-num">4</span>
+      <h2>米国DSOの現状</h2>
+    </div>
+
+    <p>DSOは米国歯科市場を大きく変えた存在です。2000年代以降、プライベートエクイティの参入により急拡大しました。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>指標</th><th>内容</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>市場シェア</td>
+            <td>米国の歯科医師のうち<strong>約25〜35%</strong>がDSO関連の診療所に勤務・提携（成長続く）</td>
+          </tr>
+          <tr>
+            <td>主要プレイヤー</td>
+            <td>Heartland Dental、Pacific Dental Services、Aspen Dental Management、Smile Brands、Dental Care Alliance など</td>
+          </tr>
+          <tr>
+            <td>PEファンドの関与</td>
+            <td>KKR・Warburg Pincus・Friedman Fleischer &amp; Lowe などが主要DSOに投資</td>
+          </tr>
+          <tr>
+            <td>成長背景</td>
+            <td>歯科医学生の学費高騰による負債問題・開業コスト上昇・経営教育の不足</td>
+          </tr>
+          <tr>
+            <td>批判・課題</td>
+            <td>過剰診療への懸念・臨床判断への圧力・高い離職率・患者との関係希薄化</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert warn">
+      <span class="alert-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </span>
+      <p>米国でのDSO拡大に対しては「患者ケアの質低下」「歯科医師の自律性喪失」を懸念する声も強く、一部の州では規制強化の議論が進んでいます。日本での参考事例として読む際は文化・制度の違いに注意が必要です。</p>
+    </div>
+  </section>
+
+  <!-- 5. 日本での実態 -->
+  <section class="section" id="japan">
+    <div class="section-header">
+      <span class="section-num">5</span>
+      <h2>日本での実態と法的制約</h2>
+    </div>
+
+    <p>日本ではDSOが米国のような形で成立することは<strong>医療法（昭和23年法律第205号）により制限</strong>されています。</p>
+
+    <div class="def-box">
+      <div class="def-label">医療法 第7条・第39条 の骨子（日本の制約）</div>
+      <div class="def-text">
+        歯科診療所を開設できるのは<strong>歯科医師個人</strong>または<strong>医療法人</strong>に限られます。一般の株式会社や合同会社が直接歯科診療所を経営・開設することは<strong>違法</strong>です。「非医療法人が歯科医院を経営する」という米国型DSOの直接適用はできません。
+      </div>
+    </div>
+
+    <p>ただし、「<strong>管理サービスを提供する法人（MSO）</strong>を別途設立し、医療法人にサービスを提供する」という構造は合法的に実施できます。これが日本版MSOモデルの根拠です。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>形態</th><th>日本での可否</th><th>根拠</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>株式会社が歯科診療所を直接開設</td>
+            <td style="color:var(--red);font-weight:700;">不可</td>
+            <td>医療法第7条・第39条</td>
+          </tr>
+          <tr>
+            <td>株式会社が医療法人に経営参加・出資</td>
+            <td style="color:var(--red);font-weight:700;">原則不可</td>
+            <td>医療法人の出資・議決権規制</td>
+          </tr>
+          <tr>
+            <td>MSOが医療法人に管理サービスを有償提供</td>
+            <td style="color:var(--teal-d);font-weight:700;">可（契約内容に注意）</td>
+            <td>契約自由の原則（不当な経営支配は不可）</td>
+          </tr>
+          <tr>
+            <td>複数の医療法人が共同の管理法人を設立</td>
+            <td style="color:var(--teal-d);font-weight:700;">可</td>
+            <td>医療法人連合・歯科グループの実態</td>
+          </tr>
+          <tr>
+            <td>歯科医師が自ら複数の医療法人に関与</td>
+            <td style="color:var(--gold);font-weight:700;">要件あり</td>
+            <td>兼務・管理医師の規制（都道府県の判断による）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 6. 日本版MSO -->
+  <section class="section" id="mso">
+    <div class="section-header">
+      <span class="section-num">6</span>
+      <h2>日本版MSO（Management Services Organization）モデル</h2>
+    </div>
+
+    <p>日本では以下の構造でDSOに類似した効果を実現するケースが増えています。</p>
+
+    <div class="step-list">
+      <div class="step-item">
+        <span class="step-badge">01</span>
+        <div class="step-body">
+          <h4>医療法人（診療所）を設立・維持</h4>
+          <p>歯科医師が理事長として医療法人を設立。診療所の開設・運営の主体は医療法人。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <span class="step-badge">02</span>
+        <div class="step-body">
+          <h4>別法人（MSO）を設立</h4>
+          <p>合同会社・株式会社などで管理会社を設立。MSOは医療行為を一切行わない純粋な管理会社。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <span class="step-badge">03</span>
+        <div class="step-body">
+          <h4>サービス契約の締結</h4>
+          <p>医療法人とMSOが「管理サービス委託契約」を締結。人事・マーケティング・IT等のサービスを有償で提供。<strong>報酬は実費相当であること</strong>が重要（不当な利益移転は問題になる）。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <span class="step-badge">04</span>
+        <div class="step-body">
+          <h4>複数院への展開（スケールアップ）</h4>
+          <p>MSOが複数の医療法人・診療所にサービスを提供することで、スケールメリットが生まれる。購買コスト・共通システム・採用費を分散できる。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert warn">
+      <span class="alert-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </span>
+      <p>MSOの活用は適法ですが、<strong>「MSOが診療所の実質的な経営支配者」と見なされる状況は医療法違反</strong>のリスクがあります。臨床の決定権・患者への責任は医療法人（院長）が担う必要があります。導入前は医療法に詳しい弁護士・行政書士への相談が必須です。</p>
+    </div>
+  </section>
+
+  <!-- 7. メリット・デメリット -->
+  <section class="section" id="pros-cons">
+    <div class="section-header">
+      <span class="section-num">7</span>
+      <h2>メリット・デメリット</h2>
+    </div>
+
+    <p>DSO/MSOへの参画・活用を検討する際に把握すべきポイントです。</p>
+
+    <div class="compare-grid">
+      <div class="compare-col">
+        <div class="compare-header pro">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+          メリット
+        </div>
+        <div class="compare-body">
+          <ul>
+            <li>経営・事務業務から解放され<strong>臨床に集中</strong>できる</li>
+            <li>一括購買によるコスト削減（材料費・機器リース等）</li>
+            <li>マーケティング・Web集患のプロノウハウ活用</li>
+            <li>採用・人材育成のサポートで人手不足に対処</li>
+            <li>IT・システム導入の初期コスト分散</li>
+            <li>多院展開時の管理コスト効率化</li>
+            <li>キャリアパス整備による<strong>スタッフ定着率向上</strong></li>
+          </ul>
+        </div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-header con">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          デメリット・リスク
+        </div>
+        <div class="compare-body">
+          <ul>
+            <li>MSO費用（管理費）の継続的な支出が発生</li>
+            <li>医院の<strong>方針決定が画一化</strong>される懸念</li>
+            <li>DSOへの依存度が高まると撤退が困難</li>
+            <li>患者との個別的な関係構築がしにくくなる場合も</li>
+            <li>法的リスク（医療法・独占禁止法の抵触懸念）</li>
+            <li>契約内容次第では不透明な費用構造のリスク</li>
+            <li>臨床判断への間接的な圧力（生産性重視）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. チェックポイント -->
+  <section class="section" id="checklist">
+    <div class="section-header">
+      <span class="section-num">8</span>
+      <h2>DSO/MSOを検討する際のチェックポイント</h2>
+    </div>
+
+    <p>DSO/MSOとの提携・設立を検討する際に確認すべき事項です。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>カテゴリ</th><th>確認事項</th><th>重要度</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>法的適合性</td>
+            <td>MSOが医療法人の実質的支配者にならない構造か。弁護士の確認を経ているか</td>
+            <td class="td-hl">必須</td>
+          </tr>
+          <tr>
+            <td>臨床の独立性</td>
+            <td>診断・治療方針の決定権が院長に留保されているか。売上目標が臨床に介入しないか</td>
+            <td class="td-hl">必須</td>
+          </tr>
+          <tr>
+            <td>契約内容</td>
+            <td>管理費の算定根拠が明確か。解約条件・違約金は適正か。サービス範囲と責任分担が明記されているか</td>
+            <td class="td-hl">必須</td>
+          </tr>
+          <tr>
+            <td>費用対効果</td>
+            <td>MSO費用と削減できるコスト・増加する医業収入のバランスを試算しているか</td>
+            <td>重要</td>
+          </tr>
+          <tr>
+            <td>情報管理</td>
+            <td>患者情報・レセプトデータをMSOに提供する場合の個人情報保護体制</td>
+            <td>重要</td>
+          </tr>
+          <tr>
+            <td>実績確認</td>
+            <td>MSOの実績・支援先医院の評判。財務状況（倒産・撤退リスク）の確認</td>
+            <td>重要</td>
+          </tr>
+          <tr>
+            <td>出口戦略</td>
+            <td>提携解除後に自院だけで運営できる体制か。人材・システムの依存度</td>
+            <td>推奨</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert info">
+      <span class="alert-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      </span>
+      <p>DSOやMSOは万能ではありません。<strong>単院・小規模医院</strong>では管理費が利益を上回るケースもあります。「どの業務を効率化したいのか」を具体化してから、必要なサービスだけを選択することも有効な選択肢です。医療法人化の検討と並行して、税理士・医療法専門弁護士にご相談ください。</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- フッター -->
+<footer class="page-footer">
+  <a href="index.html">← 歯科経営コンパス トップへ戻る</a>
+  <p>本ページの情報は公表資料に基づく解説です。個別の法的・経営判断には専門家にご相談ください。</p>
+</footer>
+
+</body>
+</html>
