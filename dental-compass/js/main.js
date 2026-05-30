@@ -600,3 +600,41 @@ function initDrawerTools() {
 function toggleCardDetail(card) {
   card.classList.toggle('is-open');
 }
+
+// ─── NEW バッジ & ニュースバナー ───────────────────────────────────
+(async function applyNewsBadges() {
+  try {
+    const res = await fetch('/dental-compass/data/news.json?_=' + Date.now());
+    if (!res.ok) return;
+    const data = await res.json();
+
+    const today = new Date(Date.now() + 9 * 3600 * 1000).toISOString().split('T')[0];
+    const active = (data.updates || []).filter(u => u.expires >= today);
+    if (!active.length) return;
+
+    // カードにバッジを付与（cat_id ごとに1つ）
+    const seen = new Set();
+    active.forEach(u => {
+      if (seen.has(u.cat_id)) return;
+      seen.add(u.cat_id);
+      const card = document.querySelector(`a.info-card[href="#${u.cat_id}"]`);
+      if (!card) return;
+      const badge = document.createElement('span');
+      badge.className = 'badge-new';
+      badge.textContent = 'NEW';
+      card.appendChild(badge);
+    });
+
+    // ニュースバナー表示
+    const banner = document.getElementById('news-banner');
+    const textEl = banner?.querySelector('.news-banner-text');
+    if (banner && textEl) {
+      const labels = [...new Set(active.map(u => u.label))];
+      const shortened = labels.slice(0, 3).join('・') + (labels.length > 3 ? `他${labels.length - 3}件` : '');
+      textEl.innerHTML = `<strong>情報更新あり</strong>　${shortened}`;
+      banner.classList.add('is-visible');
+    }
+  } catch (_) {
+    // fetch 失敗は無視（ネットワーク不可・ファイル未生成等）
+  }
+})();
