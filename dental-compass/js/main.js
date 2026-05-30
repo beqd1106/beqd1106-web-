@@ -179,21 +179,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 });
 
 // ─── GSAP ScrollTrigger アニメーション ───
-// カテゴリオーバービューカード
-ScrollTrigger.batch('.info-card.fade-up', {
-  start: 'top 88%',
-  onEnter: (elements) => {
-    gsap.from(elements, {
-      opacity: 0,
-      y: 30,
-      stagger: 0.07,
-      duration: 0.6,
-      ease: 'power2.out',
-      overwrite: true,
-    });
-  }
-});
-
 // ツールカード
 ScrollTrigger.batch('.tool-card.fade-up', {
   start: 'top 85%',
@@ -209,6 +194,10 @@ ScrollTrigger.batch('.tool-card.fade-up', {
     });
   }
 });
+
+// ─── モーダル・ドロワー内スクロールをLenisから独立させる ───
+document.getElementById('modalContent')?.addEventListener('wheel', (e) => e.stopPropagation(), { passive: true });
+document.getElementById('drawerBody')?.addEventListener('wheel', (e) => e.stopPropagation(), { passive: true });
 
 // ─── キーボードショートカット ───
 document.addEventListener('keydown', (e) => {

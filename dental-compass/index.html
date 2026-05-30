@@ -758,8 +758,7 @@ function checkPw(){
     <span class="section-label" style="color:rgba(255,255,255,0.7);">Free Consultation</span>
     <h2 class="section-title">まずは無料相談から</h2>
     <p class="section-desc">
-      開業・運営・収益改善など、歯科経営のあらゆるお悩みをお気軽にご相談ください。
-      専門コンサルタントが丁寧にお答えします。
+      開業・運営・収益改善など、歯科経営のあらゆるお悩みをお気軽に<br>ご相談ください。<br>専門コンサルタントが丁寧にお答えします。
     </p>
     <a href="mailto:info@dental-compass.jp" class="btn-primary" style="margin:2rem auto 0;display:inline-flex;">
       無料相談を申し込む →
@@ -857,7 +856,7 @@ function checkPw(){
 </div>
 
 <div id="modalOverlay" class="modal-overlay" onclick="closeModalOnOverlay(event)">
-  <div class="modal" id="modalContent">
+  <div class="modal" id="modalContent" data-lenis-prevent>
     <div class="modal-header">
       <h2 class="modal-title" id="modalTitle">ツール</h2>
       <button class="modal-close" onclick="closeModal()">✕</button>
@@ -892,7 +891,7 @@ function checkPw(){
     <button class="drawer-tab" data-tab="checklist">チェックリスト</button>
     <button class="drawer-tab" data-tab="tools">関連ツール</button>
   </div>
-  <div class="drawer-body" id="drawerBody">
+  <div class="drawer-body" id="drawerBody" data-lenis-prevent>
     <div class="drawer-panel is-active" id="dpOverview"></div>
     <div class="drawer-panel" id="dpChecklist"></div>
     <div class="drawer-panel" id="dpTools"></div>
