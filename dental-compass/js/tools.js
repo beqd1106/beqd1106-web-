@@ -253,8 +253,8 @@ const TOOL_DEFS = {
           <label class="check-item"><input type="checkbox" id="t5_c4"><div class="check-box"></div><div class="check-text">マイナ保険証のオンライン資格確認を導入している<div class="check-sub">医療DX推進体制整備加算の要件</div></div></label>
           <label class="check-item"><input type="checkbox" id="t5_c5"><div class="check-box"></div><div class="check-text">電子処方箋発行に対応している<div class="check-sub">同上（加算点が異なる）</div></div></label>
           <label class="check-item"><input type="checkbox" id="t5_c6"><div class="check-box"></div><div class="check-text">歯科衛生士が常勤1名以上在籍している<div class="check-sub">口腔管理体制強化加算・各種加算の要件</div></div></label>
-          <label class="check-item"><input type="checkbox" id="t5_c7"><div class="check-box"></div><div class="check-text">過去1年間に歯科疾患管理料を100回以上算定している<div class="check-sub">口腔管理体制強化加算の要件</div></div></label>
-          <label class="check-item"><input type="checkbox" id="t5_c8"><div class="check-box"></div><div class="check-text">過去1年間に歯科訪問診療を24回以上実施している<div class="check-sub">口腔管理体制強化加算の要件（在宅実績）</div></div></label>
+          <label class="check-item"><input type="checkbox" id="t5_c7"><div class="check-box"></div><div class="check-text">過去1年間に歯周病継続支援治療を30回以上算定している<div class="check-sub">口腔管理体制強化加算の要件</div></div></label>
+          <label class="check-item"><input type="checkbox" id="t5_c8"><div class="check-box"></div><div class="check-text">過去1年間に歯科訪問診療を5回以上実施している（または在宅体制確保）<div class="check-sub">口腔管理体制強化加算の要件（在宅実績）</div></div></label>
           <label class="check-item"><input type="checkbox" id="t5_c9"><div class="check-box"></div><div class="check-text">口腔内写真撮影を日常的に実施している<div class="check-sub">口腔機能管理・口腔管理体制強化加算の要件</div></div></label>
           <label class="check-item"><input type="checkbox" id="t5_c10"><div class="check-box"></div><div class="check-text">歯科訪問診療の実施体制がある（24時間連絡可能）<div class="check-sub">在宅療養支援歯科診療所の要件</div></div></label>
         </div>
