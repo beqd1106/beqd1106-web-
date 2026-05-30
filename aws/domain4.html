@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ドメイン4：請求・料金設定・サポート | AWS CLF 学習ガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --aws-orange: #FF9900;
+  --domain-color: #CE93D8;
+  --domain-color-solid: #9C27B0;
+  --bg-primary: #070C18;
+  --bg-secondary: #0D1526;
+  --bg-card: rgba(255,255,255,0.04);
+  --bg-card-hover: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.08);
+  --border-active: rgba(206,147,216,0.4);
+  --text-primary: #E8EAF0;
+  --text-secondary: #8A93A8;
+  --text-muted: #5A6478;
+  --ease-smooth: cubic-bezier(0.21,0.51,0.51,1);
+  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.7; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+.scroll-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: linear-gradient(90deg, var(--domain-color-solid), var(--domain-color)); z-index: 1000; transition: width 0.1s linear; }
+.header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(1rem,4vw,2.5rem); background: rgba(7,12,24,0.88); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+.header-left { display: flex; align-items: center; gap: 1rem; }
+.back-btn { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--text-secondary); transition: color 0.3s; }
+.back-btn:hover { color: var(--text-primary); }
+.header-domain { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--domain-color); font-weight: 500; padding-left: 1rem; border-left: 1px solid var(--border); }
+.header-right { display: flex; align-items: center; gap: 1rem; }
+.header-progress-bar { width: 100px; height: 4px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden; }
+.header-progress-fill { height: 100%; width: 0%; background: var(--domain-color-solid); border-radius: 100px; transition: width 0.5s; }
+.header-progress-text { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; }
+.aurora-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.aurora-bg::before { content: ''; position: absolute; width: 100%; height: 100%; background: radial-gradient(ellipse 70% 50% at 20% 30%, rgba(156,39,176,0.05) 0%, transparent 60%), radial-gradient(ellipse 50% 60% at 80% 70%, rgba(255,153,0,0.04) 0%, transparent 60%); }
+.layout { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; padding-top: 60px; position: relative; z-index: 1; }
+.sidebar { position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; padding: 1.75rem 1.25rem; border-right: 1px solid var(--border); background: rgba(13,21,38,0.5); }
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 100px; }
+.sidebar-label { font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem; font-weight: 500; }
+.sidebar-nav { display: flex; flex-direction: column; gap: 2px; margin-bottom: 2rem; }
+.nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.75rem; border-radius: 8px; font-size: 0.82rem; color: var(--text-secondary); cursor: pointer; transition: all 0.3s; border: 1px solid transparent; }
+.nav-item:hover { color: var(--text-primary); background: var(--bg-card); }
+.nav-item.active { color: var(--domain-color); background: rgba(156,39,176,0.08); border-color: rgba(206,147,216,0.2); }
+.nav-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; transition: background 0.3s; }
+.nav-item.active .nav-dot { background: var(--domain-color); }
+.nav-item.completed .nav-dot { background: #4CAF50; }
+.main-content { padding: clamp(2rem,4vw,3.5rem) clamp(1.5rem,4vw,4rem); max-width: 860px; }
+.page-header { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.page-domain-tag { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.9rem; border: 1px solid rgba(206,147,216,0.3); border-radius: 100px; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--domain-color); background: rgba(156,39,176,0.06); margin-bottom: 1.25rem; }
+.page-title { font-family: 'Noto Serif JP', serif; font-size: clamp(1.75rem,3.5vw,2.75rem); font-weight: 600; letter-spacing: 0.04em; line-height: 1.3; margin-bottom: 1rem; }
+.page-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.85; letter-spacing: 0.04em; }
+.page-meta { display: flex; gap: 1.5rem; margin-top: 1.25rem; flex-wrap: wrap; }
+.meta-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--text-muted); }
+.content-section { margin-bottom: 4rem; opacity: 0; transform: translateY(20px); transition: opacity 0.6s var(--ease-smooth), transform 0.6s var(--ease-smooth); }
+.content-section.visible { opacity: 1; transform: translateY(0); }
+.section-heading { font-family: 'Noto Serif JP', serif; font-size: clamp(1.2rem,2.5vw,1.6rem); font-weight: 600; letter-spacing: 0.04em; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+.section-heading-number { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: rgba(156,39,176,0.12); color: var(--domain-color); font-size: 0.85rem; font-weight: 700; flex-shrink: 0; font-family: 'Noto Sans JP', sans-serif; }
+.lead-text { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.9; letter-spacing: 0.04em; margin-bottom: 1.5rem; }
+.highlight-box { background: rgba(156,39,176,0.06); border: 1px solid rgba(206,147,216,0.2); border-left: 3px solid var(--domain-color-solid); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+.highlight-box-title { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--domain-color); margin-bottom: 0.5rem; font-weight: 500; }
+.highlight-box-text { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.8; letter-spacing: 0.04em; }
+.service-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.84rem; }
+.service-table th { padding: 0.7rem 0.9rem; text-align: left; background: rgba(156,39,176,0.08); color: var(--domain-color); font-weight: 500; letter-spacing: 0.06em; font-size: 0.75rem; text-transform: uppercase; border-bottom: 1px solid rgba(206,147,216,0.2); }
+.service-table td { padding: 0.7rem 0.9rem; border-bottom: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.03em; line-height: 1.55; vertical-align: top; }
+.service-table tr:hover td { background: rgba(255,255,255,0.02); }
+.sn { font-weight: 700; color: var(--domain-color); white-space: nowrap; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.9rem; margin: 1.5rem 0; }
+.concept-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem; transition: all 0.3s; }
+.concept-card:hover { border-color: var(--border-active); transform: translateY(-2px); }
+.concept-card-title { font-size: 0.88rem; font-weight: 700; letter-spacing: 0.04em; margin-bottom: 0.35rem; color: var(--domain-color); }
+.concept-card-desc { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.65; }
+.mini-quiz { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 1.75rem; margin: 2rem 0; }
+.mini-quiz-label { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--domain-color); margin-bottom: 1rem; font-weight: 500; }
+.quiz-q { font-size: 0.95rem; font-weight: 600; letter-spacing: 0.04em; margin-bottom: 1rem; line-height: 1.5; }
+.quiz-options { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+.quiz-option { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.25s; font-size: 0.85rem; color: var(--text-secondary); }
+.quiz-option:hover { border-color: rgba(206,147,216,0.3); color: var(--text-primary); background: rgba(156,39,176,0.04); }
+.quiz-option.correct { border-color: #4CAF50; background: rgba(76,175,80,0.08); color: #81C784; }
+.quiz-option.wrong { border-color: #f44336; background: rgba(244,67,54,0.08); color: #EF9A9A; }
+.quiz-option.revealed { border-color: rgba(206,147,216,0.4); background: rgba(156,39,176,0.06); color: var(--domain-color); }
+.quiz-opt-key { width: 24px; height: 24px; border-radius: 6px; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; }
+.quiz-option.correct .quiz-opt-key { background: rgba(76,175,80,0.2); }
+.quiz-option.wrong .quiz-opt-key { background: rgba(244,67,54,0.2); }
+.quiz-answer { margin-top: 0.75rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.03); border-radius: 8px; font-size: 0.83rem; color: var(--text-secondary); line-height: 1.7; display: none; }
+.quiz-answer.show { display: block; }
+.keypoints { background: var(--bg-secondary); border: 1px solid rgba(206,147,216,0.15); border-radius: 16px; padding: 1.75rem; margin: 2rem 0; }
+.keypoints-title { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--domain-color); margin-bottom: 1.25rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem; }
+.keypoint-item { display: flex; gap: 0.75rem; align-items: flex-start; padding: 0.6rem 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; }
+.keypoint-item:last-child { border-bottom: none; }
+.keypoint-icon { color: var(--domain-color); flex-shrink: 0; margin-top: 0.1rem; }
+.section-done-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.25rem; border: 1px solid var(--border); border-radius: 6px; background: none; color: var(--text-muted); font-size: 0.8rem; cursor: pointer; transition: all 0.3s; font-family: inherit; margin-top: 1rem; }
+.section-done-btn:hover { border-color: rgba(76,175,80,0.4); color: #81C784; }
+.section-done-btn.done { border-color: rgba(76,175,80,0.4); background: rgba(76,175,80,0.08); color: #81C784; }
+.page-nav { display: flex; justify-content: space-between; align-items: center; padding: 2rem 0; margin-top: 2rem; border-top: 1px solid var(--border); }
+.page-nav-btn { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; color: var(--text-secondary); transition: all 0.3s; }
+.page-nav-btn:hover { border-color: var(--border-active); color: var(--text-primary); }
+.page-nav-btn.next { background: var(--domain-color-solid); border-color: var(--domain-color-solid); color: #fff; font-weight: 700; }
+.page-nav-btn.next:hover { opacity: 0.9; }
+
+/* サポートプラン比較 */
+.support-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 0.75rem; margin: 1.5rem 0; }
+.support-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem; transition: all 0.3s; position: relative; overflow: hidden; }
+.support-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+.support-card:nth-child(1)::before { background: #90A4AE; }
+.support-card:nth-child(2)::before { background: #4CAF50; }
+.support-card:nth-child(3)::before { background: var(--aws-orange); }
+.support-card:nth-child(4)::before { background: #CE93D8; }
+.support-card:hover { transform: translateY(-2px); border-color: var(--border-active); }
+.support-plan-name { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.2rem; }
+.support-plan-price { font-size: 0.72rem; color: var(--domain-color); letter-spacing: 0.06em; margin-bottom: 0.6rem; }
+.support-plan-feature { font-size: 0.75rem; color: var(--text-muted); line-height: 1.7; }
+.support-plan-badge { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.65rem; padding: 0.15rem 0.5rem; border-radius: 100px; margin-bottom: 0.6rem; }
+
+/* テーブルのモバイルスクロール */
+@media (max-width: 700px) {
+  .service-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } .main-content { padding: 1.5rem 1rem; } }
+@media (max-width: 640px) { .page-title { font-size: 1.5rem; } .card-grid { grid-template-columns: 1fr; } .support-grid { grid-template-columns: repeat(2, 1fr); } .page-nav { flex-direction: column; gap: 0.75rem; } .page-nav-btn { justify-content: center; } .mini-quiz { padding: 1.25rem; } }
+@media (max-width: 480px) { .header-domain { display: none; } .support-grid { grid-template-columns: 1fr; } .quiz-option { padding: 0.65rem 0.85rem; font-size: 0.82rem; } }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 100px; }
+.toast { position: fixed; bottom: 2rem; right: 2rem; background: rgba(13,21,38,0.95); border: 1px solid rgba(76,175,80,0.4); border-radius: 12px; padding: 0.9rem 1.25rem; display: flex; align-items: center; gap: 0.6rem; z-index: 500; transform: translateY(120%); transition: transform 0.4s var(--ease-spring); font-size: 0.83rem; backdrop-filter: blur(16px); }
+.toast.show { transform: translateY(0); }
+.toast-icon { color: #4CAF50; }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="aurora-bg"></div>
+
+<header class="header">
+  <div class="header-left">
+    <a href="index.html" class="back-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>ホーム</a>
+    <span class="header-domain">Domain 04 — 請求・料金設定・サポート</span>
+  </div>
+  <div class="header-right">
+    <div class="header-progress-bar"><div class="header-progress-fill" id="headerProgress"></div></div>
+    <span class="header-progress-text" id="headerProgressText">0 / 6</span>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-label">セクション</div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" onclick="scrollToSection(0)"><div class="nav-dot"></div>1. AWSの料金モデル</div>
+      <div class="nav-item" onclick="scrollToSection(1)"><div class="nav-dot"></div>2. 主要サービスの料金</div>
+      <div class="nav-item" onclick="scrollToSection(2)"><div class="nav-dot"></div>3. コスト管理ツール</div>
+      <div class="nav-item" onclick="scrollToSection(3)"><div class="nav-dot"></div>4. AWSサポートプラン</div>
+      <div class="nav-item" onclick="scrollToSection(4)"><div class="nav-dot"></div>5. 一括請求・Organizations</div>
+      <div class="nav-item" onclick="scrollToSection(5)"><div class="nav-dot"></div>6. その他のコストツール</div>
+    </nav>
+    <div class="sidebar-label">進捗</div>
+    <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:0.75rem;" id="sidebarProgress">0 / 6 セクション完了</div>
+    <div style="height:4px; background:rgba(255,255,255,0.06); border-radius:100px; overflow:hidden;">
+      <div id="sidebarProgressFill" style="height:100%; width:0%; background:var(--domain-color-solid); border-radius:100px; transition:width 0.5s;"></div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <div class="page-header">
+      <div class="page-domain-tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg>Domain 04 — 試験比率 12%</div>
+      <h1 class="page-title">請求・料金設定・サポート</h1>
+      <p class="page-desc">AWSの料金モデル・コスト管理ツール・サポートプランを学習します。出題比率は低めですが、確実に得点できるドメインです。</p>
+      <div class="page-meta">
+        <div class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>学習時間の目安：1〜1.5時間</div>
+        <div class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>試験比率 12%</div>
+      </div>
+    </div>
+
+    <!-- セクション1：AWSの料金モデル -->
+    <div class="content-section" id="section-0" data-idx="0">
+      <h2 class="section-heading"><span class="section-heading-number">1</span>AWSの料金モデル</h2>
+      <p class="lead-text">AWSの料金の根本原則は「従量課金制（Pay as you go）」です。3つの主要な料金モデルを理解しましょう。</p>
+
+      <div class="card-grid">
+        <div class="concept-card">
+          <div class="concept-card-title">使用量に応じて支払う</div>
+          <div class="concept-card-desc">使ったリソースの量だけ課金。EC2なら起動時間、S3なら保存容量と転送量。</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">予約するほど安くなる</div>
+          <div class="concept-card-desc">リザーブドインスタンス・Savings Plansで1〜3年コミットすると最大72%割引。</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">使えば使うほど安くなる</div>
+          <div class="concept-card-desc">S3等のボリューム割引。使用量が増えるとGB単価が下がる階層型価格設定。</div>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        <div class="highlight-box-title">無料利用枠（AWS Free Tier）</div>
+        <div class="highlight-box-text">
+          <strong style="color:var(--text-primary);">Always Free（常時無料）</strong>：Lambda月100万リクエスト・DynamoDB 25GBなど永続的に無料。<br>
+          <strong style="color:var(--text-primary);">12ヶ月無料</strong>：新規アカウントから12ヶ月間。EC2 750時間/月（t2.micro）・S3 5GBなど。<br>
+          <strong style="color:var(--text-primary);">トライアル</strong>：特定サービスの短期間無料トライアル。
+        </div>
+      </div>
+
+      <div class="mini-quiz">
+        <div class="mini-quiz-label">ミニクイズ</div>
+        <div class="quiz-q">Q. AWSの料金モデルの特徴として正しいものはどれですか？（最も適切なもの）</div>
+        <div class="quiz-options" id="q1">
+          <div class="quiz-option" onclick="answerQuiz('q1',this,false)"><div class="quiz-opt-key">A</div>全サービスで同一の固定月額料金</div>
+          <div class="quiz-option" onclick="answerQuiz('q1',true)"><div class="quiz-opt-key">B</div>使った分だけ支払う従量課金制で、予約や使用量増加で割引が得られる</div>
+          <div class="quiz-option" onclick="answerQuiz('q1',this,false)"><div class="quiz-opt-key">C</div>年間契約のみで途中変更不可</div>
+          <div class="quiz-option" onclick="answerQuiz('q1',this,false)"><div class="quiz-opt-key">D</div>使用量が増えるほど単価が上がる</div>
+        </div>
+        <div class="quiz-answer" id="q1-answer">正解は B。AWSは「使った分だけ支払う（Pay as you go）」が基本で、予約（リザーブドインスタンス）や大量使用（ボリューム割引）でさらにコストを削減できます。</div>
+      </div>
+
+      <button class="section-done-btn" onclick="markDone(0,this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>このセクションを完了</button>
+    </div>
+
+    <!-- セクション2：主要サービスの料金 -->
+    <div class="content-section" id="section-1" data-idx="1">
+      <h2 class="section-heading"><span class="section-heading-number">2</span>主要サービスの料金構造</h2>
+      <p class="lead-text">各サービスで何に対して課金されるかを理解することが、コスト最適化の第一歩です。</p>
+
+      <table class="service-table">
+        <thead><tr><th>サービス</th><th>課金の基準</th><th>無料枠（新規12ヶ月）</th></tr></thead>
+        <tbody>
+          <tr><td class="sn">EC2</td><td>インスタンスの起動時間・インスタンスタイプ・OSによって異なる</td><td>t2.micro 750時間/月</td></tr>
+          <tr><td class="sn">S3</td><td>保存容量（GB）・リクエスト数・データ転送量（アウトバウンド）</td><td>5GB標準ストレージ</td></tr>
+          <tr><td class="sn">RDS</td><td>DBインスタンスの稼働時間・ストレージ・データ転送量</td><td>db.t2.micro 750時間/月</td></tr>
+          <tr><td class="sn">Lambda</td><td>リクエスト数（100万/月まで無料）・実行時間（GB-秒）</td><td>常時無料：月100万リクエスト</td></tr>
+          <tr><td class="sn">データ転送</td><td>インバウンド（AWSへ）：無料。アウトバウンド（AWSから外へ）：有料。リージョン間：有料。</td><td>15GBアウトバウンド/月</td></tr>
+          <tr><td class="sn">CloudFront</td><td>データ転送量（アウトバウンド）・HTTPリクエスト数</td><td>1TB転送・1000万リクエスト/月</td></tr>
+        </tbody>
+      </table>
+
+      <div class="highlight-box">
+        <div class="highlight-box-title">データ転送の重要ルール</div>
+        <div class="highlight-box-text">
+          インターネット→AWS（インバウンド）：<strong style="color:#4CAF50;">無料</strong><br>
+          AWS→インターネット（アウトバウンド）：<strong style="color:#f44336;">有料</strong>（最初の1GB/月は無料）<br>
+          同一リージョン・同一AZ内のデータ転送：<strong style="color:#4CAF50;">無料</strong><br>
+          AZ間（同一リージョン）：<strong style="color:var(--aws-orange);">低コストで有料</strong><br>
+          リージョン間：<strong style="color:#f44336;">有料</strong>
+        </div>
+      </div>
+
+      <div class="mini-quiz">
+        <div class="mini-quiz-label">ミニクイズ</div>
+        <div class="quiz-q">Q. AWSのデータ転送料金について正しいのはどれですか？</div>
+        <div class="quiz-options" id="q2">
+          <div class="quiz-option" onclick="answerQuiz('q2',this,false)"><div class="quiz-opt-key">A</div>インバウンド・アウトバウンドとも無料</div>
+          <div class="quiz-option" onclick="answerQuiz('q2',this,false)"><div class="quiz-opt-key">B</div>インバウンド・アウトバウンドとも有料</div>
+          <div class="quiz-option" onclick="answerQuiz('q2',this,true)"><div class="quiz-opt-key">C</div>インターネットからAWSへのインバウンドは無料。AWSからインターネットへのアウトバウンドは有料。</div>
+          <div class="quiz-option" onclick="answerQuiz('q2',this,false)"><div class="quiz-opt-key">D</div>同一リージョン内でも全て有料</div>
+        </div>
+        <div class="quiz-answer" id="q2-answer">正解は C。AWSへのインバウンドデータ転送は無料ですが、AWSからインターネットへのアウトバウンド転送は有料です。この非対称な料金設定はコスト計算で重要です。同一AZ内のEC2間通信は無料、AZ間は低コスト有料、リージョン間は有料です。</div>
+      </div>
+
+      <button class="section-done-btn" onclick="markDone(1,this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>このセクションを完了</button>
+    </div>
+
+    <!-- セクション3：コスト管理ツール -->
+    <div class="content-section" id="section-2" data-idx="2">
+      <h2 class="section-heading"><span class="section-heading-number">3</span>コスト管理ツール</h2>
+      <p class="lead-text">AWSのコストを可視化・管理・予測するためのツール群です。試験でよく出題されるツールの使い分けを覚えましょう。</p>
+
+      <table class="service-table">
+        <thead><tr><th>ツール</th><th>目的・機能</th><th>試験のポイント</th></tr></thead>
+        <tbody>
+          <tr><td class="sn">AWS Cost Explorer</td><td>過去・現在のコストと使用量を可視化・分析するツール</td><td>コスト傾向の把握・リザーブドインスタンスの推奨・将来予測。グラフで可視化。</td></tr>
+          <tr><td class="sn">AWS Budgets</td><td>コスト・使用量・リザーブドのカバレッジに対するアラートを設定</td><td>予算超過のアラート通知（Email/SNS）。コスト・使用量・予約の3種類のバジェット。</td></tr>
+          <tr><td class="sn">AWS Pricing Calculator</td><td>AWSサービスの料金を事前に見積もる</td><td>移行前のコスト見積もりに使用。旧名「Simple Monthly Calculator」。</td></tr>
+          <tr><td class="sn">Cost & Usage Report（CUR）</td><td>最も詳細なコスト・使用量データをS3に保存</td><td>時間単位での詳細データ。カスタム分析に使用。</td></tr>
+          <tr><td class="sn">AWS Cost Anomaly Detection</td><td>機械学習でコストの異常を自動検出し通知</td><td>予期しないコスト増加を自動検出。無料で利用可。</td></tr>
+        </tbody>
+      </table>
+
+      <div class="mini-quiz">
+        <div class="mini-quiz-label">ミニクイズ</div>
+        <div class="quiz-q">Q. 月次のAWSコストが予算の80%を超えた時点でアラートメールを送りたい。使用するサービスはどれですか？</div>
+        <div class="quiz-options" id="q3">
+          <div class="quiz-option" onclick="answerQuiz('q3',this,false)"><div class="quiz-opt-key">A</div>AWS Cost Explorer</div>
+          <div class="quiz-option" onclick="answerQuiz('q3',this,true)"><div class="quiz-opt-key">B</div>AWS Budgets</div>
+          <div class="quiz-option" onclick="answerQuiz('q3',this,false)"><div class="quiz-opt-key">C</div>AWS Pricing Calculator</div>
+          <div class="quiz-option" onclick="answerQuiz('q3',this,false)"><div class="quiz-opt-key">D</div>Amazon CloudWatch</div>
+        </div>
+        <div class="quiz-answer" id="q3-answer">正解は B（AWS Budgets）。AWS Budgetsはコスト・使用量・リザーブド利用率の予算を設定し、しきい値を超えた際にアラート通知（Email・SNS）を送信します。Cost Explorerは分析・可視化ツールで、アラート機能はありません。</div>
+      </div>
+
+      <button class="section-done-btn" onclick="markDone(2,this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>このセクションを完了</button>
+    </div>
+
+    <!-- セクション4：サポートプラン -->
+    <div class="content-section" id="section-3" data-idx="3">
+      <h2 class="section-heading"><span class="section-heading-number">4</span>AWSサポートプラン</h2>
+      <p class="lead-text">AWSは4つのサポートプランを提供しています。各プランの特徴・料金・対応速度を覚えておきましょう。試験では「どのプランが〇〇に対応しているか」を問われます。</p>
+
+      <div class="support-grid">
+        <div class="support-card">
+          <div class="support-plan-name">Basic</div>
+          <div class="support-plan-price">無料（全員）</div>
+          <div class="support-plan-feature">
+            Trusted Advisorの基本チェック（7項目）<br>AWSドキュメント・ホワイトペーパー<br>サービスヘルスダッシュボード<br>技術サポートなし
+          </div>
+        </div>
+        <div class="support-card">
+          <div class="support-plan-name">Developer</div>
+          <div class="support-plan-price">$29/月〜</div>
+          <div class="support-plan-feature">
+            ビジネス時間のメールサポート<br>1人のプライマリ担当者<br>一般ガイダンス：24時間以内<br>システム障害：12時間以内
+          </div>
+        </div>
+        <div class="support-card">
+          <div class="support-plan-name">Business</div>
+          <div class="support-plan-price">$100/月〜</div>
+          <div class="support-plan-feature">
+            24時間365日の電話・メール・チャット<br>Trusted Advisor全チェック<br>本番障害：1時間以内<br>サービス制限緩和リクエスト
+          </div>
+        </div>
+        <div class="support-card">
+          <div class="support-plan-name">Enterprise</div>
+          <div class="support-plan-price">$15,000/月〜</div>
+          <div class="support-plan-feature">
+            15分以内（重大障害）<br>専任TAM（技術アカウントマネージャー）<br>コンシェルジュサービス<br>Well-Architectedレビュー
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        <div class="highlight-box-title">Enterprise On-Ramp（補足）</div>
+        <div class="highlight-box-text">
+          BusinessとEnterpriseの間に「Enterprise On-Ramp」（$5,500/月〜）もあります。TAMのローテーション制（専任ではなくプール）と30分以内の重大障害対応が特徴です。
+        </div>
+      </div>
+
+      <div class="mini-quiz">
+        <div class="mini-quiz-label">ミニクイズ</div>
+        <div class="quiz-q">Q. 本番環境が停止した。1時間以内のサポート対応が必要です。最低限必要なサポートプランはどれですか？</div>
+        <div class="quiz-options" id="q4">
+          <div class="quiz-option" onclick="answerQuiz('q4',this,false)"><div class="quiz-opt-key">A</div>Basic</div>
+          <div class="quiz-option" onclick="answerQuiz('q4',this,false)"><div class="quiz-opt-key">B</div>Developer</div>
+          <div class="quiz-option" onclick="answerQuiz('q4',this,true)"><div class="quiz-opt-key">C</div>Business</div>
+          <div class="quiz-option" onclick="answerQuiz('q4',this,false)"><div class="quiz-opt-key">D</div>Enterprise（TAM付き）でなければ不可</div>
+        </div>
+        <div class="quiz-answer" id="q4-answer">正解は C（Business）。Businessプランでは本番システム障害に対して1時間以内の対応SLAがあります。Developerは12時間以内、Basicは技術サポートなしです。EnterpriseはBusinessよりさらに短い対応時間（重大障害15分）を提供しますが、最低条件はBusinessです。</div>
+      </div>
+
+      <button class="section-done-btn" onclick="markDone(3,this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>このセクションを完了</button>
+    </div>
+
+    <!-- セクション5：一括請求 -->
+    <div class="content-section" id="section-4" data-idx="4">
+      <h2 class="section-heading"><span class="section-heading-number">5</span>一括請求（Consolidated Billing）</h2>
+      <p class="lead-text">AWS Organizationsの機能の一つ。複数のAWSアカウントの請求を1つにまとめ、コスト管理を効率化します。</p>
+
+      <div class="card-grid">
+        <div class="concept-card">
+          <div class="concept-card-title">一括請求の利点</div>
+          <div class="concept-card-desc">
+            ① 全アカウントの使用量を合算してボリューム割引を受けられる<br>
+            ② 1つの請求書で全アカウントを管理<br>
+            ③ アカウント間でリザーブドインスタンスとSavings Plansを共有できる
+          </div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">管理アカウント</div>
+          <div class="concept-card-desc">
+            組織を管理する親アカウント（旧：マスターアカウント）。一括請求はこのアカウントに集約される。
+          </div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">リザーブドの共有</div>
+          <div class="concept-card-desc">
+            組織内の任意のアカウントがリザーブドインスタンスを使用できる（設定で無効化も可）。
+          </div>
+        </div>
+      </div>
+
+      <div class="mini-quiz">
+        <div class="mini-quiz-label">ミニクイズ</div>
+        <div class="quiz-q">Q. AWS Organizationsの一括請求の利点として正しいものはどれですか？</div>
+        <div class="quiz-options" id="q5">
+          <div class="quiz-option" onclick="answerQuiz('q5',this,false)"><div class="quiz-opt-key">A</div>各アカウントが独立した請求書を受け取り、個別に管理できる</div>
+          <div class="quiz-option" onclick="answerQuiz('q5',this,true)"><div class="quiz-opt-key">B</div>全アカウントの使用量を合算してボリューム割引を受け、1つの請求書で管理できる</div>
+          <div class="quiz-option" onclick="answerQuiz('q5',this,false)"><div class="quiz-opt-key">C</div>全アカウントの請求が自動的に無料になる</div>
+          <div class="quiz-option" onclick="answerQuiz('q5',this,false)"><div class="quiz-opt-key">D</div>リザーブドインスタンスが全アカウントで強制的に共有される</div>
+        </div>
+        <div class="quiz-answer" id="q5-answer">正解は B。一括請求では全アカウントの使用量を合算するため、ボリューム割引の閾値に達しやすくなります。また1つの請求書でコスト管理が簡素化され、リザーブドインスタンスの共有（オプション）も可能です。</div>
+      </div>
+
+      <button class="section-done-btn" onclick="markDone(4,this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>このセクションを完了</button>
+    </div>
+
+    <!-- セクション6：その他のコストツール -->
+    <div class="content-section" id="section-5" data-idx="5">
+      <h2 class="section-heading"><span class="section-heading-number">6</span>コスト最適化のベストプラクティス</h2>
+      <p class="lead-text">AWSのコストを最適化するためのサービスと戦略です。AWS Cost Optimizationの5つの柱をベースに理解しましょう。</p>
+
+      <div class="card-grid">
+        <div class="concept-card">
+          <div class="concept-card-title">適切なサービス選択</div>
+          <div class="concept-card-desc">ワークロードに最適なインスタンスタイプ・ストレージクラスを選択。オーバープロビジョニングを避ける。</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">未使用リソースの削除</div>
+          <div class="concept-card-desc">停止中のEC2に付いたEBS・未使用のElastic IPは課金される。定期的に見直す。</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">リザーブド/Savings Plans</div>
+          <div class="concept-card-desc">安定したワークロードには予約購入で最大72%割引。1年 or 3年で選択。</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">スポットインスタンス活用</div>
+          <div class="concept-card-desc">中断可能なバッチ処理・CI/CDにスポットを使い最大90%削減。</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">S3ライフサイクル</div>
+          <div class="concept-card-desc">アクセス頻度が下がったデータを自動的に安価なストレージクラスへ移行。</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">Auto Scalingの活用</div>
+          <div class="concept-card-desc">需要に応じて自動スケールアウト/インし、ピーク以外のオーバープロビジョニングを防ぐ。</div>
+        </div>
+      </div>
+
+      <div class="keypoints">
+        <div class="keypoints-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>ドメイン4 試験直前チェックリスト</div>
+        <div class="keypoint-item"><div class="keypoint-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>3つの料金モデル：従量課金・予約割引・ボリューム割引</div>
+        <div class="keypoint-item"><div class="keypoint-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>データ転送：インバウンド無料・アウトバウンド有料</div>
+        <div class="keypoint-item"><div class="keypoint-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>Cost Explorer（分析）vs AWS Budgets（アラート）の違い</div>
+        <div class="keypoint-item"><div class="keypoint-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>サポートプラン4種（Basic/Developer/Business/Enterprise）の違いと料金</div>
+        <div class="keypoint-item"><div class="keypoint-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>Business：1時間以内対応 / Enterprise：15分以内・TAM付き</div>
+        <div class="keypoint-item"><div class="keypoint-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>一括請求：使用量合算でボリューム割引・リザーブドの共有が可能</div>
+      </div>
+
+      <div class="mini-quiz">
+        <div class="mini-quiz-label">最終ミニクイズ</div>
+        <div class="quiz-q">Q. ドメイン4の総復習。AWSのコスト最適化の推奨事項として正しくないものはどれですか？</div>
+        <div class="quiz-options" id="q6">
+          <div class="quiz-option" onclick="answerQuiz('q6',this,false)"><div class="quiz-opt-key">A</div>安定したワークロードにはリザーブドインスタンスを使用する</div>
+          <div class="quiz-option" onclick="answerQuiz('q6',this,false)"><div class="quiz-opt-key">B</div>S3のライフサイクルポリシーで古いデータをGlacierに移行する</div>
+          <div class="quiz-option" onclick="answerQuiz('q6',this,true)"><div class="quiz-opt-key">C</div>常にオンデマンドインスタンスを使用してコスト予測を安定させる</div>
+          <div class="quiz-option" onclick="answerQuiz('q6',this,false)"><div class="quiz-opt-key">D</div>Auto Scalingで需要に応じてインスタンス数を自動調整する</div>
+        </div>
+        <div class="quiz-answer" id="q6-answer">正解は C（誤り）。「常にオンデマンドを使用する」はコスト最適化とは逆です。安定したワークロードにはリザーブドインスタンスが最適（最大72%割引）。オンデマンドは一時的・予測不可能なワークロード向けです。</div>
+      </div>
+
+      <button class="section-done-btn" onclick="markDone(5,this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>このセクションを完了</button>
+    </div>
+
+    <div class="page-nav">
+      <a href="domain3.html" class="page-nav-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>ドメイン3へ</a>
+      <a href="quiz.html" class="page-nav-btn next">練習問題へ<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast" id="toast">
+  <div class="toast-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+  <span id="toastMsg">セクション完了！</span>
+</div>
+
+<script>
+const sp = document.getElementById('scrollProgress');
+window.addEventListener('scroll', () => { const t = document.documentElement.scrollHeight - window.innerHeight; sp.style.width = `${(window.scrollY / t) * 100}%`; }, { passive: true });
+const obs = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); updateNavActive(parseInt(e.target.dataset.idx)); } }); }, { threshold: 0.15, rootMargin: '-60px 0px -40% 0px' });
+document.querySelectorAll('.content-section').forEach(s => obs.observe(s));
+function updateNavActive(idx) { document.querySelectorAll('.nav-item').forEach((item, i) => item.classList.toggle('active', i === idx)); }
+function scrollToSection(idx) { document.getElementById(`section-${idx}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+function answerQuiz(qid, el, isCorrect) {
+  const container = typeof qid === 'string' ? document.getElementById(qid) : document.getElementById('q1');
+  const actualEl = typeof el === 'object' ? el : null;
+  if (!container || container.dataset.answered) return;
+  if (!actualEl) return;
+  container.dataset.answered = '1';
+  container.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none');
+  if (isCorrect) { actualEl.classList.add('correct'); }
+  else { actualEl.classList.add('wrong'); container.querySelectorAll('.quiz-option').forEach(opt => { if (opt !== actualEl && opt.onclick?.toString().includes('true')) opt.classList.add('revealed'); }); }
+  document.getElementById(qid + '-answer')?.classList.add('show');
+}
+// Fix the q1 special case
+document.querySelector('#q1').querySelectorAll('.quiz-option')[1]?.addEventListener('click', function(e) {
+  const container = document.getElementById('q1');
+  if (container.dataset.answered) return;
+  container.dataset.answered = '1';
+  container.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none');
+  this.classList.add('correct');
+  document.getElementById('q1-answer')?.classList.add('show');
+});
+
+const DONE_KEY = 'aws-clf-domain4-done';
+let doneSet = new Set(JSON.parse(localStorage.getItem(DONE_KEY) || '[]'));
+function markDone(idx, btn) {
+  doneSet.add(idx); localStorage.setItem(DONE_KEY, JSON.stringify([...doneSet]));
+  btn.classList.add('done'); btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 完了済み`; btn.disabled = true;
+  document.querySelectorAll('.nav-item')[idx]?.classList.add('completed');
+  updateProgress(); showToast(`セクション ${idx + 1} 完了！`);
+  const gp = JSON.parse(localStorage.getItem('aws-clf-progress') || '{}');
+  gp.domain4 = Math.round((doneSet.size / 6) * 100); localStorage.setItem('aws-clf-progress', JSON.stringify(gp));
+}
+function updateProgress() {
+  const pct = Math.round((doneSet.size / 6) * 100);
+  document.getElementById('headerProgress').style.width = `${pct}%`;
+  document.getElementById('headerProgressText').textContent = `${doneSet.size} / 6`;
+  document.getElementById('sidebarProgress').textContent = `${doneSet.size} / 6 セクション完了`;
+  document.getElementById('sidebarProgressFill').style.width = `${pct}%`;
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
+}
+window.addEventListener('load', () => {
+  doneSet.forEach(idx => {
+    const btn = document.querySelector(`#section-${idx} .section-done-btn`);
+    if (btn) { btn.classList.add('done'); btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 完了済み`; btn.disabled = true; }
+    document.querySelectorAll('.nav-item')[idx]?.classList.add('completed');
+  });
+  updateProgress();
+});
+</script>
+</body>
+</html>

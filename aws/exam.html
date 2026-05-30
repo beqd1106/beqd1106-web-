@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模擬試験（65問・90分） | AWS CLF 学習ガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --aws-orange: #FF9900;
+  --aws-orange-light: #FFB84D;
+  --bg-primary: #070C18;
+  --bg-secondary: #0D1526;
+  --bg-card: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
+  --text-primary: #E8EAF0;
+  --text-secondary: #8A93A8;
+  --text-muted: #5A6478;
+  --ease-smooth: cubic-bezier(0.21,0.51,0.51,1);
+  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.7; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+a { color: inherit; text-decoration: none; }
+
+.aurora-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse 80% 60% at 20% 30%, rgba(255,153,0,0.04) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 70%, rgba(0,168,225,0.03) 0%, transparent 60%); }
+main { position: relative; z-index: 1; padding-top: 0; min-height: 100vh; }
+
+/* ===== 開始画面 ===== */
+.start-screen { max-width: 680px; margin: 0 auto; padding: clamp(3rem,8vw,6rem) clamp(1.25rem,4vw,2.5rem); text-align: center; }
+.start-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 1rem; border: 1px solid rgba(255,153,0,0.3); border-radius: 100px; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--aws-orange); background: rgba(255,153,0,0.06); margin-bottom: 1.5rem; }
+.start-title { font-family: 'Noto Serif JP', serif; font-size: clamp(1.75rem,4vw,2.75rem); font-weight: 600; letter-spacing: 0.04em; line-height: 1.3; margin-bottom: 1rem; }
+.start-desc { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.85; letter-spacing: 0.04em; margin-bottom: 2.5rem; }
+
+.exam-spec-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 2.5rem; text-align: left; }
+.spec-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem; }
+.spec-label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.25rem; }
+.spec-value { font-size: 1.05rem; font-weight: 700; color: var(--aws-orange); }
+
+.start-rules { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; text-align: left; }
+.rules-title { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--aws-orange); margin-bottom: 1rem; font-weight: 500; }
+.rule-item { display: flex; gap: 0.6rem; padding: 0.4rem 0; font-size: 0.83rem; color: var(--text-secondary); line-height: 1.6; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.rule-item:last-child { border-bottom: none; }
+.rule-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--aws-orange); flex-shrink: 0; margin-top: 0.6rem; }
+
+.btn-start-exam { width: 100%; padding: 1rem 2rem; background: var(--aws-orange); color: #000; font-weight: 700; font-size: 1rem; letter-spacing: 0.06em; border: none; border-radius: 12px; cursor: pointer; font-family: inherit; transition: all 0.3s var(--ease-smooth); display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+.btn-start-exam:hover { background: var(--aws-orange-light); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255,153,0,0.35); }
+.btn-back { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--text-secondary); transition: color 0.3s; margin-bottom: 2rem; }
+.btn-back:hover { color: var(--text-primary); }
+
+/* ===== 試験画面 ===== */
+.exam-screen { display: none; }
+.exam-screen.active { display: flex; flex-direction: column; min-height: 100vh; }
+
+/* 試験ヘッダー */
+.exam-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(7,12,24,0.95); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem clamp(1rem,4vw,2.5rem);
+}
+.exam-header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem; }
+.exam-meta { display: flex; align-items: center; gap: 1.25rem; }
+.exam-qnum { font-size: 0.82rem; color: var(--text-secondary); letter-spacing: 0.06em; }
+.timer-display { display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.04em; }
+.timer-icon { color: var(--aws-orange); }
+.timer-urgent { color: #f44336 !important; animation: blink 0.5s ease-in-out infinite; }
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+.exam-progress-track { height: 4px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden; }
+.exam-progress-fill { height: 100%; background: linear-gradient(90deg, var(--aws-orange), var(--aws-orange-light)); border-radius: 100px; transition: width 0.3s; }
+
+.exam-actions-top { display: flex; align-items: center; gap: 0.75rem; }
+.flag-btn { padding: 0.35rem 0.85rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.75rem; color: var(--text-muted); cursor: pointer; background: none; font-family: inherit; transition: all 0.25s; display: flex; align-items: center; gap: 0.4rem; }
+.flag-btn:hover { border-color: rgba(255,153,0,0.3); color: var(--aws-orange); }
+.flag-btn.flagged { border-color: rgba(255,153,0,0.5); color: var(--aws-orange); background: rgba(255,153,0,0.08); }
+.end-btn { padding: 0.35rem 0.85rem; border: 1px solid rgba(244,67,54,0.3); border-radius: 6px; font-size: 0.75rem; color: #EF9A9A; cursor: pointer; background: none; font-family: inherit; transition: all 0.25s; }
+.end-btn:hover { background: rgba(244,67,54,0.08); }
+
+/* 問題エリア */
+.exam-body { flex: 1; display: grid; grid-template-columns: 1fr 220px; max-width: 1100px; margin: 0 auto; width: 100%; padding: 2rem clamp(1rem,3vw,2.5rem); gap: 2rem; }
+
+.question-area { min-width: 0; }
+.q-domain-badge { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; border-radius: 100px; padding: 0.22rem 0.7rem; margin-bottom: 1rem; border: 1px solid; }
+.q-main-text { font-size: 1rem; font-weight: 600; letter-spacing: 0.04em; line-height: 1.7; margin-bottom: 1.75rem; }
+.options-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.opt-item { display: flex; align-items: flex-start; gap: 0.85rem; padding: 0.85rem 1rem; border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.88rem; color: var(--text-secondary); letter-spacing: 0.03em; line-height: 1.6; background: rgba(255,255,255,0.02); }
+.opt-item:hover { border-color: rgba(255,153,0,0.3); color: var(--text-primary); background: rgba(255,153,0,0.03); }
+.opt-item.selected { border-color: rgba(255,153,0,0.55); background: rgba(255,153,0,0.08); color: var(--text-primary); }
+.opt-letter { width: 26px; height: 26px; border-radius: 7px; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; transition: all 0.2s; letter-spacing: 0; margin-top: 0.05rem; }
+.opt-item.selected .opt-letter { background: rgba(255,153,0,0.2); color: var(--aws-orange); }
+
+/* 下部ナビゲーション */
+.exam-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; flex-wrap: wrap; gap: 0.75rem; }
+.nav-btn { display: flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1.25rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; color: var(--text-secondary); cursor: pointer; background: none; font-family: inherit; transition: all 0.25s; }
+.nav-btn:hover { border-color: rgba(255,153,0,0.3); color: var(--text-primary); }
+.nav-btn.next-q { background: var(--aws-orange); border-color: var(--aws-orange); color: #000; font-weight: 700; }
+.nav-btn.next-q:hover { background: var(--aws-orange-light); border-color: var(--aws-orange-light); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* サイドパネル（問題マップ） */
+.sidebar-panel { position: sticky; top: 90px; height: fit-content; }
+.panel-label { font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem; }
+.q-map { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+.q-map-btn { width: 100%; aspect-ratio: 1; border-radius: 5px; border: 1px solid var(--border); background: none; cursor: pointer; font-size: 0.68rem; font-weight: 700; color: var(--text-muted); transition: all 0.2s; font-family: inherit; }
+.q-map-btn:hover { border-color: rgba(255,153,0,0.3); color: var(--aws-orange); }
+.q-map-btn.answered { background: rgba(255,153,0,0.12); border-color: rgba(255,153,0,0.35); color: var(--aws-orange); }
+.q-map-btn.current { background: var(--aws-orange); border-color: var(--aws-orange); color: #000; }
+.q-map-btn.flagged { background: rgba(255,152,0,0.2); border-color: #FF9800; color: #FF9800; }
+.panel-stats { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.78rem; color: var(--text-muted); }
+.panel-stat { display: flex; justify-content: space-between; }
+.panel-stat strong { color: var(--text-secondary); }
+
+/* ===== 結果画面 ===== */
+.result-screen { display: none; max-width: 780px; margin: 0 auto; padding: clamp(2.5rem,6vw,5rem) clamp(1.25rem,4vw,2.5rem); }
+.result-screen.active { display: block; }
+
+.result-hero { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 3rem; }
+.score-ring { position: relative; width: 180px; height: 180px; margin-bottom: 1.5rem; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 10; }
+.score-ring-fill { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1.5s var(--ease-smooth); }
+.score-ring-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.score-pct { font-size: 2.2rem; font-weight: 700; line-height: 1; }
+.score-pass { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.1em; margin-top: 0.2rem; }
+.result-verdict { font-family: 'Noto Serif JP', serif; font-size: 1.75rem; font-weight: 600; margin-bottom: 0.5rem; }
+.result-subdesc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; max-width: 480px; }
+
+.result-breakdown { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; }
+.rb-title { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.25rem; }
+.rb-row { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem; }
+.rb-row:last-child { margin-bottom: 0; }
+.rb-header { display: flex; justify-content: space-between; font-size: 0.83rem; color: var(--text-secondary); }
+.rb-bar-track { height: 6px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden; }
+.rb-bar-fill { height: 100%; border-radius: 100px; transition: width 1.2s var(--ease-smooth); }
+
+.result-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+.btn-retake { padding: 0.85rem 2rem; background: var(--aws-orange); color: #000; font-weight: 700; font-size: 0.9rem; border: none; border-radius: 10px; cursor: pointer; font-family: inherit; transition: all 0.3s; }
+.btn-retake:hover { background: var(--aws-orange-light); transform: translateY(-1px); }
+.btn-go-home { padding: 0.85rem 2rem; border: 1px solid var(--border); color: var(--text-secondary); font-size: 0.9rem; border-radius: 10px; cursor: pointer; font-family: inherit; background: none; transition: all 0.25s; }
+.btn-go-home:hover { border-color: rgba(255,153,0,0.3); color: var(--text-primary); }
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+  .exam-body { grid-template-columns: 1fr; padding: 1.25rem 1rem; }
+  .sidebar-panel { display: none; }
+  .exam-spec-grid { grid-template-columns: repeat(2, 1fr); }
+  .result-btns { flex-direction: column; align-items: stretch; }
+  .result-btns > * { text-align: center; justify-content: center; }
+  .result-hero { margin-bottom: 2rem; }
+  .start-screen { padding: 2.5rem 1.25rem; }
+}
+
+@media (max-width: 480px) {
+  .exam-header { padding: 0.6rem 1rem; }
+  .exam-header-top { gap: 0.4rem; }
+  .exam-actions-top { gap: 0.4rem; }
+  .flag-btn, .end-btn { padding: 0.3rem 0.65rem; font-size: 0.7rem; }
+  .timer-display { font-size: 0.8rem; }
+  .q-main-text { font-size: 0.92rem; }
+  .opt-item { padding: 0.7rem 0.85rem; font-size: 0.84rem; }
+  .nav-btn { padding: 0.6rem 1rem; font-size: 0.8rem; }
+  .score-ring { width: 140px; height: 140px; }
+  .score-pct { font-size: 1.8rem; }
+  .result-verdict { font-size: 1.4rem; }
+  .result-breakdown { padding: 1.1rem; }
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 100px; }
+</style>
+</head>
+<body>
+
+<div class="aurora-bg"></div>
+<main>
+
+  <!-- 開始画面 -->
+  <div id="startScreen" class="start-screen">
+    <a href="index.html" class="btn-back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      ホームに戻る
+    </a>
+    <div class="start-badge">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="6"/></svg>
+      本番形式
+    </div>
+    <h1 class="start-title">AWS CLF 模擬試験</h1>
+    <p class="start-desc">
+      本番試験と同じ65問・90分形式の模擬試験です。<br>
+      合格ラインは700/1000点（約70%）です。時間配分を意識して挑戦しましょう。
+    </p>
+
+    <div class="exam-spec-grid">
+      <div class="spec-card"><div class="spec-label">問題数</div><div class="spec-value">65問</div></div>
+      <div class="spec-card"><div class="spec-label">試験時間</div><div class="spec-value">90分</div></div>
+      <div class="spec-card"><div class="spec-label">合格ライン</div><div class="spec-value">70%以上</div></div>
+      <div class="spec-card"><div class="spec-label">1問あたり</div><div class="spec-value">約83秒</div></div>
+    </div>
+
+    <div class="start-rules">
+      <div class="rules-title">受験ルール・ヒント</div>
+      <div class="rule-item"><div class="rule-dot"></div><div>問題には「フラグ」を立てて後で見直すことができます</div></div>
+      <div class="rule-item"><div class="rule-dot"></div><div>右サイドのマップで問題の回答状況を一覧確認できます</div></div>
+      <div class="rule-item"><div class="rule-dot"></div><div>悩んだらフラグを立てて一旦次に進み、最後に見直す戦略が効果的</div></div>
+      <div class="rule-item"><div class="rule-dot"></div><div>残り10分でアラートが表示されます</div></div>
+      <div class="rule-item"><div class="rule-dot"></div><div>結果画面でドメイン別スコアと弱点分析が確認できます</div></div>
+    </div>
+
+    <button class="btn-start-exam" onclick="startExam()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      試験を開始する
+    </button>
+    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.75rem; letter-spacing:0.04em;">開始したらタイマーが動き始めます</p>
+  </div>
+
+  <!-- 試験画面 -->
+  <div id="examScreen" class="exam-screen">
+    <div class="exam-header">
+      <div class="exam-header-top">
+        <div class="exam-meta">
+          <span class="exam-qnum" id="examQNum">問題 1 / 65</span>
+        </div>
+        <div class="timer-display">
+          <svg class="timer-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span id="timerDisplay">90:00</span>
+        </div>
+        <div class="exam-actions-top">
+          <button class="flag-btn" id="flagBtn" onclick="toggleFlag()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+            フラグ
+          </button>
+          <button class="end-btn" onclick="endExam()">試験終了</button>
+        </div>
+      </div>
+      <div class="exam-progress-track">
+        <div class="exam-progress-fill" id="examProgressFill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="exam-body">
+      <div class="question-area">
+        <div class="q-domain-badge" id="examDomainBadge">Domain 1</div>
+        <div class="q-main-text" id="examQText">問題テキスト</div>
+        <div class="options-list" id="examOptions"></div>
+        <div class="exam-nav">
+          <button class="nav-btn" id="prevBtn" onclick="prevQ()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            前の問題
+          </button>
+          <span style="font-size:0.8rem; color:var(--text-muted);" id="navStatus"></span>
+          <button class="nav-btn next-q" onclick="nextQ()">
+            <span id="nextBtnText">次の問題</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="sidebar-panel">
+        <div class="panel-label">問題マップ</div>
+        <div class="q-map" id="qMap"></div>
+        <div class="panel-stats">
+          <div class="panel-stat"><span>回答済み</span><strong id="psAnswered">0</strong></div>
+          <div class="panel-stat"><span>フラグあり</span><strong id="psFlagged">0</strong></div>
+          <div class="panel-stat"><span>未回答</span><strong id="psUnanswered">65</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 結果画面 -->
+  <div id="resultScreen" class="result-screen">
+    <div class="result-hero">
+      <div class="score-ring">
+        <svg width="180" height="180" viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" id="rg1" stop-color="#FF9900"/>
+              <stop offset="100%" id="rg2" stop-color="#FFB84D"/>
+            </linearGradient>
+          </defs>
+          <circle class="score-ring-bg" cx="50" cy="50" r="45"/>
+          <circle class="score-ring-fill" id="ringFill" cx="50" cy="50" r="45" stroke="url(#rg)"/>
+        </svg>
+        <div class="score-ring-text">
+          <div class="score-pct" id="resPct">0%</div>
+          <div class="score-pass" id="resPassLabel">未評価</div>
+        </div>
+      </div>
+      <h1 class="result-verdict" id="resVerdict">試験終了</h1>
+      <p class="result-subdesc" id="resSubdesc"></p>
+    </div>
+
+    <div class="result-breakdown">
+      <div class="rb-title">ドメイン別スコア詳細</div>
+      <div id="rbRows"></div>
+    </div>
+
+    <div class="result-breakdown" style="margin-bottom:2rem;">
+      <div class="rb-title">解答一覧（見直し）</div>
+      <div id="reviewList" style="display:flex; flex-direction:column; gap:0.5rem; max-height:400px; overflow-y:auto;"></div>
+    </div>
+
+    <div class="result-btns">
+      <button class="btn-retake" onclick="retakeExam()">もう一度受験する</button>
+      <a href="quiz.html" class="btn-go-home" style="display:flex; align-items:center; gap:0.5rem; padding:0.85rem 2rem; border:1px solid var(--border); color:var(--text-secondary); border-radius:10px; transition:all 0.25s;" onmouseover="this.style.borderColor='rgba(255,153,0,0.3)'; this.style.color=getComputedStyle(document.documentElement).getPropertyValue('--text-primary')" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'; this.style.color=getComputedStyle(document.documentElement).getPropertyValue('--text-secondary')">練習問題で復習</a>
+      <button class="btn-go-home" onclick="location.href='index.html'">ホームへ</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+/* =============================================
+   65問 問題データベース
+   ドメイン配分：D1=16問 D2=20問 D3=22問 D4=7問
+============================================= */
+const EXAM_QUESTIONS = [
+  // D1 クラウドの概念 (16問)
+  {d:1,q:"クラウドコンピューティングの正しい定義はどれですか？",opts:["大企業が所有する専用のデータセンター","インターネットを通じてITリソースをオンデマンドで提供するサービス","物理サーバーをレンタルするサービス","企業内ネットワークでのファイル共有システム"],c:1,exp:"クラウドコンピューティングとは、インターネットを通じてITリソース（サーバー・ストレージ・DB・ネットワーク等）をオンデマンドで利用できるサービスです。使った分だけ料金が発生する従量課金制が特徴です。"},
+  {d:1,q:"Well-Architectedフレームワークの6本柱に含まれないものはどれですか？",opts:["運用上の優秀性","セキュリティ","アジャイル開発","持続可能性"],c:2,exp:"Well-Architectedフレームワークの6本柱は：①運用上の優秀性②セキュリティ③信頼性④パフォーマンス効率⑤コスト最適化⑥持続可能性。「アジャイル開発」は含まれません。"},
+  {d:1,q:"AWSクラウドの6つのメリットのうち「データセンター管理が不要」に該当する利点はどれですか？",opts:["固定費を変動費に変換","規模の経済のメリット","インフラ管理運用の重荷を取り除ける","数分で世界展開"],c:2,exp:"AWSクラウドの6つのメリットの一つ「インフラ管理から解放（Stop spending money on running and maintaining data centers）」は、自社でデータセンターを管理する必要がなくなりビジネスに集中できることを指します。"},
+  {d:1,q:"AWSリージョンを選択する際に考慮すべき要素でないものはどれですか？",opts:["データのコンプライアンス要件","AWSサービスの提供状況","AWSのIPOスケジュール","ユーザーへのレイテンシー"],c:2,exp:"リージョン選択の4要素は①コンプライアンス②レイテンシー③サービス提供状況④料金。AWSの株式公開スケジュールはリージョン選択と無関係です。"},
+  {d:1,q:"「Rehost」（リホスト）移行戦略の別名はどれですか？",opts:["Lift and Shift","Lift, Tinker and Shift","Rip and Replace","Build and Redeploy"],c:0,exp:"Rehost（リホスト）は「Lift and Shift」とも呼ばれ、既存システムを変更を最小限に抑えてそのままクラウドに移行する戦略です。最も速く移行できますが、クラウドの利点を最大限には活用できません。"},
+  {d:1,q:"クラウドコンピューティングにより「キャパシティの決定が不要になる」とはどういう意味ですか？",opts:["必要なリソース量を正確に予測する必要がなくなる","AWSが自動的に全ての設定を管理する","無制限のリソースが無料で利用できる","AIがリソースを自動的に最適化する"],c:0,exp:"オンプレミスでは将来の需要を予測してハードウェアを購入する必要がありました。クラウドでは需要に応じてリアルタイムにリソースを増減できるため、事前のキャパシティ予測が不要になります。"},
+  {d:1,q:"Amazon EC2はどのサービスモデルに分類されますか？",opts:["SaaS","IaaS","PaaS","CaaS"],c:1,exp:"EC2（Elastic Compute Cloud）はIaaS（Infrastructure as a Service）です。仮想サーバーのインフラを提供し、OS・アプリの管理はお客様の責任です。"},
+  {d:1,q:"AWSのアベイラビリティゾーン（AZ）の説明として正しいのはどれですか？",opts:["AWSの世界的な地理的拠点（東京、ニューヨーク等）","リージョン内にある独立したデータセンター群で、物理的・電力的に分離されている","CloudFrontのコンテンツ配信拠点","エッジロケーションの別名"],c:1,exp:"アベイラビリティゾーン（AZ）はリージョン内にある独立したデータセンター群です。各AZは物理的に離れており、独立した電源・冷却・ネットワークを持ちます。複数AZにリソースを分散することで高可用性を実現します。"},
+  {d:1,q:"Well-Architectedフレームワークの「コスト最適化」の柱に該当する設計はどれですか？",opts:["複数AZにリソースを分散させる","スポットインスタンスと自動スケーリングを組み合わせて使用する","IAMで最小権限の原則を適用する","CloudTrailで全APIをログに記録する"],c:1,exp:"コスト最適化の柱では「消費モデルの採用」「効率の測定」「不必要なコストの排除」が原則です。スポットインスタンスの活用とAuto Scalingの組み合わせはコスト効率を最大化する典型的な設計です。"},
+  {d:1,q:"パブリッククラウドとプライベートクラウドを組み合わせたデプロイメントモデルはどれですか？",opts:["マルチクラウド","ハイブリッドクラウド","コミュニティクラウド","エッジクラウド"],c:1,exp:"ハイブリッドクラウドはオンプレミス（プライベートクラウド）とパブリッククラウドを組み合わせたデプロイメントモデルです。機密データはオンプレミスで管理しながら、スケーラブルなワークロードをクラウドで実行するユースケースで使われます。"},
+  {d:1,q:"「俊敏性（Agility）と速度の向上」はAWSの何のメリットですか？",opts:["コスト削減のメリット","クラウドを使う6つのメリットのうちの一つ","セキュリティのメリット","コンプライアンスのメリット"],c:1,exp:"AWSの6つのメリットの一つ。オンプレミスでは新しいインフラを用意するのに数週間かかりましたが、AWSでは数分でリソースを利用開始できます。開発者が実験・テスト・学習するコストが大幅に下がります。"},
+  {d:1,q:"AWSインフラにおいてエッジロケーションが最も多く存在するのはなぜですか？",opts:["EC2インスタンスを世界中に分散させるため","CloudFrontによるコンテンツ配信でユーザーへのレイテンシーを最小化するため","ストレージの冗長化のため","セキュリティのための分散配置のため"],c:1,exp:"エッジロケーションはAmazon CloudFront（CDN）のキャッシュ拠点です。世界400以上に配置され、エンドユーザーの最も近い場所から静的コンテンツを配信します。リージョン数（30程度）やAZ数より圧倒的に多いのはこのためです。"},
+  {d:1,q:"TCO（Total Cost of Ownership）の削減においてAWSが有利な理由はどれですか？",opts:["AWSは全サービスを無料で提供しているため","ハードウェア購入・データセンター維持・人件費などのコストを削減できるため","AWSの株式を購入することでコスト還元が受けられるため","大企業のみ適用される特別割引があるため"],c:1,exp:"TCO（総所有コスト）には、ハードウェア購入費・データセンターのスペース・電力・冷却コスト・IT人件費などが含まれます。AWSに移行することでこれらの多くをAWSに任せ、全体TCOを大幅に削減できます。"},
+  {d:1,q:"AWSの「グローバルに数分でデプロイできる」という利点について正しいのはどれですか？",opts:["AWSのデータセンターが1つの場所に集中しているため効率的","世界中のAWSリージョンに数クリックで新しいリソースをデプロイできる","AWSが自動的に全世界に配信設定をしてくれる","グローバル展開には特別なライセンスが必要"],c:1,exp:"AWSは30以上のリージョンを持ち、コンソール・CLI・IaC（CloudFormation等）を使って世界中の任意のリージョンに数分でインフラをデプロイできます。オンプレミスで海外展開するには数ヶ月と多大なコストが必要でした。"},
+  {d:1,q:"「6Rの移行戦略」でビジネス要件が変わらないためシステムの移行をしないことを何といいますか？",opts:["Retire（リタイア）","Retain（リテイン）","Replatform（リプラットフォーム）","Repurchase（リパーチェス）"],c:1,exp:"Retain（リテイン）は現状維持の戦略です。移行コストがメリットを上回る場合、レガシーシステムで規制上の理由、依存関係の問題などでオンプレミスに残す選択です。"},
+  {d:1,q:"Well-Architectedフレームワークの「信頼性」の柱で推奨されるアーキテクチャはどれですか？",opts:["全リソースを1つのリージョンに集約してコスト削減","複数のAZにリソースを分散させて単一障害点をなくす","最も高性能なインスタンスを1台使用する","バックアップを取らずリソースを効率化する"],c:1,exp:"信頼性の柱の核心は「単一障害点（SPOF）の排除」と「障害からの自動回復」です。複数AZへのリソース分散、Auto Scalingによる自動回復、ヘルスチェックとフェイルオーバーの実装が推奨されます。"},
+
+  // D2 セキュリティとコンプライアンス (20問)
+  {d:2,q:"責任共有モデルでAWSが責任を持つのはどれですか？",opts:["EC2上のOSのパッチ適用","物理的なサーバーとデータセンターのセキュリティ","IAMユーザーの権限設定","S3バケットのアクセスポリシー設定"],c:1,exp:"責任共有モデルでAWSが責任を持つのは「クラウドのセキュリティ」＝物理的なデータセンター・ハードウェア・ホストOS・ハイパーバイザー・ネットワークインフラです。お客様はその上で動くOS・アプリ・データ・IAMを管理します。"},
+  {d:2,q:"IAMポリシーを適切に管理するベストプラクティスはどれですか？",opts:["全ユーザーに管理者権限を付与して効率化","最小権限の原則に基づき、必要な権限のみを付与する","ルートユーザーのアクセスキーを使ってAPI呼び出しを一元管理","全ポリシーを1つにまとめて管理コストを削減する"],c:1,exp:"IAMのベストプラクティスは最小権限の原則（Principle of Least Privilege）です。ユーザー・ロール・サービスに必要最小限の権限のみを付与し、権限の乱用・誤用のリスクを最小化します。"},
+  {d:2,q:"AWSの機械学習ベースの脅威検出サービスはどれですか？",opts:["Amazon Inspector","Amazon Macie","Amazon GuardDuty","AWS WAF"],c:2,exp:"Amazon GuardDutyは機械学習・異常検知・脅威インテリジェンスを活用してAWSアカウントの脅威をリアルタイムで検出するサービスです。不正なAPIコール・異常な通信・クレデンシャル侵害などを検出します。"},
+  {d:2,q:"EC2インスタンスのOSレベルの脆弱性を評価するサービスはどれですか？",opts:["Amazon GuardDuty","Amazon Inspector","Amazon Macie","AWS Config"],c:1,exp:"Amazon Inspectorは、EC2インスタンスのソフトウェア脆弱性（CVEデータベースに基づく）とネットワーク到達可能性を自動評価するサービスです。GuardDutyは実際の脅威検出、Macieはデータ分類です。"},
+  {d:2,q:"AWSサービス間でアクセス権限を委任する最も安全な方法はどれですか？",opts:["アクセスキーをコードに直接埋め込む","IAMロールを使用してサービスに権限を付与する","ルートユーザーの認証情報を共有する","全サービスに管理者権限のIAMユーザーを作成する"],c:1,exp:"IAMロールはサービス（EC2・Lambda等）に一時的な認証情報を付与する仕組みです。ロールを使うと長期アクセスキーが不要になり、認証情報が自動ローテーションされるため、最も安全なサービス間アクセス方法です。"},
+  {d:2,q:"AWSコンプライアンスレポート（SOC 2・PCI DSS等）を入手するサービスはどれですか？",opts:["AWS Trusted Advisor","AWS Artifact","AWS Config","AWS Inspector"],c:1,exp:"AWS Artifactは、AWSのコンプライアンス関連ドキュメント（SOC1/2/3レポート・PCI DSS・ISO認定書等）をオンデマンドでダウンロードできるセルフサービスポータルです。無料で利用できます。"},
+  {d:2,q:"AWSアカウント内の全APIコールを記録・監査するサービスはどれですか？",opts:["AWS CloudWatch","AWS CloudTrail","AWS Config","Amazon Inspector"],c:1,exp:"AWS CloudTrailはAWSアカウント内の全APIコールを記録するサービスです。「誰が・いつ・どのAPIを・どのリソースに対して実行したか」を追跡でき、セキュリティ監査・インシデント調査・コンプライアンス確認に使います。"},
+  {d:2,q:"S3バケット内の機密データ（個人情報・クレジットカード情報等）を自動検出するサービスはどれですか？",opts:["Amazon GuardDuty","Amazon Macie","Amazon Rekognition","AWS WAF"],c:1,exp:"Amazon Macieは機械学習を使用してS3バケット内の機密データを自動的に検出・分類・保護するサービスです。PII（個人を特定できる情報）・金融情報・医療情報などを検出します。"},
+  {d:2,q:"DDoS攻撃からの保護を提供するAWSサービスはどれですか？",opts:["AWS WAF","AWS Shield","Amazon GuardDuty","AWS KMS"],c:1,exp:"AWS ShieldはDDoS（分散型サービス妨害）攻撃からアプリケーションを保護するサービスです。全顧客に自動適用のStandard（無料）と、高度なDDoS対策・リアルタイム通知・専任DRTサポートのAdvanced（有料）があります。"},
+  {d:2,q:"AWSリソースの設定変更を継続的に記録し、コンプライアンスを評価するサービスはどれですか？",opts:["AWS CloudTrail","AWS Config","Amazon Inspector","AWS Security Hub"],c:1,exp:"AWS ConfigはAWSリソースの設定変更を継続的に記録し、設定がコンプライアンスルールに準拠しているか評価します。「このS3バケットがいつパブリックになったか」「セキュリティグループがいつ変更されたか」を追跡できます。"},
+  {d:2,q:"EC2インスタンスにアタッチするセキュリティグループの特徴はどれですか？",opts:["サブネットレベルで機能するステートレスなファイアウォール","インスタンスレベルで機能するステートフルなファイアウォール","リージョンレベルで機能するネットワーク制御","IAMポリシーとして機能するアクセス制御"],c:1,exp:"セキュリティグループはEC2等のインスタンスに適用されるステートフルなファイアウォールです。ステートフルとは、インバウンドルールで許可された接続に対する返信（アウトバウンド）は自動的に許可される性質です。"},
+  {d:2,q:"AWS OrganizationsのSCP（サービスコントロールポリシー）について正しいのはどれですか？",opts:["管理アカウントを含む全アカウントに適用される","アカウントまたはOUの最大権限の上限として機能し、管理アカウントには適用されない","IAMポリシーより優先度が低い","ユーザーレベルにのみ適用できる"],c:1,exp:"SCPは組織・OUまたはアカウントに適用できる権限の上限（ガードレール）です。SCPで拒否されたアクションはIAMポリシーで許可していても実行できません。ただし、管理アカウントにはSCPが適用されません。"},
+  {d:2,q:"暗号化キーの作成・管理・監査を行うAWSのマネージドサービスはどれですか？",opts:["AWS Certificate Manager","AWS KMS","AWS Secrets Manager","AWS IAM"],c:1,exp:"AWS KMS（Key Management Service）は、暗号化キーを一元的に作成・管理・監査するフルマネージドサービスです。S3・EBS・RDS等のAWSサービスと統合されており、データの暗号化に使用するCMK（カスタマーマスターキー）を管理します。"},
+  {d:2,q:"DBパスワードを安全に保存し、定期的に自動更新するサービスはどれですか？",opts:["AWS KMS","AWS IAM","AWS Secrets Manager","AWS Parameter Store"],c:2,exp:"AWS Secrets Managerはシークレット（DBパスワード・APIキー等）を安全に保存し、自動ローテーション機能を持ちます。RDS・RedshiftのパスワードをLambdaで自動更新できます。Parameter Storeは設定値の管理ですが、自動ローテーションにはSecrets Managerが適切です。"},
+  {d:2,q:"「転送時の暗号化（Encryption in transit）」を実現するために使われる技術はどれですか？",opts:["AWS KMSを使用したサーバーサイド暗号化","TLS/SSL（HTTPS）プロトコルによる通信の暗号化","EBSボリュームの暗号化","S3バケットのデフォルト暗号化"],c:1,exp:"転送時の暗号化（Encryption in transit）は、ネットワーク上を流れるデータを暗号化する仕組みです。TLS/SSL（HTTPS等）が代表的です。AWSでは、AWS Certificate Manager（ACM）でSSL/TLS証明書を無料で管理できます。"},
+  {d:2,q:"複数のセキュリティサービスの結果を集約・管理できる一元的なダッシュボードはどれですか？",opts:["Amazon GuardDuty","AWS Security Hub","Amazon Inspector","AWS CloudTrail"],c:1,exp:"AWS Security Hubは、GuardDuty・Inspector・Macie等の複数のセキュリティサービスの検出結果を集約し、一元的なセキュリティダッシュボードを提供するサービスです。CIS AWS Foundations Benchmark等のコンプライアンスチェックも提供します。"},
+  {d:2,q:"IAMのベストプラクティスとして推奨されないものはどれですか？",opts:["ルートユーザーにMFAを設定する","IAMユーザーをグループで管理する","アクセスキーを定期的にローテーションする","全てのユーザーに管理者権限を付与する"],c:3,exp:"全ユーザーへの管理者権限付与は最悪のセキュリティプラクティスです。最小権限の原則に基づき、各ユーザー・ロール・サービスに必要最小限の権限のみを付与することがIAMのベストプラクティスです。"},
+  {d:2,q:"AWSにおける「保存時の暗号化（Encryption at rest）」を実現するのはどれですか？",opts:["HTTPSを使用したAPI通信","S3バケットのサーバーサイド暗号化（SSE）またはEBSボリュームの暗号化","VPNで通信を暗号化する","セキュリティグループでアクセスを制限する"],c:1,exp:"保存時の暗号化は、ストレージに保存されたデータを暗号化する仕組みです。S3のSSE（Server-Side Encryption）やEBSボリュームの暗号化がこれに該当します。キー管理にはAWS KMSが使われます。"},
+  {d:2,q:"AWSにはGDPR、HIPAA、PCI DSSなど多数のコンプライアンスプログラムへの準拠認定があります。お客様がこれらを自社のコンプライアンス報告に活用するにはどうすればよいですか？",opts:["AWSカスタマーサポートに連絡して書類を入手する","AWS Artifactからコンプライアンスレポートをダウンロードする","IAMコンソールでコンプライアンス状況を確認する","AWSはコンプライアンス情報を公開していない"],c:1,exp:"AWS Artifactは、AWSのコンプライアンス関連ドキュメントをセルフサービスでオンデマンドにダウンロードできるポータルです。SOC・PCI DSS・ISO認定書等のレポートを無料で取得できます。"},
+  {d:2,q:"Webアプリケーションへの SQLインジェクションやXSS攻撃を防ぐAWSサービスはどれですか？",opts:["AWS Shield","Amazon GuardDuty","AWS WAF","Amazon Inspector"],c:2,exp:"AWS WAF（Web Application Firewall）はHTTP/HTTPSトラフィックを監視・フィルタリングするサービスです。SQLインジェクション・クロスサイトスクリプティング（XSS）・悪意のあるボットなどのWebアプリへの攻撃からアプリケーションを保護します。"},
+
+  // D3 クラウドテクノロジーとサービス (22問)
+  {d:3,q:"安定したワークロードに最もコスト効率が良いEC2購入オプションはどれですか？",opts:["オンデマンドインスタンス","スポットインスタンス","リザーブドインスタンス（1年・3年）","Dedicated Hosts"],c:2,exp:"リザーブドインスタンスは1年または3年の使用をコミットすることでオンデマンドより最大72%割引になります。24時間365日稼働する安定したワークロード（Webサーバー・DB等）に最適です。"},
+  {d:3,q:"Amazon S3の特徴として正しいものはどれですか？",opts:["EC2にアタッチするブロックストレージ","無制限のスケーラビリティを持つオブジェクトストレージ","複数EC2が同時にマウントできるファイルシステム","インメモリの高速キャッシュ"],c:1,exp:"Amazon S3（Simple Storage Service）はオブジェクトストレージです。無制限のスケーラビリティ・99.999999999%（11 nine's）の耐久性・静的Webホスティング・データレイク等の幅広いユースケースに対応します。"},
+  {d:3,q:"サーバーレスでコードのみを実行できるコンピューティングサービスはどれですか？",opts:["Amazon EC2","AWS Lambda","Amazon ECS","Amazon Lightsail"],c:1,exp:"AWS Lambdaはサーバーレスの関数実行サービスです。コードをアップロードするだけで、サーバーのプロビジョニング・スケーリング・パッチ適用はAWSが管理します。イベントトリガーで実行され、実行時間（最大15分）とリクエスト数に応じて課金されます。"},
+  {d:3,q:"Amazon RDSのMulti-AZデプロイメントの主な目的はどれですか？",opts:["複数リージョンへのデータ複製","同一リージョン内の複数AZへのデータ同期複製による高可用性の実現","読み取りパフォーマンスの向上","コスト削減のための分散処理"],c:1,exp:"RDSのMulti-AZデプロイメントは、プライマリDBインスタンスのデータをスタンバイインスタンス（別AZ）に同期複製します。プライマリが障害を起こすと自動フェイルオーバーして可用性を維持します。ただし読み取りパフォーマンス向上にはリードレプリカを使います。"},
+  {d:3,q:"スケーラブルなNoSQLデータベースでミリ秒のレイテンシーを提供するサービスはどれですか？",opts:["Amazon RDS","Amazon Redshift","Amazon DynamoDB","Amazon ElastiCache"],c:2,exp:"Amazon DynamoDBはフルマネージドのサーバーレスNoSQL（キーバリュー＋ドキュメント型）データベースです。ミリ秒単位の低レイテンシー・無制限のスケーラビリティ・サーバー管理不要が特徴です。モバイルゲーム・IoT・Eコマース等に最適です。"},
+  {d:3,q:"ペタバイト規模のデータ分析（OLAP）に特化したAWSサービスはどれですか？",opts:["Amazon RDS","Amazon DynamoDB","Amazon Redshift","Amazon ElastiCache"],c:2,exp:"Amazon RedshiftはAWSのクラウドデータウェアハウス（DWH）サービスです。ペタバイト規模のデータに対して高速な分析クエリを実行できます。列指向ストレージ・並列処理・圧縮技術が特徴で、BIツール連携に最適です。"},
+  {d:3,q:"VPCのプライベートサブネットからインターネットへの一方向通信を可能にするコンポーネントはどれですか？",opts:["Internet Gateway（IGW）","NAT Gateway","セキュリティグループ","VPCピアリング"],c:1,exp:"NAT Gatewayはプライベートサブネットのリソースがインターネットへのアウトバウンド通信を行えるようにするサービスです。インターネットからプライベートサブネットへのインバウンドはブロックされます。パブリックサブネットに配置し、Elastic IPを割り当てます。"},
+  {d:3,q:"Amazon CloudFrontの説明として正しいのはどれですか？",opts:["オンプレミスとAWSを専用線で接続するサービス","グローバルなエッジロケーションを活用したCDNサービス","EC2インスタンスのオートスケーリングサービス","VPC間の接続を管理するサービス"],c:1,exp:"Amazon CloudFrontはAWSのCDN（Content Delivery Network）サービスです。世界400以上のエッジロケーションにコンテンツをキャッシュし、低レイテンシーでユーザーに配信します。静的コンテンツ・動画配信・APIアクセラレーションに使われます。"},
+  {d:3,q:"複数のEC2インスタンスへトラフィックを自動分散するAWSサービスはどれですか？",opts:["Auto Scaling","Elastic Load Balancing（ELB）","Amazon Route 53","AWS CloudFormation"],c:1,exp:"Elastic Load Balancing（ELB）はトラフィックを複数のEC2・Lambda・コンテナ等に自動的に分散するサービスです。ALB（HTTPレイヤー）・NLB（TCPレイヤー）・GWLB（ファイアウォール向け）の種類があります。"},
+  {d:3,q:"Amazon SQSの特徴はどれですか？",opts:["1:多のPub/Subメッセージ配信サービス","コンポーネント間の非同期メッセージキュー（1:1）","リアルタイムのデータストリーミング","グラフデータベースサービス"],c:1,exp:"Amazon SQS（Simple Queue Service）は非同期メッセージキューサービスです。コンポーネント間でメッセージを非同期に送受信し、疎結合なアーキテクチャを実現します。1つのメッセージは1つのコンシューマーが処理します。1:多の通知にはSNSを使います。"},
+  {d:3,q:"インフラをコード（JSON/YAML）で定義して自動構築するAWSサービスはどれですか？",opts:["AWS CloudWatch","AWS CloudTrail","AWS CloudFormation","AWS Config"],c:2,exp:"AWS CloudFormationはIaC（Infrastructure as Code）ツールです。JSON/YAMLテンプレートでインフラを定義し、スタックとして一括作成・更新・削除できます。再現性のあるインフラ構築・バージョン管理・自動化が可能です。"},
+  {d:3,q:"Amazon EBSの特徴として正しいのはどれですか？",opts:["複数のEC2から同時にアクセスできる共有ファイルシステム","EC2インスタンスにアタッチするブロックストレージで、同じAZ内でのみ使用可","グローバルに分散した耐久性の高いオブジェクトストレージ","フルマネージドのリレーショナルデータベース"],c:1,exp:"Amazon EBS（Elastic Block Store）はEC2にアタッチするブロックストレージです。HDDまたはSSDの種類があり、EC2と同じAZ内でのみ使用できます（スナップショットで別AZにコピー可）。OSドライブ・DBのデータ領域として使用します。"},
+  {d:3,q:"音声・動画ファイルをテキストに文字起こしするAIサービスはどれですか？",opts:["Amazon Rekognition","Amazon Polly","Amazon Transcribe","Amazon Comprehend"],c:2,exp:"Amazon Transcribeは音声認識（ASR）サービスで、音声・動画ファイルをテキストに自動変換（文字起こし）します。多言語対応・話者識別・カスタム語彙登録が可能です。Pollyはテキスト→音声（逆方向）、Rekognitionは画像分析です。"},
+  {d:3,q:"DBのパフォーマンス改善のためにインメモリキャッシュを追加したい。使用するサービスはどれですか？",opts:["Amazon Redshift","Amazon ElastiCache","Amazon DynamoDB","Amazon Neptune"],c:1,exp:"Amazon ElastiCacheはRedis/Memcachedのフルマネージドインメモリキャッシュサービスです。DBの前に配置してよく参照されるデータをキャッシュし、レイテンシーとDBの負荷を削減します。ゲームランキング・セッション管理・リアルタイムリーダーボードに最適です。"},
+  {d:3,q:"AWSにおける「コンテナのサーバーレス実行環境」はどれですか？",opts:["Amazon ECS（EC2起動タイプ）","AWS Fargate","Amazon EKS","AWS Lambda"],c:1,exp:"AWS Fargateはサーバーレスのコンテナ実行環境です。EC2インスタンスの管理なしにDockerコンテナを実行できます。Amazon ECSまたはEKSの「起動タイプ」として選択します。"},
+  {d:3,q:"AWSのマネージドDNSサービスで、ドメイン名をIPアドレスに変換するサービスはどれですか？",opts:["Amazon CloudFront","Amazon Route 53","AWS Direct Connect","Amazon API Gateway"],c:1,exp:"Amazon Route 53はAWSのスケーラブルなDNSサービスです。ドメイン名の登録・DNS解決・ヘルスチェック・トラフィックルーティング（レイテンシーベース・地理的ルーティング等）を提供します。"},
+  {d:3,q:"テキストの感情分析・エンティティ抽出・言語検出を行うAIサービスはどれですか？",opts:["Amazon Translate","Amazon Comprehend","Amazon Rekognition","Amazon Polly"],c:1,exp:"Amazon Comprehendは自然言語処理（NLP）サービスです。テキストのセンチメント分析（ポジティブ/ネガティブ判定）・エンティティ抽出（人名・地名等）・言語検出・キーフレーズ抽出などを提供します。"},
+  {d:3,q:"AWS CloudWatchの主な機能はどれですか？",opts:["AWSのAPIコールを記録する監査ログサービス","AWSリソースのメトリクス収集・ログ管理・アラート設定","インフラをコードで定義する","コンプライアンスレポートを提供する"],c:1,exp:"Amazon CloudWatchはAWSリソースとアプリケーションの監視サービスです。CPU使用率・ネットワーク・ディスクI/O等のメトリクス収集・ログ管理・アラーム設定（しきい値超過でSNS通知・Auto Scalingトリガー）・ダッシュボードを提供します。"},
+  {d:3,q:"Webアプリケーションのデプロイを自動化し、インフラ管理を不要にするPaaSサービスはどれですか？",opts:["Amazon EC2","AWS Lambda","AWS Elastic Beanstalk","Amazon ECS"],c:2,exp:"AWS Elastic Beanstalkはアプリケーションコードをアップロードするだけで、インフラのプロビジョニング・ロードバランシング・自動スケーリング・モニタリングをAWSが自動管理するPaaSです。開発者はインフラを意識せずにアプリ開発に集中できます。"},
+  {d:3,q:"ペタバイト規模のデータをAWSに物理的に輸送する（ネットワーク転送が難しい場合）サービスはどれですか？",opts:["AWS DataSync","AWS Direct Connect","AWS Snowball","AWS Storage Gateway"],c:2,exp:"AWS Snowballは物理的なデータ転送デバイスです。AWSが端末を送付し、データをコピーして返送する方法でペタバイト規模のデータをAWSに移行します。インターネット転送に数年かかるような大量データの移行に使用します。"},
+  {d:3,q:"VPCのネットワークACL（NACL）の特徴として正しいのはどれですか？",opts:["インスタンスレベルで機能するステートフルなファイアウォール","サブネットレベルで機能するステートレスなファイアウォール","AWSアカウントレベルで機能するアクセス制御","IAMポリシーと同等の権限制御機能を持つ"],c:1,exp:"NACLはVPCのサブネットレベルで機能するファイアウォールです。ステートレスのため、インバウンドとアウトバウンドのルールを個別に設定する必要があります。番号の小さいルールから順に評価され、許可ルールと拒否ルールの両方が設定できます。"},
+  {d:3,q:"機械学習モデルのトレーニング・デプロイ・管理を一元化するAWSサービスはどれですか？",opts:["Amazon Rekognition","Amazon Comprehend","Amazon SageMaker","AWS Lambda"],c:2,exp:"Amazon SageMakerは機械学習ワークフロー全体（データ準備・モデル構築・トレーニング・評価・デプロイ・監視）を統合的に管理するフルマネージドサービスです。Jupyter Notebookの統合・AutoML・モデルデプロイメントの自動化などを提供します。"},
+
+  // D4 請求・料金設定・サポート (7問)
+  {d:4,q:"AWSのコストを過去・現在の観点で可視化・分析するサービスはどれですか？",opts:["AWS Budgets","AWS Cost Explorer","AWS Pricing Calculator","AWS Cost Anomaly Detection"],c:1,exp:"AWS Cost Explorerはコストと使用量を時系列・サービス・リソース・タグ別に可視化・分析するサービスです。過去13ヶ月のデータを参照でき、将来3ヶ月の予測も提供します。リザーブドインスタンスの推奨も表示します。"},
+  {d:4,q:"1時間以内の本番障害対応SLAを持つ最低コストのAWSサポートプランはどれですか？",opts:["Basic","Developer","Business","Enterprise"],c:2,exp:"AWSサポートプランの対応時間SLA：Basicは技術サポートなし、Developerは12時間以内、Businessは本番障害1時間以内、EnterpriseはBusinessより短い（重大障害15分）。本番環境で1時間以内が必要な最低プランはBusinessです。"},
+  {d:4,q:"AWSの無料利用枠「Always Free（常時無料）」に含まれるサービスはどれですか？",opts:["EC2 t2.micro（月750時間/月・12ヶ月限定）","Lambda 月100万リクエストと400,000GB-秒（永続無料）","S3 5GB標準ストレージ（12ヶ月限定）","RDS db.t2.micro（750時間/月・12ヶ月限定）"],c:1,exp:"AWS Lambdaの月100万リクエストと40万GB-秒のコンピューティング時間は「Always Free（常時無料）」枠で、12ヶ月後も継続して無料です。EC2・S3・RDSの基本無料枠は新規アカウントから12ヶ月間の限定無料です。"},
+  {d:4,q:"AWS OrganizationsのConsolidated Billing（一括請求）の主なメリットはどれですか？",opts:["全てのアカウントのコストが自動的に50%割引になる","全アカウントの使用量を合算してボリューム割引を受け、請求を一元管理できる","メンバーアカウントの料金は管理アカウントが全額負担する","リザーブドインスタンスは組織全体で強制的に共有される"],c:1,exp:"Consolidated Billing（一括請求）のメリット：①全アカウントの使用量合算によるボリューム割引②1つの請求書での複数アカウント管理③リザーブドインスタンスとSavings Plansの組織内共有（オプション）。各アカウントの実使用量に基づいた料金は変わりません。"},
+  {d:4,q:"AWSでのデータ転送料金について最も正確な説明はどれですか？",opts:["全てのデータ転送（インバウンド・アウトバウンド）が無料","外部からAWSへのインバウンドは無料、AWSから外部へのアウトバウンドは有料","リザーブドインスタンスを使用すると全転送が無料になる","同一リージョン内でも全て有料"],c:1,exp:"AWSのデータ転送料金のルール：インバウンド（外部→AWS）は無料、アウトバウンド（AWS→インターネット）は有料（最初の1GB/月は無料）、同一AZ内のEC2間通信は無料、AZ間は低コスト有料、リージョン間は有料です。"},
+  {d:4,q:"AWSの技術アカウントマネージャー（TAM）が含まれるサポートプランはどれですか？",opts:["Basic","Developer","Business","Enterprise（またはEnterprise On-Ramp）"],c:3,exp:"TAM（Technical Account Manager）はEnterpriseサポートプラン（専任TAM）またはEnterprise On-Ramp（プールからのTAM）に含まれます。TAMはAWS活用戦略・Well-Architectedレビュー・ベストプラクティス実施・障害時の優先対応など包括的なサポートを提供します。"},
+  {d:4,q:"AWSのコスト異常（予期しない急増）を機械学習で自動検出するサービスはどれですか？",opts:["AWS Budgets","AWS Cost Explorer","AWS Cost Anomaly Detection","Amazon CloudWatch"],c:2,exp:"AWS Cost Anomaly Detectionは機械学習を使用してコスト支出の異常パターンを自動検出するサービスです。通常の使用パターンを学習し、偏差が大きい場合にアラートを送信します。AWS Budgetsは事前設定の予算しきい値でアラートを送ります。"},
+];
+
+/* =============================================
+   状態変数
+============================================= */
+let examQuestions = [];
+let currentQ = 0;
+let answers = {};
+let flagged = new Set();
+let timerSec = 90 * 60;
+let timerInterval = null;
+
+const DOMAIN_COLORS = { 1:'#FF9900', 2:'#00A8E1', 3:'#4CAF50', 4:'#CE93D8' };
+const DOMAIN_NAMES = { 1:'Domain 1', 2:'Domain 2', 3:'Domain 3', 4:'Domain 4' };
+
+/* =============================================
+   試験開始
+============================================= */
+function startExam() {
+  examQuestions = [...EXAM_QUESTIONS].sort(() => Math.random() - 0.5);
+  currentQ = 0;
+  answers = {};
+  flagged = new Set();
+  timerSec = 90 * 60;
+
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('examScreen').classList.add('active');
+
+  buildQMap();
+  renderQ();
+  startTimer();
+}
+
+function buildQMap() {
+  const map = document.getElementById('qMap');
+  map.innerHTML = '';
+  examQuestions.forEach((_, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'q-map-btn';
+    btn.textContent = i + 1;
+    btn.id = `qmap-${i}`;
+    btn.onclick = () => goToQ(i);
+    map.appendChild(btn);
+  });
+  updateMapBtn(0);
+}
+
+function renderQ() {
+  const q = examQuestions[currentQ];
+  const total = examQuestions.length;
+
+  document.getElementById('examQNum').textContent = `問題 ${currentQ + 1} / ${total}`;
+  document.getElementById('examProgressFill').style.width = `${((currentQ + 1) / total) * 100}%`;
+
+  const badge = document.getElementById('examDomainBadge');
+  const color = DOMAIN_COLORS[q.d];
+  badge.textContent = DOMAIN_NAMES[q.d];
+  badge.style.color = color;
+  badge.style.borderColor = `${color}50`;
+  badge.style.background = `${color}12`;
+
+  document.getElementById('examQText').textContent = q.q;
+
+  const letters = ['A','B','C','D'];
+  const opts = document.getElementById('examOptions');
+  opts.innerHTML = q.opts.map((opt, i) => `
+    <div class="opt-item ${answers[currentQ] === i ? 'selected' : ''}" onclick="selectOpt(${i})" id="opt-${i}">
+      <div class="opt-letter">${letters[i]}</div>
+      <span>${opt}</span>
+    </div>
+  `).join('');
+
+  const flagBtn = document.getElementById('flagBtn');
+  flagBtn.classList.toggle('flagged', flagged.has(currentQ));
+
+  const prevBtn = document.getElementById('prevBtn');
+  prevBtn.disabled = currentQ === 0;
+
+  const nextBtnText = document.getElementById('nextBtnText');
+  nextBtnText.textContent = currentQ < examQuestions.length - 1 ? '次の問題' : '試験を終了';
+
+  const navStatus = document.getElementById('navStatus');
+  const answered = Object.keys(answers).length;
+  navStatus.textContent = `回答済み ${answered} / ${total}`;
+
+  document.getElementById('psAnswered').textContent = answered;
+  document.getElementById('psFlagged').textContent = flagged.size;
+  document.getElementById('psUnanswered').textContent = total - answered;
+}
+
+function selectOpt(idx) {
+  answers[currentQ] = idx;
+  document.querySelectorAll('.opt-item').forEach((el, i) => {
+    el.classList.toggle('selected', i === idx);
+  });
+  updateMapBtn(currentQ);
+  document.getElementById('psAnswered').textContent = Object.keys(answers).length;
+  document.getElementById('psUnanswered').textContent = examQuestions.length - Object.keys(answers).length;
+}
+
+function updateMapBtn(idx) {
+  const btn = document.getElementById(`qmap-${idx}`);
+  if (!btn) return;
+  btn.className = 'q-map-btn';
+  if (idx === currentQ) { btn.classList.add('current'); return; }
+  if (flagged.has(idx)) { btn.classList.add('flagged'); return; }
+  if (answers[idx] !== undefined) btn.classList.add('answered');
+}
+
+function goToQ(idx) {
+  const prev = currentQ;
+  currentQ = idx;
+  updateMapBtn(prev);
+  updateMapBtn(idx);
+  renderQ();
+  window.scrollTo(0, 0);
+}
+
+function nextQ() {
+  if (currentQ < examQuestions.length - 1) {
+    const prev = currentQ;
+    currentQ++;
+    updateMapBtn(prev);
+    updateMapBtn(currentQ);
+    renderQ();
+    window.scrollTo(0, 0);
+  } else {
+    endExam();
+  }
+}
+
+function prevQ() {
+  if (currentQ > 0) {
+    const prev = currentQ;
+    currentQ--;
+    updateMapBtn(prev);
+    updateMapBtn(currentQ);
+    renderQ();
+    window.scrollTo(0, 0);
+  }
+}
+
+function toggleFlag() {
+  if (flagged.has(currentQ)) flagged.delete(currentQ);
+  else flagged.add(currentQ);
+  document.getElementById('flagBtn').classList.toggle('flagged', flagged.has(currentQ));
+  updateMapBtn(currentQ);
+  document.getElementById('psFlagged').textContent = flagged.size;
+}
+
+/* =============================================
+   タイマー
+============================================= */
+function startTimer() {
+  timerInterval = setInterval(() => {
+    timerSec--;
+    const m = Math.floor(timerSec / 60);
+    const s = timerSec % 60;
+    const display = document.getElementById('timerDisplay');
+    display.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    if (timerSec <= 600) display.classList.add('timer-urgent');
+    if (timerSec <= 0) { clearInterval(timerInterval); endExam(); }
+  }, 1000);
+}
+
+/* =============================================
+   試験終了・結果
+============================================= */
+function endExam() {
+  clearInterval(timerInterval);
+  if (Object.keys(answers).length < examQuestions.length) {
+    const unanswered = examQuestions.length - Object.keys(answers).length;
+    if (!confirm(`${unanswered}問が未回答です。このまま試験を終了しますか？`)) return;
+  }
+  showResult();
+}
+
+function showResult() {
+  document.getElementById('examScreen').classList.remove('active');
+  document.getElementById('resultScreen').classList.add('active');
+  window.scrollTo(0, 0);
+
+  let total = 0, correct = 0;
+  const domainStats = { 1:{t:0,c:0}, 2:{t:0,c:0}, 3:{t:0,c:0}, 4:{t:0,c:0} };
+
+  examQuestions.forEach((q, i) => {
+    domainStats[q.d].t++;
+    if (answers[i] === q.c) { correct++; domainStats[q.d].c++; }
+    total++;
+  });
+
+  const pct = Math.round((correct / total) * 100);
+  const passed = pct >= 70;
+
+  document.getElementById('resPct').textContent = `${pct}%`;
+  document.getElementById('resPct').style.color = passed ? '#81C784' : '#EF9A9A';
+  document.getElementById('resPassLabel').textContent = passed ? '合格' : '不合格';
+  document.getElementById('resPassLabel').style.color = passed ? '#81C784' : '#EF9A9A';
+  document.getElementById('resVerdict').textContent = passed ? '合格おめでとうございます！' : '惜しかったです！';
+  document.getElementById('resVerdict').style.color = passed ? '#81C784' : '#EF9A9A';
+  document.getElementById('resSubdesc').textContent = passed
+    ? `${correct}/${total}問正解（${pct}%）で合格ラインを突破しました！本番試験に向けて自信を持って挑みましょう。`
+    : `${correct}/${total}問正解（${pct}%）。合格ラインの70%まであと少しです。弱点ドメインを重点的に復習してください。`;
+
+  // SVGリング
+  const circumference = 2 * Math.PI * 45;
+  const ring = document.getElementById('ringFill');
+  ring.style.strokeDasharray = circumference;
+  ring.style.strokeDashoffset = circumference - (pct / 100) * circumference;
+  if (!passed) { document.getElementById('rg1').setAttribute('stop-color', '#f44336'); document.getElementById('rg2').setAttribute('stop-color', '#EF9A9A'); }
+
+  // ドメイン別
+  const domainNames = { 1:'D1：クラウドの概念', 2:'D2：セキュリティとコンプライアンス', 3:'D3：クラウドテクノロジーとサービス', 4:'D4：請求・料金設定・サポート' };
+  const domainColors = { 1:'#FF9900', 2:'#00A8E1', 3:'#4CAF50', 4:'#CE93D8' };
+  const rbRows = document.getElementById('rbRows');
+  rbRows.innerHTML = Object.entries(domainStats).map(([d, s]) => {
+    const r = s.t > 0 ? Math.round((s.c / s.t) * 100) : 0;
+    const color = r >= 70 ? '#81C784' : r >= 50 ? '#FF9900' : '#EF9A9A';
+    return `<div class="rb-row">
+      <div class="rb-header"><span>${domainNames[d]}</span><span style="color:${color}">${s.c}/${s.t}問 (${r}%)</span></div>
+      <div class="rb-bar-track"><div class="rb-bar-fill" style="background:${domainColors[d]}; width:${r}%"></div></div>
+    </div>`;
+  }).join('');
+
+  // 解答一覧
+  const letters = ['A','B','C','D'];
+  const reviewList = document.getElementById('reviewList');
+  reviewList.innerHTML = examQuestions.map((q, i) => {
+    const isCorrect = answers[i] === q.c;
+    const userAns = answers[i] !== undefined ? letters[answers[i]] : '未回答';
+    const color = isCorrect ? '#81C784' : answers[i] !== undefined ? '#EF9A9A' : '#5A6478';
+    return `<div style="padding:0.7rem; background:${isCorrect ? 'rgba(76,175,80,0.06)' : 'rgba(244,67,54,0.06)'}; border:1px solid ${isCorrect ? 'rgba(76,175,80,0.15)' : 'rgba(244,67,54,0.15)'}; border-radius:8px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.3rem;">
+        <span style="font-size:0.75rem; color:var(--text-muted);">Q${i+1}</span>
+        <span style="font-size:0.75rem; font-weight:700; color:${color};">${isCorrect ? '正解' : `不正解（正解：${letters[q.c]}）`}</span>
+      </div>
+      <div style="font-size:0.8rem; color:var(--text-secondary); line-height:1.5;">${q.q.length > 60 ? q.q.slice(0,60) + '…' : q.q}</div>
+    </div>`;
+  }).join('');
+}
+
+function retakeExam() {
+  document.getElementById('resultScreen').classList.remove('active');
+  document.getElementById('startScreen').style.display = 'block';
+}
+</script>
+</body>
+</html>

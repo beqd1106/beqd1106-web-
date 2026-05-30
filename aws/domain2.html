@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ドメイン2：セキュリティとコンプライアンス | AWS CLF 学習ガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --aws-orange: #FF9900;
+  --domain-color: #00A8E1;
+  --domain-color-dim: rgba(0,168,225,0.1);
+  --bg-primary: #070C18;
+  --bg-secondary: #0D1526;
+  --bg-card: rgba(255,255,255,0.04);
+  --bg-card-hover: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.08);
+  --border-active: rgba(0,168,225,0.4);
+  --text-primary: #E8EAF0;
+  --text-secondary: #8A93A8;
+  --text-muted: #5A6478;
+  --ease-smooth: cubic-bezier(0.21,0.51,0.51,1);
+  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.7; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+
+.scroll-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: linear-gradient(90deg, var(--domain-color), #81D4FA); z-index: 1000; transition: width 0.1s linear; }
+
+.header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(1rem,4vw,2.5rem); background: rgba(7,12,24,0.88); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+.header-left { display: flex; align-items: center; gap: 1rem; }
+.back-btn { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; letter-spacing: 0.05em; color: var(--text-secondary); transition: color 0.3s; }
+.back-btn:hover { color: var(--text-primary); }
+.header-domain { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--domain-color); font-weight: 500; padding-left: 1rem; border-left: 1px solid var(--border); }
+.header-right { display: flex; align-items: center; gap: 1rem; }
+.header-progress-bar { width: 100px; height: 4px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden; }
+.header-progress-fill { height: 100%; width: 0%; background: var(--domain-color); border-radius: 100px; transition: width 0.5s var(--ease-smooth); }
+.header-progress-text { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; }
+
+.aurora-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.aurora-bg::before { content: ''; position: absolute; width: 100%; height: 100%; background: radial-gradient(ellipse 70% 50% at 20% 30%, rgba(0,168,225,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 60% at 80% 70%, rgba(255,153,0,0.04) 0%, transparent 60%); animation: aurora 18s ease-in-out infinite; }
+@keyframes aurora { 0%,100% { transform: translate(0,0); } 50% { transform: translate(2%, -2%); } }
+
+.layout { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; padding-top: 60px; position: relative; z-index: 1; }
+
+.sidebar { position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; padding: 1.75rem 1.25rem; border-right: 1px solid var(--border); background: rgba(13,21,38,0.5); }
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 100px; }
+.sidebar-label { font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem; font-weight: 500; }
+.sidebar-nav { display: flex; flex-direction: column; gap: 2px; margin-bottom: 2rem; }
+.nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.75rem; border-radius: 8px; font-size: 0.82rem; letter-spacing: 0.04em; color: var(--text-secondary); cursor: pointer; transition: all 0.3s var(--ease-smooth); border: 1px solid transparent; }
+.nav-item:hover { color: var(--text-primary); background: var(--bg-card); }
+.nav-item.active { color: var(--domain-color); background: rgba(0,168,225,0.08); border-color: rgba(0,168,225,0.2); }
+.nav-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; transition: background 0.3s; }
+.nav-item.active .nav-dot { background: var(--domain-color); }
+.nav-item.completed .nav-dot { background: #4CAF50; }
+.nav-item.completed { color: var(--text-secondary); }
+
+.main-content { padding: clamp(2rem,4vw,3.5rem) clamp(1.5rem,4vw,4rem); max-width: 860px; }
+
+.page-header { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.page-domain-tag { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.9rem; border: 1px solid rgba(0,168,225,0.3); border-radius: 100px; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--domain-color); background: rgba(0,168,225,0.06); margin-bottom: 1.25rem; }
+.page-title { font-family: 'Noto Serif JP', serif; font-size: clamp(1.75rem,3.5vw,2.75rem); font-weight: 600; letter-spacing: 0.04em; line-height: 1.3; margin-bottom: 1rem; }
+.page-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.85; letter-spacing: 0.04em; }
+.page-meta { display: flex; gap: 1.5rem; margin-top: 1.25rem; flex-wrap: wrap; }
+.meta-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0.06em; }
+
+.content-section { margin-bottom: 4rem; opacity: 0; transform: translateY(20px); transition: opacity 0.6s var(--ease-smooth), transform 0.6s var(--ease-smooth); }
+.content-section.visible { opacity: 1; transform: translateY(0); }
+
+.section-heading { font-family: 'Noto Serif JP', serif; font-size: clamp(1.2rem,2.5vw,1.6rem); font-weight: 600; letter-spacing: 0.04em; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+.section-heading-number { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: rgba(0,168,225,0.12); color: var(--domain-color); font-size: 0.85rem; font-weight: 700; flex-shrink: 0; font-family: 'Noto Sans JP', sans-serif; }
+
+.lead-text { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.9; letter-spacing: 0.04em; margin-bottom: 1.5rem; }
+
+.highlight-box { background: rgba(0,168,225,0.06); border: 1px solid rgba(0,168,225,0.2); border-left: 3px solid var(--domain-color); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+.highlight-box-title { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--domain-color); margin-bottom: 0.5rem; font-weight: 500; }
+.highlight-box-text { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.8; letter-spacing: 0.04em; }
+
+.warn-box { background: rgba(255,153,0,0.06); border: 1px solid rgba(255,153,0,0.2); border-left: 3px solid var(--aws-orange); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+.warn-box-title { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--aws-orange); margin-bottom: 0.5rem; font-weight: 500; }
+
+.compare-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem; }
+.compare-table th { padding: 0.75rem 1rem; text-align: left; background: rgba(0,168,225,0.08); color: var(--domain-color); font-weight: 500; letter-spacing: 0.06em; font-size: 0.78rem; text-transform: uppercase; border-bottom: 1px solid rgba(0,168,225,0.2); }
+.compare-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.03em; line-height: 1.6; }
+.compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.concept-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; transition: all 0.3s var(--ease-smooth); }
+.concept-card:hover { border-color: var(--border-active); background: var(--bg-card-hover); transform: translateY(-2px); }
+.concept-card-icon { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.9rem; }
+.concept-card-title { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.04em; margin-bottom: 0.4rem; }
+.concept-card-desc { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.7; letter-spacing: 0.03em; }
+
+.styled-list { display: flex; flex-direction: column; gap: 0.6rem; margin: 1rem 0; }
+.styled-list-item { display: flex; gap: 0.75rem; align-items: flex-start; font-size: 0.88rem; line-height: 1.7; letter-spacing: 0.04em; color: var(--text-secondary); }
+.list-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--domain-color); flex-shrink: 0; margin-top: 0.55em; }
+
+.mini-quiz { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 1.75rem; margin: 2rem 0; }
+.mini-quiz-label { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--domain-color); margin-bottom: 1rem; font-weight: 500; }
+.quiz-q { font-size: 0.95rem; font-weight: 600; letter-spacing: 0.04em; margin-bottom: 1rem; line-height: 1.5; }
+.quiz-options { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+.quiz-option { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.25s var(--ease-smooth); font-size: 0.85rem; letter-spacing: 0.04em; color: var(--text-secondary); }
+.quiz-option:hover { border-color: rgba(0,168,225,0.3); color: var(--text-primary); background: rgba(0,168,225,0.04); }
+.quiz-option.correct { border-color: #4CAF50; background: rgba(76,175,80,0.08); color: #81C784; }
+.quiz-option.wrong { border-color: #f44336; background: rgba(244,67,54,0.08); color: #EF9A9A; }
+.quiz-option.revealed { border-color: rgba(0,168,225,0.4); background: rgba(0,168,225,0.06); color: var(--domain-color); }
+.quiz-opt-key { width: 24px; height: 24px; border-radius: 6px; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; }
+.quiz-option.correct .quiz-opt-key { background: rgba(76,175,80,0.2); }
+.quiz-option.wrong .quiz-opt-key { background: rgba(244,67,54,0.2); }
+.quiz-option.revealed .quiz-opt-key { background: rgba(0,168,225,0.15); color: var(--domain-color); }
+.quiz-answer { margin-top: 0.75rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.03); border-radius: 8px; font-size: 0.83rem; color: var(--text-secondary); line-height: 1.7; display: none; }
+.quiz-answer.show { display: block; }
+
+.keypoints { background: var(--bg-secondary); border: 1px solid rgba(0,168,225,0.15); border-radius: 16px; padding: 1.75rem; margin: 2rem 0; }
+.keypoints-title { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--domain-color); margin-bottom: 1.25rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem; }
+.keypoint-item { display: flex; gap: 0.75rem; align-items: flex-start; padding: 0.6rem 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; letter-spacing: 0.04em; }
+.keypoint-item:last-child { border-bottom: none; }
+.keypoint-icon { color: var(--domain-color); flex-shrink: 0; margin-top: 0.1rem; }
+
+.section-done-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.25rem; border: 1px solid var(--border); border-radius: 6px; background: none; color: var(--text-muted); font-size: 0.8rem; letter-spacing: 0.06em; cursor: pointer; transition: all 0.3s var(--ease-smooth); font-family: inherit; margin-top: 1rem; }
+.section-done-btn:hover { border-color: rgba(76,175,80,0.4); color: #81C784; }
+.section-done-btn.done { border-color: rgba(76,175,80,0.4); background: rgba(76,175,80,0.08); color: #81C784; }
+
+.page-nav { display: flex; justify-content: space-between; align-items: center; padding: 2rem 0; margin-top: 2rem; border-top: 1px solid var(--border); }
+.page-nav-btn { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; letter-spacing: 0.05em; color: var(--text-secondary); transition: all 0.3s var(--ease-smooth); }
+.page-nav-btn:hover { border-color: var(--border-active); color: var(--text-primary); }
+.page-nav-btn.next { background: var(--domain-color); border-color: var(--domain-color); color: #fff; font-weight: 700; }
+.page-nav-btn.next:hover { opacity: 0.9; transform: translateX(2px); }
+
+/* 責任共有モデル図 */
+.shared-model {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 1.5rem 0;
+  border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+}
+.model-col { padding: 1.5rem; }
+.model-col:first-child { background: rgba(0,168,225,0.06); border-right: 1px solid var(--border); }
+.model-col:last-child { background: rgba(255,153,0,0.04); }
+.model-col-title { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1rem; font-weight: 500; }
+.model-col:first-child .model-col-title { color: var(--domain-color); }
+.model-col:last-child .model-col-title { color: var(--aws-orange); }
+.model-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.45rem 0; font-size: 0.83rem; color: var(--text-secondary); letter-spacing: 0.04em; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.model-item:last-child { border-bottom: none; }
+.model-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+
+/* IAMポリシー表示 */
+.iam-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; margin: 1.5rem 0; }
+.iam-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; transition: all 0.3s; }
+.iam-card:hover { border-color: var(--border-active); transform: translateY(-1px); }
+.iam-card-head { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.06em; margin-bottom: 0.4rem; color: var(--domain-color); }
+.iam-card-body { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.7; letter-spacing: 0.03em; }
+
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } .main-content { padding: 1.5rem 1rem; } .shared-model { grid-template-columns: 1fr; } .shared-model .model-col:first-child { border-right: none; border-bottom: 1px solid var(--border); } }
+@media (max-width: 640px) { .page-title { font-size: 1.5rem; } .iam-grid { grid-template-columns: 1fr; } .card-grid { grid-template-columns: 1fr; } .page-nav { flex-direction: column; gap: 0.75rem; } .page-nav-btn { justify-content: center; } .mini-quiz { padding: 1.25rem; } .compare-table { font-size: 0.78rem; } }
+@media (max-width: 480px) { .header-domain { display: none; } .quiz-option { padding: 0.65rem 0.85rem; font-size: 0.82rem; } }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 100px; }
+
+.toast { position: fixed; bottom: 2rem; right: 2rem; background: rgba(13,21,38,0.95); border: 1px solid rgba(76,175,80,0.4); border-radius: 12px; padding: 0.9rem 1.25rem; display: flex; align-items: center; gap: 0.6rem; z-index: 500; transform: translateY(120%); transition: transform 0.4s var(--ease-spring); font-size: 0.83rem; letter-spacing: 0.04em; backdrop-filter: blur(16px); }
+.toast.show { transform: translateY(0); }
+.toast-icon { color: #4CAF50; }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="aurora-bg"></div>
+
+<header class="header">
+  <div class="header-left">
+    <a href="index.html" class="back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      ホーム
+    </a>
+    <span class="header-domain">Domain 02 — セキュリティとコンプライアンス</span>
+  </div>
+  <div class="header-right">
+    <div class="header-progress-bar"><div class="header-progress-fill" id="headerProgress"></div></div>
+    <span class="header-progress-text" id="headerProgressText">0 / 7</span>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-label">セクション</div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" onclick="scrollToSection(0)"><div class="nav-dot"></div>1. 責任共有モデル</div>
+      <div class="nav-item" onclick="scrollToSection(1)"><div class="nav-dot"></div>2. IAM の基礎</div>
+      <div class="nav-item" onclick="scrollToSection(2)"><div class="nav-dot"></div>3. IAM のベストプラクティス</div>
+      <div class="nav-item" onclick="scrollToSection(3)"><div class="nav-dot"></div>4. セキュリティサービス群</div>
+      <div class="nav-item" onclick="scrollToSection(4)"><div class="nav-dot"></div>5. データ保護・暗号化</div>
+      <div class="nav-item" onclick="scrollToSection(5)"><div class="nav-dot"></div>6. コンプライアンスプログラム</div>
+      <div class="nav-item" onclick="scrollToSection(6)"><div class="nav-dot"></div>7. AWS Organizations</div>
+    </nav>
+    <div class="sidebar-label">進捗</div>
+    <div style="font-size:0.78rem; color:var(--text-muted); letter-spacing:0.06em; margin-bottom:0.75rem;" id="sidebarProgress">0 / 7 セクション完了</div>
+    <div style="height:4px; background:rgba(255,255,255,0.06); border-radius:100px; overflow:hidden;">
+      <div id="sidebarProgressFill" style="height:100%; width:0%; background:var(--domain-color); border-radius:100px; transition:width 0.5s;"></div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <div class="page-header">
+      <div class="page-domain-tag">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg>
+        Domain 02 — 試験比率 30%（最高比率）
+      </div>
+      <h1 class="page-title">セキュリティとコンプライアンス</h1>
+      <p class="page-desc">
+        CLF-C02で最も出題比率が高い（30%）ドメインです。責任共有モデル・IAM・セキュリティサービスをしっかり理解することが合格の鍵です。
+      </p>
+      <div class="page-meta">
+        <div class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>学習時間の目安：2〜3時間</div>
+        <div class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>7セクション</div>
+        <div class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>試験比率 30%</div>
+      </div>
+    </div>
+
+    <!-- セクション1：責任共有モデル -->
+    <div class="content-section" id="section-0" data-idx="0">
+      <h2 class="section-heading">
+        <span class="section-heading-number">1</span>
+        責任共有モデル（Shared Responsibility Model）
+      </h2>
+      <p class="lead-text">
+        AWSのセキュリティの根幹となる概念です。「クラウドのセキュリティ」はAWSが担当し、「クラウド内のセキュリティ」はお客様が担当するという責任分担です。
+      </p>
+
+      <div class="shared-model">
+        <div class="model-col">
+          <div class="model-col-title">AWS の責任（クラウドのセキュリティ）</div>
+          <div class="model-item"><div class="model-dot" style="background:#00A8E1;"></div>物理的なデータセンターのセキュリティ</div>
+          <div class="model-item"><div class="model-dot" style="background:#00A8E1;"></div>ハードウェア・ネットワークインフラ</div>
+          <div class="model-item"><div class="model-dot" style="background:#00A8E1;"></div>ハイパーバイザー（仮想化層）</div>
+          <div class="model-item"><div class="model-dot" style="background:#00A8E1;"></div>マネージドサービスのOS・パッチ適用</div>
+          <div class="model-item"><div class="model-dot" style="background:#00A8E1;"></div>グローバルインフラ（リージョン・AZ・エッジ）</div>
+        </div>
+        <div class="model-col">
+          <div class="model-col-title">お客様の責任（クラウド内のセキュリティ）</div>
+          <div class="model-item"><div class="model-dot" style="background:#FF9900;"></div>EC2のOSのパッチ適用・管理</div>
+          <div class="model-item"><div class="model-dot" style="background:#FF9900;"></div>アプリケーションのセキュリティ</div>
+          <div class="model-item"><div class="model-dot" style="background:#FF9900;"></div>IAMユーザー・権限の管理</div>
+          <div class="model-item"><div class="model-dot" style="background:#FF9900;"></div>データの暗号化・バックアップ</div>
+          <div class="model-item"><div class="model-dot" style="background:#FF9900;"></div>セキュリティグループ・ファイアウォール設定</div>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        <div class="highlight-box-title">サービスタイプ別の責任範囲の違い</div>
+        <div class="highlight-box-text">
+          <strong style="color:var(--text-primary);">EC2（IaaS）</strong>：お客様がOSからアプリまで全て管理<br>
+          <strong style="color:var(--text-primary);">RDS（PaaS）</strong>：DBエンジン・OSのパッチはAWS担当。データ・アクセス管理はお客様<br>
+          <strong style="color:var(--text-primary);">S3（PaaS）</strong>：ストレージインフラはAWS。バケットポリシー・暗号化設定はお客様
+        </div>
+      </div>
+
+      <div class="mini-quiz">
+        <div class="mini-quiz-label">ミニクイズ</div>
+        <div class="quiz-q">Q. 責任共有モデルにおいて、Amazon EC2インスタンスのOSのパッチ適用は誰の責任ですか？</div>
+        <div class="quiz-options" id="q1">
+          <div class="quiz-option" onclick="answerQuiz('q1',this,false)"><div class="quiz-opt-key">A</div>AWS が自動的にパッチを適用する</div>
+          <div class="quiz-option" onclick="answerQuiz('q1',this,true)"><div class="quiz-opt-key">B</div>お客様がOSのパッチ管理・適用を行う責任がある</div>
+          <div class="quiz-option" onclick="answerQuiz('q1',this,false)"><div class="quiz-opt-key">C</div>EC2のハードウェアと同様にAWSが管理する</div>
+          <div class="quiz-option" onclick="answerQuiz('q1',this,false)"><div class="quiz-opt-key">D</div>どちらの責任でもなく、自動化ツールが行う</div>
+        </div>
+        <div class="quiz-answer" id="q1-answer">正解は B。EC2はIaaS（インフラとして提供）のため、ゲストOS以上のレイヤー（OS・アプリ・データ）はお客様の責任です。ただしRDS（マネージドDB）ではOSのパッチ適用はAWS担当です。</div>
+      </div>
+
+      <button class="section-done-btn" onclick="markDone(0,this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>このセクションを完了</button>
+    </div>
+
+    <!-- セクション2：IAMの基礎 -->
+    <div class="content-section" id="section-1" data-idx="1">
+      <h2 class="section-heading">
+        <span class="section-heading-number">2</span>
+        IAM（Identity and Access Management）の基礎
+      </h2>
+      <p class="lead-text">
+        IAMはAWSリソースへのアクセスを管理するサービスです。「誰が」「何を」「どのリソースに対して」できるかを定義します。IAMはグローバルサービス（リージョンに依存しない）です。
+      </p>
+
+      <div class="iam-grid">
+        <div class="iam-card">
+          <div class="iam-card-head">IAM ユーザー</div>
+          <div class="iam-card-body">AWSを操作する個人またはアプリケーション。デフォルトでは権限なし。</div>
+        </div>
+        <div class="iam-card">
+          <div class="iam-card-head">IAM グループ</div>
+          <div class="iam-card-body">複数ユーザーの集合。グループにポリシーをアタッチして一括管理。</div>
+        </div>
+        <div class="iam-card">
+          <div class="iam-card-head">IAM ロール</div>
+          <div class="iam-card-body">一時的な権限を付与する仕組み。EC2やLambdaがAWSリソースにアクセスする際に使用。</div>
+        </div>
+        <div class="iam-card">
+          <div class="iam-card-head">IAM ポリシー</div>
+          <div class="iam-card-body">権限を定義するJSONドキュメント。ユーザー・グループ・ロールにアタッチして使用。</div>
+        </div>
+        <div class="iam-card">
+          <div class="iam-card-head">ルートユーザー</div>
+          <div class="iam-card-body">AWSアカウント作成時に作られる最強権限のユーザー。日常業務での使用は禁止。</div>
+        </div>
+        <div class="iam-card">
+          <div class="iam-card-head">MFA（多要素認証）</div>
+          <div class="iam-card-body">パスワード＋認証デバイスで二段階認証。ルートユーザーへの適用が強く推奨。</div>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        <div class="highlight-box-title">IAM ポリシーの構造（JSON）</div>
+        <div class="highlight-box-text">
+          <strong style="color:var(--text-primary);">Effect</strong>：Allow（許可）またはDeny（拒否）<br>
+          <strong style="color:var(--text-primary);">Action</strong>：許可・拒否するAPIアクション（例：s3:GetObject）<br>
+          <strong style="color:var(--text-primary);">Resource</strong>：対象となるAWSリソース（ARNで指定）<br>
+          <strong style="color:var(--text-primary);">Condition</strong>（オプション）：特定条件下でのみ適用
+        </div>
+      </div>
+
+      <div class="mini-quiz">
+        <div class="mini-quiz-label">ミニクイズ</div>
+        <div class="quiz-q">Q. AWSのEC2インスタンスがS3バケットにアクセスする必要があります。セキュリティのベストプラクティスとして正しいのはどれですか？</div>
+        <div class="quiz-options" id="q2">
+          <div class="quiz-option" onclick="answerQuiz('q2',this,false)"><div class="quiz-opt-key">A</div>EC2インスタンス内のアプリケーションにアクセスキーを埋め込む</div>
+          <div class="quiz-option" onclick="answerQuiz('q2',this,true)"><div class="quiz-opt-key">B</div>IAMロールをEC2インスタンスにアタッチして一時的な認証情報を使用する</div>
+          <div class="quiz-option" onclick="answerQuiz('q2',this,false)"><div class="quiz-opt-key">C</div>ルートユーザーのアクセスキーを使用してアクセスする</div>
+          <div class="quiz-option" onclick="answerQuiz('q2',this,false)"><div class="quiz-opt-key">D</div>S3バケットをパブリックに公開する</div>
+        </div>
+        <div class="quiz-answer" id="q2-answer">正解は B。EC2にIAMロールをアタッチすると、一時的な認証情報が自動ローテーションされ、アクセスキーのハードコーディングが不要になります。これが最も安全なベストプラクティスです。</div>
+      </div>
+
+      <button class="section-done-btn" onclick="markDone(1,this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>このセクションを完了</button>
+    </div>
+
+    <!-- セクション3：IAMベストプラクティス -->
+    <div class="content-section" id="section-2" data-idx="2">
+      <h2 class="section-heading">
+        <span class="section-heading-number">3</span>
+        IAM のセキュリティベストプラクティス
+      </h2>
+      <p class="lead-text">
+        AWSが推奨するIAMのセキュリティ強化のポイントです。試験では「最小権限の原則」と「MFA」が特によく出題されます。
+      </p>
+
+      <div class="styled-list">
+        <div class="styled-list-item"><div class="list-dot"></div><div><strong style="color:var(--text-primary);">ルートユーザーは日常業務に使わない</strong> — アカウント設定・請求管理のみ。MFAを必ず設定する。</div></div>
+        <div class="styled-list-item"><div class="list-dot"></div><div><strong style="color:var(--text-primary);">最小権限の原則（Least Privilege）</strong> — 必要最小限のアクセス権限のみを付与する。</div></div>
+        <div class="styled-list-item"><div class="list-dot"></div><div><strong style="color:var(--text-primary);">IAMグループを活用する</strong> — ユーザーに直接権限を付与せず、グループ経由で管理する。</div></div>
+        <div class="styled-list-item"><div class="list-dot"></div><div><strong style="color:var(--text-primary);">MFA（多要素認証）を有効化する</strong> — 特にルートユーザーと特権ユーザーは必須。</div></div>
+        <div class="styled-list-item"><div class="list-dot"></div><div><strong style="color:var(--text-primary);">アクセスキーを定期的にローテーション</strong> — 長期アクセスキーの使用リスクを軽減する。</div></div>
+        <div class="styled-list-item"><div class="list-dot"></div><div><strong style="color:var(--text-primary);">IAM認証情報レポートを活用</strong> — 全ユーザーのパスワード・アクセスキーの状況を監査できる。</div></div>
+      </div>
+
+      <div class="mini-quiz">
+        <div class="mini-quiz-label">ミニクイズ</div>
+        <div class="quiz-q">Q. 「最小権限の原則」とは何ですか？</div>
+        <div class="quiz-options" id="q3">
+          <div class="quiz-option" onclick="answerQuiz('q3',this,false)"><div class="quiz-opt-key">A</div>管理者には全権限を与え、一般ユーザーには権限を与えない</div>
+          <div class="quiz-option" onclick="answerQuiz('q3',this,false)"><div class="quiz-opt-key">B</div>コストを最小化するために権限を減らす</div>
+          <div class="quiz-option" onclick="answerQuiz('q3',this,true)"><div class="quiz-opt-key">C</div>タスクを実行するために必要な権限のみを付与し、それ以上は与えない</div>
+          <div class="quiz-option" onclick="answerQuiz('q3',this,false)"><div class="quiz-opt-key">D</div>全ユーザーに同じ権限を与えることで管理を簡略化する</div>
+        </div>
+        <div class="quiz-answer" id="q3-answer">正解は C。最小権限の原則（Principle of Least Privilege）は、ユーザーまたはサービスが業務を遂行するために最低限必要な権限だけを付与することです。過剰な権限は、誤操作やセキュリティ侵害時のリスクを拡大します。</div>
+      </div>
+
+      <button class="section-done-btn" onclick="markDone(2,this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>このセクションを完了</button>
+    </div>
+
+    <!-- セクション4：セキュリティサービス -->
+    <div class="content-section" id="section-3" data-idx="3">
+      <h2 class="section-heading">
+        <span class="section-heading-number">4</span>
+        主要なセキュリティサービス
+      </h2>
+      <p class="lead-text">
+        AWSには多数のセキュリティサービスがあります。各サービスの役割と特徴を覚えましょう。
+      </p>
+
+      <table class="compare-table">
+        <thead>
+          <tr><th>サービス名</th><th>役割</th><th>キーポイント</th></tr>
+        </thead>
+        <tbody>
+          <tr><td style="font-weight:700; color:var(--domain-color);">AWS WAF</td><td>Webアプリファイアウォール</td><td>SQLインジェクション・XSSからアプリを保護</td></tr>
+          <tr><td style="font-weight:700; color:var(--domain-color);">AWS Shield</td><td>DDoS攻撃からの保護</td><td>Standard（無料）とAdvanced（有料）がある</td></tr>
+          <tr><td style="font-weight:700; color:var(--domain-color);">Amazon GuardDuty</td><td>脅威検出サービス</td><td>機械学習で異常なAPIコール・不正アクセスを検出</td></tr>
+          <tr><td style="font-weight:700; color:var(--domain-color);">Amazon Inspector</td><td>セキュリティ評価</td><td>EC2インスタンスの脆弱性とネットワーク到達可能性を評価</td></tr>
+          <tr><td style="font-weight:700; color:var(--domain-color);">AWS Macie</td><td>S3の機密データ保護</td><td>S3内の個人情報（PII）・機密データを自動検出</td></tr>
+          <tr><td style="font-weight:700; color:var(--domain-color);">AWS CloudTrail</td><td>APIコール監査ログ</td><td>「誰が・いつ・何をしたか」を記録。ガバナンス・監査に必須</td></tr>
+          <tr><td style="font-weight:700; color:var(--domain-color);">AWS Config</td><td>設定変更の記録・評価</td><td>リソースの設定変更を追跡し、コンプライアンス違反を検出</td></tr>
+          <tr><td style="font-weight:700; color:var(--domain-color);">Amazon Detective</td><td>セキュリティ調査</td><td>GuardDutyの検出結果を分析・調査するための可視化ツール</td></tr>
+          <tr><td style="font-weight:700; color:var(--domain-color);">AWS Security Hub</td><td>セキュリティの一元管理</td><td>複数のセキュリティサービスの結果を集約・表示</td></tr>
+          <tr><td style="font-weight:700; color:var(--domain-color);">AWS KMS</td><td>暗号化キー管理</td><td>AWSサービスで使う暗号化キーを中央管理</td></tr>
+        </tbody>
+      </table>
+
+      <div class="warn-box">
+        <div class="warn-box-title">試験でよく混同されるサービス</div>
+        <div class="highlight-box-text" style="color:var(--text-secondary);">
+          <strong style="color:var(--text-primary);">GuardDuty vs Inspector</strong><br>
+          GuardDuty = 「実際の脅威・攻撃を検出」（異常なAPIコール、不正IPからのアクセス等）<br>
+          Inspector = 「脆弱性の存在を評価」（CVEに基づくソフトウェアの弱点を特定）<br><br>
+          <strong style="color:var(--text-primary);">CloudTrail vs CloudWatch</strong><br>
+          CloudTrail = AWSのAPI操作ログ（誰が何をしたか）<br>
+          CloudWatch = リソースのメトリクス・ログ監視（パフォーマンス・リソース状況）
+        </div>
+      </div>
+
+      <div class="mini-quiz">
+        <div class="mini-quiz-label">ミニクイズ</div>
+        <div class="quiz-q">Q. 「AWSアカウント内で誰がいつどのAPIを呼び出したか」を追跡・記録するサービスはどれですか？</div>
+        <div class="quiz-options" id="q4">
+          <div class="quiz-option" onclick="answerQuiz('q4',this,false)"><div class="quiz-opt-key">A</div>Amazon CloudWatch</div>
+          <div class="quiz-option" onclick="answerQuiz('q4',this,false)"><div class="quiz-opt-key">B</div>Amazon GuardDuty</div>
+          <div class="quiz-option" onclick="answerQuiz('q4',this,true)"><div class="quiz-opt-key">C</div>AWS CloudTrail</div>
+          <div class="quiz-option" onclick="answerQuiz('q4',this,false)"><div class="quiz-opt-key">D</div>AWS Config</div>
+        </div>
+        <div class="quiz-answer" id="q4-answer">正解は C（CloudTrail）。CloudTrailはAWSアカウント内の全APIコールを記録する監査ログサービスです。「誰が・いつ・どのAPIを・どのリソースに対して実行したか」を追跡できます。CloudWatchはメトリクス・ログの監視です。</div>
+      </div>
+
+      <button class="section-done-btn" onclick="markDone(3,this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>このセクションを完了</button>
+    </div>
+
+    <!-- セクション5：データ保護・暗号化 -->
+    <div class="content-section" id="section-4" data-idx="4">
+      <h2 class="section-heading">
+        <span class="section-heading-number">5</span>
+        データ保護・暗号化
+      </h2>
+      <p class="lead-text">
+        AWSではデータの保護に「保存時の暗号化（Encryption at rest）」と「転送時の暗号化（Encryption in transit）」の2種類があります。
+      </p>
+
+      <div class="card-grid">
+        <div class="concept-card">
+          <div class="concept-card-icon" style="background:rgba(0,168,225,0.1); color:var(--domain-color);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div class="concept-card-title">保存時の暗号化</div>
+          <div class="concept-card-desc">ストレージに保存されたデータを暗号化。S3のSSE、EBSの暗号化等。AWS KMSでキー管理。</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-icon" style="background:rgba(76,175,80,0.1); color:#4CAF50;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="concept-card-title">転送時の暗号化</div>
+          <div class="concept-card-desc">ネットワーク通信を暗号化。TLS/SSL（HTTPS）を使用。AWS Certificate Manager（ACM）でSSL証明書を管理。</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-icon" style="background:rgba(255,153,0,0.1); color:var(--aws-orange);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+          </div>
+          <div class="concept-card-title">AWS KMS</div>
+          <div class="concept-card-desc">Key Management Service。暗号化キーの作成・管理・監査ができるマネージドサービス。</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-icon" style="background:rgba(206,147,216,0.1); color:#CE93D8;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="concept-card-title">AWS Secrets Manager</div>
+          <div class="concept-card-desc">DBパスワード・APIキーなどのシークレット情報を安全に保存・自動ローテーションするサービス。</div>
+        </div>
+      </div>
+
+      <div class="mini-quiz">
+        <div class="mini-quiz-label">ミニクイズ</div>
+        <div class="quiz-q">Q. S3バケットに保存されたデータを暗号化する方法はどれですか？</div>
+        <div class="quiz-options" id="q5">
+          <div class="quiz-option" onclick="answerQuiz('q5',this,false)"><div class="quiz-opt-key">A</div>HTTPS通信を使用することで保存データが暗号化される</div>
+          <div class="quiz-option" onclick="answerQuiz('q5',this,true)"><div class="quiz-opt-key">B</div>S3のサーバーサイド暗号化（SSE）を有効にし、保存時の暗号化を行う</div>
+          <div class="quiz-option" onclick="answerQuiz('q5',this,false)"><div class="quiz-opt-key">C</div>GuardDutyで保護することで自動的に暗号化される</div>
+          <div class="quiz-option" onclick="answerQuiz('q5',this,false)"><div class="quiz-opt-key">D</div>S3のデータは常に暗号化されているため設定不要</div>
+        </div>
+        <div class="quiz-answer" id="q5-answer">正解は B。S3の保存時の暗号化（SSE: Server-Side Encryption）を設定することで、S3に保存されるデータを暗号化できます。SSE-S3（S3管理キー）、SSE-KMS（KMS管理キー）などのオプションがあります。HTTPSは転送時の暗号化です。</div>
+      </div>
+
+      <button class="section-done-btn" onclick="markDone(4,this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>このセクションを完了</button>
+    </div>
+
+    <!-- セクション6：コンプライアンス -->
+    <div class="content-section" id="section-5" data-idx="5">
+      <h2 class="section-heading">
+        <span class="section-heading-number">6</span>
+        コンプライアンスプログラム
+      </h2>
+      <p class="lead-text">
+        AWSは世界各国のコンプライアンス・規制要件に対応したサービスを提供しています。主要なコンプライアンスプログラムと、それを確認・証明するためのAWSツールを理解しましょう。
+      </p>
+
+      <div class="card-grid">
+        <div class="concept-card">
+          <div class="concept-card-title" style="color:var(--domain-color);">AWS Artifact</div>
+          <div class="concept-card-desc">AWSのコンプライアンスレポート（SOC、PCI DSS等）やセキュリティドキュメントをオンデマンドで取得できるポータル。無料。</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title" style="color:var(--domain-color);">SOC 1/2/3</div>
+          <div class="concept-card-desc">Service Organization Control。財務・セキュリティ・可用性等のコントロールに関する監査報告書。</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title" style="color:var(--domain-color);">PCI DSS</div>
+          <div class="concept-card-desc">クレジットカード情報を扱うシステムに求められるセキュリティ基準。</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title" style="color:var(--domain-color);">HIPAA</div>
+          <div class="concept-card-desc">米国の医療情報保護法。患者データを扱うシステムに適用される。</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title" style="color:var(--domain-color);">GDPR</div>
+          <div class="concept-card-desc">EU一般データ保護規則。EU居住者の個人データを扱う全組織に適用。</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title" style="color:var(--domain-color);">ISO 27001</div>
+          <div class="concept-card-desc">情報セキュリティマネジメントシステムの国際標準規格。AWSは取得済み。</div>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        <div class="highlight-box-title">試験頻出：AWS Artifact</div>
+        <div class="highlight-box-text">「AWSのセキュリティコンプライアンスレポートを入手したい」→ <strong style="color:var(--text-primary);">AWS Artifact</strong><br>「自社のリソースがコンプライアンス基準に準拠しているか評価したい」→ <strong style="color:var(--text-primary);">AWS Config（コンフォーマンスパック）</strong></div>
+      </div>
+
+      <div class="mini-quiz">
+        <div class="mini-quiz-label">ミニクイズ</div>
+        <div class="quiz-q">Q. AWSのPCI DSSコンプライアンスレポートを入手するには、どのサービスを使用しますか？</div>
+        <div class="quiz-options" id="q6">
+          <div class="quiz-option" onclick="answerQuiz('q6',this,false)"><div class="quiz-opt-key">A</div>AWS Shield</div>
+          <div class="quiz-option" onclick="answerQuiz('q6',this,false)"><div class="quiz-opt-key">B</div>AWS Config</div>
+          <div class="quiz-option" onclick="answerQuiz('q6',this,true)"><div class="quiz-opt-key">C</div>AWS Artifact</div>
+          <div class="quiz-option" onclick="answerQuiz('q6',this,false)"><div class="quiz-opt-key">D</div>AWS Trusted Advisor</div>
+        </div>
+        <div class="quiz-answer" id="q6-answer">正解は C（AWS Artifact）。AWS Artifactは、AWSのコンプライアンス関連ドキュメント（SOCレポート、PCI DSSレポート、ISO認定書など）をオンデマンドでダウンロードできるセルフサービスポータルです。無料で利用できます。</div>
+      </div>
+
+      <button class="section-done-btn" onclick="markDone(5,this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>このセクションを完了</button>
+    </div>
+
+    <!-- セクション7：AWS Organizations -->
+    <div class="content-section" id="section-6" data-idx="6">
+      <h2 class="section-heading">
+        <span class="section-heading-number">7</span>
+        AWS Organizations と マルチアカウント管理
+      </h2>
+      <p class="lead-text">
+        複数のAWSアカウントを一元管理するサービスです。組織全体のポリシー適用・請求の一元化・セキュリティガバナンスに活用されます。
+      </p>
+
+      <div class="styled-list">
+        <div class="styled-list-item"><div class="list-dot"></div><div><strong style="color:var(--text-primary);">組織単位（OU: Organizational Unit）</strong>：アカウントをグループ化して階層的に管理する。</div></div>
+        <div class="styled-list-item"><div class="list-dot"></div><div><strong style="color:var(--text-primary);">SCP（サービスコントロールポリシー）</strong>：OU・アカウント全体に適用できる権限の上限ポリシー。IAMポリシーより優先される。</div></div>
+        <div class="styled-list-item"><div class="list-dot"></div><div><strong style="color:var(--text-primary);">一括請求（Consolidated Billing）</strong>：組織内の全アカウントの請求を一つのアカウントにまとめる。利用量合算でボリューム割引を受けられる。</div></div>
+        <div class="styled-list-item"><div class="list-dot"></div><div><strong style="color:var(--text-primary);">管理アカウント（旧：マスターアカウント）</strong>：組織を管理する親アカウント。一括請求や組織ポリシーを管理する。</div></div>
+      </div>
+
+      <div class="highlight-box">
+        <div class="highlight-box-title">SCP（サービスコントロールポリシー）の特徴</div>
+        <div class="highlight-box-text">
+          SCPはアカウントレベルで適用される権限の<strong style="color:var(--text-primary);">上限（ガードレール）</strong>です。<br>
+          SCPで「EC2の起動を禁止」すると、IAMでいくら許可していても、そのアカウントではEC2を起動できません。<br>
+          <strong style="color:var(--text-primary);">管理アカウント自体にはSCPは適用されません。</strong>
+        </div>
+      </div>
+
+      <div class="keypoints">
+        <div class="keypoints-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          ドメイン2 試験直前チェックリスト
+        </div>
+        <div class="keypoint-item"><div class="keypoint-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>責任共有モデル：「クラウドのセキュリティ（AWS）」vs「クラウド内のセキュリティ（顧客）」</div>
+        <div class="keypoint-item"><div class="keypoint-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>IAM：ユーザー・グループ・ロール・ポリシーの違いと役割</div>
+        <div class="keypoint-item"><div class="keypoint-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>最小権限の原則・MFA・ルートユーザーの日常不使用</div>
+        <div class="keypoint-item"><div class="keypoint-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>各セキュリティサービスの役割（WAF/Shield/GuardDuty/Inspector/Macie/CloudTrail）</div>
+        <div class="keypoint-item"><div class="keypoint-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>保存時/転送時の暗号化の違い・KMS・Secrets Manager</div>
+        <div class="keypoint-item"><div class="keypoint-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>AWS Artifact：コンプライアンスレポートの入手方法</div>
+        <div class="keypoint-item"><div class="keypoint-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>AWS Organizations：SCP・一括請求・OU・管理アカウント</div>
+      </div>
+
+      <div class="mini-quiz">
+        <div class="mini-quiz-label">ミニクイズ</div>
+        <div class="quiz-q">Q. AWS Organizationsのサービスコントロールポリシー（SCP）の説明として正しいのはどれですか？</div>
+        <div class="quiz-options" id="q7">
+          <div class="quiz-option" onclick="answerQuiz('q7',this,false)"><div class="quiz-opt-key">A</div>IAMポリシーと同じもので、特定ユーザーに適用する</div>
+          <div class="quiz-option" onclick="answerQuiz('q7',this,false)"><div class="quiz-opt-key">B</div>SCPで許可されれば、IAMが拒否しても実行できる</div>
+          <div class="quiz-option" onclick="answerQuiz('q7',this,true)"><div class="quiz-opt-key">C</div>組織全体またはOUに適用される権限の上限（ガードレール）として機能する</div>
+          <div class="quiz-option" onclick="answerQuiz('q7',this,false)"><div class="quiz-opt-key">D</div>管理アカウントの全ての操作を制限できる</div>
+        </div>
+        <div class="quiz-answer" id="q7-answer">正解は C。SCPはアカウントまたはOUに適用できる権限の最大上限（ガードレール）です。SCPが拒否したアクションは、IAMポリシーで許可していても実行できません。ただし管理アカウント自身にはSCPは適用されません。</div>
+      </div>
+
+      <button class="section-done-btn" onclick="markDone(6,this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>このセクションを完了</button>
+    </div>
+
+    <div class="page-nav">
+      <a href="domain1.html" class="page-nav-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        ドメイン1へ
+      </a>
+      <a href="domain3.html" class="page-nav-btn next">
+        ドメイン3へ
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast" id="toast">
+  <div class="toast-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+  <span id="toastMsg">セクション完了！</span>
+</div>
+
+<script>
+const scrollProgress = document.getElementById('scrollProgress');
+window.addEventListener('scroll', () => { const t = document.documentElement.scrollHeight - window.innerHeight; scrollProgress.style.width = `${(window.scrollY / t) * 100}%`; }, { passive: true });
+
+const sections = document.querySelectorAll('.content-section');
+const sectionObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); updateNavActive(parseInt(e.target.dataset.idx)); }
+  });
+}, { threshold: 0.15, rootMargin: '-60px 0px -40% 0px' });
+sections.forEach(s => sectionObs.observe(s));
+
+function updateNavActive(idx) {
+  document.querySelectorAll('.nav-item').forEach((item, i) => item.classList.toggle('active', i === idx));
+}
+
+function scrollToSection(idx) {
+  const el = document.getElementById(`section-${idx}`);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function answerQuiz(qid, el, isCorrect) {
+  const container = document.getElementById(qid);
+  if (container.dataset.answered) return;
+  container.dataset.answered = '1';
+  container.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none');
+  if (isCorrect) { el.classList.add('correct'); }
+  else { el.classList.add('wrong'); container.querySelectorAll('.quiz-option').forEach(opt => { if (opt !== el && opt.onclick?.toString().includes('true')) opt.classList.add('revealed'); }); }
+  const ans = document.getElementById(qid + '-answer');
+  if (ans) ans.classList.add('show');
+}
+
+const DONE_KEY = 'aws-clf-domain2-done';
+let doneSet = new Set(JSON.parse(localStorage.getItem(DONE_KEY) || '[]'));
+
+function markDone(idx, btn) {
+  doneSet.add(idx);
+  localStorage.setItem(DONE_KEY, JSON.stringify([...doneSet]));
+  btn.classList.add('done');
+  btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 完了済み`;
+  btn.disabled = true;
+  document.querySelectorAll('.nav-item')[idx]?.classList.add('completed');
+  updateProgress();
+  showToast(`セクション ${idx + 1} 完了！`);
+  const gp = JSON.parse(localStorage.getItem('aws-clf-progress') || '{}');
+  gp.domain2 = Math.round((doneSet.size / 7) * 100);
+  localStorage.setItem('aws-clf-progress', JSON.stringify(gp));
+}
+
+function updateProgress() {
+  const pct = Math.round((doneSet.size / 7) * 100);
+  document.getElementById('headerProgress').style.width = `${pct}%`;
+  document.getElementById('headerProgressText').textContent = `${doneSet.size} / 7`;
+  document.getElementById('sidebarProgress').textContent = `${doneSet.size} / 7 セクション完了`;
+  document.getElementById('sidebarProgressFill').style.width = `${pct}%`;
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+window.addEventListener('load', () => {
+  doneSet.forEach(idx => {
+    const btn = document.querySelector(`#section-${idx} .section-done-btn`);
+    if (btn) { btn.classList.add('done'); btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 完了済み`; btn.disabled = true; }
+    document.querySelectorAll('.nav-item')[idx]?.classList.add('completed');
+  });
+  updateProgress();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>フラッシュカード | AWS CLF 学習ガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --aws-orange: #FF9900;
+  --aws-orange-light: #FFB84D;
+  --bg-primary: #070C18;
+  --bg-secondary: #0D1526;
+  --bg-card: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
+  --text-primary: #E8EAF0;
+  --text-secondary: #8A93A8;
+  --text-muted: #5A6478;
+  --ease-smooth: cubic-bezier(0.21,0.51,0.51,1);
+  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+  --c1: #FF9900; --c2: #00A8E1; --c3: #4CAF50; --c4: #CE93D8;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.7; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+a { color: inherit; text-decoration: none; }
+
+.aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse 80% 60% at 20% 30%, rgba(255,153,0,0.05) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 70%, rgba(0,168,225,0.04) 0%, transparent 60%); }
+
+/* ヘッダー */
+.header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(1rem,4vw,2.5rem); background: rgba(7,12,24,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+.back-btn { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--text-secondary); transition: color 0.3s; }
+.back-btn:hover { color: var(--text-primary); }
+.header-center { font-size: 0.9rem; font-weight: 700; color: var(--aws-orange); letter-spacing: 0.06em; }
+.header-right { display: flex; align-items: center; gap: 0.75rem; }
+.progress-badge { padding: 0.3rem 0.85rem; background: rgba(255,153,0,0.1); border: 1px solid rgba(255,153,0,0.25); border-radius: 100px; font-size: 0.78rem; font-weight: 700; color: var(--aws-orange); white-space: nowrap; }
+
+main { position: relative; z-index: 1; padding-top: 60px; }
+
+/* ダッシュボード */
+.dashboard { max-width: 900px; margin: 0 auto; padding: clamp(2rem,5vw,3.5rem) clamp(1.25rem,4vw,2.5rem); }
+.dash-title { font-family: 'Noto Serif JP', serif; font-size: clamp(1.5rem,3vw,2.25rem); font-weight: 600; letter-spacing: 0.04em; margin-bottom: 0.75rem; }
+.dash-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 2.5rem; max-width: 600px; }
+
+/* フィルタ */
+.filter-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+.filter-btn { padding: 0.45rem 1rem; border: 1px solid var(--border); border-radius: 100px; font-size: 0.8rem; color: var(--text-secondary); cursor: pointer; background: none; font-family: inherit; transition: all 0.25s; }
+.filter-btn:hover { color: var(--text-primary); border-color: rgba(255,153,0,0.3); }
+.filter-btn.active { background: rgba(255,153,0,0.1); border-color: rgba(255,153,0,0.4); color: var(--aws-orange); }
+
+/* スタートボタン */
+.start-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
+.start-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.25rem; cursor: pointer; transition: all 0.3s var(--ease-smooth); font-family: inherit; text-align: left; color: var(--text-primary); }
+.start-card:hover { border-color: rgba(255,153,0,0.35); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.2); background: rgba(255,153,0,0.04); }
+.start-card-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.9rem; }
+.start-card-title { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.04em; margin-bottom: 0.3rem; }
+.start-card-desc { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.6; }
+
+/* 記憶度グラフ */
+.memory-section { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
+.memory-title { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--aws-orange); margin-bottom: 1.25rem; font-weight: 500; }
+.memory-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.mem-stat { text-align: center; }
+.mem-stat-value { font-size: 1.75rem; font-weight: 700; line-height: 1; margin-bottom: 0.25rem; }
+.mem-stat-label { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.08em; }
+.mem-stat-value.green { color: #81C784; }
+.mem-stat-value.orange { color: var(--aws-orange); }
+.mem-stat-value.red { color: #EF9A9A; }
+
+/* ===== カード画面 ===== */
+.card-screen { display: none; }
+.card-screen.active { display: block; }
+
+/* プログレスバー */
+.card-header { display: flex; align-items: center; justify-content: space-between; max-width: 700px; margin: 0 auto; padding: clamp(1.5rem,4vw,2.5rem) clamp(1.25rem,4vw,2.5rem) 0; flex-wrap: wrap; gap: 0.75rem; }
+.card-progress-info { font-size: 0.82rem; color: var(--text-secondary); }
+.card-progress-wrap { flex: 1; max-width: 300px; margin: 0 1rem; }
+.card-progress-track { height: 5px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden; }
+.card-progress-fill { height: 100%; background: linear-gradient(90deg, var(--aws-orange), var(--aws-orange-light)); border-radius: 100px; transition: width 0.4s var(--ease-smooth); }
+.card-quit-btn { padding: 0.35rem 0.85rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.75rem; color: var(--text-muted); cursor: pointer; background: none; font-family: inherit; transition: all 0.25s; }
+.card-quit-btn:hover { border-color: rgba(244,67,54,0.3); color: #EF9A9A; }
+
+/* フリップカード */
+.card-area { max-width: 700px; margin: 0 auto; padding: 2rem clamp(1.25rem,4vw,2.5rem); perspective: 1000px; }
+.flip-card { width: 100%; min-height: 320px; cursor: pointer; }
+.flip-inner { position: relative; width: 100%; min-height: 320px; transform-style: preserve-3d; transition: transform 0.55s cubic-bezier(0.4,0.2,0.2,1); }
+.flip-inner.flipped { transform: rotateY(180deg); }
+
+.flip-front, .flip-back {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 20px;
+  padding: clamp(1.5rem,4vw,2.5rem);
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+  min-height: 320px;
+}
+
+.flip-front {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+}
+
+.flip-back {
+  background: rgba(255,153,0,0.06);
+  border: 1px solid rgba(255,153,0,0.25);
+  transform: rotateY(180deg);
+}
+
+.card-domain-badge { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; border-radius: 100px; padding: 0.22rem 0.7rem; margin-bottom: 1.25rem; border: 1px solid; }
+.flip-hint { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 1rem; letter-spacing: 0.06em; display: flex; align-items: center; gap: 0.4rem; }
+.card-term { font-family: 'Noto Serif JP', serif; font-size: clamp(1.3rem,3vw,2rem); font-weight: 600; letter-spacing: 0.04em; line-height: 1.4; }
+.card-sub { font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.75rem; letter-spacing: 0.06em; }
+
+.card-answer-title { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--aws-orange); margin-bottom: 1rem; font-weight: 500; }
+.card-answer { font-size: clamp(0.88rem,2vw,1rem); color: var(--text-secondary); line-height: 1.85; letter-spacing: 0.04em; max-width: 520px; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin-top: 1rem; }
+.card-tag { padding: 0.15rem 0.55rem; border-radius: 100px; font-size: 0.68rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: var(--text-muted); }
+
+/* 評価ボタン */
+.rating-bar { max-width: 700px; margin: 0 auto; padding: 0 clamp(1.25rem,4vw,2.5rem); display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.rating-btn { flex: 1; min-width: 80px; padding: 0.8rem 0.5rem; border-radius: 10px; border: 1px solid var(--border); font-size: 0.82rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.25s var(--ease-smooth); }
+.rating-btn:hover { transform: translateY(-2px); }
+.rating-btn.again { border-color: rgba(244,67,54,0.4); color: #EF9A9A; background: rgba(244,67,54,0.06); }
+.rating-btn.again:hover { background: rgba(244,67,54,0.12); }
+.rating-btn.hard { border-color: rgba(255,153,0,0.4); color: var(--aws-orange); background: rgba(255,153,0,0.06); }
+.rating-btn.hard:hover { background: rgba(255,153,0,0.12); }
+.rating-btn.good { border-color: rgba(0,168,225,0.4); color: #00A8E1; background: rgba(0,168,225,0.06); }
+.rating-btn.good:hover { background: rgba(0,168,225,0.12); }
+.rating-btn.easy { border-color: rgba(76,175,80,0.4); color: #81C784; background: rgba(76,175,80,0.06); }
+.rating-btn.easy:hover { background: rgba(76,175,80,0.12); }
+.rating-desc { font-size: 0.68rem; font-weight: 400; display: block; margin-top: 0.2rem; opacity: 0.7; }
+
+/* 完了画面 */
+.finish-screen { display: none; max-width: 600px; margin: 0 auto; padding: clamp(3rem,8vw,5rem) clamp(1.25rem,4vw,2.5rem); text-align: center; }
+.finish-screen.active { display: block; }
+.finish-icon { width: 80px; height: 80px; border-radius: 50%; background: rgba(76,175,80,0.12); border: 2px solid rgba(76,175,80,0.4); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: #81C784; }
+.finish-title { font-family: 'Noto Serif JP', serif; font-size: 1.75rem; font-weight: 600; margin-bottom: 0.75rem; }
+.finish-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 2rem; }
+.finish-stats { display: flex; justify-content: center; gap: 2rem; margin-bottom: 2.5rem; }
+.finish-stat { text-align: center; }
+.finish-stat-v { font-size: 1.75rem; font-weight: 700; }
+.finish-stat-l { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.08em; }
+.finish-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.btn-primary { padding: 0.85rem 2rem; background: var(--aws-orange); color: #000; font-weight: 700; font-size: 0.9rem; border: none; border-radius: 10px; cursor: pointer; font-family: inherit; transition: all 0.3s; }
+.btn-primary:hover { background: var(--aws-orange-light); transform: translateY(-1px); }
+.btn-secondary { padding: 0.85rem 2rem; border: 1px solid var(--border); color: var(--text-secondary); font-size: 0.9rem; border-radius: 10px; cursor: pointer; font-family: inherit; background: none; transition: all 0.25s; }
+.btn-secondary:hover { border-color: rgba(255,153,0,0.3); color: var(--text-primary); }
+
+/* タッチスワイプ矢印ガイド */
+.swipe-guide { display: flex; align-items: center; justify-content: center; gap: 2rem; margin-top: 1rem; font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.06em; }
+
+@media (max-width: 640px) {
+  .start-grid { grid-template-columns: repeat(2, 1fr); }
+  .memory-stats { grid-template-columns: repeat(3, 1fr); }
+  .filter-row { gap: 0.4rem; }
+  .filter-btn { font-size: 0.75rem; padding: 0.4rem 0.75rem; }
+  .card-progress-wrap { display: none; }
+  .rating-bar { gap: 0.5rem; }
+  .rating-btn { padding: 0.65rem 0.4rem; font-size: 0.78rem; min-width: 60px; }
+  .flip-front, .flip-back { padding: 1.5rem 1.25rem; }
+  .finish-stats { gap: 1.25rem; }
+}
+@media (max-width: 480px) {
+  .header { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.5rem; }
+  .start-grid { grid-template-columns: 1fr; }
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 100px; }
+</style>
+</head>
+<body>
+
+<div class="aurora"></div>
+
+<header class="header">
+  <a href="index.html" class="back-btn">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    ホーム
+  </a>
+  <span class="header-center">フラッシュカード</span>
+  <div class="header-right">
+    <span class="progress-badge" id="headerBadge">120枚</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- ダッシュボード -->
+  <div id="dashScreen" class="dashboard">
+    <h1 class="dash-title">フラッシュカード</h1>
+    <p class="dash-desc">AWSサービス・用語を表面に、解説を裏面に配置した暗記カードです。カードを見て答えを考えてから、評価をつけると学習効率が大幅に向上します。</p>
+
+    <div class="filter-row">
+      <button class="filter-btn active" data-domain="all" onclick="setFilter('all',this)">全て（120枚）</button>
+      <button class="filter-btn" data-domain="1" onclick="setFilter('1',this)">D1：クラウドの概念</button>
+      <button class="filter-btn" data-domain="2" onclick="setFilter('2',this)">D2：セキュリティ</button>
+      <button class="filter-btn" data-domain="3" onclick="setFilter('3',this)">D3：テクノロジー</button>
+      <button class="filter-btn" data-domain="4" onclick="setFilter('4',this)">D4：請求・サポート</button>
+      <button class="filter-btn" data-domain="weak" onclick="setFilter('weak',this)">苦手のみ</button>
+    </div>
+
+    <div class="start-grid">
+      <button class="start-card" onclick="startCards('all')">
+        <div class="start-card-icon" style="background:rgba(255,153,0,0.1); color:var(--aws-orange);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </div>
+        <div class="start-card-title">順番通り</div>
+        <div class="start-card-desc">ドメイン順に全カードを学習</div>
+      </button>
+      <button class="start-card" onclick="startCards('shuffle')">
+        <div class="start-card-icon" style="background:rgba(0,168,225,0.1); color:#00A8E1;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+        </div>
+        <div class="start-card-title">シャッフル</div>
+        <div class="start-card-desc">ランダム順で全カードを学習</div>
+      </button>
+      <button class="start-card" onclick="startCards('weak')">
+        <div class="start-card-icon" style="background:rgba(244,67,54,0.1); color:#EF9A9A;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="start-card-title">苦手のみ</div>
+        <div class="start-card-desc">Again/Hardと評価したカードのみ</div>
+      </button>
+      <button class="start-card" onclick="startCards('unseen')">
+        <div class="start-card-icon" style="background:rgba(76,175,80,0.1); color:#81C784;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <div class="start-card-title">未学習のみ</div>
+        <div class="start-card-desc">まだ評価していないカードのみ</div>
+      </button>
+    </div>
+
+    <div class="memory-section">
+      <div class="memory-title">学習状況</div>
+      <div class="memory-stats">
+        <div class="mem-stat">
+          <div class="mem-stat-value green" id="msEasy">0</div>
+          <div class="mem-stat-label">覚えた</div>
+        </div>
+        <div class="mem-stat">
+          <div class="mem-stat-value orange" id="msHard">0</div>
+          <div class="mem-stat-label">苦手</div>
+        </div>
+        <div class="mem-stat">
+          <div class="mem-stat-value red" id="msUnseen">120</div>
+          <div class="mem-stat-label">未学習</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:1.25rem; text-align:center;">
+      <button onclick="resetCards()" style="background:none; border:1px solid var(--border); color:var(--text-muted); padding:0.4rem 1rem; border-radius:6px; cursor:pointer; font-size:0.78rem; font-family:inherit; transition:all 0.25s;" onmouseover="this.style.borderColor='rgba(244,67,54,0.3)'; this.style.color='#EF9A9A';" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'; this.style.color='#5A6478';">学習状況をリセット</button>
+    </div>
+  </div>
+
+  <!-- カード画面 -->
+  <div id="cardScreen" class="card-screen">
+    <div class="card-header">
+      <span class="card-progress-info" id="cardProgress">1 / 30</span>
+      <div class="card-progress-wrap">
+        <div class="card-progress-track">
+          <div class="card-progress-fill" id="cardProgressFill" style="width:0%"></div>
+        </div>
+      </div>
+      <button class="card-quit-btn" onclick="quitCards()">終了</button>
+    </div>
+
+    <div class="card-area">
+      <div class="flip-card" onclick="flipCard()" id="flipCard">
+        <div class="flip-inner" id="flipInner">
+          <!-- 表面 -->
+          <div class="flip-front">
+            <div class="flip-hint">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+              タップしてめくる
+            </div>
+            <div class="card-domain-badge" id="cardBadge">D1</div>
+            <div class="card-term" id="cardTerm">サービス名</div>
+            <div class="card-sub" id="cardSub">英語名</div>
+          </div>
+          <!-- 裏面 -->
+          <div class="flip-back">
+            <div class="card-answer-title">解説</div>
+            <div class="card-answer" id="cardAnswer">解説テキスト</div>
+            <div class="card-tags" id="cardTagsEl"></div>
+          </div>
+        </div>
+      </div>
+      <div class="swipe-guide">
+        <span>← 苦手</span>
+        <span>クリックでめくる</span>
+        <span>覚えた →</span>
+      </div>
+    </div>
+
+    <div class="rating-bar" id="ratingBar" style="display:none;">
+      <button class="rating-btn again" onclick="rateCard('again')">
+        Again
+        <span class="rating-desc">すぐに再学習</span>
+      </button>
+      <button class="rating-btn hard" onclick="rateCard('hard')">
+        難しい
+        <span class="rating-desc">もう少し練習</span>
+      </button>
+      <button class="rating-btn good" onclick="rateCard('good')">
+        まあまあ
+        <span class="rating-desc">概ね理解した</span>
+      </button>
+      <button class="rating-btn easy" onclick="rateCard('easy')">
+        簡単
+        <span class="rating-desc">完全に覚えた</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 完了画面 -->
+  <div id="finishScreen" class="finish-screen">
+    <div class="finish-icon">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h2 class="finish-title">セッション完了！</h2>
+    <p class="finish-desc" id="finishDesc">お疲れさまでした。評価に基づいて次の学習計画を立てましょう。</p>
+    <div class="finish-stats">
+      <div class="finish-stat"><div class="finish-stat-v green" id="fEasy">0</div><div class="finish-stat-l">簡単</div></div>
+      <div class="finish-stat"><div class="finish-stat-v" style="color:#00A8E1;" id="fGood">0</div><div class="finish-stat-l">まあまあ</div></div>
+      <div class="finish-stat"><div class="finish-stat-v orange" id="fHard">0</div><div class="finish-stat-l">難しい</div></div>
+      <div class="finish-stat"><div class="finish-stat-v red" id="fAgain">0</div><div class="finish-stat-l">Again</div></div>
+    </div>
+    <div class="finish-btns">
+      <button class="btn-primary" onclick="startCards('shuffle')">もう一度シャッフル</button>
+      <button class="btn-secondary" onclick="startCards('weak')">苦手カードのみ復習</button>
+      <button class="btn-secondary" onclick="goHome()">ホームへ</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+/* ===================================================
+   フラッシュカードデータベース（120枚）
+=================================================== */
+const CARDS = [
+  // D1 クラウドの概念（24枚）
+  { id:1, d:'1', term:'AWS Well-Architectedフレームワーク', sub:'6本柱の設計指針', answer:'①運用上の優秀性②セキュリティ③信頼性④パフォーマンス効率⑤コスト最適化⑥持続可能性（2021年追加）の6本柱でシステムを評価・改善するAWSの設計フレームワーク。', tags:['設計','フレームワーク'] },
+  { id:2, d:'1', term:'責任共有モデル', sub:'Shared Responsibility Model', answer:'「クラウドのセキュリティ」はAWS（物理インフラ・ハードウェア）が担当、「クラウド内のセキュリティ」はお客様（OS・アプリ・データ・IAM）が担当するセキュリティの責任分担モデル。', tags:['セキュリティ','基本'] },
+  { id:3, d:'1', term:'CapEx vs OpEx', sub:'コスト形態の変化', answer:'CapEx（資本的支出）＝サーバー購入等の先行投資。OpEx（運営的支出）＝使った分だけの変動費。クラウド移行でCapEx→OpExへ転換し、キャッシュフローが改善する。', tags:['コスト','基本'] },
+  { id:4, d:'1', term:'AWSの6つのメリット', sub:'クラウドを使う理由', answer:'①固定費→変動費②規模の経済③キャパシティ予測不要④俊敏性・速度の向上⑤データセンター管理不要⑥数分で世界展開。CLF試験で全て覚えること。', tags:['基本','試験頻出'] },
+  { id:5, d:'1', term:'リージョン（Region）', sub:'AWSの地理的拠点', answer:'AWSの世界的な地理的拠点（例：ap-northeast-1=東京）。30以上存在し各リージョンは2AZ以上で構成。選択基準：①コンプライアンス②レイテンシー③サービス提供④料金。', tags:['インフラ'] },
+  { id:6, d:'1', term:'アベイラビリティゾーン（AZ）', sub:'リージョン内の独立DC', answer:'リージョン内にある独立したデータセンター群。物理的に離れており独立した電源・冷却・ネットワーク。複数AZへの分散配置が高可用性の基本。単一AZへの集約はSPOFを生む。', tags:['インフラ','可用性'] },
+  { id:7, d:'1', term:'エッジロケーション', sub:'CloudFrontのキャッシュ拠点', answer:'CloudFrontがコンテンツをキャッシュする世界中の配信拠点。400以上に存在しリージョン・AZよりはるかに多い。ユーザーに最も近い場所からコンテンツを配信し低レイテンシーを実現。', tags:['インフラ','CDN'] },
+  { id:8, d:'1', term:'6Rの移行戦略', sub:'クラウド移行の6パターン', answer:'Rehost(Lift&Shift) / Replatform(一部最適化) / Repurchase(SaaSへ) / Refactor(再設計) / Retire(廃止) / Retain(現状維持)。最も多い移行はRehost。最も効果的はRefactor。', tags:['移行','試験頻出'] },
+  { id:9, d:'1', term:'IaaS / PaaS / SaaS', sub:'クラウドのサービスモデル3種', answer:'IaaS（例：EC2）：インフラを提供。OS管理はお客様。PaaS（例：RDS/Lambda）：実行環境を提供。SaaS（例：WorkMail）：全部AWSが管理。制御の自由度：IaaS>PaaS>SaaS。', tags:['サービスモデル','試験頻出'] },
+  { id:10, d:'1', term:'ハイブリッドクラウド', sub:'オンプレ+クラウドの組み合わせ', answer:'オンプレミスとAWSパブリッククラウドを組み合わせたデプロイモデル。AWS Outpostsで実現。機密データのオンプレ保持とクラウドの柔軟性を両立できる。', tags:['デプロイ'] },
+  { id:11, d:'1', term:'弾力性（Elasticity）', sub:'自動スケールの能力', answer:'需要に応じてリソースを自動的に増減できる能力。Auto ScalingやLambdaで実現。ピーク時は自動増加、需要減少時は自動削減。常に最適コストで運用できる。', tags:['設計','基本'] },
+  { id:12, d:'1', term:'高可用性（High Availability）', sub:'HA設計の基本', answer:'システムが継続的に利用可能な状態を維持する設計目標。複数AZへのリソース分散・ELB・Auto Scalingの組み合わせで実現。SLAで可用性（99.9%等）を定義。', tags:['設計','可用性'] },
+  { id:13, d:'1', term:'TCO（Total Cost of Ownership）', sub:'総所有コスト', answer:'ハードウェア購入・DC維持・電力・冷却・人件費を含む総コスト。AWSに移行することでTCOを大幅削減できる。AWS Pricing Calculatorでオンプレとの比較が可能。', tags:['コスト'] },
+  { id:14, d:'1', term:'マイクロサービスアーキテクチャ', sub:'小さなサービスの集合体', answer:'アプリを小さな独立したサービスに分割する設計パターン。各サービスは独立してデプロイ・スケール可能。AWSではLambda・ECS・EKS・API Gateway・SQS・SNSを組み合わせて実装。', tags:['設計','アーキテクチャ'] },
+  { id:15, d:'1', term:'疎結合（Loose Coupling）', sub:'コンポーネント間の依存を減らす', answer:'コンポーネント間の依存関係を最小化する設計原則。SQSキューを使った非同期通信が典型例。一部のコンポーネント障害が他に波及しない耐障害性の高いシステムを実現。', tags:['設計'] },
+  { id:16, d:'1', term:'Infrastructure as Code (IaC)', sub:'インフラのコード化', answer:'インフラの構成をコード（CloudFormation/Terraform等）で定義・管理する手法。バージョン管理・自動化・再現性・環境間の一貫性を実現。Well-Architectedの運用上の優秀性の原則。', tags:['設計','自動化'] },
+  { id:17, d:'1', term:'AWS CAF', sub:'Cloud Adoption Framework', answer:'組織のクラウド移行を成功させるためのガイダンスフレームワーク。6つのパースペクティブ：ビジネス・人材・ガバナンス・プラットフォーム・セキュリティ・オペレーション。', tags:['移行'] },
+  { id:18, d:'1', term:'Design for Failure', sub:'障害を前提とした設計', answer:'「障害は必ず起きる」前提で設計する原則。マルチAZ配置・Auto Scaling・ヘルスチェック・フェイルオーバーを組み合わせて自動回復するシステムを構築する。', tags:['設計','可用性'] },
+  { id:19, d:'1', term:'AWS Well-Architectedツール', sub:'アーキテクチャ評価ツール', answer:'6つの柱に基づいてワークロードを評価するツール。質問に答えるとHRI（高リスク）・MRI（中リスク）が特定され、改善点をレコメンドする。AWS Trusted Advisorとは異なる。', tags:['設計','ツール'] },
+  { id:20, d:'1', term:'AWS Outposts', sub:'オンプレミスでのAWSサービス', answer:'AWSのハードウェアをお客様のDCに設置し、オンプレミスとクラウドで一貫したAWSサービスを使えるハイブリッドクラウドサービス。低レイテンシー要件や規制対応に使用。', tags:['ハイブリッド'] },
+  { id:21, d:'1', term:'AWS Global Accelerator', sub:'グローバル高速化サービス', answer:'AWSのグローバルネットワーク（バックボーン）を使ってアプリへのアクセスを高速化するサービス。エッジからAWSバックボーン経由でリソースに到達するため、インターネット経由より高速・安定。CloudFrontはHTTPキャッシュ、Global AcceleratorはTCP/UDP高速化。', tags:['ネットワーク'] },
+  { id:22, d:'1', term:'スケールアップ vs スケールアウト', sub:'垂直vs水平スケーリング', answer:'スケールアップ（垂直）：インスタンスサイズを大きくする（t3.large→c5.2xlarge等）。スケールアウト（水平）：同じサイズのインスタンスを複数追加。クラウドではスケールアウトを推奨（障害が局所化されるため）。', tags:['設計','スケーリング'] },
+  { id:23, d:'1', term:'ステートレス（Stateless）設計', sub:'セッション状態を持たない設計', answer:'アプリケーションがサーバーにセッション状態を持たない設計。セッション情報をElastiCacheやDynamoDBに外部化することで、任意のインスタンスがリクエストを処理できるようになりスケールアウトが容易になる。', tags:['設計','アーキテクチャ'] },
+  { id:24, d:'1', term:'AWS Marketplace', sub:'サードパーティソフトのECサイト', answer:'AWSインフラ上で動作するサードパーティのソフトウェア・AMI・サービスを購入・利用できるカタログ。1-Clickデプロイで商用ソフトを即座に利用でき、利用料はAWS料金に統合される。', tags:['サービス'] },
+
+  // D2 セキュリティ（32枚）
+  { id:25, d:'2', term:'IAM（Identity and Access Management）', sub:'AWSアクセス管理の根幹', answer:'AWSリソースへのアクセスを管理するグローバルサービス。ユーザー・グループ・ロール・ポリシーで構成。最小権限の原則・ルートユーザーの日常不使用・MFAが基本のベストプラクティス。', tags:['IAM','試験頻出'] },
+  { id:26, d:'2', term:'IAMロール', sub:'サービスへの権限委任', answer:'EC2・Lambda等のAWSサービスに一時的な権限を付与する仕組み。長期アクセスキーが不要になり認証情報が自動ローテーション。クロスアカウントアクセスにも使用。セキュリティのベストプラクティス。', tags:['IAM','セキュリティ'] },
+  { id:27, d:'2', term:'最小権限の原則', sub:'Principle of Least Privilege', answer:'ユーザー・サービス・ロールに必要最小限の権限のみを付与するセキュリティの基本原則。具体的なリソースとアクションを限定したカスタムポリシーを作成する。AdministratorAccessの乱用は禁止。', tags:['IAM','セキュリティ'] },
+  { id:28, d:'2', term:'MFA（多要素認証）', sub:'Multi-Factor Authentication', answer:'パスワード+認証デバイスの二段階認証。仮想MFA（Google Authenticator等）・ハードウェアMFA・SMS MFAがある。ルートユーザーへの適用が特に重要。IAMのベストプラクティスの筆頭。', tags:['IAM','セキュリティ'] },
+  { id:29, d:'2', term:'SCP（サービスコントロールポリシー）', sub:'組織レベルの権限上限', answer:'AWS Organizations でOU/アカウントに適用できる権限の上限（ガードレール）。SCPで拒否されたアクションはIAMで許可しても実行不可。管理アカウントにはSCP不適用。特定リージョンのみ使用許可等に活用。', tags:['Organizations','IAM'] },
+  { id:30, d:'2', term:'AWS CloudTrail', sub:'APIコール監査ログ', answer:'AWSアカウント内の全APIコールを記録するサービス。「誰が・いつ・どのAPIを・どのリソースに対して」を追跡。S3に保存して長期保持が可能。CloudWatchはメトリクス監視（混同注意！）', tags:['監査','試験頻出'] },
+  { id:31, d:'2', term:'Amazon GuardDuty', sub:'ML脅威検出サービス', answer:'機械学習・異常検知・脅威インテリジェンスでAWSアカウントの脅威をリアルタイム検出。不正APIコール・異常なネットワーク通信・クレデンシャル侵害等を検出。Inspectorは脆弱性評価（混同注意！）', tags:['セキュリティ','試験頻出'] },
+  { id:32, d:'2', term:'Amazon Inspector', sub:'脆弱性評価サービス', answer:'EC2インスタンスのソフトウェア脆弱性（CVEデータベース準拠）とネットワーク到達可能性を自動評価。GuardDutyは実際の脅威検出、Inspectorは潜在的な脆弱性のスキャン（混同注意！）', tags:['セキュリティ','試験頻出'] },
+  { id:33, d:'2', term:'Amazon Macie', sub:'S3機密データの自動検出', answer:'機械学習でS3バケット内の機密データ（PII・クレジットカード・医療情報等）を自動検出・分類・保護。GDPR・HIPAAコンプライアンス対応に活用。GuardDutyはS3ではなくAWS全体の脅威検出。', tags:['セキュリティ','データ保護'] },
+  { id:34, d:'2', term:'AWS WAF', sub:'Web Application Firewall', answer:'WebアプリへのSQLi・XSS・悪意あるボット等の攻撃を検出・防止するWAF。CloudFront・ALB・API Gatewayに統合可能。マネージドルールを使えばAWSが更新する脅威シグネチャを活用できる。', tags:['セキュリティ','Web'] },
+  { id:35, d:'2', term:'AWS Shield', sub:'DDoS攻撃対策', answer:'DDoS攻撃防護サービス。Standard（全顧客自動適用・無料・L3/L4レベル）とAdvanced（有料・高度DDoS対策・DRT専任・AWS WAF無料）の2種類がある。', tags:['セキュリティ','試験頻出'] },
+  { id:36, d:'2', term:'AWS KMS', sub:'Key Management Service', answer:'暗号化キー（CMK/KMS Key）の作成・管理・監査を行うフルマネージドサービス。S3・EBS・RDS等のAWSサービスと統合。キーの使用はCloudTrailで全て監査可能。', tags:['暗号化','セキュリティ'] },
+  { id:37, d:'2', term:'AWS Secrets Manager', sub:'シークレットの自動ローテーション', answer:'DBパスワード・APIキー等のシークレットを安全に保存・管理し自動ローテーション可能。コードへのハードコーディングが不要。Parameter Store（ローテーションなし・低コスト）との使い分けに注意。', tags:['セキュリティ','認証情報'] },
+  { id:38, d:'2', term:'AWS Artifact', sub:'コンプライアンスレポート入手', answer:'AWSのコンプライアンス関連ドキュメント（SOC1/2/3・PCI DSS・ISO認定書等）をオンデマンドでダウンロードできるセルフサービスポータル。無料で利用可。試験頻出。', tags:['コンプライアンス','試験頻出'] },
+  { id:39, d:'2', term:'AWS Config', sub:'設定変更追跡・コンプライアンス評価', answer:'AWSリソースの設定変更を継続的に記録・評価するサービス。「いつ・どのリソースが・どのように変更されたか」を追跡。コンフォーマンスパックでコンプライアンスルール適用。CloudTrailとは役割が異なる。', tags:['コンプライアンス','監査'] },
+  { id:40, d:'2', term:'保存時の暗号化 vs 転送時の暗号化', sub:'2種類のデータ保護', answer:'保存時（at rest）：S3のSSE（SSE-S3/SSE-KMS/SSE-C）・EBS暗号化。転送時（in transit）：TLS/SSL（HTTPS）。AWS Certificate Manager（ACM）でSSL証明書を無料管理できる。', tags:['暗号化','試験頻出'] },
+  { id:41, d:'2', term:'セキュリティグループ vs NACL', sub:'ファイアウォールの2種類', answer:'SG：インスタンスレベル・ステートフル（返信自動許可）・許可ルールのみ設定可。NACL：サブネットレベル・ステートレス（インバウンド/アウトバウンド個別設定必要）・許可と拒否の両方設定可・番号順評価。', tags:['ネットワーク','試験頻出'] },
+  { id:42, d:'2', term:'VPC フローログ', sub:'ネットワークトラフィックの記録', answer:'VPCのネットワークインターフェースを通るIPトラフィック（送信元・宛先IP・ポート・プロトコル・許可/拒否）をS3またはCloudWatch Logsに記録。セキュリティ監査・異常通信の検出・トラブルシューティングに使用。', tags:['ネットワーク','監査'] },
+  { id:43, d:'2', term:'AWS IAM Identity Center', sub:'旧AWS SSO', answer:'複数のAWSアカウントやSaaS（Salesforce・Microsoft 365等）へのシングルサインオン（SSO）を一元管理するサービス。従業員は1つの認証情報で複数のアカウント・アプリにアクセスできる。', tags:['IAM','SSO'] },
+  { id:44, d:'2', term:'Amazon Cognito', sub:'アプリのユーザー認証', answer:'モバイル・WebアプリにユーザーIDとデータを追加するサービス。ユーザープール（認証：サインアップ/サインイン）とIDプール（AWS認証情報の取得）の2コンポーネント。Google/Facebook等のSNS連携も可。', tags:['認証','セキュリティ'] },
+  { id:45, d:'2', term:'AWS Certificate Manager（ACM）', sub:'SSL/TLS証明書の無料管理', answer:'ALB・CloudFront・API GatewayのSSL/TLS証明書を無料で発行・管理・自動更新するサービス。証明書の期限切れを自動管理。HTTPS化を低コストで実現できる。', tags:['セキュリティ','HTTPS'] },
+  { id:46, d:'2', term:'AWS PrivateLink', sub:'プライベートネットワーク経由のアクセス', answer:'VPC内からインターネットを経由せずAWSサービスやサードパーティサービスにアクセスする仕組み（VPCエンドポイント）。Gateway型（S3・DynamoDB）とInterface型（その他サービス）の2種類。', tags:['ネットワーク','セキュリティ'] },
+  { id:47, d:'2', term:'AWS Network Firewall', sub:'VPC境界のマネージドFW', answer:'VPCの境界でネットワークトラフィックを検査するマネージドファイアウォール。ステートフルパケット検査・IPS・ドメインフィルタリングを提供。WAF（HTTPレイヤー）よりネットワークレイヤーで動作。', tags:['セキュリティ','ネットワーク'] },
+  { id:48, d:'2', term:'IAM ポリシーの評価ロジック', sub:'権限の優先順位', answer:'①デフォルト：全て拒否（Implicit Deny）②Allowポリシーで許可③Explicit Deny（明示的拒否）があれば上書き拒否。SCPで拒否されたらIAMで許可不可。「最初は全て拒否、Allowで許可」が基本。', tags:['IAM','試験頻出'] },
+  { id:49, d:'2', term:'AWS Organizations', sub:'複数アカウントの一元管理', answer:'複数のAWSアカウントを組織として一元管理するサービス。SCP（権限のガードレール）・一括請求（ボリューム割引）・OUによる階層管理・リザーブドの共有機能を提供。', tags:['Organizations','管理'] },
+  { id:50, d:'2', term:'Amazon Detective', sub:'セキュリティ調査の可視化', answer:'GuardDuty・Security Hub等のセキュリティ検出結果の根本原因を機械学習・グラフ分析で調査するサービス。CloudTrailログ・VPCフローログ・GuardDutyの結果を相関分析してインシデント原因を視覚化。', tags:['セキュリティ','調査'] },
+  { id:51, d:'2', term:'AWS Security Hub', sub:'セキュリティの一元ダッシュボード', answer:'GuardDuty・Inspector・Macie等の複数セキュリティサービスの検出結果を集約・管理する一元ダッシュボード。CIS AWS Foundations Benchmark等のコンプライアンスチェックも提供。', tags:['セキュリティ','管理'] },
+  { id:52, d:'2', term:'IDフェデレーション', sub:'既存の認証基盤との連携', answer:'社内のActive Directory等の既存ID管理システムと連携し、個別IAMユーザーを作らずにAWSにアクセスできる仕組み。SAMLまたはOIDCを使用。AWS IAM Identity Centerで実現が容易。', tags:['IAM','認証'] },
+  { id:53, d:'2', term:'PCI DSS・HIPAA・GDPR・SOC', sub:'主要コンプライアンスプログラム', answer:'PCI DSS：クレジットカードデータ保護。HIPAA：米国医療情報保護。GDPR：EU個人データ保護。SOC1/2/3：財務・セキュリティ等のコントロール。AWS Artifactからコンプライアンスレポートを入手。', tags:['コンプライアンス','試験頻出'] },
+  { id:54, d:'2', term:'AWS Directory Service', sub:'マネージドAD', answer:'AWSでMicrosoft Active Directory互換のディレクトリを提供。Managed Microsoft AD・AD Connector・Simple ADの3種類。WorkSpacesとの統合・Windows ServerのDomainJoin・既存ADとの連携に使用。', tags:['認証','ディレクトリ'] },
+  { id:55, d:'2', term:'クロスアカウントアクセス', sub:'別アカウントのリソースへのアクセス', answer:'IAMロールのAssumeRoleで実現。アカウントAからアカウントBのロールを引き受けて一時的な権限を取得。アクセスキー共有は絶対禁止。AWS Organizationsとの組み合わせで管理が容易になる。', tags:['IAM','セキュリティ'] },
+  { id:56, d:'2', term:'S3バケットポリシー', sub:'リソースベースのポリシー', answer:'IAMポリシー（アイデンティティベース）と異なり、S3バケットに直接付与するリソースベースのポリシー。パブリックアクセスの制御・クロスアカウントアクセス・特定IPのみ許可・特定VPCエンドポイントのみ許可に使用。', tags:['S3','セキュリティ'] },
+
+  // D3 テクノロジー（48枚）
+  { id:57, d:'3', term:'Amazon EC2', sub:'Elastic Compute Cloud', answer:'仮想サーバー（IaaS）のコアサービス。購入オプション：オンデマンド（柔軟）・リザーブド（最大72%割引・安定ワークロード）・スポット（最大90%割引・中断OK）・Savings Plans・Dedicated Hosts。', tags:['コンピューティング','試験頻出'] },
+  { id:58, d:'3', term:'Amazon S3', sub:'Simple Storage Service', answer:'オブジェクトストレージ。耐久性11 nine\'s（99.999999999%）・無制限容量・静的Webホスティング。ストレージクラス：Standard→Standard-IA→Glacier（低コスト順）。バージョニング・ライフサイクルポリシーが重要。', tags:['ストレージ','試験頻出'] },
+  { id:59, d:'3', term:'Amazon EBS', sub:'Elastic Block Store', answer:'EC2にアタッチするブロックストレージ（OS領域・DBデータ等）。SSDとHDDの種類あり。同一AZ内のEC2のみアタッチ可（AZをまたがれない）。スナップショットでS3にバックアップ・別AZ/リージョンへコピー可。', tags:['ストレージ'] },
+  { id:60, d:'3', term:'Amazon EFS', sub:'Elastic File System', answer:'複数のEC2インスタンスから同時にマウントできるNFSファイルシステム。マルチAZ対応。LinuxのみサポートされEC2の起動時にマウント可。EBSは1EC2、EFSは複数EC2から同時アクセス可能（試験頻出の違い）。', tags:['ストレージ','試験頻出'] },
+  { id:61, d:'3', term:'S3 Glacier', sub:'低コストアーカイブストレージ', answer:'長期アーカイブ向けの最も低コストなS3ストレージクラス。データの取り出しに時間がかかる（Instant Retrieval/Flexible Retrieval/Deep Archive）。コンプライアンス・バックアップ・長期保管に使用。', tags:['ストレージ'] },
+  { id:62, d:'3', term:'Amazon RDS', sub:'Relational Database Service', answer:'MySQL・PostgreSQL・Oracle・SQL Server等のマネージドRDB。OSパッチ・バックアップ・Multi-AZフェイルオーバーはAWS担当。リードレプリカ（読み取り分散）とMulti-AZ（高可用性）の違いが試験頻出。', tags:['データベース','試験頻出'] },
+  { id:63, d:'3', term:'Amazon Aurora', sub:'AWSクラウドネイティブDB', answer:'AWSが独自開発したRDB。MySQL比5倍・PG比3倍の性能。3つのAZに6コピー自動複製で99.99%可用性。ServerlessV2でオートスケール。ECS/EKSでのRDSとの使い分け：高性能・高可用性が必要→Aurora。', tags:['データベース'] },
+  { id:64, d:'3', term:'Amazon DynamoDB', sub:'サーバーレスNoSQL', answer:'フルマネージドのNoSQL（キーバリュー+ドキュメント型）。ミリ秒レイテンシー・無制限スケール・オートスケール。グローバルテーブルで複数リージョン複製。RDS（SQL/OLTP）との使い分けに注意。', tags:['データベース','試験頻出'] },
+  { id:65, d:'3', term:'Amazon Redshift', sub:'データウェアハウス（DWH）', answer:'ペタバイト規模のDWH。列指向ストレージ・並列処理で大規模OLAP分析を高速実行。BIツール（QuickSight等）と連携。RDS（OLTP/日常トランザクション処理）との違いが頻出。', tags:['データベース','分析'] },
+  { id:66, d:'3', term:'Amazon ElastiCache', sub:'インメモリキャッシュ', answer:'Redis/MemcachedのマネージドキャッシュサービスDBの前段に配置し読み取り負荷を軽減。Redis（永続化・レプリケーション・クラスタリング・豊富なデータ型）vsMemcached（シンプル・マルチスレッド）。', tags:['データベース','キャッシュ'] },
+  { id:67, d:'3', term:'AWS Lambda', sub:'サーバーレス関数実行', answer:'インフラ管理なしのサーバーレス関数実行。コードのみ管理・最大15分実行・イベント駆動型・コールドスタートに注意。課金：リクエスト数+GB-秒。月100万リクエスト+40万GB-秒は永続無料枠。', tags:['コンピューティング','試験頻出'] },
+  { id:68, d:'3', term:'AWS Fargate', sub:'サーバーレスコンテナ実行', answer:'ECS/EKSのサーバーレス起動オプション。EC2インスタンス管理不要でDockerコンテナを実行。コンテナに必要なCPU・メモリを指定するだけ。EC2起動タイプとの違い：Fargateはインフラ管理が完全不要。', tags:['コンテナ','サーバーレス'] },
+  { id:69, d:'3', term:'Amazon VPC', sub:'Virtual Private Cloud', answer:'AWSの仮想ネットワーク。リージョンに属し、サブネット（AZに属する）・ルートテーブル・IGW・NAT GW・SG・NACLで構成。パブリック（IGWへのルートあり）/プライベートサブネットの分離が基本設計。', tags:['ネットワーク','試験頻出'] },
+  { id:70, d:'3', term:'NAT Gateway', sub:'プライベートサブネットの外部接続', answer:'プライベートサブネットのリソースがインターネットへのアウトバウンド通信を可能にする（インバウンドはブロック）。パブリックサブネットにElastic IPを付けて配置。プライベートEC2のパッチ適用等に使用。', tags:['ネットワーク'] },
+  { id:71, d:'3', term:'Amazon CloudFront', sub:'CDNサービス', answer:'世界400以上のエッジロケーションにコンテンツをキャッシュして低レイテンシーで配信するCDN。静的コンテンツ・動画・APIアクセラレーション・Lambda@Edge（エッジでの処理）に活用。WAFとの統合でセキュリティ向上。', tags:['CDN','ネットワーク'] },
+  { id:72, d:'3', term:'Amazon Route 53', sub:'マネージドDNS', answer:'スケーラブルなDNSサービス。ルーティングポリシー：シンプル・フェイルオーバー・地理的（Geolocation）・地理近接性（Geoproximity）・レイテンシーベース・加重・マルチバリューアンサー。ヘルスチェック・フェイルオーバー機能付き。', tags:['ネットワーク','DNS'] },
+  { id:73, d:'3', term:'Elastic Load Balancing（ELB）', sub:'ロードバランサー4種類', answer:'ALB（L7・HTTPルーティング・コンテンツベース）・NLB（L4・TCPレイヤー・超高性能・静的IP）・GWLB（サードパーティFW/IDS向け）・CLB（旧世代）。Webアプリには基本ALBを選択。', tags:['ネットワーク','試験頻出'] },
+  { id:74, d:'3', term:'Amazon SQS', sub:'Simple Queue Service', answer:'メッセージキュー（1:1/プル型）。コンポーネント間の非同期通信で疎結合化。標準キュー（高スループット・順序保証なし）とFIFOキュー（順序保証・重複除去）の2種類。SNS（1:多/プッシュ）との違いが頻出。', tags:['アプリ統合','試験頻出'] },
+  { id:75, d:'3', term:'Amazon SNS', sub:'Simple Notification Service', answer:'Pub/Subの通知サービス（1:多/プッシュ型）。1つのメッセージを複数サブスクライバー（Email・SMS・SQS・Lambda等）に同時配信。Fan-outパターン：SNSトピック→複数SQSキューに一斉配信。SQSとの違いが頻出。', tags:['アプリ統合','試験頻出'] },
+  { id:76, d:'3', term:'Amazon CloudWatch', sub:'メトリクス監視・アラーム', answer:'AWSリソースのメトリクス収集・ログ管理・アラーム設定サービス。アラームアクション：SNS通知・Auto Scaling・EC2アクション。CloudTrail（APIコールログ）との違いが試験頻出。', tags:['監視','試験頻出'] },
+  { id:77, d:'3', term:'AWS CloudFormation', sub:'Infrastructure as Code', answer:'JSON/YAMLテンプレートでAWSインフラを定義・自動構築するIaC（Infrastructure as Code）ツール。スタック単位で管理し一括作成・更新・削除が可能。再現性・バージョン管理・自動化を実現。', tags:['管理','IaC'] },
+  { id:78, d:'3', term:'AWS Trusted Advisor', sub:'5分野のベストプラクティスチェック', answer:'コスト最適化・パフォーマンス・セキュリティ・耐障害性・サービス制限の5分野でAWSリソースをチェックするサービス。Basicは7項目、Businessプラン以上でフルアクセス。Trusted Advisor≠Well-Architectedツール。', tags:['管理','試験頻出'] },
+  { id:79, d:'3', term:'Auto Scaling', sub:'需要に応じた自動増減', answer:'EC2・DynamoDB等を需要に応じて自動スケール。CloudWatchアラームでトリガー。スケールアウト（増）・スケールイン（減）。希望台数・最小台数・最大台数で設定。コスト効率と可用性を両立。', tags:['コンピューティング','スケーリング'] },
+  { id:80, d:'3', term:'Amazon API Gateway', sub:'APIの一元管理', answer:'REST・HTTP・WebSocket APIを作成・管理するフルマネージドサービス。スロットリング・認証（IAM/Cognito/APIキー）・キャッシュ・ステージ管理。Lambda+API GatewayでサーバーレスAPI構築。', tags:['アプリ統合'] },
+  { id:81, d:'3', term:'AWS Step Functions', sub:'ワークフロー自動化', answer:'Lambda・ECS・SNS・SQS等を組み合わせてビジュアルなワークフロー（ステートマシン）として実行するサーバーレスオーケストレーション。エラーハンドリング・リトライ・並列実行を視覚的に管理。', tags:['アプリ統合'] },
+  { id:82, d:'3', term:'Amazon Kinesis', sub:'リアルタイムデータストリーミング', answer:'リアルタイムデータストリーム処理サービス群。Data Streams（収集）・Data Firehose（S3/Redshiftへの自動ロード）・Data Analytics（SQLリアルタイム分析）。IoT・ログ・クリックストリームのリアルタイム処理に最適。', tags:['データ処理','ストリーミング'] },
+  { id:83, d:'3', term:'Amazon Athena', sub:'S3データをSQLで分析', answer:'S3に保存されたデータ（CSV・JSON・Parquet等）をサーバーレスのSQLでクエリ分析するサービス。インフラプロビジョニング不要・スキャン量に応じた課金。Glue+Athena+QuickSightでデータ分析基盤を構築。', tags:['分析','サーバーレス'] },
+  { id:84, d:'3', term:'AWS Glue', sub:'サーバーレスETLサービス', answer:'データの発見・変換・ロードを自動化するサーバーレスのETLサービス。データカタログ（メタデータ管理）・クローラー（スキーマ自動検出）・ETLジョブ生成。Athena・S3・Redshiftと組み合わせてデータレイクを構築。', tags:['データ処理','ETL'] },
+  { id:85, d:'3', term:'Amazon EMR', sub:'Elastic MapReduce', answer:'Apache Hadoop・Spark・Hive等のビッグデータフレームワークをマネージドクラスターで実行。スポットインスタンスとの組み合わせでコスト最小化。ゲノム解析・リアルタイムストリーム処理・MLトレーニングに使用。', tags:['データ処理','ビッグデータ'] },
+  { id:86, d:'3', term:'Amazon Redshift vs RDS', sub:'DWH vs OLTP の使い分け', answer:'RDS：OLTP（Online Transaction Processing）= 日常の取引処理（EC・ERPのDB）。Redshift：OLAP（Online Analytical Processing）= 大規模な集計・分析（BI・DWH）。問題文に「分析」「集計」「ペタバイト」→Redshift。', tags:['データベース','試験頻出'] },
+  { id:87, d:'3', term:'RDSリードレプリカ vs Multi-AZ', sub:'頻出の使い分け問題', answer:'リードレプリカ：読み取りクエリをオフロードしてパフォーマンス向上（非同期レプリケーション・遅延あり）。Multi-AZ：プライマリ障害時の自動フェイルオーバーで可用性向上（同期レプリケーション）。目的が全く異なる。', tags:['データベース','試験頻出'] },
+  { id:88, d:'3', term:'EC2スポットインスタンス', sub:'最大90%OFF・中断OK前提', answer:'AWSの余剰キャパシティを競売価格で利用（最大90%割引）。AWSが需要増加時に中断する可能性あり。「中断OK」のワークロード（バッチ・ML・レンダリング）に最適。Spot Fleet・Spot Blockでより安定した運用可。', tags:['コンピューティング','コスト'] },
+  { id:89, d:'3', term:'EC2リザーブドインスタンス', sub:'最大72%OFF・長期コミット', answer:'1年または3年の使用コミットで最大72%割引。スタンダード（割引大・変更不可）とコンバーティブル（割引小・インスタンスタイプ変更可）の2種類。24/7稼働の安定したワークロード（WebサーバーDB等）に最適。', tags:['コンピューティング','コスト'] },
+  { id:90, d:'3', term:'Amazon Rekognition', sub:'画像・動画のAI分析', answer:'顔認識・感情検出・オブジェクト検出・テキスト認識・不適切コンテンツ検出を行うAIサービス。ML知識不要でAPIを呼ぶだけ。Transcribe（音声→テキスト）・Polly（テキスト→音声）・Comprehend（NLP）との使い分けに注意。', tags:['AI/ML','試験頻出'] },
+  { id:91, d:'3', term:'Amazon SageMaker', sub:'MLの完全マネージド環境', answer:'機械学習ワークフロー全体（データ準備・モデル構築・トレーニング・評価・デプロイ・監視）を統合管理するフルマネージドサービス。Jupyter Notebook統合・AutoML・エンドポイント管理を提供。', tags:['AI/ML'] },
+  { id:92, d:'3', term:'AWS CodePipeline / CodeBuild / CodeDeploy', sub:'CI/CDサービス群', answer:'CodePipeline：CI/CDパイプラインの自動化（ソース→ビルド→テスト→デプロイを連続実行）。CodeBuild：ビルド・テストのマネージドサービス。CodeDeploy：EC2・Lambda・ECSへの自動デプロイ。', tags:['DevOps','CI/CD'] },
+  { id:93, d:'3', term:'AWS Systems Manager', sub:'EC2大規模管理ツール', answer:'Session Manager（SSHポート不要のシェルアクセス）・Parameter Store（設定値の一元管理）・Patch Manager（パッチ自動適用）・Run Command（リモートコマンド実行）等の機能でEC2群を大規模管理。', tags:['管理','セキュリティ'] },
+  { id:94, d:'3', term:'Amazon S3 Transfer Acceleration', sub:'S3への高速アップロード', answer:'CloudFrontエッジロケーションを経由してS3への長距離転送を高速化。海外クライアントから日本のS3バケットに大容量ファイルをアップロードする際に効果的。MultipartUploadとの併用でさらに高速化。', tags:['ストレージ','ネットワーク'] },
+  { id:95, d:'3', term:'Amazon EventBridge', sub:'サーバーレスイベントバス', answer:'AWSサービスやアプリのイベントをルーティングするサーバーレスイベントバス。スケジュール実行（cron/rate式）も可能でCloudWatch Events（旧名）の後継。Lambda・SQS・SNS・Step Functionsへのルーティング設定が簡単。', tags:['アプリ統合'] },
+  { id:96, d:'3', term:'Amazon OpenSearch Service', sub:'旧Elasticsearch Service', answer:'Elasticsearch互換の検索・分析エンジン。ログ集中管理（Kibanaで可視化）・Webの全文検索・セキュリティログ分析に使用。Kinesis Data Firehoseと連携してリアルタイムログ分析基盤を構築できる。', tags:['分析','検索'] },
+  { id:97, d:'3', term:'AWS Direct Connect', sub:'AWSへの専用線', answer:'オンプレミスDCとAWSを物理専用線で直接接続。インターネット非経由で安定・高速・低レイテンシー。VPN（インターネット経由・低コスト・簡単）との違い：Direct Connect（専用線・高コスト・安定）。ハイブリッドの本番環境に最適。', tags:['ネットワーク'] },
+  { id:98, d:'3', term:'Amazon WorkSpaces', sub:'クラウドデスクトップ（DaaS）', answer:'クラウド上のWindows/LinuxフルデスクトップをDaaS（Desktop as a Service）として提供。物理PCの代わりにブラウザやクライアントでアクセス。テレワーク・VDI代替・BYOD対応に使用。', tags:['エンドユーザーコンピューティング'] },
+  { id:99, d:'3', term:'AWS Snowball', sub:'データの物理輸送', answer:'ペタバイト規模のデータをAWSに物理デバイスで輸送するサービス。インターネット転送が困難な場合に使用（数年かかる量のデータを数週間で移行可能）。Snowball Edge・Snowmobileもある。大規模データ移行の試験頻出。', tags:['移行','ストレージ'] },
+  { id:100, d:'3', term:'AWS Batch', sub:'大規模バッチ処理', answer:'数千〜数百万のバッチコンピューティングジョブを完全マネージドで実行。スポットインスタンスとの組み合わせでコスト最小化。ゲノム解析・シミュレーション・レンダリング等の大規量の計算処理に最適。', tags:['コンピューティング'] },
+  { id:101, d:'3', term:'Amazon X-Ray', sub:'分散トレーシング', answer:'分散アプリケーションのリクエストをトレースしてパフォーマンスのボトルネック・障害・エラーを特定するサービス。Lambda・EC2・ECS・API Gateway等でのレイテンシーをサービスマップで可視化。', tags:['監視','デバッグ'] },
+  { id:102, d:'3', term:'Amazon Connect', sub:'クラウドコンタクトセンター', answer:'フルマネージドなクラウドベースのコールセンターサービス。IVR・通話録音・リアルタイム分析・AIによる感情分析（Comprehend連携）をすぐ構築・運用可能。従量課金でインフラ不要。', tags:['ビジネスアプリ'] },
+  { id:103, d:'3', term:'Amazon DynamoDB vs ElastiCache', sub:'NoSQL vs キャッシュ', answer:'DynamoDB：永続化されたNoSQL（データが残る）。ElastiCache：一時的なインメモリキャッシュ（再起動で消える）。「恒久保存が必要」→DynamoDB。「高速キャッシュ・一時データ」→ElastiCache。試験頻出の使い分け。', tags:['データベース','試験頻出'] },
+  { id:104, d:'3', term:'EC2 Auto Scalingのグループ設定', sub:'希望・最小・最大', answer:'希望台数（Desired）：通常時の目標台数。最小台数（Min）：常に維持する最低台数。最大台数（Max）：コスト/性能の上限。CloudWatchアラームでスケールアウト（増）/スケールイン（減）をトリガーする。', tags:['コンピューティング','スケーリング'] },
+
+  // D4 請求・料金・サポート（16枚）
+  { id:105, d:'4', term:'AWS Cost Explorer', sub:'コストの可視化・分析', answer:'過去13ヶ月のコストと使用量を時系列・サービス・タグ別に可視化・分析。3ヶ月先の予測・リザーブドインスタンス推奨・ライトサイジング推奨も提供。アラート機能はなし（AWS Budgetsがアラート）。', tags:['コスト','試験頻出'] },
+  { id:106, d:'4', term:'AWS Budgets', sub:'予算設定・アラート', answer:'コスト・使用量・リザーブドカバレッジの予算を設定し、しきい値超過時にEmail・SNS通知を送信。Cost Explorer（分析）との違い：BudgetsはアラートツールでCost Explorerはアラート機能なし。試験頻出。', tags:['コスト','試験頻出'] },
+  { id:107, d:'4', term:'AWS Pricing Calculator', sub:'コスト事前見積もり', answer:'AWSへの移行前や新サービス追加前にコストを事前見積もりするツール。旧名：Simple Monthly Calculator。オンプレのTCO比較にも使用。Cost Explorerは使用中のコスト分析（使い分けが試験頻出）。', tags:['コスト'] },
+  { id:108, d:'4', term:'データ転送料金のルール', sub:'インバウンド無料・アウトバウンド有料', answer:'インバウンド（外→AWS）：無料。アウトバウンド（AWS→インターネット）：有料（最初1GB/月は無料）。同一AZ内EC2間通信：無料。AZ間：低コスト有料。リージョン間：有料。CloudFront経由は通常より低コスト。', tags:['コスト','試験頻出'] },
+  { id:109, d:'4', term:'AWSサポートプラン4種', sub:'Basic/Developer/Business/Enterprise', answer:'Basic（無料・技術サポートなし）→Developer（$29~/月・メール・12時間）→Business（$100~/月・24/7電話・1時間・Trusted Advisor全チェック）→Enterprise（$15,000~/月・15分・TAM付き）。試験最頻出。', tags:['サポート','試験頻出'] },
+  { id:110, d:'4', term:'TAM（技術アカウントマネージャー）', sub:'Enterpriseプランの専任担当', answer:'EnterpriseサポートプランでAWSが提供する専任技術担当者。AWS活用戦略・Well-Architectedレビュー・ベストプラクティス実施・障害時の優先対応等を包括的にサポート。Enterprise On-Rampにはプール制のTAMが付く。', tags:['サポート'] },
+  { id:111, d:'4', term:'一括請求（Consolidated Billing）', sub:'複数アカウントのコスト集約', answer:'AWS Organizations機能。全アカウントの使用量を合算してボリューム割引を受けられる・1つの請求書で管理可・リザーブドインスタンスの組織内共有（オプション）。各アカウントの実使用量に基づく課金は変わらない。', tags:['コスト','Organizations'] },
+  { id:112, d:'4', term:'EC2購入オプションの使い分け', sub:'5種類のコスト戦略', answer:'オンデマンド：柔軟・テスト環境。リザーブド（1/3年・最大72%）：安定した24/7ワークロード。スポット（最大90%）：中断OK・バッチ/ML。Savings Plans：柔軟なリザーブド（複数サービス適用）。Dedicated：専有・コンプライアンス要件。', tags:['コスト','試験頻出'] },
+  { id:113, d:'4', term:'リザーブドインスタンスの2種類', sub:'スタンダード vs コンバーティブル', answer:'スタンダード：最大72%割引・インスタンスタイプ/リージョン変更不可・マーケットプレイスで売却可。コンバーティブル：最大54%割引・インスタンスファミリー/OS変更可・売却不可。ワークロードが変化する可能性→コンバーティブル。', tags:['コスト'] },
+  { id:114, d:'4', term:'AWS Savings Plans', sub:'柔軟なリザーブド割引', answer:'1時間あたりの使用量（ドル）をコミットすることで割引を受ける。Compute Savings Plans（最大66%・EC2/Fargate/Lambda全て適用）とEC2 Instance Savings Plans（最大72%・特定インスタンスファミリー）の2種類。リザーブドより柔軟。', tags:['コスト'] },
+  { id:115, d:'4', term:'AWS Free Tier（無料利用枠）', sub:'3種類の無料枠', answer:'Always Free（永続）：Lambda月100万リクエスト・DynamoDB 25GB等。12ヶ月無料（新規アカウント）：EC2 t2.micro 750時間/月・S3 5GB等。トライアル：特定サービスの短期間無料。ALways Freeが試験頻出。', tags:['コスト','試験頻出'] },
+  { id:116, d:'4', term:'AWS Cost Anomaly Detection', sub:'ML異常コスト検出', answer:'機械学習で通常のコスト使用パターンを学習し、偏差が大きい異常なコスト増加を自動検出・アラート。AWS Budgets（事前設定の予算しきい値）との違い：Anomaly Detection（ML異常検出）。', tags:['コスト'] },
+  { id:117, d:'4', term:'コスト最適化のベストプラクティス', sub:'5つのアクション', answer:'①適切なサイズの選択（Compute Optimizer参照）②未使用リソースの削除（停止中EC2のEBS/EIP等）③リザーブド/Savings Plansの活用④スポットインスタンスの活用⑤S3ライフサイクルポリシーの設定。', tags:['コスト'] },
+  { id:118, d:'4', term:'EC2の停止（Stop）と終了（Terminate）', sub:'インスタンスの状態管理', answer:'停止（Stop）：インスタンス料金停止（EBSストレージ料金は継続）・データ保持・後で再起動可。終了（Terminate）：インスタンス削除・EBS（DeleteOnTermination=trueなら）削除・データ消失。誤操作に注意。', tags:['コスト','EC2'] },
+  { id:119, d:'4', term:'コスト配分タグ', sub:'プロジェクト/部門別コスト追跡', answer:'AWSリソースにKey-Valueタグ（Project=Alpha・Dept=Eng等）を付与し、AWS Cost Explorerでタグ別のコスト分析を可能にする。コンソールでコスト配分タグを有効化する必要あり。マルチテナント・内部課金管理に活用。', tags:['コスト','管理'] },
+  { id:120, d:'4', term:'AWS Compute Optimizer', sub:'ML最適サイズ推奨', answer:'機械学習でEC2・Lambda・EBS・ECSの過去使用メトリクスを分析し、オーバー/アンダープロビジョニングを特定して適切なサイズを推奨するサービス。Trusted Advisorより高度なML分析。', tags:['コスト','最適化'] },
+];
+
+/* ==============================================
+   状態管理
+============================================== */
+const FC_KEY = 'aws-clf-flashcards';
+let currentFilter = 'all';
+let sessionCards = [];
+let currentCardIdx = 0;
+let isFlipped = false;
+let sessionResults = { easy:0, good:0, hard:0, again:0 };
+
+const DOMAIN_COLORS = { '1':'#FF9900', '2':'#00A8E1', '3':'#4CAF50', '4':'#CE93D8' };
+const DOMAIN_LABELS = { '1':'D1', '2':'D2', '3':'D3', '4':'D4' };
+const DOMAIN_NAMES = { '1':'クラウドの概念', '2':'セキュリティ', '3':'テクノロジー', '4':'請求・サポート' };
+
+function getProgress() {
+  try { return JSON.parse(localStorage.getItem(FC_KEY)) || {}; }
+  catch { return {}; }
+}
+function saveProgress(p) { localStorage.setItem(FC_KEY, JSON.stringify(p)); }
+
+function renderDashboard() {
+  const p = getProgress();
+  let easy=0, hard=0, unseen=0;
+  CARDS.forEach(c => {
+    const r = p[c.id];
+    if (!r) unseen++;
+    else if (r === 'easy' || r === 'good') easy++;
+    else hard++;
+  });
+  document.getElementById('msEasy').textContent = easy;
+  document.getElementById('msHard').textContent = hard;
+  document.getElementById('msUnseen').textContent = unseen;
+}
+
+function setFilter(domain, btn) {
+  currentFilter = domain;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function getFilteredCards() {
+  const p = getProgress();
+  let cards = CARDS;
+  if (currentFilter === '1') cards = cards.filter(c => c.d === '1');
+  else if (currentFilter === '2') cards = cards.filter(c => c.d === '2');
+  else if (currentFilter === '3') cards = cards.filter(c => c.d === '3');
+  else if (currentFilter === '4') cards = cards.filter(c => c.d === '4');
+  else if (currentFilter === 'weak') cards = cards.filter(c => p[c.id] === 'again' || p[c.id] === 'hard');
+  return cards;
+}
+
+function startCards(mode) {
+  let cards = mode === 'weak'
+    ? CARDS.filter(c => { const p = getProgress(); return p[c.id] === 'again' || p[c.id] === 'hard'; })
+    : mode === 'unseen'
+    ? CARDS.filter(c => !getProgress()[c.id])
+    : getFilteredCards();
+
+  if (cards.length === 0) {
+    alert('カードがありません。フィルターを確認してください。');
+    return;
+  }
+  if (mode === 'shuffle') cards = cards.sort(() => Math.random() - 0.5);
+
+  sessionCards = cards;
+  currentCardIdx = 0;
+  sessionResults = { easy:0, good:0, hard:0, again:0 };
+  isFlipped = false;
+
+  document.getElementById('dashScreen').style.display = 'none';
+  document.getElementById('finishScreen').classList.remove('active');
+  document.getElementById('cardScreen').classList.add('active');
+
+  renderCard();
+}
+
+function renderCard() {
+  if (currentCardIdx >= sessionCards.length) { showFinish(); return; }
+
+  const card = sessionCards[currentCardIdx];
+  const total = sessionCards.length;
+  const pct = (currentCardIdx / total) * 100;
+
+  document.getElementById('cardProgress').textContent = `${currentCardIdx + 1} / ${total}`;
+  document.getElementById('cardProgressFill').style.width = `${pct}%`;
+  document.getElementById('headerBadge').textContent = `${currentCardIdx + 1}/${total}`;
+
+  const color = DOMAIN_COLORS[card.d];
+  const badge = document.getElementById('cardBadge');
+  badge.textContent = DOMAIN_LABELS[card.d];
+  badge.style.color = color;
+  badge.style.borderColor = `${color}50`;
+  badge.style.background = `${color}12`;
+
+  document.getElementById('cardTerm').textContent = card.term;
+  document.getElementById('cardSub').textContent = card.sub;
+  document.getElementById('cardAnswer').textContent = card.answer;
+
+  const tagsEl = document.getElementById('cardTagsEl');
+  tagsEl.innerHTML = (card.tags || []).map(t => `<span class="card-tag">${t}</span>`).join('');
+
+  isFlipped = false;
+  document.getElementById('flipInner').classList.remove('flipped');
+  document.getElementById('ratingBar').style.display = 'none';
+}
+
+function flipCard() {
+  if (!isFlipped) {
+    isFlipped = true;
+    document.getElementById('flipInner').classList.add('flipped');
+    setTimeout(() => {
+      document.getElementById('ratingBar').style.display = 'flex';
+    }, 300);
+  }
+}
+
+function rateCard(rating) {
+  const card = sessionCards[currentCardIdx];
+  const p = getProgress();
+  p[card.id] = rating;
+  saveProgress(p);
+  sessionResults[rating]++;
+  currentCardIdx++;
+  document.getElementById('ratingBar').style.display = 'none';
+  renderCard();
+}
+
+function quitCards() {
+  if (currentCardIdx > 0) showFinish();
+  else goHome();
+}
+
+function showFinish() {
+  document.getElementById('cardScreen').classList.remove('active');
+  document.getElementById('finishScreen').classList.add('active');
+
+  const total = Math.min(currentCardIdx, sessionCards.length);
+  document.getElementById('fEasy').textContent = sessionResults.easy;
+  document.getElementById('fGood').textContent = sessionResults.good;
+  document.getElementById('fHard').textContent = sessionResults.hard;
+  document.getElementById('fAgain').textContent = sessionResults.again;
+
+  const pct = total > 0 ? Math.round(((sessionResults.easy + sessionResults.good) / total) * 100) : 0;
+  document.getElementById('finishDesc').textContent = `${total}枚中${sessionResults.easy + sessionResults.good}枚（${pct}%）を「まあまあ」以上で正解しました。`;
+
+  renderDashboard();
+}
+
+function goHome() {
+  document.getElementById('cardScreen').classList.remove('active');
+  document.getElementById('finishScreen').classList.remove('active');
+  document.getElementById('dashScreen').style.display = 'block';
+  renderDashboard();
+}
+
+function resetCards() {
+  if (confirm('全ての学習状況をリセットしますか？')) {
+    localStorage.removeItem(FC_KEY);
+    renderDashboard();
+  }
+}
+
+/* タッチスワイプ */
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', e => {
+  if (!document.getElementById('cardScreen').classList.contains('active')) return;
+  const diff = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(diff) > 80) {
+    if (!isFlipped) { flipCard(); return; }
+    if (diff > 0) rateCard('easy');
+    else rateCard('again');
+  }
+}, { passive: true });
+
+/* キーボード操作 */
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('cardScreen').classList.contains('active')) return;
+  if (e.key === ' ') { e.preventDefault(); flipCard(); }
+  if (!isFlipped) return;
+  if (e.key === '1') rateCard('again');
+  if (e.key === '2') rateCard('hard');
+  if (e.key === '3') rateCard('good');
+  if (e.key === '4') rateCard('easy');
+});
+
+window.addEventListener('load', renderDashboard);
+</script>
+</body>
+</html>

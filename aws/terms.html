@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>用語辞典 | AWS CLF 学習ガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --aws-orange: #FF9900;
+  --bg-primary: #070C18;
+  --bg-secondary: #0D1526;
+  --bg-card: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
+  --text-primary: #E8EAF0;
+  --text-secondary: #8A93A8;
+  --text-muted: #5A6478;
+  --ease-smooth: cubic-bezier(0.21,0.51,0.51,1);
+  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+  --c1: #FF9900; --c2: #00A8E1; --c3: #4CAF50; --c4: #CE93D8;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+
+.header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(1rem,4vw,2.5rem); background: rgba(7,12,24,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+.back-btn { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--text-secondary); transition: color 0.3s; }
+.back-btn:hover { color: var(--text-primary); }
+.header-title { font-size: 0.9rem; font-weight: 700; color: var(--aws-orange); letter-spacing: 0.06em; }
+.header-count { font-size: 0.78rem; color: var(--text-muted); }
+
+.aurora-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse 80% 60% at 15% 30%, rgba(255,153,0,0.04) 0%, transparent 60%); }
+
+main { position: relative; z-index: 1; padding-top: 60px; display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+
+/* ===== サイドバー ===== */
+.sidebar { position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; padding: 1.5rem 1rem; border-right: 1px solid var(--border); background: rgba(13,21,38,0.5); }
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 100px; }
+
+/* 検索ボックス */
+.search-wrap { position: relative; margin-bottom: 1.25rem; }
+.search-input { width: 100%; padding: 0.65rem 0.85rem 0.65rem 2.25rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-size: 0.85rem; font-family: inherit; outline: none; transition: border-color 0.25s; letter-spacing: 0.04em; }
+.search-input:focus { border-color: rgba(255,153,0,0.4); }
+.search-input::placeholder { color: var(--text-muted); }
+.search-icon { position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
+
+/* カテゴリフィルタ */
+.filter-label { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+.filter-list { display: flex; flex-direction: column; gap: 2px; margin-bottom: 1.25rem; }
+.filter-item { display: flex; align-items: center; justify-content: space-between; padding: 0.45rem 0.6rem; border-radius: 7px; cursor: pointer; font-size: 0.8rem; color: var(--text-secondary); transition: all 0.2s; border: 1px solid transparent; }
+.filter-item:hover { background: var(--bg-card); color: var(--text-primary); }
+.filter-item.active { background: rgba(255,153,0,0.08); color: var(--aws-orange); border-color: rgba(255,153,0,0.2); }
+.filter-count { font-size: 0.68rem; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 0.1rem 0.4rem; border-radius: 100px; }
+
+/* アルファベットインデックス */
+.alpha-index { display: flex; flex-wrap: wrap; gap: 3px; }
+.alpha-btn { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 5px; font-size: 0.7rem; font-weight: 700; color: var(--text-muted); cursor: pointer; background: none; border: 1px solid var(--border); transition: all 0.2s; font-family: inherit; }
+.alpha-btn:hover { border-color: rgba(255,153,0,0.3); color: var(--aws-orange); }
+.alpha-btn.has-items { color: var(--text-secondary); }
+
+/* ===== メインコンテンツ ===== */
+.content { padding: 2rem clamp(1.25rem,3vw,2.5rem); }
+.content-header { margin-bottom: 2rem; }
+.content-title { font-family: 'Noto Serif JP', serif; font-size: clamp(1.3rem,2.5vw,1.75rem); font-weight: 600; letter-spacing: 0.04em; margin-bottom: 0.5rem; }
+.content-desc { font-size: 0.85rem; color: var(--text-secondary); letter-spacing: 0.04em; }
+.result-count { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.5rem; }
+
+/* グループ */
+.terms-group { margin-bottom: 2.5rem; }
+.group-header { font-family: 'Noto Serif JP', serif; font-size: 1rem; font-weight: 600; color: var(--text-muted); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); letter-spacing: 0.06em; }
+
+/* 用語カード */
+.terms-grid { display: flex; flex-direction: column; gap: 0.5rem; }
+.term-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: all 0.25s var(--ease-smooth); cursor: pointer; }
+.term-card:hover { border-color: rgba(255,153,0,0.2); }
+.term-card.expanded { border-color: rgba(255,153,0,0.3); }
+
+.term-header { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.1rem; gap: 0.75rem; }
+.term-name-wrap { display: flex; align-items: center; gap: 0.75rem; flex: 1; min-width: 0; }
+.term-badge { padding: 0.15rem 0.55rem; border-radius: 100px; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; flex-shrink: 0; }
+.term-name { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.04em; }
+.term-short { font-size: 0.8rem; color: var(--text-secondary); letter-spacing: 0.03em; margin-left: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.term-expand-icon { color: var(--text-muted); flex-shrink: 0; transition: transform 0.25s; }
+.term-card.expanded .term-expand-icon { transform: rotate(90deg); }
+
+.term-body { padding: 0 1.1rem 1rem; display: none; }
+.term-card.expanded .term-body { display: block; }
+.term-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8; letter-spacing: 0.04em; margin-bottom: 0.75rem; }
+.term-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.term-tag { padding: 0.15rem 0.55rem; border-radius: 100px; font-size: 0.68rem; color: var(--text-muted); background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); letter-spacing: 0.04em; }
+
+/* 見つからない */
+.no-results { text-align: center; padding: 4rem 2rem; color: var(--text-muted); }
+.no-results svg { margin-bottom: 1rem; opacity: 0.3; }
+.no-results p { font-size: 0.9rem; }
+
+@media (max-width: 768px) {
+  main { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .content { padding: 1.5rem 1rem; }
+  .content-title { font-size: 1.3rem; }
+  .term-short { display: none; }
+}
+
+@media (max-width: 480px) {
+  .header { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.5rem; }
+  .header-count { display: none; }
+  .term-name { font-size: 0.85rem; }
+  .term-desc { font-size: 0.82rem; }
+  .group-header { font-size: 0.9rem; }
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 100px; }
+
+.highlight { background: rgba(255,153,0,0.25); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="aurora-bg"></div>
+
+<header class="header">
+  <a href="index.html" class="back-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>ホーム</a>
+  <span class="header-title">用語辞典</span>
+  <span class="header-count" id="headerCount">100+ 用語</span>
+</header>
+
+<main>
+  <!-- サイドバー -->
+  <aside class="sidebar">
+    <div class="search-wrap">
+      <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="サービス名・キーワード..." oninput="filterTerms()">
+    </div>
+
+    <div class="filter-label">ドメイン</div>
+    <div class="filter-list">
+      <div class="filter-item active" onclick="setDomainFilter('all', this)">全て<span class="filter-count" id="countAll">0</span></div>
+      <div class="filter-item" onclick="setDomainFilter('1', this)">D1：クラウドの概念<span class="filter-count" id="count1">0</span></div>
+      <div class="filter-item" onclick="setDomainFilter('2', this)">D2：セキュリティ<span class="filter-count" id="count2">0</span></div>
+      <div class="filter-item" onclick="setDomainFilter('3', this)">D3：テクノロジー<span class="filter-count" id="count3">0</span></div>
+      <div class="filter-item" onclick="setDomainFilter('4', this)">D4：請求・サポート<span class="filter-count" id="count4">0</span></div>
+    </div>
+
+    <div class="filter-label" style="margin-top:0.5rem;">アルファベット順</div>
+    <div class="alpha-index" id="alphaIndex"></div>
+  </aside>
+
+  <!-- コンテンツ -->
+  <div class="content">
+    <div class="content-header">
+      <h1 class="content-title">AWSサービス用語辞典</h1>
+      <p class="content-desc">CLF-C02で出題される主要なAWSサービスと用語の解説集です。検索やフィルタで素早く参照できます。</p>
+      <div class="result-count" id="resultCount">読み込み中...</div>
+    </div>
+    <div id="termsContainer"></div>
+  </div>
+</main>
+
+<script>
+/* =============================================
+   用語データベース
+============================================= */
+const TERMS = [
+  // Domain 1
+  { name: 'CapEx', short: '資本的支出', domain: '1', desc: 'Capital Expenditure（資本的支出）。サーバー購入などの先行投資コスト。オンプレミス環境の典型的なコスト形態。クラウド移行によりOpExに転換できる。', tags: ['料金', '移行', 'コスト'] },
+  { name: 'OpEx', short: '運営的支出', domain: '1', desc: 'Operational Expenditure（運営的支出）。使った分だけ支払う変動費。AWSの従量課金制はこれに該当する。月次コストとして計上されキャッシュフローが改善される。', tags: ['料金', 'クラウド', 'コスト'] },
+  { name: 'TCO', short: '総所有コスト', domain: '1', desc: 'Total Cost of Ownership（総所有コスト）。ハードウェア・スペース・電力・人件費などを含めた総コスト。クラウド移行によりTCOを大幅に削減できる。', tags: ['コスト', '移行'] },
+  { name: 'IaaS', short: 'インフラのサービス化', domain: '1', desc: 'Infrastructure as a Service。仮想サーバー等のインフラを提供するモデル。EC2が代表例。OSより上はお客様の責任。', tags: ['サービスモデル'] },
+  { name: 'PaaS', short: 'プラットフォームのサービス化', domain: '1', desc: 'Platform as a Service。実行環境を提供するモデル。RDS・Elastic Beanstalkが代表例。OS/ミドルウェアの管理が不要。', tags: ['サービスモデル'] },
+  { name: 'SaaS', short: 'ソフトウェアのサービス化', domain: '1', desc: 'Software as a Service。ソフトウェアをサービスとして提供するモデル。Amazon WorkMailが代表例。ユーザーはデータのみ管理する。', tags: ['サービスモデル'] },
+  { name: 'Well-Architectedフレームワーク', short: '6本柱の設計原則', domain: '1', desc: 'AWSシステムの設計・評価のための6本柱のフレームワーク：①運用上の優秀性②セキュリティ③信頼性④パフォーマンス効率⑤コスト最適化⑥持続可能性。', tags: ['設計', 'フレームワーク'] },
+  { name: 'リージョン', short: 'AWSの地理的拠点', domain: '1', desc: 'AWSの世界的な地理的拠点（東京=ap-northeast-1等）。30以上存在し、各リージョンは2つ以上のAZで構成される。選択時はコンプライアンス・レイテンシー・サービス提供状況・料金を考慮する。', tags: ['インフラ', 'グローバル'] },
+  { name: 'アベイラビリティゾーン', short: 'AZ：リージョン内独立DC', domain: '1', desc: 'リージョン内にある独立したデータセンター群。物理的に離れており、独立した電源・冷却・ネットワークを持つ。複数AZへの分散配置が高可用性の基本。', tags: ['インフラ', '可用性'] },
+  { name: 'エッジロケーション', short: 'CloudFrontのキャッシュ拠点', domain: '1', desc: 'Amazon CloudFrontがコンテンツをキャッシュする世界中の拠点。400以上あり、エンドユーザーの最も近い場所からコンテンツを配信して低レイテンシーを実現。', tags: ['インフラ', 'CDN'] },
+  { name: 'ハイブリッドクラウド', short: 'オンプレ+クラウドの組み合わせ', domain: '1', desc: 'オンプレミス（プライベート）インフラとAWSパブリッククラウドを組み合わせたデプロイメントモデル。AWS Outpostsで実現。機密データのオンプレ保持とクラウドの柔軟性を両立。', tags: ['デプロイ', '移行'] },
+  { name: '6R移行戦略', short: 'クラウド移行の6パターン', domain: '1', desc: 'Rehost(Lift&Shift)・Replatform(Lift,Tinker,Shift)・Repurchase(SaaSへ)・Refactor(再設計)・Retire(廃止)・Retain(現状維持)の6つのクラウド移行戦略。', tags: ['移行', '戦略'] },
+  // Domain 2
+  { name: '責任共有モデル', short: 'AWS vs 顧客の責任分担', domain: '2', desc: '「クラウドのセキュリティ（物理インフラ・ハードウェア）」はAWSが責任を持ち、「クラウド内のセキュリティ（OS・アプリ・データ・IAM設定）」はお客様が責任を持つモデル。', tags: ['セキュリティ', 'IAM'] },
+  { name: 'IAM', short: 'アクセス管理サービス', domain: '2', desc: 'Identity and Access Management。AWSリソースへのアクセスを管理するグローバルサービス。ユーザー・グループ・ロール・ポリシーで構成。最小権限の原則に基づいて設定する。', tags: ['セキュリティ', 'アクセス管理'] },
+  { name: 'IAMロール', short: 'サービスへの権限委任', domain: '2', desc: 'EC2・Lambda等のAWSサービスに一時的な権限を付与する仕組み。長期アクセスキーが不要になり、認証情報が自動ローテーションされる。セキュリティのベストプラクティス。', tags: ['IAM', 'セキュリティ'] },
+  { name: 'MFA', short: '多要素認証', domain: '2', desc: 'Multi-Factor Authentication。パスワード＋認証デバイス（仮想MFA・ハードウェアMFA）による二段階認証。ルートユーザーへの適用が特に重要。', tags: ['セキュリティ', 'IAM'] },
+  { name: '最小権限の原則', short: 'Principle of Least Privilege', domain: '2', desc: 'ユーザー・サービス・ロールに必要最小限の権限のみを付与するセキュリティの基本原則。過剰な権限は誤操作・セキュリティ侵害時のリスクを拡大する。', tags: ['IAM', 'セキュリティ'] },
+  { name: 'AWS CloudTrail', short: 'APIコール監査ログ', domain: '2', desc: 'AWSアカウント内の全APIコールを記録するサービス。「誰が・いつ・どのAPIを・どのリソースに対して実行したか」を追跡できる。セキュリティ監査・コンプライアンス・インシデント調査に使用。', tags: ['監査', 'セキュリティ', 'ログ'] },
+  { name: 'Amazon GuardDuty', short: 'ML脅威検出サービス', domain: '2', desc: '機械学習・異常検知・脅威インテリジェンスを使ってAWSアカウントの脅威をリアルタイムに検出。不正なAPIコール・異常なネットワーク通信・クレデンシャル侵害などを検出。', tags: ['セキュリティ', '脅威検出'] },
+  { name: 'Amazon Inspector', short: 'EC2脆弱性評価', domain: '2', desc: 'EC2インスタンスのソフトウェア脆弱性（CVEデータベースに基づく）とネットワーク到達可能性を自動評価するサービス。GuardDutyは実際の脅威検出、Inspectorは潜在的な脆弱性の評価。', tags: ['セキュリティ', '脆弱性'] },
+  { name: 'Amazon Macie', short: 'S3機密データ検出', domain: '2', desc: '機械学習を使用してS3バケット内の機密データ（PII・クレジットカード情報・医療情報等）を自動検出・分類・保護するサービス。', tags: ['セキュリティ', 'データ保護', 'S3'] },
+  { name: 'AWS WAF', short: 'Webアプリファイアウォール', domain: '2', desc: 'WebアプリケーションへのSQLインジェクション・XSS・悪意のあるボット等の攻撃を検出・防止するWebアプリケーションファイアウォール。CloudFront・ALB・API Gatewayと統合。', tags: ['セキュリティ', 'Web'] },
+  { name: 'AWS Shield', short: 'DDoS攻撃対策', domain: '2', desc: 'DDoS（分散型サービス妨害）攻撃からAWSを保護するサービス。Standard（全顧客に自動適用・無料）とAdvanced（高度なDDoS対策・リアルタイム通知・DRT専任サポート・有料）がある。', tags: ['セキュリティ', 'DDoS'] },
+  { name: 'AWS KMS', short: '暗号化キー管理', domain: '2', desc: 'Key Management Service。暗号化キーの作成・管理・監査を行うフルマネージドサービス。S3・EBS・RDS等のAWSサービスと統合し、データの暗号化キー（CMK）を一元管理する。', tags: ['暗号化', 'セキュリティ'] },
+  { name: 'AWS Secrets Manager', short: 'シークレット管理・自動ローテーション', domain: '2', desc: 'DBパスワード・APIキー等のシークレットを安全に保存・管理し、自動ローテーション機能を持つサービス。コードへのハードコーディングが不要になる。', tags: ['セキュリティ', '認証情報'] },
+  { name: 'AWS Artifact', short: 'コンプライアンスレポート入手', domain: '2', desc: 'AWSのコンプライアンス関連ドキュメント（SOC1/2/3・PCI DSS・ISO認定書等）をオンデマンドでダウンロードできるセルフサービスポータル。無料で利用可。', tags: ['コンプライアンス', '監査'] },
+  { name: 'AWS Config', short: '設定変更追跡・コンプライアンス評価', domain: '2', desc: 'AWSリソースの設定変更を継続的に記録・評価するサービス。「いつ・どのリソースが・どのように変更されたか」を追跡し、コンプライアンスルールへの準拠を評価する。', tags: ['コンプライアンス', '監査'] },
+  { name: 'SCP', short: 'サービスコントロールポリシー', domain: '2', desc: 'Service Control Policy。AWS Organizationsで組織またはOUに適用できる権限の上限（ガードレール）。SCPで拒否されたアクションはIAMポリシーで許可していても実行できない。管理アカウントには不適用。', tags: ['Organizations', 'IAM'] },
+  // Domain 3
+  { name: 'Amazon EC2', short: '仮想サーバー（IaaS）', domain: '3', desc: 'Elastic Compute Cloud。仮想サーバーを提供するAWSのコアサービス（IaaS）。インスタンスタイプで性能を選択。購入オプション：オンデマンド・リザーブド・スポット・Savings Plans・Dedicated Hosts。', tags: ['コンピューティング', 'IaaS'] },
+  { name: 'Amazon S3', short: 'オブジェクトストレージ', domain: '3', desc: 'Simple Storage Service。無制限のスケーラビリティを持つオブジェクトストレージ。99.999999999%（11 nine\'s）の耐久性。静的Webホスティング・データレイク・バックアップ・アーカイブに使用。', tags: ['ストレージ', 'オブジェクト'] },
+  { name: 'Amazon EBS', short: 'ブロックストレージ', domain: '3', desc: 'Elastic Block Store。EC2インスタンスにアタッチするブロックストレージ。SSDまたはHDDの種類があり、同一AZ内でのみ使用可能。OS・DBのデータ領域として使用。スナップショットでバックアップ可。', tags: ['ストレージ', 'ブロック'] },
+  { name: 'Amazon EFS', short: '共有ファイルシステム', domain: '3', desc: 'Elastic File System。複数のEC2インスタンスから同時にマウントできるNFSファイルシステム。マルチAZ対応。Linuxのみ対応（WindowsはFSx）。', tags: ['ストレージ', 'ファイル'] },
+  { name: 'Amazon RDS', short: 'マネージドRDB', domain: '3', desc: 'Relational Database Service。MySQL・PostgreSQL・Oracle・SQL Server等をマネージドで提供。OSパッチ・バックアップ・Multi-AZフェイルオーバーはAWSが担当。OLTP向け。', tags: ['データベース', 'RDB'] },
+  { name: 'Amazon Aurora', short: 'AWSクラウドネイティブDB', domain: '3', desc: 'AWSが独自開発したクラウドネイティブなリレーショナルDB。MySQL比5倍・PostgreSQL比3倍の性能。3つのAZに6コピーで自動複製。Serverless版もある。', tags: ['データベース', 'RDB'] },
+  { name: 'Amazon DynamoDB', short: 'サーバーレスNoSQL', domain: '3', desc: 'フルマネージドのサーバーレスNoSQL（キーバリュー＋ドキュメント型）DB。ミリ秒レイテンシー・無制限スケール。ゲームランキング・IoT・Eコマース・セッション管理に最適。', tags: ['データベース', 'NoSQL'] },
+  { name: 'Amazon Redshift', short: 'データウェアハウス', domain: '3', desc: 'ペタバイト規模のデータウェアハウス（DWH）サービス。列指向ストレージ・並列処理で大規模なOLAP分析クエリを高速実行。BIツール連携。RDSはOLTP、RedshiftはOLAP向け。', tags: ['データベース', 'DWH', '分析'] },
+  { name: 'Amazon ElastiCache', short: 'インメモリキャッシュ', domain: '3', desc: 'Redis・Memcachedのフルマネージドキャッシュサービス。DBの前段に配置してよく参照されるデータをキャッシュし、レイテンシーとDB負荷を削減。ゲームランキング・セッション管理に最適。', tags: ['データベース', 'キャッシュ'] },
+  { name: 'AWS Lambda', short: 'サーバーレス関数実行', domain: '3', desc: 'サーバーレスのコンピューティングサービス。コードをアップロードするだけで実行可能。サーバー管理不要・最大15分実行・イベント駆動型。リクエスト数とGB-秒で課金。', tags: ['コンピューティング', 'サーバーレス'] },
+  { name: 'AWS Fargate', short: 'サーバーレスコンテナ実行', domain: '3', desc: 'ECS・EKSのサーバーレス起動オプション。EC2インスタンスを管理せずにDockerコンテナを実行できる。コンテナに必要なCPU・メモリを指定するだけでインフラは自動管理。', tags: ['コンテナ', 'サーバーレス'] },
+  { name: 'Amazon VPC', short: '仮想ネットワーク', domain: '3', desc: 'Virtual Private Cloud。AWS内の論理的に隔離された仮想ネットワーク。リージョンに属する。パブリック・プライベートのサブネットに分割。セキュリティグループ・NACLで通信を制御。', tags: ['ネットワーク', 'セキュリティ'] },
+  { name: 'NAT Gateway', short: 'プライベートサブネットの外部通信', domain: '3', desc: 'プライベートサブネットのリソースがインターネットへのアウトバウンド通信を可能にする。インターネットからプライベートサブネットへの通信はブロック。パブリックサブネットに配置。', tags: ['ネットワーク', 'VPC'] },
+  { name: 'Amazon CloudFront', short: 'CDNサービス', domain: '3', desc: 'コンテンツ配信ネットワーク（CDN）サービス。世界400以上のエッジロケーションにコンテンツをキャッシュし、低レイテンシーで配信。静的コンテンツ・動画・APIアクセラレーションに使用。', tags: ['ネットワーク', 'CDN', 'コンテンツ配信'] },
+  { name: 'ELB', short: 'Elastic Load Balancing', domain: '3', desc: 'トラフィックを複数のEC2・Lambda・コンテナに自動分散するロードバランサー。ALB（HTTP/HTTPSレイヤー）・NLB（TCPレイヤー）・GWLB（ファイアウォール向け）がある。', tags: ['ネットワーク', '可用性'] },
+  { name: 'Amazon Route 53', short: 'マネージドDNS', domain: '3', desc: 'スケーラブルなDNSサービス。ドメイン名をIPアドレスに変換。ヘルスチェック・フェイルオーバー・レイテンシーベースルーティング等の高度なルーティング機能を持つ。', tags: ['ネットワーク', 'DNS'] },
+  { name: 'AWS Direct Connect', short: 'AWSへの専用線接続', domain: '3', desc: 'オンプレミスデータセンターとAWSを物理的な専用線で直接接続するサービス。インターネットを経由せず安定した高速接続を提供。VPNより高コストだが安定性・セキュリティが高い。', tags: ['ネットワーク', 'ハイブリッド'] },
+  { name: 'Amazon SQS', short: 'メッセージキュー', domain: '3', desc: 'Simple Queue Service。コンポーネント間のメッセージキュー（1:1）。コンシューマーがポーリングしてメッセージを取得（プル型）。疎結合なアーキテクチャ実現に使用。SNSとの違いに注意。', tags: ['アプリ統合', 'メッセージ'] },
+  { name: 'Amazon SNS', short: 'Pub/Sub通知サービス', domain: '3', desc: 'Simple Notification Service。Pub/Subモデルで1つのメッセージを複数のサブスクライバーに配信（プッシュ型）。Email・SMS・SQS・Lambda等に送信可能。SQSとの違いに注意。', tags: ['アプリ統合', '通知'] },
+  { name: 'Amazon CloudWatch', short: 'メトリクス監視・アラーム', domain: '3', desc: 'AWSリソースとアプリのメトリクス収集・ログ管理・アラーム設定サービス。CPU使用率・ネットワーク等を監視し、しきい値超過でSNS通知やAuto Scalingをトリガー。CloudTrailとの違いに注意。', tags: ['監視', '管理'] },
+  { name: 'AWS CloudFormation', short: 'Infrastructure as Code', domain: '3', desc: 'JSON/YAMLテンプレートでAWSインフラを定義・自動構築するIaCツール。スタック単位で管理し、一括作成・更新・削除が可能。再現性のあるインフラ構築を実現。', tags: ['管理', 'IaC', '自動化'] },
+  { name: 'AWS Trusted Advisor', short: '5分野のベストプラクティスチェック', domain: '3', desc: 'AWSのベストプラクティスに基づいてリソースをチェックするサービス。5分野：①コスト最適化②パフォーマンス③セキュリティ④耐障害性⑤サービス制限。BusinessプランでフルアクセスAPIが利用可。', tags: ['管理', '最適化'] },
+  { name: 'Auto Scaling', short: '自動スケーリング', domain: '3', desc: 'EC2・DynamoDB等のリソースを需要に応じて自動的に増減するサービス。CloudWatchアラームでトリガー。スケールアウト（増）・スケールイン（減）でコスト効率と可用性を両立。', tags: ['コンピューティング', 'スケーリング'] },
+  { name: 'Amazon Rekognition', short: '画像・動画AI分析', domain: '3', desc: '顔認識・オブジェクト検出・テキスト認識・感情検出・コンテンツモデレーションを行うAIサービス。MLの知識不要でAPIを呼ぶだけで使用可能。', tags: ['AI/ML'] },
+  { name: 'Amazon Transcribe', short: '音声→テキスト変換', domain: '3', desc: '音声・動画ファイルをテキストに自動変換する音声認識（ASR）サービス。多言語対応・話者識別・カスタム語彙登録が可能。字幕生成・コールセンター分析に使用。', tags: ['AI/ML'] },
+  { name: 'Amazon Polly', short: 'テキスト→音声変換', domain: '3', desc: 'テキストを自然な音声に変換する音声合成サービス。多言語・多種の音声に対応。音声読み上げアプリ・コンテンツのアクセシビリティ向上に使用。Transcribeの逆方向。', tags: ['AI/ML'] },
+  { name: 'Amazon Comprehend', short: 'テキスト自然言語処理', domain: '3', desc: '自然言語処理（NLP）サービス。センチメント分析・エンティティ抽出・言語検出・キーフレーズ抽出等を提供。カスタムエンティティ認識・分類もサポート。', tags: ['AI/ML'] },
+  { name: 'Amazon SageMaker', short: 'MLモデル構築・デプロイ', domain: '3', desc: '機械学習ワークフロー全体（データ準備・モデル構築・トレーニング・評価・デプロイ・監視）を統合管理するフルマネージドサービス。AutoML・Jupyter Notebook統合・エンドポイント管理。', tags: ['AI/ML'] },
+  { name: 'AWS Snowball', short: 'データの物理輸送', domain: '3', desc: 'ペタバイト規模のデータをAWSに物理デバイスで輸送するサービス。ネットワーク転送が困難な場合に使用。AWSがデバイスを送付しデータをコピー後返送する。Snowball Edge・Snowmobileも存在。', tags: ['移行', 'ストレージ'] },
+  { name: 'AWS Elastic Beanstalk', short: 'PaaSアプリデプロイ', domain: '3', desc: 'アプリケーションコードをアップロードするだけでインフラの自動構築・スケーリング・監視を行うPaaSサービス。Node.js・Python・Java・PHP等に対応。インフラ管理不要でアプリ開発に集中できる。', tags: ['コンピューティング', 'PaaS'] },
+  // Domain 4
+  { name: 'AWS Cost Explorer', short: 'コスト可視化・分析', domain: '4', desc: '過去・現在のコストと使用量を時系列・サービス・リソース・タグ別に可視化・分析するツール。過去13ヶ月のデータ参照と3ヶ月先の予測が可能。リザーブドインスタンスの推奨も提供。', tags: ['コスト', '料金'] },
+  { name: 'AWS Budgets', short: '予算設定・アラート', domain: '4', desc: 'コスト・使用量・リザーブドカバレッジに対する予算を設定し、しきい値超過時にEmail・SNSアラートを送信するサービス。Cost Explorerはアラート機能なし（分析のみ）との違いに注意。', tags: ['コスト', '料金', 'アラート'] },
+  { name: 'AWS Pricing Calculator', short: 'コスト事前見積もり', domain: '4', desc: 'AWSへの移行前や新しいサービス追加前にコストを事前見積もりするツール。旧名：AWS Simple Monthly Calculator。オンプレとのTCO比較にも使用。', tags: ['コスト', '料金'] },
+  { name: 'AWS Cost Anomaly Detection', short: 'MLコスト異常検出', domain: '4', desc: '機械学習を使用してコスト支出の異常パターンを自動検出・アラートするサービス。通常の使用パターンを学習し偏差が大きい場合に通知。Budgetsとの違い：予算設定ではなく異常検出。', tags: ['コスト', '料金'] },
+  { name: '一括請求', short: 'Consolidated Billing', domain: '4', desc: 'AWS Organizations機能の一つ。複数AWSアカウントの請求を1つに統合し、使用量合算でボリューム割引を受けられる。リザーブドインスタンスの組織内共有（オプション）も可能。', tags: ['コスト', 'Organizations'] },
+  { name: 'AWSサポートプラン', short: '4段階のサポートレベル', domain: '4', desc: 'Basic（無料）・Developer（$29/月〜・12時間）・Business（$100/月〜・本番1時間）・Enterprise（$15,000/月〜・15分・TAM付き）。本番環境には最低Businessが推奨。', tags: ['サポート'] },
+  { name: 'TAM', short: 'Technical Account Manager', domain: '4', desc: 'EnterpriseサポートプランでAWSが提供する専任技術担当者。AWSの活用戦略・Well-Architectedレビュー・ベストプラクティス実施・障害時の優先対応等を包括的にサポート。', tags: ['サポート'] },
+  { name: 'AWS Free Tier', short: '無料利用枠', domain: '4', desc: 'Always Free（永続）・12ヶ月無料（新規アカウント）・トライアルの3種類。主要な永続無料枠：Lambda月100万リクエスト・DynamoDB 25GB。12ヶ月：EC2 t2.micro 750時間/月・S3 5GB。', tags: ['料金', '無料'] },
+];
+
+/* =============================================
+   状態
+============================================= */
+let currentDomain = 'all';
+let currentSearch = '';
+let expandedCard = null;
+
+/* 初期化 */
+function init() {
+  updateCounts();
+  buildAlphaIndex();
+  renderTerms();
+}
+
+function updateCounts() {
+  const domains = ['1','2','3','4'];
+  document.getElementById('countAll').textContent = TERMS.length;
+  domains.forEach(d => {
+    document.getElementById(`count${d}`).textContent = TERMS.filter(t => t.domain === d).length;
+  });
+}
+
+function buildAlphaIndex() {
+  const container = document.getElementById('alphaIndex');
+  const letters = [...new Set(TERMS.map(t => t.name[0].toUpperCase()))].sort();
+  const allLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  container.innerHTML = allLetters.map(l => {
+    const has = letters.includes(l);
+    return `<button class="alpha-btn ${has ? 'has-items' : ''}" onclick="${has ? `scrollToLetter('${l}')` : ''}"; style="opacity:${has ? '1' : '0.25'}">${l}</button>`;
+  }).join('');
+}
+
+function scrollToLetter(letter) {
+  const el = document.querySelector(`[data-letter="${letter}"]`);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function setDomainFilter(domain, el) {
+  currentDomain = domain;
+  document.querySelectorAll('.filter-item').forEach(f => f.classList.remove('active'));
+  el.classList.add('active');
+  renderTerms();
+}
+
+function filterTerms() {
+  currentSearch = document.getElementById('searchInput').value.toLowerCase();
+  renderTerms();
+}
+
+function getFiltered() {
+  return TERMS.filter(t => {
+    const domainOk = currentDomain === 'all' || t.domain === currentDomain;
+    const searchOk = !currentSearch || t.name.toLowerCase().includes(currentSearch) || t.short.toLowerCase().includes(currentSearch) || t.desc.toLowerCase().includes(currentSearch) || t.tags.some(tag => tag.toLowerCase().includes(currentSearch));
+    return domainOk && searchOk;
+  });
+}
+
+function highlight(text, query) {
+  if (!query) return text;
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return text.replace(new RegExp(`(${escaped})`, 'gi'), '<mark class="highlight">$1</mark>');
+}
+
+function renderTerms() {
+  const filtered = getFiltered();
+  document.getElementById('resultCount').textContent = `${filtered.length}件の用語`;
+  document.getElementById('headerCount').textContent = `${filtered.length} 用語`;
+
+  const container = document.getElementById('termsContainer');
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="no-results"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><p>「${currentSearch}」に一致する用語が見つかりませんでした。</p></div>`;
+    return;
+  }
+
+  // アルファベット/頭文字でグループ化
+  const groups = {};
+  filtered.forEach(t => {
+    const key = t.name[0].toUpperCase();
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(t);
+  });
+
+  const DOMAIN_COLORS = { '1':'var(--c1)', '2':'var(--c2)', '3':'var(--c3)', '4':'var(--c4)' };
+  const DOMAIN_LABELS = { '1':'D1', '2':'D2', '3':'D3', '4':'D4' };
+
+  container.innerHTML = Object.keys(groups).sort().map(letter => `
+    <div class="terms-group" data-letter="${letter}">
+      <div class="group-header">${letter}</div>
+      <div class="terms-grid">
+        ${groups[letter].map(t => `
+          <div class="term-card" id="tc-${t.name.replace(/\s/g,'_')}" onclick="toggleCard(this)">
+            <div class="term-header">
+              <div class="term-name-wrap">
+                <div class="term-badge" style="background:${DOMAIN_COLORS[t.domain]}20; color:${DOMAIN_COLORS[t.domain]};">${DOMAIN_LABELS[t.domain]}</div>
+                <span class="term-name">${highlight(t.name, currentSearch)}</span>
+                <span class="term-short">${highlight(t.short, currentSearch)}</span>
+              </div>
+              <svg class="term-expand-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="term-body">
+              <div class="term-desc">${highlight(t.desc, currentSearch)}</div>
+              <div class="term-tags">${t.tags.map(tag => `<span class="term-tag">${tag}</span>`).join('')}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleCard(card) {
+  if (expandedCard && expandedCard !== card) {
+    expandedCard.classList.remove('expanded');
+  }
+  card.classList.toggle('expanded');
+  expandedCard = card.classList.contains('expanded') ? card : null;
+}
+
+window.addEventListener('load', init);
+</script>
+</body>
+</html>
