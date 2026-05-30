@@ -103,7 +103,7 @@ CARD_DETAILS['cat-01-0'] = {
       heading: '公式・参考リンク',
       type: 'links',
       items: [
-        { icon: '🏦', label: '日本政策金融公庫「医療・福祉」創業支援', url: 'https://www.jfc.go.jp/n/finance/search/02_iryofukushi_m.html', desc: '融資制度一覧・創業計画書ひな形のダウンロード' },
+        { icon: '🏦', label: '日本政策金融公庫「医療・福祉」創業支援', url: 'https://www.jfc.go.jp/n/finance/search/index_k.html', desc: '融資制度一覧・創業計画書ひな形のダウンロード' },
         { icon: '📋', label: '厚生労働省「診療所開設届」手続き案内', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '医療機関の開設・管理・法人等に関する各種手続き' },
         { icon: '🔍', label: 'e-Stat 政府統計（診療圏調査に活用）', url: 'https://www.e-stat.go.jp/', desc: '人口・年齢分布・医療機関数の公式統計データ' },
       ]
@@ -253,7 +253,7 @@ CARD_DETAILS['cat-02-0'] = {
       heading: '公式・申請リンク',
       type: 'links',
       items: [
-        { icon: '🏦', label: '日本政策金融公庫「医療・福祉 ご融資」公式ページ', url: 'https://www.jfc.go.jp/n/finance/search/02_iryofukushi_m.html', desc: '融資条件・申込書類・創業計画書ひな形のダウンロード' },
+        { icon: '🏦', label: '日本政策金融公庫「医療・福祉 ご融資」公式ページ', url: 'https://www.jfc.go.jp/n/finance/search/index_k.html', desc: '融資条件・申込書類・創業計画書ひな形のダウンロード' },
         { icon: '📄', label: '日本政策金融公庫「創業計画書」書式ダウンロード', url: 'https://www.jfc.go.jp/n/service/dl_kokumin.html', desc: '国民生活事業 各種書類ダウンロード（創業計画書 様式含む）' },
         { icon: '📊', label: '日本政策金融公庫「業種別目論見書（医療業）」', url: 'https://www.jfc.go.jp/n/rate/index.html', desc: '業種別貸出金利・最新金利の確認' },
         { icon: '🔍', label: 'CIC（信用情報機関）自己情報開示', url: 'https://www.cic.co.jp/mydata/index.html', desc: '融資申請前に自身のクレジット情報を確認' },
@@ -295,8 +295,8 @@ CARD_DETAILS['cat-02-1'] = {
       heading: '公式・参考リンク',
       type: 'links',
       items: [
-        { icon: '🏛️', label: '信用保証協会一覧（都道府県別）', url: 'https://www.zenshinhoren.or.jp/member/index.html', desc: '各都道府県の信用保証協会へのリンク集' },
-        { icon: '📊', label: '日本銀行「企業向け貸出金利」統計', url: 'https://www.boj.or.jp/statistics/dl/loan/jikei/index.htm', desc: '民間銀行の平均貸出金利の参考データ' },
+        { icon: '🏛️', label: '信用保証協会一覧（都道府県別）', url: 'https://www.zenshinhoren.or.jp/nearest/', desc: '各都道府県の信用保証協会へのリンク集' },
+        { icon: '📊', label: '日本銀行「企業向け貸出金利」統計', url: 'https://www.boj.or.jp/statistics/dl/loan/yaku/index.htm', desc: '民間銀行の平均貸出金利の参考データ' },
       ]
     }
   ]
@@ -644,7 +644,7 @@ CARD_DETAILS['cat-04-2'] = {
       type: 'links',
       items: [
         { icon: '☢️', label: '厚生労働省「診断用放射線の安全管理（医療法）」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '医療法に基づくX線装置の届出・安全管理の法令根拠' },
-        { icon: '📋', label: '原子力規制委員会「放射線障害防止法 手続き案内」', url: 'https://www.nra.go.jp/activity/med/index.html', desc: 'X線CT等の大型装置に必要な放射線障害防止法の手続き' },
+        { icon: '📋', label: '原子力規制委員会「放射線障害防止法 手続き案内」', url: 'https://www.nra.go.jp/activity/', desc: 'X線CT等の大型装置に必要な放射線障害防止法の手続き' },
       ]
     }
   ]
@@ -1065,8 +1065,8 @@ CARD_DETAILS['cat-07-0'] = {
       heading: '参考リンク',
       type: 'links',
       items: [
-        { icon: '📊', label: '日本歯科医師会「歯科医療費統計」', url: 'https://www.jda.or.jp/jda/toukei.html', desc: '保険・自費の診療費実態データ（参考資料として）' },
-        { icon: '💰', label: '日本インプラント学会「インプラント治療の適正価格」', url: 'https://www.shika-implant.org/treatment/price.html', desc: 'インプラント治療費の考え方・相場情報（学会公式）' },
+        { icon: '📊', label: '日本歯科医師会「歯科医療費統計」', url: 'https://www.jda.or.jp/dental_data/', desc: '保険・自費の診療費実態データ（参考資料として）' },
+        { icon: '💰', label: '日本インプラント学会「インプラント治療の適正価格」', url: 'https://www.shika-implant.org/min-implant/beginner/cost/', desc: 'インプラント治療費の考え方・相場情報（学会公式）' },
       ]
     }
   ]
@@ -1102,8 +1102,8 @@ CARD_DETAILS['cat-07-1'] = {
       heading: '参考リンク',
       type: 'links',
       items: [
-        { icon: '💳', label: 'デンタルローン各社比較（オリコ・ジャックス・アプラス）', url: 'https://www.orico.co.jp/medical/dental/', desc: 'オリコ歯科向けローン。審査・手数料・患者負担の確認に' },
-        { icon: '📖', label: '日本歯科経営研究所「自費率向上」事例集', url: 'https://www.jdma.or.jp/', desc: '歯科医院経営の事例・セミナー情報' },
+        { icon: '💳', label: 'デンタルローン各社比較（オリコ・ジャックス・アプラス）', url: 'https://www.orico.co.jp/loan/teikei/dental/', desc: 'オリコ歯科向けローン。審査・手数料・患者負担の確認に' },
+        { icon: '📖', label: '日本歯科医師会「歯科医院経営情報」', url: 'https://www.jda.or.jp/', desc: '日本歯科医師会が提供する歯科医院経営支援・情報提供サービス' },
       ]
     }
   ]
@@ -1174,7 +1174,7 @@ CARD_DETAILS['cat-07-3'] = {
       heading: '参考リンク',
       type: 'links',
       items: [
-        { icon: '💬', label: 'オリコ「デンタルローン 加盟店申込」', url: 'https://www.orico.co.jp/medical/dental/', desc: 'デンタルローン導入の加盟店申込・手数料の確認' },
+        { icon: '💬', label: 'オリコ「デンタルローン 加盟店申込」', url: 'https://www.orico.co.jp/loan/teikei/dental/', desc: 'デンタルローン導入の加盟店申込・手数料の確認' },
         { icon: '📄', label: '消費者庁「割賦販売法・特定商取引法」（分割払いの法令）', url: 'https://www.caa.go.jp/policies/policy/consumer_transaction/specified_commercial_transactions/', desc: '院内分割払い・ローン提供時の法令遵守の確認' },
       ]
     }
@@ -1551,8 +1551,8 @@ CARD_DETAILS['cat-10-0'] = {
       type: 'links',
       items: [
         { icon: '📊', label: '厚生労働省「職業別有効求人・求職状況」（月次）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/index.html', desc: '歯科衛生士の有効求人倍率を確認できる公式統計' },
-        { icon: '🏫', label: '日本歯科衛生士会「養成校一覧」', url: 'https://www.jdha.or.jp/education/school.html', desc: '全国の歯科衛生士養成校リスト。新卒採用の学校訪問先の確認に' },
-        { icon: '💼', label: 'ハローワークインターネットサービス「求人申込み」', url: 'https://www.hellowork.mhlw.go.jp/doc/site_info_jigyonushi.html', desc: 'ハローワークへの無料求人掲載の手続き案内' },
+        { icon: '🏫', label: '日本歯科衛生士会「養成校一覧」', url: 'https://www.jdha.or.jp/training/school.html', desc: '全国の歯科衛生士養成校リスト。新卒採用の学校訪問先の確認に' },
+        { icon: '💼', label: 'ハローワークインターネットサービス「求人申込み」', url: 'https://www.hellowork.mhlw.go.jp/enterprise/ent_top.html', desc: 'ハローワークへの無料求人掲載の手続き案内' },
       ]
     }
   ]
@@ -1865,7 +1865,7 @@ CARD_DETAILS['cat-12-0'] = {
       items: [
         { icon: '🧼', label: '厚生労働省「歯科における院内感染対策について」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '歯科医院向け院内感染対策の公式ガイドライン' },
         { icon: '🌐', label: 'WHO「手指衛生ガイドライン」（日本語版）', url: 'https://www.who.int/gpsc/5may/Hand_Hygiene_Why_How_and_When_Brochure.pdf', desc: 'WHOの「5つのタイミング」手指衛生ガイドライン（日本語）' },
-        { icon: '🔬', label: '国立感染症研究所「医療機関における感染予防策」', url: 'https://www.niid.go.jp/niid/ja/ial/3136-2014-01-07-08-15-31.html', desc: '標準予防策・感染経路別予防策の科学的根拠' },
+        { icon: '🔬', label: '国立感染症研究所「医療機関における感染予防策」', url: 'https://www.niid.go.jp/niid/ja/routes.html', desc: '標準予防策・感染経路別予防策の科学的根拠' },
       ]
     }
   ]
@@ -1985,7 +1985,7 @@ CARD_DETAILS['cat-12-3'] = {
       items: [
         { icon: '📋', label: '公益財団法人 日本医療機能評価機構「医療事故情報収集等事業」', url: 'https://www.med-safe.jp/', desc: '全国の医療事故・ヒヤリハット事例データベース。歯科事例も多数収録' },
         { icon: '📄', label: '厚生労働省「医療安全支援センター 総合支援事業」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/i-anzen/index.html', desc: '医療安全に関する相談・研修・支援制度の公式案内' },
-        { icon: '🏥', label: '日本歯科医師会「医療安全対策マニュアル」', url: 'https://www.jda.or.jp/dentist/anzen/', desc: '日歯が提供する医療安全対策の実務マニュアル・研修資料' },
+        { icon: '🏥', label: '日本歯科医師会「医療安全対策マニュアル」', url: 'https://www.jda.or.jp/dentist/info/', desc: '日歯が提供する医療安全対策の実務マニュアル・研修資料' },
       ]
     }
   ]
@@ -2406,7 +2406,7 @@ CARD_DETAILS['cat-15-3'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '🔗', label: '日本政策金融公庫 医療・福祉貸付', url: 'https://www.jfc.go.jp/n/finance/search/06_iryo_m.html', desc: '医療機関向け低金利融資制度・相談窓口' },
+        { icon: '🔗', label: '日本政策金融公庫 医療・福祉貸付', url: 'https://www.jfc.go.jp/n/finance/search/index_k.html', desc: '医療機関向け低金利融資制度・相談窓口' },
         { icon: '📄', label: '中小企業庁 経営相談・資金調達サポート', url: 'https://www.chusho.meti.go.jp/keiei/', desc: '補助金・保証制度・経営改善支援の総合窓口' },
       ]
     }
@@ -2666,7 +2666,7 @@ CARD_DETAILS['cat-17-3'] = {
       type: 'links',
       items: [
         { icon: '🔗', label: '中小機構 事業承継・引継ぎ支援センター', url: 'https://www.smrj.go.jp/sme/succession/index.html', desc: '無料相談・M&Aマッチング・補助金情報' },
-        { icon: '📄', label: '日本政策金融公庫 事業承継融資', url: 'https://www.jfc.go.jp/n/finance/search/07_jigyoushoukai_m.html', desc: '後継者向け・買い手向け承継融資制度' },
+        { icon: '📄', label: '日本政策金融公庫 事業承継融資', url: 'https://www.jfc.go.jp/n/finance/jigyosyokei/index.html', desc: '後継者向け・買い手向け承継融資制度' },
       ]
     }
   ]
@@ -2789,7 +2789,7 @@ CARD_DETAILS['cat-18-3'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '📄', label: '厚労省 解雇・雇用に関するルール', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/faq/keizokukai.html', desc: '解雇予告・解雇予告手当の計算方法' },
+        { icon: '📄', label: '厚労省 解雇・雇用に関するルール', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/index.html', desc: '解雇予告・解雇予告手当の計算方法' },
         { icon: '🔗', label: '中小機構 廃業支援（事業承継・引継ぎ支援センター）', url: 'https://www.smrj.go.jp/sme/succession/index.html', desc: '廃業コスト軽減補助金・専門家無料相談' },
       ]
     }

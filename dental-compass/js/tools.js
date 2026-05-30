@@ -252,10 +252,10 @@ const TOOL_DEFS = {
           <label class="check-item"><input type="checkbox" id="t5_c3"><div class="check-box"></div><div class="check-text">院内感染防止対策の研修を年2回以上実施している<div class="check-sub">歯科外来診療感染対策加算の要件</div></div></label>
           <label class="check-item"><input type="checkbox" id="t5_c4"><div class="check-box"></div><div class="check-text">マイナ保険証のオンライン資格確認を導入している<div class="check-sub">医療DX推進体制整備加算の要件</div></div></label>
           <label class="check-item"><input type="checkbox" id="t5_c5"><div class="check-box"></div><div class="check-text">電子処方箋発行に対応している<div class="check-sub">同上（加算点が異なる）</div></div></label>
-          <label class="check-item"><input type="checkbox" id="t5_c6"><div class="check-box"></div><div class="check-text">歯科衛生士が常勤1名以上在籍している<div class="check-sub">か強診・各種加算の要件</div></div></label>
-          <label class="check-item"><input type="checkbox" id="t5_c7"><div class="check-box"></div><div class="check-text">過去1年間に歯科疾患管理料を100回以上算定している<div class="check-sub">か強診の要件</div></div></label>
-          <label class="check-item"><input type="checkbox" id="t5_c8"><div class="check-box"></div><div class="check-text">過去1年間に歯科訪問診療を24回以上実施している<div class="check-sub">か強診の要件（在宅実績）</div></div></label>
-          <label class="check-item"><input type="checkbox" id="t5_c9"><div class="check-box"></div><div class="check-text">口腔内写真撮影を日常的に実施している<div class="check-sub">口腔機能管理・か強診の要件</div></div></label>
+          <label class="check-item"><input type="checkbox" id="t5_c6"><div class="check-box"></div><div class="check-text">歯科衛生士が常勤1名以上在籍している<div class="check-sub">口腔管理体制強化加算・各種加算の要件</div></div></label>
+          <label class="check-item"><input type="checkbox" id="t5_c7"><div class="check-box"></div><div class="check-text">過去1年間に歯科疾患管理料を100回以上算定している<div class="check-sub">口腔管理体制強化加算の要件</div></div></label>
+          <label class="check-item"><input type="checkbox" id="t5_c8"><div class="check-box"></div><div class="check-text">過去1年間に歯科訪問診療を24回以上実施している<div class="check-sub">口腔管理体制強化加算の要件（在宅実績）</div></div></label>
+          <label class="check-item"><input type="checkbox" id="t5_c9"><div class="check-box"></div><div class="check-text">口腔内写真撮影を日常的に実施している<div class="check-sub">口腔機能管理・口腔管理体制強化加算の要件</div></div></label>
           <label class="check-item"><input type="checkbox" id="t5_c10"><div class="check-box"></div><div class="check-text">歯科訪問診療の実施体制がある（24時間連絡可能）<div class="check-sub">在宅療養支援歯科診療所の要件</div></div></label>
         </div>
         <button class="btn-calc" onclick="calcTool5()" style="margin-top:1rem;">算定可能加算を判定 →</button>
@@ -423,7 +423,7 @@ const TOOL_DEFS = {
         </div>
         <h4 style="color:var(--navy);margin:1rem 0 0.75rem;">【診療報酬・施設基準】</h4>
         <div class="checklist">
-          <label class="check-item"><input type="checkbox" class="t10_check" data-cat="保険"><div class="check-box"></div><div class="check-text">か強診（かかりつけ歯科医機能強化型）を取得している</div></label>
+          <label class="check-item"><input type="checkbox" class="t10_check" data-cat="保険"><div class="check-box"></div><div class="check-text">口腔管理体制強化加算を取得している</div></label>
           <label class="check-item"><input type="checkbox" class="t10_check" data-cat="保険"><div class="check-box"></div><div class="check-text">医療DX推進体制整備加算を算定している</div></label>
           <label class="check-item"><input type="checkbox" class="t10_check" data-cat="保険"><div class="check-box"></div><div class="check-text">算定漏れ点検を月1回以上実施している</div></label>
           <label class="check-item"><input type="checkbox" class="t10_check" data-cat="保険"><div class="check-box"></div><div class="check-text">口腔機能管理（低下症・発達不全症）を算定している</div></label>
@@ -694,7 +694,7 @@ function calcTool5() {
   }
 
   if (dh && kanri100 && visit24 && photo) {
-    results.push({ name: 'かかりつけ歯科医機能強化型歯科診療所（か強診）', note: '主要要件を充足。詳細は地方厚生局に確認' });
+    results.push({ name: '口腔管理体制強化加算', note: '主要要件を充足。詳細は地方厚生局に確認' });
   } else {
     if (!dh) missing.push('歯科衛生士の常勤配置（1名以上）');
     if (!kanri100) missing.push('歯科疾患管理料100回/年以上の実績');
