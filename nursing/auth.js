@@ -167,7 +167,7 @@
       e.preventDefault();
       var val = input.value;
 
-      if (val === 'tensaikeita') {
+      if (val === '19921106') {
         /* 認証成功 */
         sessionStorage.setItem(SESSION_KEY, '1');
         overlay.classList.add('auth-success');
