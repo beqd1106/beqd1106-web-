@@ -111,20 +111,20 @@ const CARD_META = {
 
   // ── Cat.06 診療報酬改定（令和8年度）──────────────────────
   'cat-06-0': {
-    type: 'official', volatility: 'high', verified: null,
-    note: '令和8年度改定（2026年6月1日施行）の概要です。中医協答申・厚労省告示で最終確認してください',
+    type: 'official', volatility: 'high', verified: '2026-06-02',
+    note: '改定率+2.41%・中医協答申2026年2月13日・施行2026年6月1日を複数ソースで確認済み',
   },
   'cat-06-1': {
-    type: 'official', volatility: 'high', verified: null,
-    note: '具体的な点数は告示原文（厚生労働省）での確認が必須です。レセコンのアップデート内容とも照合してください',
+    type: 'official', volatility: 'high', verified: '2026-06-02',
+    note: '初診272点・再診59点・歯周病継続支援治療170/200/350点・口腔機能実地指導料46点・技工連携加算1:60点/2:80点・3DFD4000点・医科連携500点を複数ソース照合済み。小児保隙装置1200点のみ単一ソース未確認',
   },
   'cat-06-2': {
-    type: 'official', volatility: 'high', verified: null,
-    note: 'CAD/CAM関連の施設基準・算定要件の詳細は告示・通知原文で確認してください。投資収益シミュレーションは参考値です',
+    type: 'official', volatility: 'high', verified: '2026-06-02',
+    note: '歯科技工士連携加算1=60点・加算2=80点・3次元プリント有床義歯=4000点を複数ソースで確認済み。投資シミュレーションは参考値',
   },
   'cat-06-3': {
-    type: 'official', volatility: 'high', verified: null,
-    note: '口腔機能管理の算定要件は告示・通知原文での確認が必須です。管理計画書の様式も公式様式を使用してください',
+    type: 'official', volatility: 'high', verified: '2026-06-02',
+    note: '管理料1（精密検査あり）=90点・管理料2（精密検査なし）=50点。実地指導料46点は管理料と同日算定可',
   },
 
   // ── Cat.07 自費診療・収益改善 ─────────────────────────────
