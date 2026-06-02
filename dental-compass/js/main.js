@@ -388,7 +388,7 @@ function openCardDrawer(card) {
 
   // タブ 1: 概要
   document.getElementById('dpOverview').innerHTML = data
-    ? buildDetailHtml(data)
+    ? buildDetailHtml(data, key)
     : '<p class="drawer-empty">詳細情報は近日公開予定です。</p>';
 
   // タブ 2: チェックリスト

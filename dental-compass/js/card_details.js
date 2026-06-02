@@ -4,8 +4,44 @@
 // =====================================================
 
 // ─── HTML レンダラー ───────────────────────────────
-function buildDetailHtml(data) {
+// cardKey を第2引数で受け取り CARD_META から情報品質バッジを表示する
+function buildDetailHtml(data, cardKey) {
   let html = '<div class="card-detail-inner">';
+
+  // ── 情報品質ストリップ ──────────────────────────
+  const meta = (typeof CARD_META !== 'undefined' && cardKey && CARD_META[cardKey])
+    ? CARD_META[cardKey] : (data._meta || null);
+  if (meta) {
+    const TYPE_CFG = {
+      legal:    '法令根拠',
+      official: '公的機関データ',
+      estimate: '市場目安・参考値',
+      guidance: '実務ガイダンス',
+    };
+    const typeLabel = TYPE_CFG[meta.type] || '一般情報';
+    const v = meta.verified;
+    // 18ヶ月を超えたら「要再確認」
+    const isStale = v ? (Date.now() - new Date(v).getTime()) > 548 * 864e5 : false;
+
+    html += `<div class="detail-meta-strip">
+      <span class="dmeta-badge dmeta-${meta.type || 'guidance'}">${typeLabel}</span>`;
+
+    if (v) {
+      html += `<span class="dmeta-date${isStale ? ' dmeta-stale' : ''}">最終確認: ${v}${isStale ? ' ⚠ 要再確認' : ''}</span>`;
+    } else {
+      html += `<span class="dmeta-date dmeta-unverified">出典要確認</span>`;
+    }
+
+    if (meta.volatility === 'high') {
+      html += `<span class="dmeta-volatile">要定期更新</span>`;
+    }
+
+    if (meta.note) {
+      html += `<span class="dmeta-note">${meta.note}</span>`;
+    }
+
+    html += `</div>`;
+  }
 
   if (data.lead) {
     html += `<p class="detail-lead">${data.lead}</p>`;
@@ -59,6 +95,23 @@ function buildDetailHtml(data) {
           </a>`;
         });
         html += `</div>`;
+      }
+
+      // ── セクション別出典表示 ─────────────────────
+      if (sec._source) {
+        html += `<div class="detail-source-cite">
+          <span class="source-tag">出典</span>
+          <span class="source-body">${
+            sec._source.url
+              ? `<a href="${sec._source.url}" target="_blank" rel="noopener">${sec._source.label}</a>`
+              : sec._source.label
+          }${sec._source.accessed
+            ? `<span class="source-date">（${sec._source.accessed}確認）</span>` : ''
+          }</span>${
+            sec._source.note
+              ? `<span class="source-note">${sec._source.note}</span>` : ''
+          }
+        </div>`;
       }
 
       html += `</div>`;
