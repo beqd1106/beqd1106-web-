@@ -263,8 +263,8 @@ const CARD_META = {
     note: 'KPI目標値は厚労省「医療経済実態調査」等の全国平均を参考にした目安です。地域・規模により差があります',
   },
   'cat-15-1': {
-    type: 'legal', volatility: 'high', verified: null,
-    note: '税率・控除額は毎年の税制改正で変わります。必ず顧問税理士にご確認ください',
+    type: 'legal', volatility: 'high', verified: '2026-06-02',
+    note: 'iDeCo上限68,000→75,000円（2026年12月拠出分から）。少額償却特例30万→40万円（令和8年4月1日以後取得）令和11年3月まで延長。税率は毎年変わるため税理士に要確認',
   },
   'cat-15-2': {
     type: 'legal', volatility: 'high', verified: null,
