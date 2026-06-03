@@ -163,7 +163,7 @@
       e.preventDefault();
       var val = input.value;
 
-      if (val === 'keitasugoi') {
+      if (val === '19921106') {
         sessionStorage.setItem(SESSION_KEY, '1');
         overlay.classList.add('auth-success');
         setTimeout(function () {
