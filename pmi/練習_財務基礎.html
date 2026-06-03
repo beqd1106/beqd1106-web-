@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -93,6 +93,7 @@ body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(
   .stat .v{font-size:18px;}
 }
 </style>
+<link rel="stylesheet" href="design.css">
 </head>
 <body>
 <div class="hero">
@@ -467,5 +468,6 @@ function revealAns(id,btn){const el=document.getElementById(id);if(el.style.disp
 function checkMCQ(btn,chId,ansId,correct){if(mcqAnswered[chId])return;mcqAnswered[chId]=true;const choices=document.getElementById(chId).querySelectorAll('.ch');choices.forEach(c=>{c.disabled=true;if(c.onclick.toString().includes(',true)'))c.classList.add('correct');});if(!correct)btn.classList.add('wrong');document.getElementById(ansId).style.display='block';if(correct){score++;document.getElementById('scoreVal').textContent=score;document.getElementById('scoreDisp').textContent=score;}answered++;updateProgress();}
 function updateProgress(){const pct=Math.min(Math.round(answered/20*100),100);document.getElementById('progressBar').style.width=pct+'%';document.getElementById('progressText').textContent=answered+' / 20 問 回答済み';}
 </script>
+<script src="pmi-anim.js" defer></script>
 </body>
 </html>

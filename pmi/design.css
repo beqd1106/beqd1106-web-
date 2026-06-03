@@ -1,0 +1,224 @@
+/* ============================================================
+   PMI学習セット — 共通デザインシステム
+   全ページに <link rel="stylesheet" href="design.css"> で読み込む
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+/* ── Design Tokens ─────────────────────────────────────── */
+:root {
+  --navy:       #0F172A;
+  --navy-2:     #1E293B;
+  --navy-3:     #334155;
+  --indigo:     #4F46E5;
+  --indigo-l:   #818CF8;
+  --indigo-pale:#EEF2FF;
+  --text:       #111827;
+  --text-2:     #6B7280;
+  --text-3:     #9CA3AF;
+  --white:      #FFFFFF;
+  --off-white:  #F8F7F3;
+  --bg-alt:     #F1F0EB;
+  --border:     #E5E2DA;
+  --amber:      #F59E0B;
+  --green:      #059669;
+  --blue:       #2563EB;
+  --purple:     #7C3AED;
+  --red:        #DC2626;
+  --sans:   'Noto Sans JP',  'Hiragino Kaku Gothic ProN', 'BIZ UDGothic', sans-serif;
+  --serif:  'Noto Serif JP', 'Yu Mincho', 'Hiragino Mincho ProN', Georgia, serif;
+  --ease:       cubic-bezier(0.21, 0.51, 0.51, 1);
+  --ease-out:   cubic-bezier(0.0,  0.0,  0.2, 1);
+  --ease-spring:cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Global Reset Override ──────────────────────────────── */
+body {
+  font-family: var(--sans) !important;
+  background: var(--off-white) !important;
+  color: var(--text) !important;
+  font-feature-settings: 'palt';
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scroll Animation ───────────────────────────────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s var(--ease-out),
+              transform 0.65s var(--ease-out);
+}
+.fade-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+.site-header {
+  background: rgba(15, 23, 42, 0.97) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+}
+.header-logo { color: #FFFFFF !important; letter-spacing: 0.04em; }
+.header-back,
+.header-nav a { color: rgba(255,255,255,0.6) !important; transition: color 0.2s; }
+.header-back:hover,
+.header-nav a:hover { color: #FFFFFF !important; }
+
+/* ── Hero (inner pages) ─────────────────────────────────── */
+.hero {
+  background: var(--navy) !important;
+  color: #fff;
+  padding: clamp(72px,10vw,96px) clamp(16px,6vw,56px) clamp(28px,5vw,48px) !important;
+}
+.hero-title {
+  font-family: var(--serif) !important;
+  font-size: clamp(1.55rem, 3.8vw, 2.4rem) !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.15 !important;
+  color: #fff !important;
+}
+.hero-title em { color: var(--indigo-l) !important; font-style: normal; }
+.hero-desc { color: rgba(255,255,255,0.65) !important; font-size: 0.88rem !important; line-height: 1.85 !important; }
+.hero-step { color: rgba(255,255,255,0.45) !important; letter-spacing: 2px; }
+.hero-phase {
+  border-color: rgba(255,255,255,0.25) !important;
+  color: rgba(255,255,255,0.65) !important;
+  border-radius: 100px !important;
+}
+.hero-phase-final { border-color: rgba(220,38,38,0.6) !important; color: #FCA5A5 !important; }
+.hero-divider { background: rgba(255,255,255,0.2) !important; }
+.hero-bg-num { color: rgba(255,255,255,0.03) !important; }
+
+/* ── Chapter Nav ────────────────────────────────────────── */
+.ch-nav {
+  background: rgba(15,23,42,0.96) !important;
+  backdrop-filter: blur(10px) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+  top: 56px !important;
+}
+.ch-nav li a {
+  color: rgba(255,255,255,0.5) !important;
+  font-size: 10.5px !important;
+  letter-spacing: 0.04em;
+  border-bottom: 2px solid transparent !important;
+  transition: color 0.2s, border-color 0.2s !important;
+}
+.ch-nav li a:hover {
+  color: #fff !important;
+  border-bottom-color: var(--indigo-l) !important;
+}
+
+/* ── Chapters ───────────────────────────────────────────── */
+.chapter {
+  padding: clamp(36px,6vw,64px) clamp(16px,6vw,64px) !important;
+}
+.chapter:nth-child(odd)  { background: #FFFFFF !important; }
+.chapter:nth-child(even) { background: var(--off-white) !important; }
+
+.ch-head-content h2 {
+  font-family: var(--serif) !important;
+  font-size: clamp(1.15rem, 2.5vw, 1.5rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.01em !important;
+  color: var(--text) !important;
+}
+.ch-head-content p { color: var(--text-2) !important; }
+.ch-num-label { color: var(--text-3) !important; font-size: 9.5px !important; letter-spacing: 2.5px; }
+
+/* ── Key Concept Block ──────────────────────────────────── */
+.key {
+  background: var(--navy) !important;
+  border-left: 3px solid var(--indigo) !important;
+  border-radius: 0 6px 6px 0 !important;
+  padding: 20px 24px !important;
+}
+.key-label { color: var(--indigo-l) !important; letter-spacing: 2px; font-size: 9px !important; }
+.key p { color: rgba(255,255,255,0.85) !important; font-size: 0.88rem !important; line-height: 1.85 !important; }
+.key strong { color: #fff !important; }
+
+/* ── Callout Boxes ──────────────────────────────────────── */
+.callout {
+  border-radius: 0 6px 6px 0 !important;
+  font-size: 0.84rem !important;
+  line-height: 1.75 !important;
+}
+.callout-warn { background: #FFFBEB !important; border-color: var(--amber) !important; }
+.callout-warn strong { color: #92400E !important; }
+.callout-tip  { background: var(--indigo-pale) !important; border-color: var(--indigo) !important; }
+.callout-tip  strong { color: #3730A3 !important; }
+
+/* ── Source Citation ────────────────────────────────────── */
+.src {
+  background: var(--off-white) !important;
+  border: 1px solid var(--border) !important;
+  border-left: 3px solid var(--indigo) !important;
+  border-radius: 0 6px 6px 0 !important;
+  margin-top: 32px !important;
+}
+.src-lbl { color: var(--indigo) !important; letter-spacing: 1.5px; font-size: 9px !important; }
+.src-list { color: var(--text-2) !important; }
+.src-list li { line-height: 1.7 !important; }
+
+/* ── Summary Block ──────────────────────────────────────── */
+.summary {
+  background: var(--navy) !important;
+  border-radius: 6px !important;
+  padding: 28px 32px !important;
+}
+.summary-label { color: var(--indigo-l) !important; letter-spacing: 2px; font-size: 9px !important; }
+.summary h3 { font-family: var(--serif) !important; font-weight: 800; color: #fff !important; }
+.summary ul  { color: rgba(255,255,255,0.7) !important; }
+
+/* ── CTA ────────────────────────────────────────────────── */
+.cta {
+  background: var(--indigo) !important;
+  border-radius: 6px !important;
+}
+.cta a {
+  background: #fff !important; color: var(--indigo) !important;
+  border-radius: 100px !important; font-weight: 700 !important;
+  transition: transform 0.2s, box-shadow 0.2s !important;
+}
+.cta a:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 24px rgba(0,0,0,0.18) !important; }
+.cta-case { background: var(--navy) !important; border-radius: 6px !important; }
+.cta-case a { background: #fff !important; color: var(--navy) !important; border-radius: 100px !important; }
+
+/* ── Page Navigation ────────────────────────────────────── */
+.page-nav { background: var(--navy-2) !important; }
+.page-nav a { color: rgba(255,255,255,0.5) !important; transition: color 0.2s; }
+.page-nav a:hover { color: #fff !important; }
+
+/* ── KPI Table ──────────────────────────────────────────── */
+.kpi-table { border-radius: 6px !important; overflow: hidden; border-color: var(--border) !important; }
+.kpi-row.hd { background: var(--navy) !important; color: rgba(255,255,255,0.5) !important; }
+.kpi-row { border-bottom-color: var(--border) !important; }
+.status { border-radius: 100px !important; font-size: 9px !important; }
+
+/* ── Area/Force/ADKAR Grids ─────────────────────────────── */
+.area-grid  { border-radius: 6px !important; }
+.force-grid { border-radius: 6px !important; }
+.adkar-flow .adkar-box { border-radius: 6px !important; }
+
+/* ── Timeline ───────────────────────────────────────────── */
+.timeline { border-radius: 6px !important; }
+.tl-badge { font-family: var(--serif) !important; }
+
+/* ── Steps & Cards ──────────────────────────────────────── */
+.step-label {
+  background: var(--navy) !important;
+  color: var(--indigo-l) !important;
+  border-radius: 100px !important;
+  font-family: var(--serif) !important;
+}
+
+/* ── Mobile overrides ───────────────────────────────────── */
+@media (max-width: 640px) {
+  .hero { padding: 68px 16px 24px !important; }
+  .chapter { padding: 28px 14px !important; }
+  .key { padding: 14px 16px !important; }
+  .src { padding: 14px 16px !important; }
+  .summary { padding: 20px 18px !important; }
+}
