@@ -162,37 +162,37 @@
 </head>
 <body>
 <header class="site-header">
-  <a href="index.html" class="site-logo">🏥 障碍者福祉 運営ガイド</a>
+  <a href="index.html" class="site-logo">障碍者福祉 運営ガイド</a>
   <nav class="site-nav">
     <a href="index.html">TOP</a>
-    <a href="01_法令・制度.html">⚖️ 法令</a>
-    <a href="02_必要書類.html">📋 書類</a>
-    <a href="03_管理業務.html">📅 管理</a>
-    <a href="04_京都府・手続き.html">🏛️ 京都府</a>
-    <a href="05_請求業務.html">💴 請求</a>
-    <a href="13_障害介護サービス.html">🏠 介護</a>
-    <a href="06_就労継続A型.html">🏢 A型</a>
-    <a href="07_就労継続B型.html">🏭 B型</a>
-    <a href="08_相談支援.html">💬 相談</a>
-    <a href="09_監査対応.html">🔍 監査</a>
-    <a href="10_収入向上.html">📈 収入</a>
-    <a href="11_年間スケジュール.html">📆 年間</a>
-    <a href="12_QA.html">❓ Q&amp;A</a>
-    <a href="14_AI作成支援.html">✨ AI支援</a>
-    <a href="15_データ管理.html" class="active" style="background:var(--blk-mint);color:var(--success);">📊 データ</a>
-    <a href="16_実地指導チェックリスト.html" style="color:#B71C1C;font-weight:600;">✅ 指導</a>
-    <a href="フォーマット/index.html">📁 様式DL</a>
+    <a href="01_法令・制度.html">法令</a>
+    <a href="02_必要書類.html">書類</a>
+    <a href="03_管理業務.html">管理</a>
+    <a href="04_京都府・手続き.html">京都府</a>
+    <a href="05_請求業務.html">請求</a>
+    <a href="13_障害介護サービス.html">介護</a>
+    <a href="06_就労継続A型.html">A型</a>
+    <a href="07_就労継続B型.html">B型</a>
+    <a href="08_相談支援.html">相談</a>
+    <a href="09_監査対応.html">監査</a>
+    <a href="10_収入向上.html">収入</a>
+    <a href="11_年間スケジュール.html">年間</a>
+    <a href="12_QA.html">Q&amp;A</a>
+    <a href="14_AI作成支援.html">AI支援</a>
+    <a href="15_データ管理.html" class="active" style="background:var(--blk-mint);color:var(--success);">データ</a>
+    <a href="16_実地指導チェックリスト.html" style="color:#B71C1C;font-weight:600;">指導</a>
+    <a href="フォーマット/index.html">様式DL</a>
   </nav>
 </header>
 
 <div class="page-hero" style="background:linear-gradient(135deg,#E8F8EE 0%,#D8F0E0 50%,#E8F5EE 100%);">
   <div class="hero-inner">
     <div class="hero-text">
-      <div class="hero-badge" style="background:#D8F0E0;color:var(--success);border-color:#9DC4AE;">📊 データ管理</div>
+      <div class="hero-badge" style="background:#D8F0E0;color:var(--success);border-color:#9DC4AE;">データ管理</div>
       <h1 style="color:#1a4a2e;">利用者・工賃・稼働率を<br>一括管理・グラフ化</h1>
       <p style="color:#2a6a3e;">Google Sheetsと連携して月次データを記録。<br>稼働率・工賃推移・収益をグラフで可視化。</p>
     </div>
-    <div class="hero-img" style="font-size:4rem;opacity:0.3;">📊</div>
+    <div class="hero-img" style="font-size:4rem;opacity:0.3;"></div>
   </div>
 </div>
 
@@ -202,19 +202,19 @@
   <div class="card" style="margin-bottom:1.25rem;padding:0.85rem 1.25rem;">
     <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
       <span style="font-size:0.82rem;font-weight:700;color:var(--text-mid);">API状態：</span>
-      <span class="api-status chk" id="api-status-badge">⏳ 確認中...</span>
+      <span class="api-status chk" id="api-status-badge">確認中...</span>
       <span style="font-size:0.78rem;color:var(--text-light);" id="sheets-status-text"></span>
     </div>
   </div>
 
   <!-- タブ -->
   <div class="dm-tabs">
-    <button class="dm-tab active" data-panel="charts">📈 グラフ表示</button>
-    <button class="dm-tab" data-panel="monthly">📅 月次データ入力</button>
-    <button class="dm-tab" data-panel="users">👥 利用者一覧</button>
-    <button class="dm-tab" data-panel="additions">💰 加算管理</button>
-    <button class="dm-tab" data-panel="staff">👤 スタッフ管理</button>
-    <button class="dm-tab" data-panel="setup">⚙️ 設定</button>
+    <button class="dm-tab active" data-panel="charts">グラフ表示</button>
+    <button class="dm-tab" data-panel="monthly">月次データ入力</button>
+    <button class="dm-tab" data-panel="users">利用者一覧</button>
+    <button class="dm-tab" data-panel="additions">加算管理</button>
+    <button class="dm-tab" data-panel="staff">スタッフ管理</button>
+    <button class="dm-tab" data-panel="setup">設定</button>
   </div>
 
   <!-- ======================================================
@@ -225,7 +225,7 @@
     <!-- 手動データでグラフ生成 -->
     <div class="card" style="margin-bottom:1.25rem;">
       <div class="section-header" style="margin-bottom:0.75rem;">
-        <span class="icon">📈</span>
+        <span class="icon" aria-hidden="true"></span>
         <h2>グラフ生成 <span class="section-badge badge-local">手動入力</span></h2>
       </div>
       <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:1rem;">
@@ -236,7 +236,7 @@
 
         <!-- 工賃推移 -->
         <div class="chart-card">
-          <h3>💴 工賃推移グラフ</h3>
+          <h3>工賃推移グラフ</h3>
           <div class="manual-data-area">
             <div style="font-size:0.75rem;color:var(--text-mid);margin-bottom:0.4rem;">月,平均工賃,目標（CSV形式）</div>
             <textarea id="wage-data" placeholder="2025/04,12500,16000
@@ -245,14 +245,14 @@
 2025/07,14100,16000
 2025/08,14500,16000
 2025/09,15200,16000"></textarea>
-            <button class="chart-btn" onclick="generateChart('wage','wage-data','wage-chart')">📊 グラフ生成</button>
+            <button class="chart-btn" onclick="generateChart('wage','wage-data','wage-chart')">グラフ生成</button>
           </div>
           <div id="wage-chart" class="chart-loading">データを入力してグラフ生成ボタンを押してください</div>
         </div>
 
         <!-- 稼働率 -->
         <div class="chart-card">
-          <h3>📅 稼働率・利用者数</h3>
+          <h3>稼働率・利用者数</h3>
           <div class="manual-data-area">
             <div style="font-size:0.75rem;color:var(--text-mid);margin-bottom:0.4rem;">月,稼働率,利用者数（CSV形式）</div>
             <textarea id="util-data" placeholder="2025/04,75.2,15
@@ -261,14 +261,14 @@
 2025/07,79.3,16
 2025/08,85.0,18
 2025/09,88.2,19"></textarea>
-            <button class="chart-btn" onclick="generateChart('utilization','util-data','util-chart')">📊 グラフ生成</button>
+            <button class="chart-btn" onclick="generateChart('utilization','util-data','util-chart')">グラフ生成</button>
           </div>
           <div id="util-chart" class="chart-loading">データを入力してグラフ生成ボタンを押してください</div>
         </div>
 
         <!-- 加算状況 -->
         <div class="chart-card">
-          <h3>💰 加算取得状況</h3>
+          <h3>加算取得状況</h3>
           <div class="manual-data-area">
             <div style="font-size:0.75rem;color:var(--text-mid);margin-bottom:0.4rem;">加算名,単価,取得（true/false）</div>
             <textarea id="add-data" placeholder="処遇改善加算Ⅰ,13.7,true
@@ -276,14 +276,14 @@
 目標工賃達成加算,109,false
 就労移行支援体制加算,27,true
 送迎加算（片道）,54,false"></textarea>
-            <button class="chart-btn" onclick="generateChart('additions','add-data','add-chart')">📊 グラフ生成</button>
+            <button class="chart-btn" onclick="generateChart('additions','add-data','add-chart')">グラフ生成</button>
           </div>
           <div id="add-chart" class="chart-loading">データを入力してグラフ生成ボタンを押してください</div>
         </div>
 
         <!-- 収益シミュレーション -->
         <div class="chart-card">
-          <h3>💹 収益シミュレーション</h3>
+          <h3>収益シミュレーション</h3>
           <div class="manual-data-area">
             <div style="font-size:0.75rem;color:var(--text-mid);margin-bottom:0.4rem;">月,基本報酬,加算合計,目標（CSV形式）</div>
             <textarea id="rev-data" placeholder="2025/04,820000,95000,1000000
@@ -292,7 +292,7 @@
 2025/07,875000,99000,1000000
 2025/08,920000,108000,1050000
 2025/09,960000,115000,1050000"></textarea>
-            <button class="chart-btn" onclick="generateChart('revenue','rev-data','rev-chart')">📊 グラフ生成</button>
+            <button class="chart-btn" onclick="generateChart('revenue','rev-data','rev-chart')">グラフ生成</button>
           </div>
           <div id="rev-chart" class="chart-loading">データを入力してグラフ生成ボタンを押してください</div>
         </div>
@@ -307,15 +307,15 @@
   <div class="dm-panel" id="panel-monthly">
     <div class="card">
       <div class="section-header" style="margin-bottom:1rem;">
-        <span class="icon">📅</span>
+        <span class="icon" aria-hidden="true"></span>
         <h2>月次データ入力 <span class="section-badge badge-sheets">Google Sheets</span></h2>
       </div>
 
       <div id="monthly-setup-warn" class="setup-banner" style="display:none;">
-        <div class="setup-icon">⚠️</div>
+        <div class="setup-icon">⚠</div>
         <div>
           <h3>Google Sheets未連携</h3>
-          <p>「⚙️ 設定」タブでスプレッドシートIDを設定すると、データが自動保存されます。<br>
+          <p>「設定」タブでスプレッドシートIDを設定すると、データが自動保存されます。<br>
           設定前でもローカルで入力→グラフ生成タブでグラフ化できます。</p>
         </div>
       </div>
@@ -372,7 +372,7 @@
           <input class="dm-input" type="text" id="mn-note" placeholder="例：台風で2日休業あり">
         </div>
         <div style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;">
-          <button class="dm-submit" onclick="saveMonthly()">💾 保存する</button>
+          <button class="dm-submit" onclick="saveMonthly()">保存する</button>
           <span id="monthly-save-msg" style="font-size:0.82rem;color:var(--success);"></span>
         </div>
       </div>
@@ -381,7 +381,7 @@
       <div style="margin-top:1.5rem;">
         <div style="font-size:0.85rem;font-weight:700;color:var(--text-mid);margin-bottom:0.5rem;">
           保存済みデータ
-          <button onclick="loadMonthlyData()" style="background:none;border:1px solid var(--border);border-radius:999px;padding:0.15rem 0.6rem;font-size:0.72rem;cursor:pointer;margin-left:0.5rem;">🔄 更新</button>
+          <button onclick="loadMonthlyData()" style="background:none;border:1px solid var(--border);border-radius:999px;padding:0.15rem 0.6rem;font-size:0.72rem;cursor:pointer;margin-left:0.5rem;">更新</button>
         </div>
         <div class="dm-table-wrap">
           <table class="dm-table" id="monthly-table">
@@ -403,10 +403,10 @@
   <div class="dm-panel" id="panel-users">
     <div class="card">
       <div class="section-header" style="margin-bottom:1rem;">
-        <span class="icon">👥</span>
+        <span class="icon" aria-hidden="true"></span>
         <h2>利用者一覧 <span class="section-badge badge-sheets">Google Sheets</span></h2>
       </div>
-      <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:1rem;">⚠️ 個人情報のため、実名ではなくIDや仮名での管理を推奨します。</p>
+      <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:1rem;">⚠ 個人情報のため、実名ではなくIDや仮名での管理を推奨します。</p>
 
       <div class="dm-form">
         <div class="dm-row">
@@ -457,7 +457,7 @@
           </div>
         </div>
         <div style="display:flex;gap:0.75rem;align-items:center;">
-          <button class="dm-submit" onclick="saveUser()">💾 追加・更新</button>
+          <button class="dm-submit" onclick="saveUser()">追加・更新</button>
           <span id="user-save-msg" style="font-size:0.82rem;color:var(--success);"></span>
         </div>
       </div>
@@ -465,7 +465,7 @@
       <div style="margin-top:1.5rem;">
         <div style="font-size:0.85rem;font-weight:700;color:var(--text-mid);margin-bottom:0.5rem;">
           利用者一覧
-          <button onclick="loadUsers()" style="background:none;border:1px solid var(--border);border-radius:999px;padding:0.15rem 0.6rem;font-size:0.72rem;cursor:pointer;margin-left:0.5rem;">🔄 更新</button>
+          <button onclick="loadUsers()" style="background:none;border:1px solid var(--border);border-radius:999px;padding:0.15rem 0.6rem;font-size:0.72rem;cursor:pointer;margin-left:0.5rem;">更新</button>
         </div>
         <div class="dm-table-wrap">
           <table class="dm-table">
@@ -483,7 +483,7 @@
   <div class="dm-panel" id="panel-additions">
     <div class="card">
       <div class="section-header" style="margin-bottom:1rem;">
-        <span class="icon">💰</span>
+        <span class="icon" aria-hidden="true"></span>
         <h2>加算取得管理 <span class="section-badge badge-sheets">Google Sheets</span></h2>
       </div>
 
@@ -514,8 +514,8 @@
           <div class="dm-field">
             <label class="dm-label">取得状況</label>
             <select class="dm-select" id="add-status">
-              <option value="true">✅ 取得中</option>
-              <option value="false">❌ 未取得</option>
+              <option value="true">○ 取得中</option>
+              <option value="false">× 未取得</option>
             </select>
           </div>
           <div class="dm-field">
@@ -524,7 +524,7 @@
           </div>
         </div>
         <div style="display:flex;gap:0.75rem;align-items:center;">
-          <button class="dm-submit" onclick="saveAddition()">💾 保存</button>
+          <button class="dm-submit" onclick="saveAddition()">保存</button>
           <span id="add-save-msg" style="font-size:0.82rem;color:var(--success);"></span>
         </div>
       </div>
@@ -545,7 +545,7 @@
   <div class="dm-panel" id="panel-staff">
     <div class="card">
       <div class="section-header" style="margin-bottom:1rem;">
-        <span class="icon">👤</span>
+        <span class="icon" aria-hidden="true"></span>
         <h2>スタッフ管理 <span class="section-badge badge-sheets">Google Sheets</span></h2>
       </div>
       <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:1rem;">
@@ -588,14 +588,14 @@
           <div class="dm-field"><label class="dm-label">入職日</label><input class="dm-input" type="date" id="st-join"></div>
         </div>
         <div style="display:flex;gap:0.75rem;align-items:center;">
-          <button class="dm-submit" onclick="saveStaff()">💾 保存</button>
+          <button class="dm-submit" onclick="saveStaff()">保存</button>
           <span id="staff-save-msg" style="font-size:0.82rem;color:var(--success);"></span>
         </div>
       </div>
       <div style="margin-top:1.5rem;">
         <div style="font-size:0.85rem;font-weight:700;color:var(--text-mid);margin-bottom:0.5rem;">
           スタッフ一覧
-          <button onclick="loadStaff()" style="background:none;border:1px solid var(--border);border-radius:999px;padding:0.15rem 0.6rem;font-size:0.72rem;cursor:pointer;margin-left:0.5rem;">🔄 更新</button>
+          <button onclick="loadStaff()" style="background:none;border:1px solid var(--border);border-radius:999px;padding:0.15rem 0.6rem;font-size:0.72rem;cursor:pointer;margin-left:0.5rem;">更新</button>
         </div>
         <div class="dm-table-wrap">
           <table class="dm-table">
@@ -614,11 +614,11 @@
   <div class="dm-panel" id="panel-setup">
     <div class="card">
       <div class="section-header" style="margin-bottom:1rem;">
-        <span class="icon">⚙️</span><h2>Google Sheets 連携設定</h2>
+        <span class="icon" aria-hidden="true"></span><h2>Google Sheets 連携設定</h2>
       </div>
 
       <div class="setup-banner">
-        <div class="setup-icon">📋</div>
+        <div class="setup-icon"></div>
         <div style="flex:1;">
           <h3>初回セットアップ手順</h3>
           <ol class="setup-steps">
@@ -641,16 +641,16 @@
       </div>
 
       <div style="margin-top:1rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
-        <button class="dm-submit" style="background:var(--success);" onclick="testConnection()">🔌 接続テスト</button>
+        <button class="dm-submit" style="background:var(--success);" onclick="testConnection()">接続テスト</button>
         <span id="conn-test-msg" style="font-size:0.82rem;align-self:center;"></span>
       </div>
 
       <div style="margin-top:1.5rem;padding:1rem;background:var(--blk-cream);border-radius:var(--r-sm);">
         <div style="font-size:0.8rem;font-weight:700;color:var(--text-mid);margin-bottom:0.5rem;">自動作成されるシート</div>
         <div style="font-size:0.78rem;color:var(--text-mid);line-height:2;">
-          📅 <strong>月次データ</strong>：稼働率・利用者数・工賃・収益の月別記録<br>
-          👥 <strong>利用者一覧</strong>：サービス種別・障害種別・支援区分の管理台帳<br>
-          💰 <strong>加算管理</strong>：取得中の加算と体制届の記録
+          <strong>月次データ</strong>：稼働率・利用者数・工賃・収益の月別記録<br>
+          <strong>利用者一覧</strong>：サービス種別・障害種別・支援区分の管理台帳<br>
+          <strong>加算管理</strong>：取得中の加算と体制届の記録
         </div>
       </div>
     </div>
@@ -696,7 +696,7 @@ function checkApiStatus() {
     .then(function(r){ return r.json(); })
     .then(function(d) {
       badge.className = 'api-status ok';
-      badge.textContent = '✅ API稼働中';
+      badge.textContent = '○ API稼働中';
       if (d.sheets_enabled) {
         text.textContent = '｜ Google Sheets連携：有効';
         text.style.color = 'var(--success)';
@@ -708,7 +708,7 @@ function checkApiStatus() {
     })
     .catch(function() {
       badge.className = 'api-status err';
-      badge.textContent = '❌ API未応答（起動中の可能性あり）';
+      badge.textContent = '× API未応答（起動中の可能性あり）';
       setTimeout(checkApiStatus, 30000);
     });
 }
@@ -746,7 +746,7 @@ function generateChart(type, inputId, outputId) {
   if (!records.length) {
     outEl.textContent = 'データを入力してください'; return;
   }
-  outEl.innerHTML = '<div class="chart-loading">⏳ グラフ生成中...</div>';
+  outEl.innerHTML = '<div class="chart-loading">グラフ生成中...</div>';
 
   fetch(API_BASE + '/chart', {
     method: 'POST',
@@ -762,7 +762,7 @@ function generateChart(type, inputId, outputId) {
     outEl.innerHTML = '<img src="' + url + '" alt="' + type + ' chart" style="width:100%;border-radius:8px;">';
   })
   .catch(function(e) {
-    outEl.textContent = '⚠️ グラフ生成に失敗しました。APIが起動中の場合は30秒後に再試行してください。';
+    outEl.textContent = '⚠ グラフ生成に失敗しました。APIが起動中の場合は30秒後に再試行してください。';
   });
 }
 
@@ -778,8 +778,8 @@ function saveSheetId() {
 function testConnection() {
   var id  = getSheetId();
   var msg = document.getElementById('conn-test-msg');
-  if (!id) { msg.textContent = '⚠️ スプレッドシートIDを入力してください'; msg.style.color='var(--warning)'; return; }
-  msg.textContent = '⏳ 接続確認中...'; msg.style.color = 'var(--text-mid)';
+  if (!id) { msg.textContent = '⚠ スプレッドシートIDを入力してください'; msg.style.color='var(--warning)'; return; }
+  msg.textContent = '接続確認中...'; msg.style.color = 'var(--text-mid)';
   fetch(API_BASE + '/sheets/read', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -787,11 +787,11 @@ function testConnection() {
   })
   .then(function(r){ return r.json(); })
   .then(function(d) {
-    if (d.ok !== false) { msg.textContent = '✅ 接続成功！'; msg.style.color = 'var(--success)'; }
+    if (d.ok !== false) { msg.textContent = '○ 接続成功！'; msg.style.color = 'var(--success)'; }
     else throw new Error(d.detail || 'エラー');
   })
   .catch(function(e) {
-    msg.textContent = '❌ 接続失敗：' + e.message; msg.style.color = 'var(--danger)';
+    msg.textContent = '× 接続失敗：' + e.message; msg.style.color = 'var(--danger)';
   });
 }
 
@@ -809,7 +809,7 @@ function saveMonthly() {
   var note     = document.getElementById('mn-note').value;
   var msg      = document.getElementById('monthly-save-msg');
 
-  if (!month) { msg.textContent = '⚠️ 年月を入力してください'; msg.style.color='var(--warning)'; return; }
+  if (!month) { msg.textContent = '⚠ 年月を入力してください'; msg.style.color='var(--warning)'; return; }
 
   var row = [month, service, reg, actual, rate, wage, base, addition, note];
   var headers = ['年月','サービス','登録利用者数','実利用者数','稼働率','平均工賃','基本報酬','加算合計','備考'];
@@ -820,7 +820,7 @@ function saveMonthly() {
   saved.unshift(row);
   localStorage.setItem('monthly_data', JSON.stringify(saved));
   renderMonthlyTable(saved);
-  msg.textContent = '✅ ローカル保存済み'; msg.style.color = 'var(--success)';
+  msg.textContent = '○ ローカル保存済み'; msg.style.color = 'var(--success)';
 
   if (!id) return;
   fetch(API_BASE + '/sheets/write', {
@@ -829,7 +829,7 @@ function saveMonthly() {
     body: JSON.stringify({ spreadsheet_id: id, tab: '月次データ', row: row, headers: headers }),
   })
   .then(function(r){ return r.json(); })
-  .then(function(){ msg.textContent = '✅ Sheetsにも保存しました！'; })
+  .then(function(){ msg.textContent = '○ Sheetsにも保存しました！'; })
   .catch(function(){ /* localのみ保存は成功済み */ });
 }
 
@@ -866,7 +866,7 @@ function renderMonthlyTable(rows) {
 function saveUser() {
   var id=getSheetId(), msg=document.getElementById('user-save-msg');
   var uid=document.getElementById('usr-id').value;
-  if (!uid){ msg.textContent='⚠️ IDを入力してください'; msg.style.color='var(--warning)'; return; }
+  if (!uid){ msg.textContent='⚠ IDを入力してください'; msg.style.color='var(--warning)'; return; }
   var row=[uid,document.getElementById('usr-service').value,document.getElementById('usr-disability').value,
            document.getElementById('usr-level').value,document.getElementById('usr-start').value,
            document.getElementById('usr-status').value];
@@ -874,7 +874,7 @@ function saveUser() {
   var saved=JSON.parse(localStorage.getItem('user_data')||'[]');
   saved=saved.filter(function(r){return r[0]!==uid;}); saved.unshift(row);
   localStorage.setItem('user_data',JSON.stringify(saved));
-  renderUserTable(saved); msg.textContent='✅ 保存済み'; msg.style.color='var(--success)';
+  renderUserTable(saved); msg.textContent='○ 保存済み'; msg.style.color='var(--success)';
   if (!id) return;
   fetch(API_BASE+'/sheets/write',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({spreadsheet_id:id,tab:'利用者一覧',row:row,headers:headers})});
@@ -907,7 +907,7 @@ function saveAddition() {
   var saved=JSON.parse(localStorage.getItem('add_data')||'[]');
   saved=saved.filter(function(r){return r[0]!==name;}); saved.unshift(row);
   localStorage.setItem('add_data',JSON.stringify(saved));
-  renderAddTable(saved); msg.textContent='✅ 保存済み'; msg.style.color='var(--success)';
+  renderAddTable(saved); msg.textContent='○ 保存済み'; msg.style.color='var(--success)';
   if (!id) return;
   fetch(API_BASE+'/sheets/write',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({spreadsheet_id:id,tab:'加算管理',row:row,headers:headers})});
@@ -917,7 +917,7 @@ function renderAddTable(rows) {
   var tbody=document.getElementById('add-tbody');
   tbody.innerHTML=rows.length ? rows.slice(0,20).map(function(r){
     var acquired=r[2]==='true'||r[2]===true;
-    return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td style="color:'+(acquired?'var(--success)':'var(--danger)')+';font-weight:700;">'+(acquired?'✅ 取得中':'❌ 未取得')+'</td><td>'+r[3]+'</td></tr>';
+    return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td style="color:'+(acquired?'var(--success)':'var(--danger)')+';font-weight:700;">'+(acquired?'○ 取得中':'× 未取得')+'</td><td>'+r[3]+'</td></tr>';
   }).join('') : '<tr><td colspan="4" style="text-align:center;color:var(--text-light);padding:1.5rem;">データがありません</td></tr>';
 }
 
@@ -936,7 +936,7 @@ function saveStaff() {
   saved=saved.filter(function(r){return r[0]!==sid;}); saved.unshift(row);
   localStorage.setItem('staff_data',JSON.stringify(saved));
   renderStaffTable(saved);
-  msg.textContent='✅ 保存済み'; msg.style.color='var(--success)';
+  msg.textContent='○ 保存済み'; msg.style.color='var(--success)';
   if (!id) return;
   fetch(API_BASE+'/sheets/write',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({spreadsheet_id:id,tab:'スタッフ管理',row:row,headers:headers})});
@@ -970,7 +970,7 @@ function renderStaffTable(rows) {
   var alertEl=document.getElementById('staff-alerts');
   if(alerts.length){
     alertEl.innerHTML='<div style="background:var(--danger-light);border:2px solid var(--danger);border-radius:var(--r-sm);padding:0.75rem 1rem;margin-top:0.75rem;">'+
-      '<div style="font-weight:700;font-size:0.85rem;color:#B71C1C;margin-bottom:0.4rem;">⚠️ 期限切れ間近のスタッフ</div>'+
+      '<div style="font-weight:700;font-size:0.85rem;color:#B71C1C;margin-bottom:0.4rem;">⚠ 期限切れ間近のスタッフ</div>'+
       alerts.map(function(a){return '<div style="font-size:0.8rem;padding:0.2rem 0;border-bottom:1px solid #f0c0c0;">'+a.name+'('+a.role+') '+a.field+'：'+a.exp+' <strong>'+(a.diff<=0?'期限切れ！':a.diff+'日後')+'</strong></div>';}).join('')+'</div>';
   } else { alertEl.innerHTML=''; }
 }

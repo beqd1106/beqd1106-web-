@@ -1,6 +1,6 @@
 /* ================================================================
    障碍者福祉 運営ガイド — サイト内検索
-   Ctrl+K または 🔍ボタン でモーダルを開く
+   Ctrl+K または ボタン でモーダルを開く
 ================================================================ */
 (function () {
   'use strict';
@@ -25,7 +25,7 @@
     const btn = document.createElement('button');
     btn.className = 'search-nav-btn';
     btn.setAttribute('aria-label', 'サイト内検索');
-    btn.innerHTML = '🔍 検索 <kbd>Ctrl+K</kbd>';
+    btn.innerHTML = '検索 <kbd>Ctrl+K</kbd>';
     btn.addEventListener('click', openSearch);
     nav.insertBefore(btn, nav.firstChild);
   });
@@ -41,7 +41,7 @@
       <div id="search-overlay"></div>
       <div id="search-box">
         <div id="search-input-wrap">
-          <span id="search-icon-label">🔍</span>
+          <span id="search-icon-label"></span>
           <input id="search-input" type="text"
             placeholder="加算名・書類名・キーワードを入力..."
             autocomplete="off" spellcheck="false">
@@ -87,7 +87,7 @@
     container.innerHTML = hits.map((h, i) => {
       const href = BASE + h.page;
       const snippet = highlight(h.text.slice(0, 90), q);
-      const typeIcon = { table:'📊', alert:'⚠️', popup:'💡', text:'📄', file:'📁' }[h.type] || '📄';
+      const typeIcon = { table:'', alert:'⚠', popup:'', text:'', file:'' }[h.type] || '';
       return `<a class="search-item" href="${href}" data-idx="${i}" role="option">
         <div class="si-meta">
           <span class="si-page">${h.pageTitle}</span>

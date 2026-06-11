@@ -679,3 +679,68 @@ a[href]:not(.btn-primary):not(.btn-secondary):not(.nav-card):not(.site-nav a):no
   .stats-section,
   .sakura-section { background: white !important; }
 }
+
+
+/* ================================================================
+   v3 改修（2026-06-11）— 絵文字アイコン廃止・SVG化対応
+   参考: yamatoen.or.jp / bousai-fukushi.org / tanpopoen.net
+================================================================ */
+
+/* セクション見出し: 絵文字の代わりにコーラルの装飾マーカー */
+.section-header .icon {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, var(--coral) 0%, var(--coral-dark) 100%);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(212,120,76,0.35);
+}
+
+/* サイトロゴ: 小さなコーラルマーク */
+.site-logo::before {
+  content: '';
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--coral) 0%, var(--coral-dark) 100%);
+  flex-shrink: 0;
+}
+
+/* ナビカードのSVGアイコン */
+.nav-card-icon svg {
+  width: 26px;
+  height: 26px;
+  color: var(--coral-dark);
+}
+.nav-card-icon {
+  width: 48px;
+  height: 48px;
+  display: grid !important;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--coral-light);
+  transition: background 0.3s var(--ease-out), transform 0.35s var(--ease-spring);
+}
+.nav-card:hover .nav-card-icon {
+  background: var(--coral);
+  transform: scale(1.08);
+}
+.nav-card:hover .nav-card-icon svg { color: #fff; }
+
+/* 様式DLページのファイルアイコン */
+.fmt-icon svg { color: var(--coral-dark); vertical-align: -3px; }
+
+/* AIページのボタンアイコン */
+.btn-icon svg { width: 16px; height: 16px; vertical-align: -2px; }
+
+/* ステータス記号（○×●）の色付け */
+td:first-line, .cl-text { font-feature-settings: 'palt' 1; }
+
+/* 葉影テクスチャ（福祉素材）をヒーロー背景に */
+.page-hero.has-photo {
+  background-image: url('images/bg_leaf.webp');
+  background-size: cover;
+  background-position: top left;
+  background-blend-mode: multiply;
+}

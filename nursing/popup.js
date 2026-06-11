@@ -58,7 +58,7 @@ function openPopup(id){
           a.rel = 'noopener noreferrer';
           a.className = 'source-ext-link';
           a.title = SOURCE_MAP[i].label;
-          a.textContent = '🔗 原文を確認';
+          a.textContent = '原文を確認';
           el.appendChild(a);
           break;
         }
@@ -85,7 +85,7 @@ function openPopup(id){
       a.rel = 'noopener noreferrer';
       a.className = 'dl-btn ext-link';
       a.title = '公式サイトで確認';
-      a.textContent = '🌐 公式';
+      a.textContent = '公式';
       btn.insertAdjacentElement('afterend', a);
     });
   }

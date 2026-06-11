@@ -15,7 +15,7 @@
     '<div class="auth-bg"></div>',
     '<div class="auth-card">',
     '  <div class="auth-rings" aria-hidden="true"></div>',
-    '  <div class="auth-logo">🏥</div>',
+    '  <div class="auth-logo"></div>',
     '  <h1 class="auth-title">障碍者福祉事業所<br><span>運営ガイド</span></h1>',
     '  <p class="auth-sub">このサイトはパスワードで保護されています</p>',
     '  <form class="auth-form" id="auth-form" autocomplete="off">',

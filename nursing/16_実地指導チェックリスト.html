@@ -130,37 +130,37 @@
 </head>
 <body>
 <header class="site-header">
-  <a href="index.html" class="site-logo">🏥 障碍者福祉 運営ガイド</a>
+  <a href="index.html" class="site-logo">障碍者福祉 運営ガイド</a>
   <nav class="site-nav">
     <a href="index.html">TOP</a>
-    <a href="01_法令・制度.html">⚖️ 法令</a>
-    <a href="02_必要書類.html">📋 書類</a>
-    <a href="03_管理業務.html">📅 管理</a>
-    <a href="04_京都府・手続き.html">🏛️ 京都府</a>
-    <a href="05_請求業務.html">💴 請求</a>
-    <a href="13_障害介護サービス.html">🏠 介護</a>
-    <a href="06_就労継続A型.html">🏢 A型</a>
-    <a href="07_就労継続B型.html">🏭 B型</a>
-    <a href="08_相談支援.html">💬 相談</a>
-    <a href="09_監査対応.html">🔍 監査</a>
-    <a href="10_収入向上.html">📈 収入</a>
-    <a href="11_年間スケジュール.html">📆 年間</a>
-    <a href="12_QA.html">❓ Q&amp;A</a>
-    <a href="14_AI作成支援.html">✨ AI支援</a>
-    <a href="15_データ管理.html" style="color:var(--success);font-weight:600;">📊 データ</a>
-    <a href="16_実地指導チェックリスト.html" class="active" style="color:#B71C1C;font-weight:600;">✅ 指導</a>
-    <a href="フォーマット/index.html">📁 様式DL</a>
+    <a href="01_法令・制度.html">法令</a>
+    <a href="02_必要書類.html">書類</a>
+    <a href="03_管理業務.html">管理</a>
+    <a href="04_京都府・手続き.html">京都府</a>
+    <a href="05_請求業務.html">請求</a>
+    <a href="13_障害介護サービス.html">介護</a>
+    <a href="06_就労継続A型.html">A型</a>
+    <a href="07_就労継続B型.html">B型</a>
+    <a href="08_相談支援.html">相談</a>
+    <a href="09_監査対応.html">監査</a>
+    <a href="10_収入向上.html">収入</a>
+    <a href="11_年間スケジュール.html">年間</a>
+    <a href="12_QA.html">Q&amp;A</a>
+    <a href="14_AI作成支援.html">AI支援</a>
+    <a href="15_データ管理.html" style="color:var(--success);font-weight:600;">データ</a>
+    <a href="16_実地指導チェックリスト.html" class="active" style="color:#B71C1C;font-weight:600;">指導</a>
+    <a href="フォーマット/index.html">様式DL</a>
   </nav>
 </header>
 
 <div class="page-hero" style="background:linear-gradient(135deg,#FFF0E0 0%,#FDE8D0 50%,#FFF4E8 100%);">
   <div class="hero-inner">
     <div class="hero-text">
-      <div class="hero-badge" style="background:#FDE8D0;color:#B71C1C;border-color:#F09070;">✅ 実地指導チェックリスト</div>
+      <div class="hero-badge" style="background:#FDE8D0;color:#B71C1C;border-color:#F09070;">○ 実地指導チェックリスト</div>
       <h1 style="color:#5a1a0a;">実地指導・監査に備える<br>完全チェックリスト</h1>
       <p style="color:#7a3020;">書類・人員・運営・加算・委員会設置まで<br>75項目を網羅。進捗はLocalStorageに自動保存。</p>
     </div>
-    <div class="hero-img" style="font-size:5rem;opacity:0.25;">📋</div>
+    <div class="hero-img" style="font-size:5rem;opacity:0.25;"></div>
   </div>
 </div>
 
@@ -169,23 +169,23 @@
   <!-- 進捗バー -->
   <div class="cl-progress-wrap">
     <div class="cl-progress-title">
-      <h2>⏳ 準備状況</h2>
+      <h2>準備状況</h2>
       <div><span class="cl-score" id="score-pct">0%</span> <span style="font-size:0.82rem;color:var(--text-mid);">（<span id="score-num">0/75</span>項目完了）</span></div>
     </div>
     <div class="cl-bar-bg"><div class="cl-bar" id="progress-bar" style="width:0%"></div></div>
     <div class="cl-legend">
-      <span>🟢 完了（チェック済み）</span>
-      <span>🔲 未完了</span>
-      <span>🔵 該当なし（N/A）</span>
+      <span>● 完了（チェック済み）</span>
+      <span>□ 未完了</span>
+      <span>● 該当なし（N/A）</span>
     </div>
   </div>
 
   <!-- アクションバー -->
   <div class="cl-actions">
-    <button class="cl-btn primary" onclick="window.print()">🖨️ 印刷</button>
-    <button class="cl-btn" onclick="showTodo()">❌ 未完了一覧</button>
-    <button class="cl-btn" onclick="checkAll()">✅ 全てチェック</button>
-    <button class="cl-btn danger" onclick="resetAll()">🗑️ リセット</button>
+    <button class="cl-btn primary" onclick="window.print()">印刷</button>
+    <button class="cl-btn" onclick="showTodo()">未完了一覧</button>
+    <button class="cl-btn" onclick="checkAll()">全てチェック</button>
+    <button class="cl-btn danger" onclick="resetAll()">リセット</button>
     <span id="save-msg" style="font-size:0.78rem;color:var(--success);"></span>
   </div>
 
@@ -197,7 +197,7 @@
     <div style="background:#fff;max-width:680px;margin:2rem auto;border-radius:var(--r-lg);padding:1.5rem;position:relative;">
       <button onclick="document.getElementById('todo-modal').style.display='none'"
               style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.4rem;cursor:pointer;">✕</button>
-      <h2 style="margin:0 0 1rem;color:var(--coral-dark);">❌ 未完了項目一覧</h2>
+      <h2 style="margin:0 0 1rem;color:var(--coral-dark);">未完了項目一覧</h2>
       <div id="todo-content"></div>
     </div>
   </div>
@@ -218,7 +218,7 @@
 ================================================================ */
 var CHECKLIST = [
   {
-    id: 'doc', icon: '📄', title: '書類・記録関係',
+    id: 'doc', icon: '', title: '書類・記録関係',
     items: [
       { id:'d01', text:'個別支援計画書が全利用者分作成されている', sub:'サービス管理責任者が作成。本人署名・同意書が添付されている', level:'must' },
       { id:'d02', text:'個別支援計画の見直し（モニタリング）が定期的に行われている', sub:'就労継続：6ヶ月ごと / 居宅介護：少なくとも6ヶ月ごと。記録が残っている', level:'must' },
@@ -235,7 +235,7 @@ var CHECKLIST = [
     ]
   },
   {
-    id: 'staff', icon: '👥', title: '人員基準関係',
+    id: 'staff', icon: '', title: '人員基準関係',
     items: [
       { id:'s01', text:'管理者が常勤・専従で配置されている', sub:'他の職務との兼務は原則不可。管理業務に専従していることが必要', level:'must' },
       { id:'s02', text:'サービス管理責任者（サビ管）が基準を満たして配置されている', sub:'実務経験年数・研修修了の要件を満たしているか確認。資格証明書の保管', level:'must' },
@@ -249,7 +249,7 @@ var CHECKLIST = [
     ]
   },
   {
-    id: 'ops', icon: '🏛️', title: '運営・手続き関係',
+    id: 'ops', icon: '', title: '運営・手続き関係',
     items: [
       { id:'o01', text:'重要事項説明書が最新の内容に更新されている', sub:'変更があった場合は書面で利用者に説明し同意を得ること', level:'must' },
       { id:'o02', text:'運営規程が整備・掲示されている', sub:'事業の目的・営業日時・利用料・サービス内容等を記載', level:'must' },
@@ -264,7 +264,7 @@ var CHECKLIST = [
     ]
   },
   {
-    id: 'kasan', icon: '💰', title: '加算・体制届関係',
+    id: 'kasan', icon: '', title: '加算・体制届関係',
     items: [
       { id:'k01', text:'処遇改善加算の計画書を4月15日までに提出している', sub:'提出先：京都府/京都市の担当窓口。提出控えを保管', level:'must' },
       { id:'k02', text:'処遇改善加算の実績報告書を7月31日までに提出している', sub:'前年度（4月〜3月）の実績。未提出は加算返還の対象', level:'must' },
@@ -278,7 +278,7 @@ var CHECKLIST = [
     ]
   },
   {
-    id: 'committee', icon: '🏛️', title: '委員会・計画関係',
+    id: 'committee', icon: '', title: '委員会・計画関係',
     items: [
       { id:'c01', text:'虐待防止委員会を設置し定期的に開催している', sub:'虐待防止委員会：管理者・サビ管・スタッフ等で構成。年2回以上の開催', level:'must' },
       { id:'c02', text:'虐待防止研修を年2回以上実施している', sub:'スタッフ全員の参加。研修記録・参加者名簿を保管', level:'must' },
@@ -292,7 +292,7 @@ var CHECKLIST = [
     ]
   },
   {
-    id: 'billing', icon: '💴', title: '請求・給付管理',
+    id: 'billing', icon: '', title: '請求・給付管理',
     items: [
       { id:'b01', text:'国保連への請求データと実績記録が一致している', sub:'提供日・時間・内容の一致を毎月確認。返戻・過誤の原因になる', level:'must' },
       { id:'b02', text:'利用者の受給者証の有効期限・支給量を確認している', sub:'有効期限切れ・支給量超過は不正請求。毎月確認を徹底', level:'must' },
@@ -304,7 +304,7 @@ var CHECKLIST = [
     ]
   },
   {
-    id: 'safety', icon: '🛡️', title: '安全・緊急対応',
+    id: 'safety', icon: '', title: '安全・緊急対応',
     items: [
       { id:'sa01', text:'緊急時対応マニュアルを整備している', sub:'急変時・救急対応・医療機関への搬送手順。スタッフ全員に周知', level:'must' },
       { id:'sa02', text:'緊急連絡先一覧（利用者・家族・主治医・協力医療機関）が整備されている', sub:'最新情報に更新されていること。各スタッフが確認できる場所に保管', level:'must' },
@@ -327,7 +327,7 @@ function loadState() {
 }
 function saveState(state) {
   localStorage.setItem(LS_KEY, JSON.stringify(state));
-  document.getElementById('save-msg').textContent = '💾 自動保存しました';
+  document.getElementById('save-msg').textContent = '自動保存しました';
   setTimeout(function(){ document.getElementById('save-msg').textContent=''; }, 2000);
 }
 
@@ -479,11 +479,11 @@ function showTodo() {
       }).join('');
   }
 
-  html += renderSection(mustItems, '🔴 必須', 'must');
-  html += renderSection(warnItems, '🟡 要注意', 'warning');
-  html += renderSection(infoItems, '🔵 推奨', 'info');
+  html += renderSection(mustItems, '● 必須', 'must');
+  html += renderSection(warnItems, '● 要注意', 'warning');
+  html += renderSection(infoItems, '● 推奨', 'info');
 
-  if (!html) html = '<div style="text-align:center;padding:2rem;color:var(--success);font-weight:700;">🎉 全項目完了しています！</div>';
+  if (!html) html = '<div style="text-align:center;padding:2rem;color:var(--success);font-weight:700;">全項目完了しています！</div>';
 
   document.getElementById('todo-content').innerHTML = html;
   document.getElementById('todo-modal').style.display = 'block';

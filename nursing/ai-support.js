@@ -317,13 +317,13 @@ function buildCheckRows(sections, dateStr, title) {
   ];
   sections.forEach(function(s) {
     var mark = '';
-    if (s.title.includes('✅')||/問題なし|算定可/.test(s.title)) mark='✅';
-    else if (s.title.includes('⚠')||/警告|要確認/.test(s.title)) mark='⚠️';
-    else if (s.title.includes('🔴')||/エラー/.test(s.title)) mark='🔴';
-    else if (s.title.includes('🎯')) mark='🎯';
-    else if (s.title.includes('❌')) mark='❌';
-    else if (s.title.includes('📊')) mark='📊';
-    else if (s.title.includes('🔧')) mark='🔧';
+    if (s.title.includes('○')||/問題なし|算定可/.test(s.title)) mark='○';
+    else if (s.title.includes('⚠')||/警告|要確認/.test(s.title)) mark='⚠';
+    else if (s.title.includes('●')||/エラー/.test(s.title)) mark='●';
+    else if (s.title.includes('')) mark='';
+    else if (s.title.includes('×')) mark='×';
+    else if (s.title.includes('')) mark='';
+    else if (s.title.includes('')) mark='';
     var t = s.title.replace(/[^\u0021-\u007E\u3000-\u9FFF\uFF00-\uFFEF\s]/g,'').trim();
     rows.push([mark, t, '']);
     s.lines.forEach(function(l) { rows.push(['', '', l]); });
@@ -426,7 +426,7 @@ function downloadFilledTemplate(feature) {
   // ----------状態-
   var btn = event && event.target;
   var origText = btn ? btn.textContent : '';
-  if (btn) { btn.textContent = '⏳ 生成中...'; btn.disabled = true; }
+  if (btn) { btn.textContent = '生成中...'; btn.disabled = true; }
 
   // Form ----送信（------固有-入力値-使用）
   var formData = {};
@@ -556,7 +556,7 @@ function generateAI(feature) {
   })
   .catch(function(e) {
     outputBox.className = 'ai-output-box';
-    outputBox.innerHTML = '<div class="ai-error">⚠️ ' + (e.message || 'エラーが発生しました') + '</div>';
+    outputBox.innerHTML = '<div class="ai-error">⚠ ' + (e.message || 'エラーが発生しました') + '</div>';
     btn.disabled = false;
     btn.classList.remove('loading');
   });
@@ -566,7 +566,7 @@ function showError(feature, msg) {
   var outputWrap = document.getElementById('output-' + feature);
   var outputBox  = document.getElementById('output-box-' + feature);
   outputBox.className = 'ai-output-box';
-  outputBox.innerHTML = '<div class="ai-error">⚠️ ' + msg + '</div>';
+  outputBox.innerHTML = '<div class="ai-error">⚠ ' + msg + '</div>';
   outputWrap.classList.add('visible');
 }
 
@@ -577,7 +577,7 @@ function copyOutput(feature) {
   navigator.clipboard.writeText(text).then(function() {
     var btn = box.closest('.ai-output-wrap').querySelector('.primary-action');
     var orig = btn.textContent;
-    btn.textContent = '✅ コピーしました';
+    btn.textContent = '○ コピーしました';
     setTimeout(function(){ btn.textContent = orig; }, 2000);
   });
 }
@@ -614,7 +614,7 @@ function clearOutput(feature) {
 
 // -- 評価 -----------------------------------------
 function rateOutput(feature, type) {
-  var msg = type === 'good' ? '👍 フィードバックありがとうございます！' : '👎 改善のフィードバックをありがとうございます。';
+  var msg = type === 'good' ? 'フィードバックありがとうございます！' : '改善のフィードバックをありがとうございます。';
   var ratingEl = document.querySelector('#output-' + feature + ' .ai-rating');
   if (ratingEl) ratingEl.innerHTML = '<span style="color:var(--text-mid);font-size:0.78rem;">' + msg + '</span>';
 }

@@ -95,7 +95,7 @@
 
     var items = getUpcoming(10);
     if (items.length === 0) {
-      el.innerHTML = '<div class="dl-widget-empty">今後10日以内に迫った締切はありません ✅</div>';
+      el.innerHTML = '<div class="dl-widget-empty">今後10日以内に迫った締切はありません</div>';
       return;
     }
 
@@ -118,7 +118,7 @@
     var banner = document.createElement('div');
     banner.id = 'dl-banner';
     banner.className = 'dl-banner';
-    var html = '<span class="dl-banner-icon">⏰</span><div class="dl-banner-items">';
+    var html = '<span class="dl-banner-icon"></span><div class="dl-banner-items">';
     items.slice(0, 3).forEach(function (item) {
       html += '<a class="dl-banner-item dl-banner-' + item.level + '" href="' + item.link + '" title="' + item.detail + '">' +
         diffLabel(item.diff) + '：' + item.label + '</a>';

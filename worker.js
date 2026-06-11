@@ -4,8 +4,11 @@
  */
 
 // ── モデル設定 ────────────────────────────────────────────
-const MODEL_QUALITY = "@cf/meta/llama-3.1-8b-instruct";  // 書類生成・複雑な分析
-const MODEL_FAST    = "@cf/meta/llama-3.1-8b-instruct";  // 加算チェック・簡易タスク
+// 2026-06-12 更新: llama-3.1-8b-instruct が廃止対象（2026-05-30）のため移行
+const MODEL_QUALITY = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"; // 書類生成・複雑な分析（70B・日本語高品質）
+const MODEL_FAST    = "@cf/zai-org/glm-4.7-flash";                // 加算チェック・簡易タスク（100+言語・131kコンテキスト）
+// 障害時のフォールバック順（プライマリ失敗時に順に試行）
+const MODEL_FALLBACKS = [MODEL_QUALITY, MODEL_FAST];
 
 // ── 各機能のシステムプロンプト ────────────────────────────
 const SYSTEM_PROMPTS = {
@@ -362,19 +365,28 @@ async function handleAIGenerate(request, env) {
   const systemPrompt = SYSTEM_PROMPTS[feature];
   const userMessage  = buildUserMessage(feature, body);
 
-  // Cloudflare Workers AI を呼び出す（ストリーミング）
-  let aiResponse;
-  try {
-    aiResponse = await env.AI.run(config.model, {
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user',   content: userMessage  },
-      ],
-      stream:     true,
-      max_tokens: config.max_tokens,
-    });
-  } catch (err) {
-    return jsonError('AI の呼び出しに失敗しました: ' + String(err), 502);
+  // Cloudflare Workers AI を呼び出す（ストリーミング・フォールバック付き）
+  // 設定モデル → MODEL_FALLBACKS の順に試行し、モデル廃止・障害時も継続稼働させる
+  const candidates = [config.model, ...MODEL_FALLBACKS.filter((m) => m !== config.model)];
+  let aiResponse = null;
+  let lastErr = null;
+  for (const model of candidates) {
+    try {
+      aiResponse = await env.AI.run(model, {
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user',   content: userMessage  },
+        ],
+        stream:     true,
+        max_tokens: config.max_tokens,
+      });
+      break;
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  if (!aiResponse) {
+    return jsonError('AI の呼び出しに失敗しました: ' + String(lastErr), 502);
   }
 
   // Cloudflare Workers AI のストリームをそのまま返す
