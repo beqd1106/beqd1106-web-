@@ -209,7 +209,7 @@ function renderRevision2026Section() {
     <!-- 主要変更項目 -->
     <h4 style="color:var(--navy);margin:1.5rem 0 0.75rem;"><i class="ic ic-refresh"></i> 主要点数変更（新旧対照）</h4>
     <div class="alert alert-warn fade-up">
-      <span class="alert-icon">⚠</span>
+      <span class="alert-icon"><i class="ic ic-alert"></i></span>
       <span><strong>注意：</strong>歯科疾患管理料は100点→90点に減点。一方、口腔機能管理料は60点→90点と大幅増点。口腔機能管理の算定強化が収益維持の鍵です。</span>
     </div>
     ${renderTable(data.変更項目, ['項目', '現行', '改定後', '増減', '備考'])}

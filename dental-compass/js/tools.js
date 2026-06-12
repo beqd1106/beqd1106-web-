@@ -309,7 +309,7 @@ const TOOL_DEFS = {
 
   // ─── Tool 7: 医療広告ガイドラインチェッカー ───
   tool7: {
-    title: '⚠医療広告ガイドラインチェッカー',
+    title: '<i class="ic ic-alert"></i>医療広告ガイドラインチェッカー',
     html: `
       <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:1.5rem;">HP・LP・SNS文章を貼り付けると、NG表現の可能性がある箇所を警告します。</p>
       <div class="tool-form">
@@ -324,7 +324,7 @@ const TOOL_DEFS = {
 
   // ─── Tool 8: 自費カウンセリング台本ジェネレーター ───
   tool8: {
-    title: '💬 自費カウンセリング台本ジェネレーター',
+    title: '<i class="ic ic-message"></i> 自費カウンセリング台本ジェネレーター',
     html: `
       <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:1.5rem;">診療種類を選択すると、説明台本・患者への伝え方のポイントを生成します。</p>
       <div class="tool-form">
@@ -451,7 +451,7 @@ let t6Chart = null;
 function openModal(toolId) {
   const tool = TOOL_DEFS[toolId];
   if (!tool) return;
-  document.getElementById('modalTitle').textContent = tool.title;
+  document.getElementById('modalTitle').innerHTML = tool.title;
   document.getElementById('modalBody').innerHTML = tool.html;
   document.getElementById('modalOverlay').classList.add('is-open');
   document.body.style.overflow = 'hidden';
@@ -500,10 +500,10 @@ function calcTool1() {
   document.getElementById('t1_equityRatio').innerHTML = `${eqRatio}<span class="unit">%</span>`;
 
   let comment = '';
-  if (+eqRatio < 10) comment += '⚠自己資金比率が10%未満です。日本政策金融公庫は自己資金10%以上を推奨しています。 ';
-  if (repay > mon * 0.2) comment += '⚠月返済額が運転資金の20%を超えています。資金計画の見直しを検討してください。 ';
+  if (+eqRatio < 10) comment += '<i class="ic ic-alert"></i>自己資金比率が10%未満です。日本政策金融公庫は自己資金10%以上を推奨しています。 ';
+  if (repay > mon * 0.2) comment += '<i class="ic ic-alert"></i>月返済額が運転資金の20%を超えています。資金計画の見直しを検討してください。 ';
   if (comment === '') comment = '<i class="ic ic-check"></i> 基本的な資金バランスは問題なさそうです。詳細は金融機関・税理士にご確認ください。';
-  document.getElementById('t1_comment').textContent = comment;
+  document.getElementById('t1_comment').innerHTML = comment;
 
   document.getElementById('t1_result').classList.add('show');
 }
@@ -539,10 +539,10 @@ function calcTool2() {
 
   let comment = `1日あたり患者数：${newpt + rept}人 | 月間患者数：${totalPt}人（自費：${jihiPt}人）\n`;
   comment += `人件費：${laborCost}万円 | 材料費：${matCost}万円 | 家賃：${rent}万円\n`;
-  if (profit < 50) comment += '⚠利益が低い状態です。自費率向上・キャンセル削減・経費見直しを検討してください。';
+  if (profit < 50) comment += '<i class="ic ic-alert"></i>利益が低い状態です。自費率向上・キャンセル削減・経費見直しを検討してください。';
   else if (profit >= 50 && profit < 100) comment += '<i class="ic ic-chart-bar"></i> 利益は出ていますが、改善余地があります。自費率アップが最も効果的です。';
   else comment += '<i class="ic ic-check"></i> 良好な利益水準です。スタッフ教育・設備投資で更なる成長を目指しましょう。';
-  document.getElementById('t2_comment').textContent = comment;
+  document.getElementById('t2_comment').innerHTML = comment;
   document.getElementById('t2_result').classList.add('show');
 }
 
@@ -644,7 +644,7 @@ function calcTool4() {
         <div class="pi-text"><strong>${item.label}</strong><br><span style="color:var(--text-muted);font-size:0.82rem;">${item.detail}</span></div>
       </div>`;
   });
-  html += `<div class="alert alert-warn" style="margin-top:1rem;"><span class="alert-icon">⚠</span><span>届出要件は都道府県・保健所によって異なる場合があります。必ず所轄の保健所・地方厚生局に事前確認してください。</span></div>`;
+  html += `<div class="alert alert-warn" style="margin-top:1rem;"><span class="alert-icon"><i class="ic ic-alert"></i></span><span>届出要件は都道府県・保健所によって異なる場合があります。必ず所轄の保健所・地方厚生局に事前確認してください。</span></div>`;
 
   const result = document.getElementById('t4_result');
   result.innerHTML = html;
@@ -719,7 +719,7 @@ function calcTool5() {
       html += `<div class="point-item" style="margin-bottom:0.5rem;"><div class="pi-num" style="background:var(--gold);color:var(--navy);">!</div><div class="pi-text">${m}</div></div>`;
     });
   }
-  html += `<div class="alert alert-warn" style="margin-top:1rem;"><span class="alert-icon">⚠</span><span>本ツールは簡易判定です。実際の施設基準届出は、必ず最新の告示・通知を確認のうえ地方厚生（支）局にお問い合わせください。</span></div>`;
+  html += `<div class="alert alert-warn" style="margin-top:1rem;"><span class="alert-icon"><i class="ic ic-alert"></i></span><span>本ツールは簡易判定です。実際の施設基準届出は、必ず最新の告示・通知を確認のうえ地方厚生（支）局にお問い合わせください。</span></div>`;
 
   const result = document.getElementById('t5_result');
   result.innerHTML = html;
@@ -771,8 +771,8 @@ function calcTool6() {
   });
 
   const comments = [];
-  if (cancel > 15) comments.push({ type: 'warn', text: `⚠キャンセル率 ${cancel}%：目標15%以下。前日リマインドSMS/LINEの導入で10〜30%削減できます。` });
-  if (recall < 60) comments.push({ type: 'warn', text: `⚠リコール率 ${recall}%：目標60〜70%。会計時の次回予約導入が最も効果的です。` });
+  if (cancel > 15) comments.push({ type: 'warn', text: `<i class="ic ic-alert"></i>キャンセル率 ${cancel}%：目標15%以下。前日リマインドSMS/LINEの導入で10〜30%削減できます。` });
+  if (recall < 60) comments.push({ type: 'warn', text: `<i class="ic ic-alert"></i>リコール率 ${recall}%：目標60〜70%。会計時の次回予約導入が最も効果的です。` });
   if (jihi < 30) comments.push({ type: 'info', text: `<i class="ic ic-chart-bar"></i> 自費率 ${jihi}%：全国平均30〜40%。口腔内写真活用とカウンセリング強化で改善できます。` });
   if (labor > 50) comments.push({ type: 'danger', text: `<i class="ic ic-alert"></i> 人件費率 ${labor}%：50%超は危険ライン。採用計画・業務効率化の見直しが急務です。` });
   if (comments.length === 0) comments.push({ type: 'success', text: '<i class="ic ic-check"></i> 全体的に良好なKPI水準です。さらなる成長に向けて自費率・リコール率の向上を目指しましょう。' });
@@ -811,7 +811,7 @@ function calcTool7() {
   if (findings.length === 0) {
     html = `<div class="alert alert-success"><span class="alert-icon"><i class="ic ic-check"></i></span><span>明らかなNG表現は検出されませんでした。ただし、このツールはすべての違反を検出するものではありません。医療広告ガイドライン（厚労省）で最終確認することを推奨します。</span></div>`;
   } else {
-    html = `<h4 style="color:var(--navy);margin-bottom:0.75rem;">⚠チェック結果：${findings.length}件の懸念事項</h4>`;
+    html = `<h4 style="color:var(--navy);margin-bottom:0.75rem;"><i class="ic ic-alert"></i>チェック結果：${findings.length}件の懸念事項</h4>`;
     findings.forEach(f => {
       html += `<div class="alert alert-${f.level}" style="flex-direction:column;gap:0.4rem;">
         <div style="font-weight:700;">【${f.msg}】検出ワード：「${f.matches.join('」「')}」</div>
@@ -870,7 +870,7 @@ function calcTool8() {
       ${s.points.map(p => `<div class="point-item"><div class="pi-num">›</div><div class="pi-text">${p}</div></div>`).join('')}
     </div>
     <div>
-      <h5 style="color:var(--text-muted);margin-bottom:0.5rem;font-size:0.9rem;">⚠必ず説明するリスク・副作用（医療広告規制上も必須）</h5>
+      <h5 style="color:var(--text-muted);margin-bottom:0.5rem;font-size:0.9rem;"><i class="ic ic-alert"></i>必ず説明するリスク・副作用（医療広告規制上も必須）</h5>
       ${s.risk.map(r => `<div class="point-item"><div class="pi-num" style="background:#e74c3c;">!</div><div class="pi-text">${r}</div></div>`).join('')}
     </div>
     <div class="alert alert-info" style="margin-top:1rem;"><span class="alert-icon">ℹ</span><span>費用・リスク・副作用の説明は医療広告規制上の義務です。必ず書面（治療計画書）で患者に渡してください。</span></div>`;
