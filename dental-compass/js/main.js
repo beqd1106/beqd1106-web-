@@ -348,7 +348,7 @@ document.querySelectorAll('.tool-card .tool-card-icon').forEach((el, i) => {
   document.head.appendChild(style);
 })();
 
-console.log('🦷 歯科経営コンパス — Loaded successfully');
+console.log('歯科経営コンパス — Loaded successfully');
 
 // ─── ドロワー ツールマップ ───
 const DRAWER_TOOL_MAP = {

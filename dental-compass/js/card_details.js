@@ -78,10 +78,10 @@ function buildDetailHtml(data, cardKey) {
       }
 
       if (sec.type === 'alert') {
-        const icons = { info:'ℹ️', warn:'⚠️', danger:'🚨', success:'✅' };
+        const icons = { info:'ℹ', warn:'⚠', danger:'<i class="ic ic-alert"></i>', success:'<i class="ic ic-check"></i>' };
         const alerts = sec.items ? sec.items : [{ level: sec.level || 'info', text: sec.text }];
         alerts.forEach(a => {
-          html += `<div class="detail-alert detail-alert-${a.level}"><span>${icons[a.level]||'ℹ️'}</span><span>${a.text}</span></div>`;
+          html += `<div class="detail-alert detail-alert-${a.level}"><span>${icons[a.level]||'ℹ'}</span><span>${a.text}</span></div>`;
         });
       }
 
@@ -89,7 +89,7 @@ function buildDetailHtml(data, cardKey) {
         html += `<div class="detail-links">`;
         sec.items.forEach(lnk => {
           html += `<a href="${lnk.url}" target="_blank" rel="noopener" class="detail-link-btn">
-            <span class="dl-icon">${lnk.icon || '🔗'}</span>
+            <span class="dl-icon">${lnk.icon || '<i class="ic ic-link"></i>'}</span>
             <span class="dl-text"><strong>${lnk.label}</strong><small>${lnk.desc || ''}</small></span>
             <span class="dl-arrow">↗</span>
           </a>`;
@@ -157,8 +157,8 @@ CARD_DETAILS['cat-01-0'] = {
       type: 'links',
       items: [
         { icon: '🏦', label: '日本政策金融公庫「医療・福祉」創業支援', url: 'https://www.jfc.go.jp/n/finance/search/index_k.html', desc: '融資制度一覧・創業計画書ひな形のダウンロード' },
-        { icon: '📋', label: '厚生労働省「診療所開設届」手続き案内', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '医療機関の開設・管理・法人等に関する各種手続き' },
-        { icon: '🔍', label: 'e-Stat 政府統計（診療圏調査に活用）', url: 'https://www.e-stat.go.jp/', desc: '人口・年齢分布・医療機関数の公式統計データ' },
+        { icon: '<i class="ic ic-clipboard"></i>', label: '厚生労働省「診療所開設届」手続き案内', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '医療機関の開設・管理・法人等に関する各種手続き' },
+        { icon: '<i class="ic ic-search"></i>', label: 'e-Stat 政府統計（診療圏調査に活用）', url: 'https://www.e-stat.go.jp/', desc: '人口・年齢分布・医療機関数の公式統計データ' },
       ]
     }
   ]
@@ -225,8 +225,8 @@ CARD_DETAILS['cat-01-2'] = {
       heading: '公式・参考リンク',
       type: 'links',
       items: [
-        { icon: '🏥', label: '中古歯科機器・中古歯科ユニット市場（JADAM）', url: 'https://www.jadam.jp/', desc: '日本歯科用品ディーラー協会。中古機器流通の参考に' },
-        { icon: '📄', label: '厚労省「CAD/CAM冠の保険算定要件」告示・通知', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/iryouhoken15/index.html', desc: '診療報酬の算定方法・施設基準の告示一覧' },
+        { icon: '<i class="ic ic-hospital"></i>', label: '中古歯科機器・中古歯科ユニット市場（JADAM）', url: 'https://www.jadam.jp/', desc: '日本歯科用品ディーラー協会。中古機器流通の参考に' },
+        { icon: '<i class="ic ic-file"></i>', label: '厚労省「CAD/CAM冠の保険算定要件」告示・通知', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/iryouhoken15/index.html', desc: '診療報酬の算定方法・施設基準の告示一覧' },
       ]
     }
   ]
@@ -259,8 +259,8 @@ CARD_DETAILS['cat-01-3'] = {
       heading: '公式・参考リンク',
       type: 'links',
       items: [
-        { icon: '📋', label: '厚生労働省「保険医療機関の指定申請」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html', desc: '指定申請の手続き・様式ダウンロード' },
-        { icon: '📄', label: '国税庁「個人事業の開業・廃業等届出書」', url: 'https://www.nta.go.jp/taxes/tetsuzuki/shinsei/annai/shinkoku/annai/04.htm', desc: '開業届の様式・記載例のダウンロード' },
+        { icon: '<i class="ic ic-clipboard"></i>', label: '厚生労働省「保険医療機関の指定申請」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html', desc: '指定申請の手続き・様式ダウンロード' },
+        { icon: '<i class="ic ic-file"></i>', label: '国税庁「個人事業の開業・廃業等届出書」', url: 'https://www.nta.go.jp/taxes/tetsuzuki/shinsei/annai/shinkoku/annai/04.htm', desc: '開業届の様式・記載例のダウンロード' },
         { icon: '🏢', label: '厚生労働省「医療広告 限定解除 届出」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '詳細情報提供施設として届け出る手続き' },
       ]
     }
@@ -307,9 +307,9 @@ CARD_DETAILS['cat-02-0'] = {
       type: 'links',
       items: [
         { icon: '🏦', label: '日本政策金融公庫「医療・福祉 ご融資」公式ページ', url: 'https://www.jfc.go.jp/n/finance/search/index_k.html', desc: '融資条件・申込書類・創業計画書ひな形のダウンロード' },
-        { icon: '📄', label: '日本政策金融公庫「創業計画書」書式ダウンロード', url: 'https://www.jfc.go.jp/n/service/dl_kokumin.html', desc: '国民生活事業 各種書類ダウンロード（創業計画書 様式含む）' },
-        { icon: '📊', label: '日本政策金融公庫「業種別目論見書（医療業）」', url: 'https://www.jfc.go.jp/n/rate/index.html', desc: '業種別貸出金利・最新金利の確認' },
-        { icon: '🔍', label: 'CIC（信用情報機関）自己情報開示', url: 'https://www.cic.co.jp/mydata/index.html', desc: '融資申請前に自身のクレジット情報を確認' },
+        { icon: '<i class="ic ic-file"></i>', label: '日本政策金融公庫「創業計画書」書式ダウンロード', url: 'https://www.jfc.go.jp/n/service/dl_kokumin.html', desc: '国民生活事業 各種書類ダウンロード（創業計画書 様式含む）' },
+        { icon: '<i class="ic ic-chart-bar"></i>', label: '日本政策金融公庫「業種別目論見書（医療業）」', url: 'https://www.jfc.go.jp/n/rate/index.html', desc: '業種別貸出金利・最新金利の確認' },
+        { icon: '<i class="ic ic-search"></i>', label: 'CIC（信用情報機関）自己情報開示', url: 'https://www.cic.co.jp/mydata/index.html', desc: '融資申請前に自身のクレジット情報を確認' },
       ]
     }
   ]
@@ -348,8 +348,8 @@ CARD_DETAILS['cat-02-1'] = {
       heading: '公式・参考リンク',
       type: 'links',
       items: [
-        { icon: '🏛️', label: '信用保証協会一覧（都道府県別）', url: 'https://www.zenshinhoren.or.jp/nearest/', desc: '各都道府県の信用保証協会へのリンク集' },
-        { icon: '📊', label: '日本銀行「企業向け貸出金利」統計', url: 'https://www.boj.or.jp/statistics/dl/loan/yaku/index.htm', desc: '民間銀行の平均貸出金利の参考データ' },
+        { icon: '<i class="ic ic-bank"></i>', label: '信用保証協会一覧（都道府県別）', url: 'https://www.zenshinhoren.or.jp/nearest/', desc: '各都道府県の信用保証協会へのリンク集' },
+        { icon: '<i class="ic ic-chart-bar"></i>', label: '日本銀行「企業向け貸出金利」統計', url: 'https://www.boj.or.jp/statistics/dl/loan/yaku/index.htm', desc: '民間銀行の平均貸出金利の参考データ' },
       ]
     }
   ]
@@ -389,8 +389,8 @@ CARD_DETAILS['cat-02-2'] = {
       heading: '公式書類ダウンロード',
       type: 'links',
       items: [
-        { icon: '📄', label: '【公式】日本政策金融公庫「創業計画書」様式', url: 'https://www.jfc.go.jp/n/service/dl_kokumin.html', desc: 'Word/PDF形式でダウンロード可能。記入例も掲載' },
-        { icon: '📊', label: '日本政策金融公庫「業種別経営指標」', url: 'https://www.jfc.go.jp/n/findings/sme_findings2.html', desc: '医療業の経費率・収益率の全国データ（収支計画の根拠に）' },
+        { icon: '<i class="ic ic-file"></i>', label: '【公式】日本政策金融公庫「創業計画書」様式', url: 'https://www.jfc.go.jp/n/service/dl_kokumin.html', desc: 'Word/PDF形式でダウンロード可能。記入例も掲載' },
+        { icon: '<i class="ic ic-chart-bar"></i>', label: '日本政策金融公庫「業種別経営指標」', url: 'https://www.jfc.go.jp/n/findings/sme_findings2.html', desc: '医療業の経費率・収益率の全国データ（収支計画の根拠に）' },
       ]
     }
   ]
@@ -434,7 +434,7 @@ CARD_DETAILS['cat-02-3'] = {
       heading: '公式・参考リンク',
       type: 'links',
       items: [
-        { icon: '📊', label: '厚生労働省「医療経済実態調査」（最新版）', url: 'https://www.mhlw.go.jp/toukei/list/79-1.html', desc: '歯科診療所の収入・費用構造の全国データ（偶数年発表）' },
+        { icon: '<i class="ic ic-chart-bar"></i>', label: '厚生労働省「医療経済実態調査」（最新版）', url: 'https://www.mhlw.go.jp/toukei/list/79-1.html', desc: '歯科診療所の収入・費用構造の全国データ（偶数年発表）' },
         { icon: '🧾', label: '国税庁「医師・歯科医師の所得」統計', url: 'https://www.nta.go.jp/publication/statistics/kokuzeicho/tokubetsu/top.htm', desc: '歯科医師の申告所得・経費率の統計データ' },
       ]
     }
@@ -469,9 +469,9 @@ CARD_DETAILS['cat-03-0'] = {
       heading: '公式データ収集リンク',
       type: 'links',
       items: [
-        { icon: '📊', label: 'e-Stat 政府統計ポータル（人口・年齢別統計）', url: 'https://www.e-stat.go.jp/', desc: '国勢調査・住民基本台帳データ。地図上で人口を可視化できる「地図で見る統計」も便利' },
-        { icon: '🗺️', label: 'e-Stat「地図で見る統計（統計GIS）」', url: 'https://www.e-stat.go.jp/gis', desc: '地図上に人口・年齢分布を重ねて視覚的に確認できる' },
-        { icon: '🏥', label: '厚生労働省「医療施設調査」（歯科院数の確認）', url: 'https://www.mhlw.go.jp/toukei/list/79-1.html', desc: '都道府県・市区町村別の歯科診療所数の公式データ' },
+        { icon: '<i class="ic ic-chart-bar"></i>', label: 'e-Stat 政府統計ポータル（人口・年齢別統計）', url: 'https://www.e-stat.go.jp/', desc: '国勢調査・住民基本台帳データ。地図上で人口を可視化できる「地図で見る統計」も便利' },
+        { icon: '🗺', label: 'e-Stat「地図で見る統計（統計GIS）」', url: 'https://www.e-stat.go.jp/gis', desc: '地図上に人口・年齢分布を重ねて視覚的に確認できる' },
+        { icon: '<i class="ic ic-hospital"></i>', label: '厚生労働省「医療施設調査」（歯科院数の確認）', url: 'https://www.mhlw.go.jp/toukei/list/79-1.html', desc: '都道府県・市区町村別の歯科診療所数の公式データ' },
         { icon: '📍', label: '国土交通省「不動産情報ライブラリ」（賃料相場）', url: 'https://www.reinfolib.mlit.go.jp/', desc: '賃貸物件の成約賃料データ。エリアの家賃相場を客観的に確認' },
       ]
     }
@@ -530,7 +530,7 @@ CARD_DETAILS['cat-03-2'] = {
       heading: '公式・参考リンク',
       type: 'links',
       items: [
-        { icon: '⚖️', label: '国土交通省「借家の原状回復をめぐるトラブルとガイドライン」', url: 'https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_tk3_000021.html', desc: '原状回復の費用負担の考え方・判例の整理。契約前に必読' },
+        { icon: '<i class="ic ic-scale"></i>', label: '国土交通省「借家の原状回復をめぐるトラブルとガイドライン」', url: 'https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_tk3_000021.html', desc: '原状回復の費用負担の考え方・判例の整理。契約前に必読' },
         { icon: '🏢', label: '国土交通省「不動産取引のトラブルを防ぐために」', url: 'https://www.mlit.go.jp/totikensangyo/const/sosei_const_tk3_000092.html', desc: 'テナント契約の注意点ガイド' },
       ]
     }
@@ -611,8 +611,8 @@ CARD_DETAILS['cat-04-0'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '📋', label: '厚生労働省「医療機関の開設・管理・法人等に関する手続き」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '開設届の法的根拠・関連通知の公式案内' },
-        { icon: '🔍', label: '全国保健所一覧（厚生労働省）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/hokenjo/index.html', desc: '管轄保健所の検索（都道府県・市区町村別）' },
+        { icon: '<i class="ic ic-clipboard"></i>', label: '厚生労働省「医療機関の開設・管理・法人等に関する手続き」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '開設届の法的根拠・関連通知の公式案内' },
+        { icon: '<i class="ic ic-search"></i>', label: '全国保健所一覧（厚生労働省）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/hokenjo/index.html', desc: '管轄保健所の検索（都道府県・市区町村別）' },
       ]
     }
   ]
@@ -652,8 +652,8 @@ CARD_DETAILS['cat-04-1'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '🏛️', label: '厚生労働省「医療法人の設立・運営」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/igyou/index.html', desc: '設立認可・変更認可・解散等の手続き案内' },
-        { icon: '📄', label: '厚生労働省「医療法人設立認可申請書」様式', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/igyou/index.html', desc: '申請書様式・記載例の公式ダウンロード' },
+        { icon: '<i class="ic ic-bank"></i>', label: '厚生労働省「医療法人の設立・運営」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/igyou/index.html', desc: '設立認可・変更認可・解散等の手続き案内' },
+        { icon: '<i class="ic ic-file"></i>', label: '厚生労働省「医療法人設立認可申請書」様式', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/igyou/index.html', desc: '申請書様式・記載例の公式ダウンロード' },
       ]
     }
   ]
@@ -696,8 +696,8 @@ CARD_DETAILS['cat-04-2'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '☢️', label: '厚生労働省「診断用放射線の安全管理（医療法）」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '医療法に基づくX線装置の届出・安全管理の法令根拠' },
-        { icon: '📋', label: '原子力規制委員会「放射線障害防止法 手続き案内」', url: 'https://www.nra.go.jp/activity/', desc: 'X線CT等の大型装置に必要な放射線障害防止法の手続き' },
+        { icon: '☢', label: '厚生労働省「診断用放射線の安全管理（医療法）」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '医療法に基づくX線装置の届出・安全管理の法令根拠' },
+        { icon: '<i class="ic ic-clipboard"></i>', label: '原子力規制委員会「放射線障害防止法 手続き案内」', url: 'https://www.nra.go.jp/activity/', desc: 'X線CT等の大型装置に必要な放射線障害防止法の手続き' },
       ]
     }
   ]
@@ -733,8 +733,8 @@ CARD_DETAILS['cat-04-3'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '🏥', label: '厚生労働省「保険医療機関・保険薬局の指定」変更手続き', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html', desc: '地方厚生局への変更届出の様式・手順' },
-        { icon: '🔍', label: '各地方厚生局（保険医療機関関連届出）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html', desc: '全国8ブロックの地方厚生局一覧。管轄局への届出様式のダウンロード' },
+        { icon: '<i class="ic ic-hospital"></i>', label: '厚生労働省「保険医療機関・保険薬局の指定」変更手続き', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html', desc: '地方厚生局への変更届出の様式・手順' },
+        { icon: '<i class="ic ic-search"></i>', label: '各地方厚生局（保険医療機関関連届出）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html', desc: '全国8ブロックの地方厚生局一覧。管轄局への届出様式のダウンロード' },
       ]
     }
   ]
@@ -774,10 +774,10 @@ CARD_DETAILS['cat-05-0'] = {
       heading: '公式リンク（地方厚生局別）',
       type: 'links',
       items: [
-        { icon: '🏛️', label: '北海道厚生局', url: 'https://kouseikyoku.mhlw.go.jp/hokkaido/', desc: '保険医療機関の指定・変更・廃止の申請様式' },
-        { icon: '🏛️', label: '関東信越厚生局', url: 'https://kouseikyoku.mhlw.go.jp/kantoshinetsu/', desc: '東京・関東・甲信越の保険医療機関手続き' },
-        { icon: '🏛️', label: '近畿厚生局', url: 'https://kouseikyoku.mhlw.go.jp/kinki/', desc: '大阪・近畿地方の保険医療機関手続き' },
-        { icon: '🔍', label: '全国 地方厚生局一覧（厚生労働省）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html', desc: '全国8局のリンク一覧。管轄局から様式をダウンロード' },
+        { icon: '<i class="ic ic-bank"></i>', label: '北海道厚生局', url: 'https://kouseikyoku.mhlw.go.jp/hokkaido/', desc: '保険医療機関の指定・変更・廃止の申請様式' },
+        { icon: '<i class="ic ic-bank"></i>', label: '関東信越厚生局', url: 'https://kouseikyoku.mhlw.go.jp/kantoshinetsu/', desc: '東京・関東・甲信越の保険医療機関手続き' },
+        { icon: '<i class="ic ic-bank"></i>', label: '近畿厚生局', url: 'https://kouseikyoku.mhlw.go.jp/kinki/', desc: '大阪・近畿地方の保険医療機関手続き' },
+        { icon: '<i class="ic ic-search"></i>', label: '全国 地方厚生局一覧（厚生労働省）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html', desc: '全国8局のリンク一覧。管轄局から様式をダウンロード' },
       ]
     }
   ]
@@ -812,9 +812,9 @@ CARD_DETAILS['cat-05-1'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '📋', label: '厚生労働省「施設基準の届出様式」（歯科）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/iryouhoken15/index.html', desc: '診療報酬の算定方法・施設基準の告示と通知' },
-        { icon: '📊', label: '社会保険診療報酬支払基金「審査・支払い」', url: 'https://www.ssk.or.jp/', desc: 'レセプト審査・支払いの流れ・返戻・再審査の手続き' },
-        { icon: '🏛️', label: '地方厚生局「施設基準に係る届出受理状況」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html', desc: '各厚生局で届出状況の確認・様式ダウンロード' },
+        { icon: '<i class="ic ic-clipboard"></i>', label: '厚生労働省「施設基準の届出様式」（歯科）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/iryouhoken15/index.html', desc: '診療報酬の算定方法・施設基準の告示と通知' },
+        { icon: '<i class="ic ic-chart-bar"></i>', label: '社会保険診療報酬支払基金「審査・支払い」', url: 'https://www.ssk.or.jp/', desc: 'レセプト審査・支払いの流れ・返戻・再審査の手続き' },
+        { icon: '<i class="ic ic-bank"></i>', label: '地方厚生局「施設基準に係る届出受理状況」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html', desc: '各厚生局で届出状況の確認・様式ダウンロード' },
       ]
     }
   ]
@@ -859,8 +859,8 @@ CARD_DETAILS['cat-05-2'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '📄', label: '厚生労働省「口腔管理体制強化加算」施設基準（令和8年度）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/iryouhoken15/index.html', desc: '告示・通知の原文ダウンロード（施設基準告示の別表）' },
-        { icon: '🦷', label: '日本歯科医師会「施設基準研修情報」', url: 'https://www.jda.or.jp/', desc: '日本歯科医師会主催の研修スケジュール・申込情報（都道府県歯科医師会経由）' },
+        { icon: '<i class="ic ic-file"></i>', label: '厚生労働省「口腔管理体制強化加算」施設基準（令和8年度）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/iryouhoken15/index.html', desc: '告示・通知の原文ダウンロード（施設基準告示の別表）' },
+        { icon: '<i class="ic ic-tooth"></i>', label: '日本歯科医師会「施設基準研修情報」', url: 'https://www.jda.or.jp/', desc: '日本歯科医師会主催の研修スケジュール・申込情報（都道府県歯科医師会経由）' },
       ]
     }
   ]
@@ -897,8 +897,8 @@ CARD_DETAILS['cat-05-3'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '📋', label: '厚生労働省「個別指導・集団指導について」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html', desc: '保険医療機関への指導・監査の概要と注意点' },
-        { icon: '📊', label: '支払基金「レセプト審査・縦覧点検の概要」', url: 'https://www.ssk.or.jp/shinsa/index.html', desc: 'レセプト審査の仕組みと縦覧・突合点検の解説' },
+        { icon: '<i class="ic ic-clipboard"></i>', label: '厚生労働省「個別指導・集団指導について」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html', desc: '保険医療機関への指導・監査の概要と注意点' },
+        { icon: '<i class="ic ic-chart-bar"></i>', label: '支払基金「レセプト審査・縦覧点検の概要」', url: 'https://www.ssk.or.jp/shinsa/index.html', desc: 'レセプト審査の仕組みと縦覧・突合点検の解説' },
       ]
     }
   ]
@@ -940,9 +940,9 @@ CARD_DETAILS['cat-06-0'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '📋', label: '厚生労働省「令和8年度診療報酬改定」公式ページ', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000188411_00045.html', desc: '告示・通知・説明資料の公式ダウンロード（青本の公式情報）' },
-        { icon: '📊', label: '中央社会保険医療協議会「答申書」（2026年2月）', url: 'https://www.mhlw.go.jp/stf/shingi/shingi-chuo_128154.html', desc: '診療報酬改定の点数・要件を最初に示した公式文書' },
-        { icon: '📖', label: '歯科保険研究会「赤本2026」情報', url: 'https://www.shika-hoken.com/', desc: '赤本2026（令和8年度版）の案内・購入情報' },
+        { icon: '<i class="ic ic-clipboard"></i>', label: '厚生労働省「令和8年度診療報酬改定」公式ページ', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000188411_00045.html', desc: '告示・通知・説明資料の公式ダウンロード（青本の公式情報）' },
+        { icon: '<i class="ic ic-chart-bar"></i>', label: '中央社会保険医療協議会「答申書」（2026年2月）', url: 'https://www.mhlw.go.jp/stf/shingi/shingi-chuo_128154.html', desc: '診療報酬改定の点数・要件を最初に示した公式文書' },
+        { icon: '<i class="ic ic-book"></i>', label: '歯科保険研究会「赤本2026」情報', url: 'https://www.shika-hoken.com/', desc: '赤本2026（令和8年度版）の案内・購入情報' },
       ]
     }
   ]
@@ -994,7 +994,7 @@ CARD_DETAILS['cat-06-1'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '📋', label: '厚生労働省「令和8年度診療報酬改定の概要（歯科）」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000188411_00045.html', desc: '歯科の点数変更・新設項目の概要説明資料（PDF）' },
+        { icon: '<i class="ic ic-clipboard"></i>', label: '厚生労働省「令和8年度診療報酬改定の概要（歯科）」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000188411_00045.html', desc: '歯科の点数変更・新設項目の概要説明資料（PDF）' },
         { icon: '🏦', label: '社会保険診療報酬支払基金「改定後の算定ルール」', url: 'https://www.ssk.or.jp/', desc: 'レセプト審査基準・算定事例の公式案内（改定後に更新）' },
       ]
     }
@@ -1032,8 +1032,8 @@ CARD_DETAILS['cat-06-2'] = {
       heading: '公式・参考リンク',
       type: 'links',
       items: [
-        { icon: '📋', label: '厚生労働省「CAD/CAM冠 算定要件・施設基準」告示', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/iryouhoken15/index.html', desc: '告示・通知の原文。CAD/CAM冠の適用歯種・要件の公式確認' },
-        { icon: '🦷', label: '日本歯科技工士会「デジタル歯科技工 情報」', url: 'https://www.nichigiko.jp/', desc: 'デジタル技工の普及状況・技工所との連携に関する情報' },
+        { icon: '<i class="ic ic-clipboard"></i>', label: '厚生労働省「CAD/CAM冠 算定要件・施設基準」告示', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/iryouhoken15/index.html', desc: '告示・通知の原文。CAD/CAM冠の適用歯種・要件の公式確認' },
+        { icon: '<i class="ic ic-tooth"></i>', label: '日本歯科技工士会「デジタル歯科技工 情報」', url: 'https://www.nichigiko.jp/', desc: 'デジタル技工の普及状況・技工所との連携に関する情報' },
       ]
     }
   ]
@@ -1049,10 +1049,10 @@ CARD_DETAILS['cat-06-3'] = {
       headers: ['点数項目', '対象', '点数', '算定頻度', '届出'],
       highlight: [2],
       rows: [
-        ['口腔機能管理料1（精密検査あり）', '50歳以上・口腔機能低下症 / 18歳未満・発達不全症（精密検査実施）', '90点', '月1回', '要（口腔管理体制強化加算等）'],
-        ['口腔機能管理料2（精密検査なし）', '上記と同対象（精密検査なし）', '50点', '月1回', '要（口腔管理体制強化加算等）'],
+        ['口腔機能管理料1（検査あり）', '50歳以上・口腔機能低下症 / 18歳未満・発達不全症（口腔機能検査を実施）', '90点', '月1回', '要（口腔管理体制強化加算等）'],
+        ['口腔機能管理料2（検査なし）', '上記と同対象（検査によらず確認）', '50点', '月1回', '要（口腔管理体制強化加算等）'],
         ['口腔機能実地指導料（新設）', '上記管理料算定患者', '46点', '月1回（管理料と同日算定可）', '要（衛生士研修修了）'],
-        ['口腔機能精密検査（新設）', '口腔機能低下症の詳細検査', '280点', '管理開始前等（回数制限あり）', '機器要件あり'],
+        ['口腔粘膜湿潤度検査（新設）', '加齢等による口腔機能低下患者の口腔乾燥評価', '130点', '3月に1回', '不要（機器要件あり）'],
         ['摂食機能療法（経口移行）', '摂食嚥下障害患者', '185点', '週3回まで', '要（訓練実績等）'],
         ['重症化予防連携強化加算（新設）', '糖尿病等医科紹介患者', '100点', '1回', '要（医科連携実績）'],
       ]
@@ -1062,19 +1062,19 @@ CARD_DETAILS['cat-06-3'] = {
       type: 'steps',
       items: [
         { step: '01', title: '問診・スクリーニング（50歳以上の患者）', desc: 'オーラルフレイル・低栄養リスクのある患者を特定。BMI・体重減少の確認も。' },
-        { step: '02', title: '口腔機能精密検査の実施', desc: '7項目（口腔衛生状態・口腔乾燥・咬合力・舌口唇機能・舌圧・咀嚼機能・嚥下機能）を検査。3項目以上で「口腔機能低下症」と診断。' },
+        { step: '02', title: '口腔機能検査（7項目）の実施', desc: '7項目（口腔衛生状態・口腔乾燥・咬合力・舌口唇機能・舌圧・咀嚼機能・嚥下機能）を個別検査の組み合わせで評価。3項目以上該当で「口腔機能低下症」と診断。R8改定で咀嚼能力・咬合圧検査等の施設基準は撤廃、口腔粘膜湿潤度検査（130点）が新設。' },
         { step: '03', title: '口腔機能管理計画の作成と説明', desc: '管理計画書（様式あり）を作成して患者に説明・同意取得。保険算定の根拠になる書類。' },
         { step: '04', title: '口腔機能管理料の算定開始（月1回）', desc: '管理計画に基づき毎月1回管理。衛生士が実地指導を行えば「口腔機能実地指導料」も同時算定可。' },
-        { step: '05', title: '定期再評価・管理内容の見直し', desc: '3〜6ヶ月に1回は精密検査で再評価。改善・維持・悪化の判定と管理計画の更新が必要。' },
+        { step: '05', title: '定期再評価・管理内容の見直し', desc: '3〜6ヶ月に1回は口腔機能検査で再評価。改善・維持・悪化の判定と管理計画の更新が必要。検査ありなら管理料1（90点）、なしなら管理料2（50点）。' },
       ]
     },
     {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '📋', label: '厚生労働省「口腔機能管理料 算定要件・様式」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/iryouhoken15/index.html', desc: '管理計画書・同意書の公式様式ダウンロード（告示別紙様式）' },
-        { icon: '🦷', label: '日本歯科医学会「口腔機能低下症 診断基準・マニュアル」', url: 'https://www.jads.jp/', desc: '口腔機能低下症の診断基準・検査方法の学会公式ガイドライン' },
-        { icon: '👴', label: '厚生労働省「オーラルフレイル対策」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/index.html', desc: '国のオーラルフレイル対策の概要。患者説明資料としても活用可' },
+        { icon: '<i class="ic ic-clipboard"></i>', label: '厚生労働省「口腔機能管理料 算定要件・様式」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/iryouhoken15/index.html', desc: '管理計画書・同意書の公式様式ダウンロード（告示別紙様式）' },
+        { icon: '<i class="ic ic-tooth"></i>', label: '日本歯科医学会「口腔機能低下症 診断基準・マニュアル」', url: 'https://www.jads.jp/', desc: '口腔機能低下症の診断基準・検査方法の学会公式ガイドライン' },
+        { icon: '<i class="ic ic-users"></i>', label: '厚生労働省「オーラルフレイル対策」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/index.html', desc: '国のオーラルフレイル対策の概要。患者説明資料としても活用可' },
       ]
     }
   ]
@@ -1119,8 +1119,8 @@ CARD_DETAILS['cat-07-0'] = {
       heading: '参考リンク',
       type: 'links',
       items: [
-        { icon: '📊', label: '日本歯科医師会「歯科医療費統計」', url: 'https://www.jda.or.jp/dental_data/', desc: '保険・自費の診療費実態データ（参考資料として）' },
-        { icon: '💰', label: '日本インプラント学会「インプラント治療の適正価格」', url: 'https://www.shika-implant.org/min-implant/beginner/cost/', desc: 'インプラント治療費の考え方・相場情報（学会公式）' },
+        { icon: '<i class="ic ic-chart-bar"></i>', label: '日本歯科医師会「歯科医療費統計」', url: 'https://www.jda.or.jp/dental_data/', desc: '保険・自費の診療費実態データ（参考資料として）' },
+        { icon: '<i class="ic ic-coin"></i>', label: '日本インプラント学会「インプラント治療の適正価格」', url: 'https://www.shika-implant.org/min-implant/beginner/cost/', desc: 'インプラント治療費の考え方・相場情報（学会公式）' },
       ]
     }
   ]
@@ -1157,7 +1157,7 @@ CARD_DETAILS['cat-07-1'] = {
       type: 'links',
       items: [
         { icon: '💳', label: 'デンタルローン各社比較（オリコ・ジャックス・アプラス）', url: 'https://www.orico.co.jp/loan/teikei/dental/', desc: 'オリコ歯科向けローン。審査・手数料・患者負担の確認に' },
-        { icon: '📖', label: '日本歯科医師会「歯科医院経営情報」', url: 'https://www.jda.or.jp/', desc: '日本歯科医師会が提供する歯科医院経営支援・情報提供サービス' },
+        { icon: '<i class="ic ic-book"></i>', label: '日本歯科医師会「歯科医院経営情報」', url: 'https://www.jda.or.jp/', desc: '日本歯科医師会が提供する歯科医院経営支援・情報提供サービス' },
       ]
     }
   ]
@@ -1229,7 +1229,7 @@ CARD_DETAILS['cat-07-3'] = {
       type: 'links',
       items: [
         { icon: '💬', label: 'オリコ「デンタルローン 加盟店申込」', url: 'https://www.orico.co.jp/loan/teikei/dental/', desc: 'デンタルローン導入の加盟店申込・手数料の確認' },
-        { icon: '📄', label: '消費者庁「割賦販売法・特定商取引法」（分割払いの法令）', url: 'https://www.caa.go.jp/policies/policy/consumer_transaction/specified_commercial_transactions/', desc: '院内分割払い・ローン提供時の法令遵守の確認' },
+        { icon: '<i class="ic ic-file"></i>', label: '消費者庁「割賦販売法・特定商取引法」（分割払いの法令）', url: 'https://www.caa.go.jp/policies/policy/consumer_transaction/specified_commercial_transactions/', desc: '院内分割払い・ローン提供時の法令遵守の確認' },
       ]
     }
   ]
@@ -1273,9 +1273,9 @@ CARD_DETAILS['cat-08-0'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '📋', label: '厚生労働省「医療広告ガイドライン」（最新版）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '医療広告規制の公式ガイドライン・Q&Aの全文ダウンロード' },
-        { icon: '📄', label: '厚生労働省「医療広告 FAQ」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: 'HPやSNSの具体的なNG事例・OK事例がFAQ形式で掲載' },
-        { icon: '🏛️', label: '消費者庁「ステルスマーケティング規制（令和5年10月施行）」', url: 'https://www.caa.go.jp/policies/policy/representation/fair_labeling/stealth_marketing/', desc: 'ステマ規制の対象行為・ガイドラインの公式解説' },
+        { icon: '<i class="ic ic-clipboard"></i>', label: '厚生労働省「医療広告ガイドライン」（最新版）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '医療広告規制の公式ガイドライン・Q&Aの全文ダウンロード' },
+        { icon: '<i class="ic ic-file"></i>', label: '厚生労働省「医療広告 FAQ」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: 'HPやSNSの具体的なNG事例・OK事例がFAQ形式で掲載' },
+        { icon: '<i class="ic ic-bank"></i>', label: '消費者庁「ステルスマーケティング規制（令和5年10月施行）」', url: 'https://www.caa.go.jp/policies/policy/representation/fair_labeling/stealth_marketing/', desc: 'ステマ規制の対象行為・ガイドラインの公式解説' },
       ]
     }
   ]
@@ -1310,8 +1310,8 @@ CARD_DETAILS['cat-08-1'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '🔍', label: '厚生労働省「医療広告違反事例集」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '実際の違反事例・行政指導事例が掲載されたガイドライン資料' },
-        { icon: '⚖️', label: '消費者庁「不当景品類及び不当表示防止法（景品表示法）」', url: 'https://www.caa.go.jp/policies/policy/representation/fair_labeling/', desc: '景品表示法の優良誤認・有利誤認表示の判断基準' },
+        { icon: '<i class="ic ic-search"></i>', label: '厚生労働省「医療広告違反事例集」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '実際の違反事例・行政指導事例が掲載されたガイドライン資料' },
+        { icon: '<i class="ic ic-scale"></i>', label: '消費者庁「不当景品類及び不当表示防止法（景品表示法）」', url: 'https://www.caa.go.jp/policies/policy/representation/fair_labeling/', desc: '景品表示法の優良誤認・有利誤認表示の判断基準' },
       ]
     }
   ]
@@ -1349,8 +1349,8 @@ CARD_DETAILS['cat-08-2'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '📋', label: '厚生労働省「医療広告ガイドライン（第5版）」全文', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '必須表示の根拠条文・具体的な記載方法の公式解説' },
-        { icon: '🏛️', label: '各都道府県「医療広告 届出窓口」一覧', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '限定解除届出先の都道府県窓口への案内（厚労省ページ内）' },
+        { icon: '<i class="ic ic-clipboard"></i>', label: '厚生労働省「医療広告ガイドライン（第5版）」全文', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '必須表示の根拠条文・具体的な記載方法の公式解説' },
+        { icon: '<i class="ic ic-bank"></i>', label: '各都道府県「医療広告 届出窓口」一覧', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '限定解除届出先の都道府県窓口への案内（厚労省ページ内）' },
       ]
     }
   ]
@@ -1389,7 +1389,7 @@ CARD_DETAILS['cat-08-3'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '⚖️', label: '消費者庁「ステルスマーケティング規制 事業者ガイド」', url: 'https://www.caa.go.jp/policies/policy/representation/fair_labeling/stealth_marketing/', desc: 'ステマ規制の対象・表示方法・医療分野への適用例' },
+        { icon: '<i class="ic ic-scale"></i>', label: '消費者庁「ステルスマーケティング規制 事業者ガイド」', url: 'https://www.caa.go.jp/policies/policy/representation/fair_labeling/stealth_marketing/', desc: 'ステマ規制の対象・表示方法・医療分野への適用例' },
         { icon: '🔒', label: '個人情報保護委員会「医療分野のガイダンス」', url: 'https://www.ppc.go.jp/personalinfo/legal/guidelines_iryou/', desc: 'SNS・口コミでの患者情報取り扱いに関する公式ガイダンス' },
       ]
     }
@@ -1435,9 +1435,9 @@ CARD_DETAILS['cat-09-0'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '🗺️', label: 'Google ビジネスプロフィール 管理画面', url: 'https://business.google.com/', desc: '自院のGoogleマップ情報を管理・編集する公式ツール' },
-        { icon: '📊', label: 'Google「ビジネスプロフィールのヘルプ」', url: 'https://support.google.com/business/', desc: 'カテゴリ設定・写真ガイドライン・ポリシー違反の公式ガイド' },
-        { icon: '🔍', label: 'Googleサーチコンソール（SEOと合わせて活用）', url: 'https://search.google.com/search-console/', desc: 'HP経由の検索流入データを確認。SEO施策の効果測定に' },
+        { icon: '🗺', label: 'Google ビジネスプロフィール 管理画面', url: 'https://business.google.com/', desc: '自院のGoogleマップ情報を管理・編集する公式ツール' },
+        { icon: '<i class="ic ic-chart-bar"></i>', label: 'Google「ビジネスプロフィールのヘルプ」', url: 'https://support.google.com/business/', desc: 'カテゴリ設定・写真ガイドライン・ポリシー違反の公式ガイド' },
+        { icon: '<i class="ic ic-search"></i>', label: 'Googleサーチコンソール（SEOと合わせて活用）', url: 'https://search.google.com/search-console/', desc: 'HP経由の検索流入データを確認。SEO施策の効果測定に' },
       ]
     }
   ]
@@ -1478,9 +1478,9 @@ CARD_DETAILS['cat-09-1'] = {
       heading: '公式・活用ツール',
       type: 'links',
       items: [
-        { icon: '🔍', label: 'Google サーチコンソール（無料）', url: 'https://search.google.com/search-console/', desc: '検索キーワード・クリック数・表示順位の確認。SEO効果測定に必須' },
-        { icon: '📊', label: 'Google アナリティクス4（無料）', url: 'https://analytics.google.com/', desc: 'HP訪問者数・ページ別閲覧数・流入元の分析ツール' },
-        { icon: '⚡', label: 'Google PageSpeed Insights（無料）', url: 'https://pagespeed.web.dev/', desc: 'HPの表示速度・Core Web Vitalsの診断。改善点を具体的に提示' },
+        { icon: '<i class="ic ic-search"></i>', label: 'Google サーチコンソール（無料）', url: 'https://search.google.com/search-console/', desc: '検索キーワード・クリック数・表示順位の確認。SEO効果測定に必須' },
+        { icon: '<i class="ic ic-chart-bar"></i>', label: 'Google アナリティクス4（無料）', url: 'https://analytics.google.com/', desc: 'HP訪問者数・ページ別閲覧数・流入元の分析ツール' },
+        { icon: '<i class="ic ic-bolt"></i>', label: 'Google PageSpeed Insights（無料）', url: 'https://pagespeed.web.dev/', desc: 'HPの表示速度・Core Web Vitalsの診断。改善点を具体的に提示' },
       ]
     }
   ]
@@ -1520,8 +1520,8 @@ CARD_DETAILS['cat-09-2'] = {
       type: 'links',
       items: [
         { icon: '💬', label: 'LINE公式アカウント 開設（無料）', url: 'https://www.linebiz.com/jp/entry/', desc: 'LINE公式アカウントの新規開設・料金プラン・機能一覧' },
-        { icon: '📊', label: 'LINE「医療・ヘルスケア向け活用ガイド」', url: 'https://www.linebiz.com/jp/column/technique/20200520/', desc: '医療機関向けLINE活用事例・開封率・効果測定の参考資料' },
-        { icon: '🔧', label: 'Lステップ（LINE自動化ツール）', url: 'https://linestep.jp/', desc: 'LINEの自動配信・セグメント配信・予約連携ができる外部拡張ツール' },
+        { icon: '<i class="ic ic-chart-bar"></i>', label: 'LINE「医療・ヘルスケア向け活用ガイド」', url: 'https://www.linebiz.com/jp/column/technique/20200520/', desc: '医療機関向けLINE活用事例・開封率・効果測定の参考資料' },
+        { icon: '<i class="ic ic-tool"></i>', label: 'Lステップ（LINE自動化ツール）', url: 'https://linestep.jp/', desc: 'LINEの自動配信・セグメント配信・予約連携ができる外部拡張ツール' },
       ]
     }
   ]
@@ -1560,7 +1560,7 @@ CARD_DETAILS['cat-09-3'] = {
       type: 'links',
       items: [
         { icon: '🎨', label: 'Canva（無料デザインツール）', url: 'https://www.canva.com/ja_jp/', desc: 'SNS投稿画像・図解・インフォグラフィックを無料で作成。医療向けテンプレートも豊富' },
-        { icon: '📊', label: 'Meta Business Suite（Instagram/Facebook管理）', url: 'https://business.facebook.com/', desc: 'Instagram・Facebookの投稿スケジュール・インサイト分析の一元管理ツール' },
+        { icon: '<i class="ic ic-chart-bar"></i>', label: 'Meta Business Suite（Instagram/Facebook管理）', url: 'https://business.facebook.com/', desc: 'Instagram・Facebookの投稿スケジュール・インサイト分析の一元管理ツール' },
         { icon: '🎬', label: 'YouTube Studio（動画管理・分析）', url: 'https://studio.youtube.com/', desc: 'YouTube動画のアップロード・SEO設定・視聴データ分析の公式ツール' },
       ]
     }
@@ -1604,9 +1604,9 @@ CARD_DETAILS['cat-10-0'] = {
       heading: '公式・参考リンク',
       type: 'links',
       items: [
-        { icon: '📊', label: '厚生労働省「職業別有効求人・求職状況」（月次）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/index.html', desc: '歯科衛生士の有効求人倍率を確認できる公式統計' },
+        { icon: '<i class="ic ic-chart-bar"></i>', label: '厚生労働省「職業別有効求人・求職状況」（月次）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/index.html', desc: '歯科衛生士の有効求人倍率を確認できる公式統計' },
         { icon: '🏫', label: '日本歯科衛生士会「養成校一覧」', url: 'https://www.jdha.or.jp/training/school.html', desc: '全国の歯科衛生士養成校リスト。新卒採用の学校訪問先の確認に' },
-        { icon: '💼', label: 'ハローワークインターネットサービス「求人申込み」', url: 'https://www.hellowork.mhlw.go.jp/enterprise/ent_top.html', desc: 'ハローワークへの無料求人掲載の手続き案内' },
+        { icon: '<i class="ic ic-briefcase"></i>', label: 'ハローワークインターネットサービス「求人申込み」', url: 'https://www.hellowork.mhlw.go.jp/enterprise/ent_top.html', desc: 'ハローワークへの無料求人掲載の手続き案内' },
       ]
     }
   ]
@@ -1645,8 +1645,8 @@ CARD_DETAILS['cat-10-1'] = {
       heading: '参考リンク',
       type: 'links',
       items: [
-        { icon: '💼', label: 'デンタルハッピー（歯科専門求人）', url: 'https://dental-happy.com/', desc: '歯科衛生士・歯科助手特化の求人サイト。掲載事例の参考に' },
-        { icon: '🔍', label: 'Indeed「求人掲載ガイド」（医療・歯科向け）', url: 'https://jp.indeed.com/hire/', desc: 'Indeed掲載の最適化・クリック率改善のヒント' },
+        { icon: '<i class="ic ic-briefcase"></i>', label: 'デンタルハッピー（歯科専門求人）', url: 'https://dental-happy.com/', desc: '歯科衛生士・歯科助手特化の求人サイト。掲載事例の参考に' },
+        { icon: '<i class="ic ic-search"></i>', label: 'Indeed「求人掲載ガイド」（医療・歯科向け）', url: 'https://jp.indeed.com/hire/', desc: 'Indeed掲載の最適化・クリック率改善のヒント' },
       ]
     }
   ]
@@ -1683,7 +1683,7 @@ CARD_DETAILS['cat-10-2'] = {
       heading: '参考リンク',
       type: 'links',
       items: [
-        { icon: '📋', label: '厚生労働省「歯科衛生士の資質向上に関する検討会」報告書', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '歯科衛生士の業務範囲・教育に関する公式資料' },
+        { icon: '<i class="ic ic-clipboard"></i>', label: '厚生労働省「歯科衛生士の資質向上に関する検討会」報告書', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '歯科衛生士の業務範囲・教育に関する公式資料' },
         { icon: '🎥', label: 'Notion（マニュアル管理ツール）', url: 'https://www.notion.so/ja-jp', desc: '動画・画像・テキストを組み合わせたマニュアルを無料で作れるツール。スタッフ全員で共有できる' },
       ]
     }
@@ -1722,9 +1722,9 @@ CARD_DETAILS['cat-10-3'] = {
       heading: '参考リンク',
       type: 'links',
       items: [
-        { icon: '📊', label: '厚生労働省「賃金構造基本統計調査」（歯科衛生士の給与データ）', url: 'https://www.mhlw.go.jp/toukei/list/chinginkouzou.html', desc: '歯科衛生士の全国・地域別の給与実態データ（毎年2月発表）' },
-        { icon: '⚖️', label: '厚生労働省「育児・介護休業法の改正」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyoukintou/ryouritsu/index.html', desc: '育休・産休の法的権利・事業主の義務・助成金制度の案内' },
-        { icon: '💰', label: '厚生労働省「両立支援等助成金」（育休復帰支援）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyoukintou/ryouritsu/index.html', desc: '育休取得・復帰を支援した場合に受け取れる助成金の案内' },
+        { icon: '<i class="ic ic-chart-bar"></i>', label: '厚生労働省「賃金構造基本統計調査」（歯科衛生士の給与データ）', url: 'https://www.mhlw.go.jp/toukei/list/chinginkouzou.html', desc: '歯科衛生士の全国・地域別の給与実態データ（毎年2月発表）' },
+        { icon: '<i class="ic ic-scale"></i>', label: '厚生労働省「育児・介護休業法の改正」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyoukintou/ryouritsu/index.html', desc: '育休・産休の法的権利・事業主の義務・助成金制度の案内' },
+        { icon: '<i class="ic ic-coin"></i>', label: '厚生労働省「両立支援等助成金」（育休復帰支援）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyoukintou/ryouritsu/index.html', desc: '育休取得・復帰を支援した場合に受け取れる助成金の案内' },
       ]
     }
   ]
@@ -1766,8 +1766,8 @@ CARD_DETAILS['cat-11-0'] = {
       heading: '参考リンク',
       type: 'links',
       items: [
-        { icon: '📅', label: 'ePARK歯科（Web予約システム）', url: 'https://dentist.epark.jp/', desc: '歯科専用Web予約。Googleマップ・HPとの連携で24時間予約を実現' },
-        { icon: '📊', label: 'Googleカレンダー（無料・スタッフ共有）', url: 'https://calendar.google.com/', desc: '小規模での共有アポ帳として活用可能。無料で始められる' },
+        { icon: '<i class="ic ic-calendar"></i>', label: 'ePARK歯科（Web予約システム）', url: 'https://dentist.epark.jp/', desc: '歯科専用Web予約。Googleマップ・HPとの連携で24時間予約を実現' },
+        { icon: '<i class="ic ic-chart-bar"></i>', label: 'Googleカレンダー（無料・スタッフ共有）', url: 'https://calendar.google.com/', desc: '小規模での共有アポ帳として活用可能。無料で始められる' },
       ]
     }
   ]
@@ -1877,7 +1877,7 @@ CARD_DETAILS['cat-11-3'] = {
       heading: '参考リンク',
       type: 'links',
       items: [
-        { icon: '📋', label: 'メディカルフォース（電子問診票・予約一体型）', url: 'https://medicalforce.co.jp/', desc: '歯科向け電子問診票・予約・カルテ連携サービス' },
+        { icon: '<i class="ic ic-clipboard"></i>', label: 'メディカルフォース（電子問診票・予約一体型）', url: 'https://medicalforce.co.jp/', desc: '歯科向け電子問診票・予約・カルテ連携サービス' },
         { icon: '💳', label: 'Square（キャッシュレス決済端末）', url: 'https://squareup.com/jp/ja', desc: '医療機関でも使えるキャッシュレス決済。端末無料・手数料3.25%' },
       ]
     }
@@ -1958,7 +1958,7 @@ CARD_DETAILS['cat-12-1'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '📋', label: '厚生労働省「歯科診療における院内感染対策 通知」（2016年）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: 'ハンドピース患者ごと交換・滅菌を義務付けた公式通知' },
+        { icon: '<i class="ic ic-clipboard"></i>', label: '厚生労働省「歯科診療における院内感染対策 通知」（2016年）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: 'ハンドピース患者ごと交換・滅菌を義務付けた公式通知' },
         { icon: '🔬', label: '日本歯科医学会「滅菌・消毒ガイドライン」', url: 'https://www.jads.jp/', desc: '歯科機器の滅菌・消毒レベル分類・推奨方法の学会公式資料' },
       ]
     }
@@ -1997,8 +1997,8 @@ CARD_DETAILS['cat-12-2'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '❤️', label: '日本蘇生協議会「JRC蘇生ガイドライン2020」', url: 'https://www.japanresuscitationcouncil.org/jrc蘇生ガイドライン2020/', desc: 'BLS・AED使用法の国内公式ガイドライン（2020年版）' },
-        { icon: '🏥', label: '日本赤十字社「救急法講習のご案内」', url: 'https://www.jrc.or.jp/study/safety/first_aid/', desc: 'BLS・AED訓練の受講申込み。企業・団体向けの出張講習も対応' },
+        { icon: '❤', label: '日本蘇生協議会「JRC蘇生ガイドライン2020」', url: 'https://www.japanresuscitationcouncil.org/jrc蘇生ガイドライン2020/', desc: 'BLS・AED使用法の国内公式ガイドライン（2020年版）' },
+        { icon: '<i class="ic ic-hospital"></i>', label: '日本赤十字社「救急法講習のご案内」', url: 'https://www.jrc.or.jp/study/safety/first_aid/', desc: 'BLS・AED訓練の受講申込み。企業・団体向けの出張講習も対応' },
         { icon: '🚒', label: '総務省消防庁「AED設置・管理ガイドライン」', url: 'https://www.fdma.go.jp/publication/rescue/post-1.html', desc: 'AEDの適切な設置・管理・点検方法の公式ガイドライン' },
       ]
     }
@@ -2037,9 +2037,9 @@ CARD_DETAILS['cat-12-3'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '📋', label: '公益財団法人 日本医療機能評価機構「医療事故情報収集等事業」', url: 'https://www.med-safe.jp/', desc: '全国の医療事故・ヒヤリハット事例データベース。歯科事例も多数収録' },
-        { icon: '📄', label: '厚生労働省「医療安全支援センター 総合支援事業」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/i-anzen/index.html', desc: '医療安全に関する相談・研修・支援制度の公式案内' },
-        { icon: '🏥', label: '日本歯科医師会「医療安全対策マニュアル」', url: 'https://www.jda.or.jp/dentist/info/', desc: '日歯が提供する医療安全対策の実務マニュアル・研修資料' },
+        { icon: '<i class="ic ic-clipboard"></i>', label: '公益財団法人 日本医療機能評価機構「医療事故情報収集等事業」', url: 'https://www.med-safe.jp/', desc: '全国の医療事故・ヒヤリハット事例データベース。歯科事例も多数収録' },
+        { icon: '<i class="ic ic-file"></i>', label: '厚生労働省「医療安全支援センター 総合支援事業」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/i-anzen/index.html', desc: '医療安全に関する相談・研修・支援制度の公式案内' },
+        { icon: '<i class="ic ic-hospital"></i>', label: '日本歯科医師会「医療安全対策マニュアル」', url: 'https://www.jda.or.jp/dentist/info/', desc: '日歯が提供する医療安全対策の実務マニュアル・研修資料' },
       ]
     }
   ]
@@ -2075,8 +2075,8 @@ CARD_DETAILS['cat-13-0'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '🔗', label: '個人情報保護委員会 公式サイト', url: 'https://www.ppc.go.jp/', desc: 'ガイドライン・Q&A・相談窓口・漏えい報告フォーム' },
-        { icon: '📄', label: '厚労省 医療・介護関係事業者向け個人情報保護ガイダンス', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000027272.html', desc: '令和6年4月改訂版（令和8年4月施行分含む）' },
+        { icon: '<i class="ic ic-link"></i>', label: '個人情報保護委員会 公式サイト', url: 'https://www.ppc.go.jp/', desc: 'ガイドライン・Q&A・相談窓口・漏えい報告フォーム' },
+        { icon: '<i class="ic ic-file"></i>', label: '厚労省 医療・介護関係事業者向け個人情報保護ガイダンス', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000027272.html', desc: '令和6年4月改訂版（令和8年4月施行分含む）' },
       ]
     }
   ]
@@ -2167,8 +2167,8 @@ CARD_DETAILS['cat-13-3'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '🔗', label: '個人情報保護委員会 公式サイト', url: 'https://www.ppc.go.jp/', desc: 'ガイドライン・事例集・相談窓口' },
-        { icon: '📄', label: '厚労省 医療・介護関係事業者向けガイダンス', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000027272.html', desc: '口コミ返信に関するQ&Aも収録' },
+        { icon: '<i class="ic ic-link"></i>', label: '個人情報保護委員会 公式サイト', url: 'https://www.ppc.go.jp/', desc: 'ガイドライン・事例集・相談窓口' },
+        { icon: '<i class="ic ic-file"></i>', label: '厚労省 医療・介護関係事業者向けガイダンス', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000027272.html', desc: '口コミ返信に関するQ&Aも収録' },
       ]
     }
   ]
@@ -2207,8 +2207,8 @@ CARD_DETAILS['cat-14-0'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '🔗', label: '医療機関等向けポータルサイト（社会保険診療報酬支払基金）', url: 'https://www.iryohokenjyo.go.jp/', desc: 'オンライン資格確認の申請・補助金・操作マニュアル' },
-        { icon: '📄', label: '厚労省 マイナンバーカードの健康保険証利用', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/mynumber/index.html', desc: '制度概要・スケジュール・FAQ' },
+        { icon: '<i class="ic ic-link"></i>', label: '医療機関等向けポータルサイト（社会保険診療報酬支払基金）', url: 'https://www.iryohokenjyo.go.jp/', desc: 'オンライン資格確認の申請・補助金・操作マニュアル' },
+        { icon: '<i class="ic ic-file"></i>', label: '厚労省 マイナンバーカードの健康保険証利用', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/mynumber/index.html', desc: '制度概要・スケジュール・FAQ' },
       ]
     }
   ]
@@ -2275,9 +2275,9 @@ CARD_DETAILS['cat-14-2'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '📄', label: '厚労省 医療情報システムの安全管理に関するガイドライン 第6.0版', url: 'https://www.mhlw.go.jp/stf/shingi/0000516275.html', desc: '令和5年5月改訂。医療機関のセキュリティ対応の基準文書' },
-        { icon: '🔗', label: 'NISC（内閣サイバーセキュリティセンター）', url: 'https://www.nisc.go.jp/', desc: '医療機関向けサイバーセキュリティ対策支援資料を公開中' },
-        { icon: '🔗', label: '警察庁 ランサムウェア被害防止対策', url: 'https://www.npa.go.jp/publications/statistics/cybersecurity/index.html', desc: '被害報告・最新手口・対策ガイド' },
+        { icon: '<i class="ic ic-file"></i>', label: '厚労省 医療情報システムの安全管理に関するガイドライン 第6.0版', url: 'https://www.mhlw.go.jp/stf/shingi/0000516275.html', desc: '令和5年5月改訂。医療機関のセキュリティ対応の基準文書' },
+        { icon: '<i class="ic ic-link"></i>', label: 'NISC（内閣サイバーセキュリティセンター）', url: 'https://www.nisc.go.jp/', desc: '医療機関向けサイバーセキュリティ対策支援資料を公開中' },
+        { icon: '<i class="ic ic-link"></i>', label: '警察庁 ランサムウェア被害防止対策', url: 'https://www.npa.go.jp/publications/statistics/cybersecurity/index.html', desc: '被害報告・最新手口・対策ガイド' },
       ]
     }
   ]
@@ -2315,8 +2315,8 @@ CARD_DETAILS['cat-14-3'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '📄', label: '厚労省 医療情報システムの安全管理ガイドライン', url: 'https://www.mhlw.go.jp/stf/shingi/0000516275.html', desc: '第6.0版（令和5年5月）本文・チェックリストのダウンロード' },
-        { icon: '🔗', label: '医療ISAC（医療機関情報セキュリティ協議会）', url: 'https://m-isac.jp/', desc: '医療機関向けセキュリティ情報共有・インシデント対応支援' },
+        { icon: '<i class="ic ic-file"></i>', label: '厚労省 医療情報システムの安全管理ガイドライン', url: 'https://www.mhlw.go.jp/stf/shingi/0000516275.html', desc: '第6.0版（令和5年5月）本文・チェックリストのダウンロード' },
+        { icon: '<i class="ic ic-link"></i>', label: '医療ISAC（医療機関情報セキュリティ協議会）', url: 'https://m-isac.jp/', desc: '医療機関向けセキュリティ情報共有・インシデント対応支援' },
       ]
     }
   ]
@@ -2378,8 +2378,8 @@ CARD_DETAILS['cat-15-1'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '🔗', label: '国税庁 青色申告制度の概要', url: 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2072.htm', desc: '青色申告特別控除・帳簿の要件' },
-        { icon: '🔗', label: '中小企業基盤整備機構 小規模企業共済', url: 'https://www.smrj.go.jp/kyosai/skyosai/', desc: '掛金シミュレーション・加入申込み' },
+        { icon: '<i class="ic ic-link"></i>', label: '国税庁 青色申告制度の概要', url: 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2072.htm', desc: '青色申告特別控除・帳簿の要件' },
+        { icon: '<i class="ic ic-link"></i>', label: '中小企業基盤整備機構 小規模企業共済', url: 'https://www.smrj.go.jp/kyosai/skyosai/', desc: '掛金シミュレーション・加入申込み' },
       ]
     }
   ]
@@ -2416,8 +2416,8 @@ CARD_DETAILS['cat-15-2'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '🔗', label: '国税庁 電子帳簿保存法の特設ページ', url: 'https://www.nta.go.jp/law/joho-zeikaishaku/sonota/jirei/index.htm', desc: 'パンフレット・Q&A・事業者向け手引きのダウンロード' },
-        { icon: '🔗', label: '国税庁 インボイス制度 特設サイト', url: 'https://www.nta.go.jp/taxes/shiraberu/zeimokubetsu/shohi/keigenzeiritsu/invoice.htm', desc: '登録申請・確認方法・よくある質問' },
+        { icon: '<i class="ic ic-link"></i>', label: '国税庁 電子帳簿保存法の特設ページ', url: 'https://www.nta.go.jp/law/joho-zeikaishaku/sonota/jirei/index.htm', desc: 'パンフレット・Q&A・事業者向け手引きのダウンロード' },
+        { icon: '<i class="ic ic-link"></i>', label: '国税庁 インボイス制度 特設サイト', url: 'https://www.nta.go.jp/taxes/shiraberu/zeimokubetsu/shohi/keigenzeiritsu/invoice.htm', desc: '登録申請・確認方法・よくある質問' },
       ]
     }
   ]
@@ -2459,8 +2459,8 @@ CARD_DETAILS['cat-15-3'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '🔗', label: '日本政策金融公庫 医療・福祉貸付', url: 'https://www.jfc.go.jp/n/finance/search/index_k.html', desc: '医療機関向け低金利融資制度・相談窓口' },
-        { icon: '📄', label: '中小企業庁 経営相談・資金調達サポート', url: 'https://www.chusho.meti.go.jp/keiei/', desc: '補助金・保証制度・経営改善支援の総合窓口' },
+        { icon: '<i class="ic ic-link"></i>', label: '日本政策金融公庫 医療・福祉貸付', url: 'https://www.jfc.go.jp/n/finance/search/index_k.html', desc: '医療機関向け低金利融資制度・相談窓口' },
+        { icon: '<i class="ic ic-file"></i>', label: '中小企業庁 経営相談・資金調達サポート', url: 'https://www.chusho.meti.go.jp/keiei/', desc: '補助金・保証制度・経営改善支援の総合窓口' },
       ]
     }
   ]
@@ -2532,7 +2532,7 @@ CARD_DETAILS['cat-16-1'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '📄', label: '厚労省 医療法人の設立・運営に関する手引き', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/igyou/index.html', desc: '設立要件・認可基準・各都道府県窓口一覧' },
+        { icon: '<i class="ic ic-file"></i>', label: '厚労省 医療法人の設立・運営に関する手引き', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/igyou/index.html', desc: '設立要件・認可基準・各都道府県窓口一覧' },
       ]
     }
   ]
@@ -2632,7 +2632,7 @@ CARD_DETAILS['cat-17-0'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '🔗', label: '中小機構 事業承継・引継ぎ支援センター', url: 'https://www.smrj.go.jp/sme/succession/index.html', desc: '無料相談・専門家紹介・マッチング支援' },
+        { icon: '<i class="ic ic-link"></i>', label: '中小機構 事業承継・引継ぎ支援センター', url: 'https://www.smrj.go.jp/sme/succession/index.html', desc: '無料相談・専門家紹介・マッチング支援' },
       ]
     }
   ]
@@ -2658,8 +2658,8 @@ CARD_DETAILS['cat-17-1'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '🔗', label: '中小機構 事業承継・引継ぎ支援センター（無料）', url: 'https://www.smrj.go.jp/sme/succession/index.html', desc: 'M&Aアドバイザーの紹介・相談窓口' },
-        { icon: '📄', label: '中小企業庁 事業承継ガイドライン', url: 'https://www.meti.go.jp/policy/sme_chiiki/shoukei/index.html', desc: 'M&A・事業承継の手引き・税制優遇情報' },
+        { icon: '<i class="ic ic-link"></i>', label: '中小機構 事業承継・引継ぎ支援センター（無料）', url: 'https://www.smrj.go.jp/sme/succession/index.html', desc: 'M&Aアドバイザーの紹介・相談窓口' },
+        { icon: '<i class="ic ic-file"></i>', label: '中小企業庁 事業承継ガイドライン', url: 'https://www.meti.go.jp/policy/sme_chiiki/shoukei/index.html', desc: 'M&A・事業承継の手引き・税制優遇情報' },
       ]
     }
   ]
@@ -2718,8 +2718,8 @@ CARD_DETAILS['cat-17-3'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '🔗', label: '中小機構 事業承継・引継ぎ支援センター', url: 'https://www.smrj.go.jp/sme/succession/index.html', desc: '無料相談・M&Aマッチング・補助金情報' },
-        { icon: '📄', label: '日本政策金融公庫 事業承継融資', url: 'https://www.jfc.go.jp/n/finance/jigyosyokei/index.html', desc: '後継者向け・買い手向け承継融資制度' },
+        { icon: '<i class="ic ic-link"></i>', label: '中小機構 事業承継・引継ぎ支援センター', url: 'https://www.smrj.go.jp/sme/succession/index.html', desc: '無料相談・M&Aマッチング・補助金情報' },
+        { icon: '<i class="ic ic-file"></i>', label: '日本政策金融公庫 事業承継融資', url: 'https://www.jfc.go.jp/n/finance/jigyosyokei/index.html', desc: '後継者向け・買い手向け承継融資制度' },
       ]
     }
   ]
@@ -2842,8 +2842,8 @@ CARD_DETAILS['cat-18-3'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '📄', label: '厚労省 解雇・雇用に関するルール', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/index.html', desc: '解雇予告・解雇予告手当の計算方法' },
-        { icon: '🔗', label: '中小機構 廃業支援（事業承継・引継ぎ支援センター）', url: 'https://www.smrj.go.jp/sme/succession/index.html', desc: '廃業コスト軽減補助金・専門家無料相談' },
+        { icon: '<i class="ic ic-file"></i>', label: '厚労省 解雇・雇用に関するルール', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/index.html', desc: '解雇予告・解雇予告手当の計算方法' },
+        { icon: '<i class="ic ic-link"></i>', label: '中小機構 廃業支援（事業承継・引継ぎ支援センター）', url: 'https://www.smrj.go.jp/sme/succession/index.html', desc: '廃業コスト軽減補助金・専門家無料相談' },
       ]
     }
   ]

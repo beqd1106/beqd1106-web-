@@ -32,7 +32,7 @@ const REVISION2026 = {
     { 項目: '歯周病継続支援治療（1〜9歯）', 点数: '170点', 届出: '要', 備考: 'SPT+P重防を統合' },
     { 項目: '歯周病継続支援治療（10〜19歯）', 点数: '200点', 届出: '要', 備考: '同上' },
     { 項目: '歯周病継続支援治療（20歯以上）', 点数: '350点', 届出: '要', 備考: '20歯以上は増点' },
-    { 項目: '重症化予防連携強化加算', 点数: '100点', 届出: '要', 備考: '糖尿病患者等・医科紹介ベース' },
+    { 項目: '重症化予防連携強化加算', 点数: '100点', 届出: '要', 備考: '糖尿病患者等・医科紹介ベース（旧・歯周病ハイリスク患者加算80点を再編増点）' },
     { 項目: '3次元プリント有床義歯', 点数: '4,000点/1顎', 届出: '要（3Dプリンター保有）', 備考: 'SLA/DLP方式のみ' },
     { 項目: '歯科技工士連携加算1（対面）', 点数: '60点', 届出: '要', 備考: '技工士が来院して連携' },
     { 項目: '歯科技工士連携加算2（ICT）', 点数: '80点', 届出: '要', 備考: 'ICT活用が対面より高評価' },
@@ -45,6 +45,10 @@ const REVISION2026 = {
     { 項目: '回復期等口腔機能管理計画策定料1', 点数: '300点', 届出: '要', 備考: '回復期連携' },
     { 項目: '電子的歯科診療情報連携体制整備加算（初診）', 点数: '9点 or 4点', 届出: '要', 備考: 'DX推進加算の再編版' },
     { 項目: '電子的歯科診療情報連携体制整備加算（再診）', 点数: '2点', 届出: '要', 備考: '同上' },
+    { 項目: '口腔粘膜湿潤度検査', 点数: '130点（3月に1回）', 届出: '不要', 備考: '口腔機能低下症の口腔乾燥評価・新設' },
+    { 項目: '保隙装置修理', 点数: '150点', 届出: '不要', 備考: '新設' },
+    { 項目: '保隙装置調整料', 点数: '50点', 届出: '不要', 備考: '新設' },
+    { 項目: '光学印象歯科技工士連携加算', 点数: '50点', 届出: '要', 備考: '光学印象時に技工士と対面連携' },
   ],
 
   変更項目: [
@@ -91,6 +95,11 @@ const REVISION2026 = {
       アクション: '月次の訪問診療実績のモニタリングが必要'
     },
     {
+      名称: 'CAD/CAM冠の適応拡大',
+      変更内容: '咬合支持の要件が撤廃され適応が拡大。光学印象（150点）もCAD/CAM冠に適用可能になった。',
+      アクション: '適応症例の拡大を踏まえた自費/保険の提案フロー見直し'
+    },
+    {
       名称: '光学印象の施設基準',
       変更内容: '歯科補綴治療3年以上経験の歯科医師+院内デジタル印象採得装置保有が要件。',
       アクション: '機器購入・経験年数の確認後に届出'
@@ -107,12 +116,13 @@ const REVISION2026 = {
     { 日付: '2026年3月5日', 内容: '告示・通知発出' },
     { 日付: '2026年4月1日', 内容: '薬価改定施行' },
     { 日付: '2026年5月7〜6月1日', 内容: '施設基準届出受付期間（6月算定希望の場合）' },
-    { 日付: '2026年6月1日', 内容: '診療報酬本体施行（主な改定が全面適用）' },
+    { 日付: '2026年3月23日〜5月29日', 内容: '疑義解釈資料（その1〜その7）発出。口腔管理体制強化加算の研修内容・光学印象「デジタル印象採得装置」の定義等を明確化' },
+    { 日付: '2026年6月1日', 内容: '診療報酬本体施行（主な改定が全面適用）。ベースアップ評価料は既算定院も新基準での届出が必要（6/1期限）' },
     { 日付: '2027年6月', 内容: '歯科外来物価対応料が2倍に自動引き上げ' },
   ],
 
   優先アクション: [
-    { 優先度: '最高', アクション: 'ベースアップ評価料の届出区分を試算・届出（賃上げ実施が前提）', 期限: '2026年5月31日' },
+    { 優先度: '最高', アクション: 'ベースアップ評価料：新基準での届出完了を確認（既算定院も再届出が必要だった・未了なら至急。疑義解釈で明確化）', 期限: '施行済・至急確認' },
     { 優先度: '最高', アクション: 'レセコン/電カルのSPT→歯周病継続支援治療マスタ変更対応', 期限: '2026年5月31日' },
     { 優先度: '高', アクション: '施設基準の新旧比較と届出漏れ自己点検（歯科診療所チェックリスト使用）', 期限: '2026年5月31日' },
     { 優先度: '高', アクション: '口腔機能実地指導料：衛生士研修の受講・届出準備', 期限: '2026年5月31日' },
@@ -156,7 +166,7 @@ function renderRevision2026Section() {
   container.innerHTML = `
     <!-- 改定概要バナー -->
     <div style="background:linear-gradient(135deg,#0d2137,#1a3a5c);border-radius:16px;padding:2rem;margin-bottom:2rem;color:white;position:relative;overflow:hidden;" class="fade-up">
-      <div style="position:absolute;top:-20px;right:-20px;font-size:8rem;opacity:0.05;">📋</div>
+      <div style="position:absolute;top:-20px;right:-20px;font-size:8rem;opacity:0.05;"><i class="ic ic-clipboard"></i></div>
       <div class="revision-badge" style="margin-bottom:1rem;background:rgba(0,201,167,0.15);border-color:rgba(0,201,167,0.4);color:var(--teal);">
         令和8年度 診療報酬改定 ― 施行日：2026年6月1日
       </div>
@@ -179,7 +189,7 @@ function renderRevision2026Section() {
 
     <!-- 新設・物価対応料 -->
     <div class="info-card fade-up" style="margin-bottom:1.5rem;">
-      <h4>🆕 新設：歯科外来物価対応料（届出不要・自動適用）</h4>
+      <h4><i class="ic ic-sparkles"></i> 新設：歯科外来物価対応料（届出不要・自動適用）</h4>
       <p>物価高騰への対応として新設。令和9年6月以降は自動で2倍に引き上げ。</p>
       <div class="table-wrap" style="margin-top:0.75rem;">
         <table class="data-table">
@@ -193,23 +203,23 @@ function renderRevision2026Section() {
     </div>
 
     <!-- 基本診療料 点数表 -->
-    <h4 style="color:var(--navy);margin-bottom:0.75rem;">📊 基本診療料 改定点数一覧</h4>
+    <h4 style="color:var(--navy);margin-bottom:0.75rem;"><i class="ic ic-chart-bar"></i> 基本診療料 改定点数一覧</h4>
     ${renderTable(data.基本診療料, ['項目', '現行（点）', '改定後（点）', '増減', '備考'])}
 
     <!-- 主要変更項目 -->
-    <h4 style="color:var(--navy);margin:1.5rem 0 0.75rem;">🔄 主要点数変更（新旧対照）</h4>
+    <h4 style="color:var(--navy);margin:1.5rem 0 0.75rem;"><i class="ic ic-refresh"></i> 主要点数変更（新旧対照）</h4>
     <div class="alert alert-warn fade-up">
-      <span class="alert-icon">⚠️</span>
+      <span class="alert-icon">⚠</span>
       <span><strong>注意：</strong>歯科疾患管理料は100点→90点に減点。一方、口腔機能管理料は60点→90点と大幅増点。口腔機能管理の算定強化が収益維持の鍵です。</span>
     </div>
     ${renderTable(data.変更項目, ['項目', '現行', '改定後', '増減', '備考'])}
 
     <!-- 新設項目一覧 -->
-    <h4 style="color:var(--navy);margin:1.5rem 0 0.75rem;">✨ 主要新設項目一覧</h4>
+    <h4 style="color:var(--navy);margin:1.5rem 0 0.75rem;"><i class="ic ic-sparkles"></i> 主要新設項目一覧</h4>
     ${renderTable(data.新設項目, ['項目', '点数', '届出', '備考'])}
 
     <!-- 廃止項目 -->
-    <h4 style="color:var(--navy);margin:1.5rem 0 0.75rem;">🗑️ 廃止・統合項目</h4>
+    <h4 style="color:var(--navy);margin:1.5rem 0 0.75rem;"><i class="ic ic-trash"></i> 廃止・統合項目</h4>
     <div class="content-grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0.75rem;">
       ${data.廃止項目.map(i => `
         <div style="background:#fdecea;border:1px solid #f5c6cb;border-radius:8px;padding:0.9rem;">
@@ -219,20 +229,20 @@ function renderRevision2026Section() {
     </div>
 
     <!-- 施設基準の変更 -->
-    <h4 style="color:var(--navy);margin:1.5rem 0 0.75rem;">🏥 施設基準の主要変更</h4>
+    <h4 style="color:var(--navy);margin:1.5rem 0 0.75rem;"><i class="ic ic-hospital"></i> 施設基準の主要変更</h4>
     <div class="content-grid" style="grid-template-columns:1fr;gap:0.75rem;">
       ${data.施設基準変更.map(s => `
         <div class="info-card" style="border-left:4px solid var(--teal);">
           <h4 style="font-size:0.95rem;">${s.名称}</h4>
           <p style="margin-bottom:0.5rem;">${s.変更内容}</p>
           <div style="background:var(--off-white);border-radius:6px;padding:0.5rem 0.75rem;font-size:0.82rem;color:var(--teal-dark);font-weight:600;">
-            📌 対応アクション：${s.アクション}
+            <i class="ic ic-pin"></i> 対応アクション：${s.アクション}
           </div>
         </div>`).join('')}
     </div>
 
     <!-- 優先アクション -->
-    <h4 style="color:var(--navy);margin:1.5rem 0 0.75rem;">⚡ 院長の優先アクションリスト</h4>
+    <h4 style="color:var(--navy);margin:1.5rem 0 0.75rem;"><i class="ic ic-bolt"></i> 院長の優先アクションリスト</h4>
     <div class="point-list">
       ${data.優先アクション.map((a, i) => `
         <div class="point-item">
@@ -249,7 +259,7 @@ function renderRevision2026Section() {
     </div>
 
     <!-- 重要スケジュール -->
-    <h4 style="color:var(--navy);margin:1.5rem 0 0.75rem;">📅 改定スケジュール</h4>
+    <h4 style="color:var(--navy);margin:1.5rem 0 0.75rem;"><i class="ic ic-calendar"></i> 改定スケジュール</h4>
     <div class="schedule-table">
       ${data.重要スケジュール.map(s => `
         <div class="schedule-row ${s.日付.includes('6月1日') ? 'style="background:rgba(0,201,167,0.06);padding:0.65rem 0.5rem;border-radius:8px;"' : ''}">
@@ -260,7 +270,7 @@ function renderRevision2026Section() {
 
     <!-- 出典 -->
     <div class="alert alert-info fade-up" style="margin-top:1.5rem;">
-      <span class="alert-icon">📚</span>
+      <span class="alert-icon"></span>
       <div>
         <strong>出典・参考資料</strong><br>
         ${data.出典.map(s => `<small>・${s}</small>`).join('<br>')}
