@@ -18,6 +18,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
 <link rel="stylesheet" href="css/style.css?v=20260612">
+<link rel="stylesheet" href="css/dental-v3.css?v=20260613">
 </head>
 <body>
 
@@ -210,6 +211,7 @@ function checkPw(){
       </div>
     </div>
   </div>
+  <img class="hero-mascot" src="img/tooth_mascot.webp" alt="" aria-hidden="true">
   <div class="hero-scroll">SCROLL</div>
 </section>
 
@@ -238,6 +240,9 @@ function checkPw(){
         </div>
       </div>
       <div class="fade-up" style="display:flex;flex-direction:column;gap:1rem;">
+        <div class="v3-photo" style="aspect-ratio:4/3;">
+          <img src="img/reception.webp" alt="カウンセリング風景" loading="lazy">
+        </div>
         <div class="info-card" style="border-left:4px solid var(--teal);">
           <h4>参照ソース</h4>
           <ul>
@@ -762,14 +767,21 @@ function checkPw(){
 <!-- ========== CTA ========== -->
 <section id="contact" class="cta-section">
   <div class="container" style="position:relative;z-index:1;">
-    <span class="section-label" style="color:rgba(255,255,255,0.7);">Free Consultation</span>
-    <h2 class="section-title">まずは無料相談から</h2>
-    <p class="section-desc">
-      開業・運営・収益改善など、歯科経営のあらゆるお悩みをお気軽に<br>ご相談ください。<br>専門コンサルタントが丁寧にお答えします。
-    </p>
-    <a href="mailto:info@dental-compass.jp" class="btn-primary" style="margin:2rem auto 0;display:inline-flex;">
-      無料相談を申し込む →
-    </a>
+    <div class="v3-about-grid">
+      <div>
+        <span class="section-label" style="color:rgba(255,255,255,0.7);">Free Consultation</span>
+        <h2 class="section-title">まずは無料相談から</h2>
+        <p class="section-desc">
+          開業・運営・収益改善など、歯科経営のあらゆるお悩みをお気軽に<br>ご相談ください。<br>専門コンサルタントが丁寧にお答えします。
+        </p>
+        <a href="mailto:info@dental-compass.jp" class="btn-primary" style="margin:2rem 0 0;display:inline-flex;">
+          無料相談を申し込む →
+        </a>
+      </div>
+      <div class="v3-photo" style="aspect-ratio:4/3;">
+        <img src="img/doctor.webp" alt="コンサルタントによる相談風景" loading="lazy">
+      </div>
+    </div>
   </div>
 </section>
 
