@@ -1,0 +1,60 @@
+==============================
+1. Anthropic／Claude
+==============================
+
+■ Claude Fable 5「こっそりナーフ」騒動にAnthropicが公式声明（6/12）
+【何があった】Fable 5のセーフガード強化がAI研究用途の出力品質を下げていた件について、Anthropicが公式に認めて改善を表明。
+【何がすごい】モデルの挙動変更を公式に説明するのは異例。研究・検証用途でFable 5を使う場合の信頼性が回復に向かう。
+https://gigazine.net/news/20260612-claude-fable-5-safeguard-change/
+
+■ Claude Fable 5 一般提供開始（6/9）
+【何ができる】Mythos Preview同等以上の性能。長時間の自律エージェントタスク、コーディング、財務、ビジョン、科学分野が強み。5,000万行のRubyコード移行が「2カ月→1日」になった事例も。
+【何がすごい】安全対策を一部解除した上位版「Claude Mythos 5」は米政府連携の「Project Glasswing」経由でサイバー防御組織・重要インフラ事業者に限定提供という二段構え。
+https://atmarkit.itmedia.co.jp/ait/articles/2606/10/news082.html
+https://codezine.jp/article/detail/24513
+
+■【要対応・6/15から】Pro/Max課金が2プール体系へ移行
+【何が変わる】人が画面で対話する利用と、Agent SDK等のコードからの自動実行が別クレジットに分割。既存契約は自動移行。
+【注意点】Claude Codeの自動実行を多用していると実質値上げになる可能性。明後日からなので利用パターンの確認推奨。
+https://www.techno-edge.net/article/2026/05/14/5064.html
+
+==============================
+2. Google／Gemini・Antigravity
+==============================
+
+■【要対応・6/18期限】Gemini CLI廃止、Antigravity CLIへ移行
+【何が変わる】6/18にGemini CLIとGemini Code Assist IDE拡張がAI Pro/Ultra向けリクエスト受付を停止。後継はAntigravity CLI（全ユーザー利用可）。
+【注意点】あと5日。Gemini CLIを使っているプロジェクトは今週末の移行が安全。
+https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/
+
+■ Antigravity 2.0：コーディングアプリから「開発プラットフォーム」へ
+【何ができる】複数AIエージェントを同時に走らせるデスクトップアプリ＋CLI＋カスタムワークフロー用SDKの3点セット。Google Cloudプロジェクトへの直接接続も可能に。
+【何がすごい】I/O 2026の目玉。新プラン「AI Ultra」（月額100ドル）はAntigravityの利用上限がProの5倍。
+https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2026-developer-highlights/
+
+■ NotebookLMがGemini 3.5＋Antigravityで大型アップグレード（6/8）
+【何ができる】基盤モデル刷新により出力の種類が拡大、リサーチ機能も強化。
+https://9to5google.com/2026/06/08/notebooklm-gemini-3-5-antigravity/
+
+==============================
+3. OpenAI／ChatGPT
+==============================
+
+■ ChatGPTメモリーシステム刷新＋「dreaming」機能
+【何ができる】時間経過とともにAIが自動でメモリーを更新し、現在地やタイムゾーンに合わせた提案が可能に。Plus/Pro（米国）から順次展開。
+【何がすごい】「ユーザーが教えた情報を覚える」から「AIが勝手に記憶を整理・更新する」への転換点。
+https://help.openai.com/en/articles/6825453-chatgpt-release-notes
+
+■ OpenAIがOna買収を発表（6/11）
+https://openai.com/news/
+
+■ 旧モデル退役スケジュール
+GPT-4.5：6/27でChatGPTから退役。o3：8/26退役。業務フローで旧モデル指定がある場合は移行を。
+https://help.openai.com/en/articles/9624314-model-release-notes
+
+==============================
+今日のひとこと
+==============================
+今週は「期限もの」が集中。Gemini CLI廃止（6/18）とAnthropic課金改修（6/15）はどちらも開発ワークフローに直結するので、週末のうちに影響確認を。
+
+― Claude Code（AI朝刊リカバリー送信）
