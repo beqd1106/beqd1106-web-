@@ -697,7 +697,7 @@ CARD_DETAILS['cat-04-2'] = {
       type: 'links',
       items: [
         { icon: '<i class="ic ic-alert"></i>', label: '厚生労働省「診断用放射線の安全管理（医療法）」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '医療法に基づくX線装置の届出・安全管理の法令根拠' },
-        { icon: '<i class="ic ic-clipboard"></i>', label: '原子力規制委員会「放射線障害防止法 手続き案内」', url: 'https://www.nra.go.jp/activity/', desc: 'X線CT等の大型装置に必要な放射線障害防止法の手続き' },
+        { icon: '<i class="ic ic-clipboard"></i>', label: '原子力規制委員会「放射性同位元素等規制法 手続き案内」', url: 'https://www.nra.go.jp/activity/ri_kisei/index.html', desc: 'RI・加速器等の大型装置に必要な規制法（旧・放射線障害防止法）の手続き' },
       ]
     }
   ]
@@ -898,7 +898,7 @@ CARD_DETAILS['cat-05-3'] = {
       type: 'links',
       items: [
         { icon: '<i class="ic ic-clipboard"></i>', label: '厚生労働省「個別指導・集団指導について」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/index.html', desc: '保険医療機関への指導・監査の概要と注意点' },
-        { icon: '<i class="ic ic-chart-bar"></i>', label: '支払基金「レセプト審査・縦覧点検の概要」', url: 'https://www.ssk.or.jp/shinsa/index.html', desc: 'レセプト審査の仕組みと縦覧・突合点検の解説' },
+        { icon: '<i class="ic ic-chart-bar"></i>', label: '支払基金「診療報酬の審査」', url: 'https://www.ssk.or.jp/shinryohoshu/index.html', desc: 'レセプト審査の仕組みと縦覧・突合点検の解説' },
       ]
     }
   ]
@@ -1390,7 +1390,7 @@ CARD_DETAILS['cat-08-3'] = {
       type: 'links',
       items: [
         { icon: '<i class="ic ic-scale"></i>', label: '消費者庁「ステルスマーケティング規制 事業者ガイド」', url: 'https://www.caa.go.jp/policies/policy/representation/fair_labeling/stealth_marketing/', desc: 'ステマ規制の対象・表示方法・医療分野への適用例' },
-        { icon: '<i class="ic ic-lock"></i>', label: '個人情報保護委員会「医療分野のガイダンス」', url: 'https://www.ppc.go.jp/personalinfo/legal/guidelines_iryou/', desc: 'SNS・口コミでの患者情報取り扱いに関する公式ガイダンス' },
+        { icon: '<i class="ic ic-lock"></i>', label: '個人情報保護委員会「医療・介護関係事業者のガイダンス」', url: 'https://www.ppc.go.jp/personalinfo/legal/iryoukaigo_guidance/', desc: 'SNS・口コミでの患者情報取り扱いに関する公式ガイダンス' },
       ]
     }
   ]
@@ -1918,8 +1918,8 @@ CARD_DETAILS['cat-12-0'] = {
       type: 'links',
       items: [
         { icon: '<i class="ic ic-check"></i>', label: '厚生労働省「歯科における院内感染対策について」', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/index.html', desc: '歯科医院向け院内感染対策の公式ガイドライン' },
-        { icon: '<i class="ic ic-globe"></i>', label: 'WHO「手指衛生ガイドライン」（日本語版）', url: 'https://www.who.int/gpsc/5may/Hand_Hygiene_Why_How_and_When_Brochure.pdf', desc: 'WHOの「5つのタイミング」手指衛生ガイドライン（日本語）' },
-        { icon: '<i class="ic ic-search"></i>', label: '国立感染症研究所「医療機関における感染予防策」', url: 'https://www.niid.go.jp/niid/ja/routes.html', desc: '標準予防策・感染経路別予防策の科学的根拠' },
+        { icon: '<i class="ic ic-globe"></i>', label: 'WHO「手指衛生（Hand Hygiene）」', url: 'https://www.who.int/teams/integrated-health-services/infection-prevention-control/hand-hygiene', desc: 'WHOの「5つのタイミング」手指衛生に関する公式情報' },
+        { icon: '<i class="ic ic-search"></i>', label: '国立感染症研究所「医療機関における感染予防策」', url: 'https://www.niid.go.jp/niid/ja/', desc: '標準予防策・感染経路別予防策の科学的根拠' },
       ]
     }
   ]
@@ -1997,8 +1997,8 @@ CARD_DETAILS['cat-12-2'] = {
       heading: '公式リンク',
       type: 'links',
       items: [
-        { icon: '<i class="ic ic-sparkles"></i>', label: '日本蘇生協議会「JRC蘇生ガイドライン2020」', url: 'https://www.japanresuscitationcouncil.org/jrc蘇生ガイドライン2020/', desc: 'BLS・AED使用法の国内公式ガイドライン（2020年版）' },
-        { icon: '<i class="ic ic-hospital"></i>', label: '日本赤十字社「救急法講習のご案内」', url: 'https://www.jrc.or.jp/study/safety/first_aid/', desc: 'BLS・AED訓練の受講申込み。企業・団体向けの出張講習も対応' },
+        { icon: '<i class="ic ic-sparkles"></i>', label: '日本蘇生協議会「JRC蘇生ガイドライン2020」', url: 'https://www.jrc-cpr.org/jrc-guideline-2020/', desc: 'BLS・AED使用法の国内公式ガイドライン（2020年版）' },
+        { icon: '<i class="ic ic-hospital"></i>', label: '日本赤十字社「救急法講習のご案内」', url: 'https://www.jrc.or.jp/study/kind/emergency/', desc: 'BLS・AED訓練の受講申込み。企業・団体向けの出張講習も対応' },
         { icon: '<i class="ic ic-alert"></i>', label: '総務省消防庁「AED設置・管理ガイドライン」', url: 'https://www.fdma.go.jp/publication/rescue/post-1.html', desc: 'AEDの適切な設置・管理・点検方法の公式ガイドライン' },
       ]
     }
