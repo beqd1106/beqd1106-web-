@@ -178,22 +178,11 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-// ─── GSAP ScrollTrigger アニメーション ───
-// ツールカード
-ScrollTrigger.batch('.tool-card.fade-up', {
-  start: 'top 85%',
-  onEnter: (elements) => {
-    gsap.from(elements, {
-      opacity: 0,
-      y: 40,
-      scale: 0.96,
-      stagger: 0.08,
-      duration: 0.7,
-      ease: 'back.out(1.4)',
-      overwrite: true,
-    });
-  }
-});
+// ─── ツールカードの出現アニメーション ───
+// 以前はGSAP ScrollTrigger.batchを使っていたが、CSSの.fade-up
+// （IntersectionObserver制御）と同一要素のtransform/opacityを奪い合い、
+// back.outの残留transformでカードがグリッド上で縦ズレしていた。
+// 出現演出はCSSの.fade-up系に一本化し、競合を解消する。
 
 // ─── モーダル・ドロワー内スクロールをLenisから独立させる ───
 document.getElementById('modalContent')?.addEventListener('wheel', (e) => e.stopPropagation(), { passive: true });

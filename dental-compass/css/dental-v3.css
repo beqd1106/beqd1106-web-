@@ -125,8 +125,27 @@ body { background: #fdfdfc; }
 
 /* パステル背景バリエーション */
 #about { background: var(--sky) !important; }
-/* #tools はダークブロックのまま残す（motomachi流のコントラスト） */
 #downloads { background: var(--beige); }
+
+/* ---------- ツールセクション: ダークブロックのコントラスト復元 ----------
+   v3で --navy を #2e4051 へ軟化させた副作用で、ダーク背景の上に乗る
+   半透明白カード・55%白テキストが沈んで読みにくくなっていた。
+   ツールセクションだけ濃いネイビーに戻し、カードと文字の視認性を確保する。 */
+.tools-section { background: #14283c; }
+.tools-section .tool-card {
+  background: rgba(255,255,255,0.09);
+  border: 1px solid rgba(255,255,255,0.16);
+}
+.tools-section .tool-card:hover {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(0,201,167,0.5);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+}
+.tools-section .tool-card h3 { color: #ffffff; }
+.tools-section .tool-card > p { color: rgba(255,255,255,0.82); }
+.tools-section .section-desc { color: rgba(255,255,255,0.78); }
+.tools-section .tool-card-icon { background: rgba(255,255,255,0.14) !important; }
+.tools-section .tool-card-icon .ic { color: #ffffff; }
 
 /* 葉影テクスチャをスキャナーセクションに */
 #scanner {
@@ -169,8 +188,9 @@ body { background: #fdfdfc; }
   .v3-about-grid { grid-template-columns: 1fr; }
 }
 
-/* ---------- フッター: チャコール軟化 ---------- */
-.footer { background: var(--navy); }
+/* ---------- フッター: チャコール軟化（ただし軟化ネイビー上の本文可読性を確保） ---------- */
+.footer { background: #14283c; color: rgba(255,255,255,0.68); }
+.footer-col ul li a { color: rgba(255,255,255,0.72); }
 
 /* ---------- スクロールプログレス ---------- */
 .scroll-progress { background: linear-gradient(90deg, var(--teal), var(--sage)); }
