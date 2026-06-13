@@ -111,7 +111,7 @@ var GUIDE_NEWS = [
 
   var now = new Date();
   var LABEL_COLORS = {
-    '訪問看護':  { bg: '#FFF0E8', color: '#C87858', border: '#F0C4A8' },
+    '訪問看護':  { bg: '#F2E7E0', color: '#A86848', border: '#D8C0AE' },
     '就労A型':  { bg: '#E8F0FF', color: '#3858C8', border: '#A8C4F0' },
     '就労B型':  { bg: '#E8F5E9', color: '#2E7D32', border: '#A5D6A7' },
     '相談支援': { bg: '#F3E8FF', color: '#7B1FA2', border: '#CE93D8' },

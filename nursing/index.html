@@ -1,70 +1,52 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>障碍者福祉事業所 運営ガイド</title>
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="design-upgrade.css">
-<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#F0956A"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="福祉ガイド">
+<link rel="stylesheet" href="style.css?v=20260613b">
+<link rel="stylesheet" href="design-upgrade.css?v=20260613b">
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#1B5E4B"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="福祉ガイド">
 </head>
 <body>
 <header class="site-header">
   <a href="index.html" class="site-logo">障碍者福祉 運営ガイド</a>
-  <nav class="site-nav">
-    <a href="index.html" class="active">TOP</a>
-    <a href="01_法令・制度.html">法令</a>
-    <a href="02_必要書類.html">書類</a>
-    <a href="03_管理業務.html">管理</a>
-    <a href="04_京都府・手続き.html">京都府</a>
-    <a href="05_請求業務.html">請求</a>
-    <a href="13_障害介護サービス.html">介護</a>
-    <a href="06_就労継続A型.html">A型</a>
-    <a href="07_就労継続B型.html">B型</a>
-    <a href="08_相談支援.html">相談</a>
-    <a href="09_監査対応.html">監査</a>
-    <a href="10_収入向上.html">収入</a>
-    <a href="11_年間スケジュール.html">年間</a>
-    <a href="12_QA.html">Q&amp;A</a>
-    <a href="14_AI作成支援.html">AI支援</a>
-    <a href="15_データ管理.html" style="color:var(--success);font-weight:600;">データ</a>
-    <a href="16_実地指導チェックリスト.html" style="color:#B71C1C;font-weight:600;">指導</a>
-    <a href="フォーマット/index.html" >様式DL</a>
-  </nav>
+  <nav class="site-nav"><a href="index.html" class="active">TOP</a></nav>
 </header>
 
 <div class="page-hero has-photo">
-  <div class="hero-ring"></div>
+  <div class="hero-tate" aria-hidden="true">迷わぬ運営を、京都から。</div>
   <div class="hero-inner">
     <div class="hero-text">
       <div class="hero-badge">障碍者福祉 運営ガイド</div>
-      <h1>訪問看護・就労継続支援<br>運営の全てがここに</h1>
-      <p style="color:var(--text-mid);font-size:clamp(0.88rem,1.5vw+0.3rem,1rem);line-height:1.8;max-width:480px;">京都で障碍者（身体・精神・知的）を対象とした事業所を運営するための<br>法令・書類・管理・請求・監査対応を一冊にまとめました。</p>
+      <h1>障碍者福祉の運営を、<br>確かなものに。</h1>
+      <p style="color:var(--text-mid);font-size:clamp(0.88rem,1.5vw+0.3rem,1rem);line-height:2;max-width:480px;">京都府で訪問看護・就労継続支援・相談支援を運営するための<br>法令・書類・請求・監査対応を、この一冊にまとめました。</p>
       <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1.75rem;">
-        <a href="01_法令・制度.html" class="btn-primary">法令・制度を見る</a>
+        <a href="01_法令・制度.html" class="btn-primary">法令・制度から読む</a>
         <a href="14_AI作成支援.html" class="btn-secondary">AI作成支援を試す</a>
         <a href="フォーマット/index.html" class="btn-secondary">様式をダウンロード</a>
       </div>
     </div>
-    <div class="hero-img" style="position:relative;">
-      <img src="images/hero_care.webp" alt="看護師と利用者の面談イメージ"
-           style="border-radius:var(--r-lg);box-shadow:var(--shadow-xl);width:100%;max-width:420px;object-fit:cover;aspect-ratio:4/3;opacity:0.95;">
-      <!-- フローティングバッジ -->
-      <div style="position:absolute;bottom:-1rem;left:-1rem;background:#fff;border-radius:var(--r);padding:0.7rem 1rem;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;font-weight:700;color:var(--coral-dark);white-space:nowrap;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--coral-dark);flex-shrink:0;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15A2.5 2.5 0 0 0 6.5 22H20v-2.5"/><path d="M9 7h7"/></svg> 16ページ・75チェック項目収録
+    <div class="hero-img">
+      <img src="images/photo_consult.webp" alt="スタッフと利用者の面談イメージ"
+           width="420" height="315"
+           style="width:100%;max-width:420px;object-fit:cover;aspect-ratio:4/3;">
+      <div style="position:absolute;bottom:-0.75rem;left:-0.75rem;background:#fff;border:1px solid var(--border);border-radius:12px;padding:0.65rem 1rem;box-shadow:var(--shadow-md);display:flex;align-items:center;gap:0.55rem;font-size:0.78rem;font-weight:700;color:var(--green-deep);white-space:nowrap;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="width:19px;height:19px;color:var(--green);flex-shrink:0;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15A2.5 2.5 0 0 0 6.5 22H20v-2.5"/><path d="M9 7h7"/></svg>
+        16ページ・様式56種・75チェック項目
       </div>
     </div>
   </div>
 </div>
 
-<!-- ウェーブ区切り -->
+<!-- なだらかな曲線（生成り → 深緑） -->
 <div class="wave-divider" aria-hidden="true">
-  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,30 C240,60 480,0 720,30 C960,60 1200,0 1440,30 L1440,60 L0,60 Z" fill="#FAFAF8"/>
+  <svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,70 L0,40 C320,8 760,64 1100,34 C1260,21 1370,28 1440,40 L1440,70 Z"/>
   </svg>
 </div>
 
-<!-- 統計バー（giftee方式） -->
+<!-- 統計バンド -->
 <div class="stats-section">
   <div class="stats-grid">
     <div class="stat-item">
@@ -90,10 +72,10 @@
   </div>
 </div>
 
-<!-- ウェーブ（戻り） -->
-<div class="wave-divider" aria-hidden="true" style="transform:scaleY(-1);margin-bottom:-1px;">
-  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,30 C240,60 480,0 720,30 C960,60 1200,0 1440,30 L1440,60 L0,60 Z" fill="#2A2020"/>
+<!-- なだらかな曲線（深緑 → 生成り） -->
+<div class="wave-divider" aria-hidden="true" style="transform:scaleY(-1);margin-top:-1px;">
+  <svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,70 L0,40 C320,8 760,64 1100,34 C1260,21 1370,28 1440,40 L1440,70 Z"/>
   </svg>
 </div>
 
@@ -102,132 +84,172 @@
   <!-- 締切アラートウィジェット -->
   <div class="card" style="margin-bottom:1.5rem;">
     <div class="section-header" style="margin-bottom:0.75rem;">
-      <span class="icon" aria-hidden="true"></span><h2>締切アラート（今後10日以内）</h2>
+      <h2>締切アラート（今後10日以内）</h2>
     </div>
     <div id="deadline-widget"><div class="dl-widget-empty">読み込み中...</div></div>
   </div>
 
-  <div class="section-label">コンテンツ一覧</div>
+  <!-- AI作成支援バナー -->
+  <a href="14_AI作成支援.html" style="display:flex;align-items:center;gap:1.5rem;background:linear-gradient(120deg,var(--green-faint),#fff 70%);border:1px solid var(--green-light);border-radius:16px;padding:1.5rem 1.75rem;margin-bottom:1rem;text-decoration:none;color:var(--text);flex-wrap:wrap;">
+    <div style="flex:1;min-width:240px;">
+      <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.16em;color:var(--green);margin-bottom:0.3rem;">AI SUPPORT</div>
+      <div style="font-size:1.1rem;font-weight:700;color:var(--green-deep);margin-bottom:0.3rem;">個別支援計画もモニタリングも、AIが下書き。</div>
+      <div style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;">12機能の書類作成支援・加算診断・法令Q&amp;A。Excel出力にも対応しています。</div>
+    </div>
+    <img src="images/illust_scenes.webp" alt="" width="260" height="184" style="width:260px;max-width:42vw;height:auto;border-radius:12px;" loading="lazy">
+  </a>
+
+  <div class="section-label">運営の基礎</div>
   <div class="nav-grid">
     <a href="01_法令・制度.html" class="nav-card">
       <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18m-7 0h14M5 7h14M7 7l-3 6a3.5 3.5 0 0 0 7 0L8 7m9 0-3 6a3.5 3.5 0 0 0 7 0l-3-6"/></svg></div>
       <div class="nav-card-body">
         <div class="nav-card-title">法令・制度</div>
-        <div class="nav-card-desc">医療・看護系法令、障碍者福祉系法令、京都府条例、法令遵守チェックリスト。各法令の罰則・改正も確認可能。</div>
+        <div class="nav-card-desc">医療・看護系法令、障碍者福祉系法令、京都府条例、法令遵守チェックリスト。</div>
       </div>
     </a>
     <a href="02_必要書類.html" class="nav-card">
       <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4a2 2 0 0 1 6 0M9 10h6M9 14h6M9 18h4"/></svg></div>
       <div class="nav-card-body">
         <div class="nav-card-title">必要書類</div>
-        <div class="nav-card-desc">指定申請書類一覧・日常業務の記録書類・推奨書類（BCP等）・保管期間。様式DLリンク付き。</div>
+        <div class="nav-card-desc">指定申請書類・日常業務の記録書類・推奨書類（BCP等）・保管期間。</div>
       </div>
     </a>
     <a href="03_管理業務.html" class="nav-card">
       <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4m8-4v4M4 11h16"/></svg></div>
       <div class="nav-card-body">
         <div class="nav-card-title">管理業務</div>
-        <div class="nav-card-desc">日常業務サイクル・スタッフ管理・BCP（義務化対応）・カンファレンス・感染症対策。</div>
-      </div>
-    </a>
-    <a href="13_障害介護サービス.html" class="nav-card">
-      <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m4 11 8-7 8 7M6 9.5V20h12V9.5M10 20v-6h4v6"/></svg></div>
-      <div class="nav-card-body">
-        <div class="nav-card-title">障害介護サービス</div>
-        <div class="nav-card-desc">居宅介護・重度訪問介護・同行援護・行動援護・重度障害者等包括支援の人員基準・報酬・加算・指定申請を完全網羅。</div>
+        <div class="nav-card-desc">日常業務サイクル・スタッフ管理・BCP（義務化対応）・感染症対策。</div>
       </div>
     </a>
     <a href="04_京都府・手続き.html" class="nav-card">
       <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16M5 21V10m14 11V10M3 10h18L12 4zM9 21v-7m6 7v-7"/></svg></div>
       <div class="nav-card-body">
         <div class="nav-card-title">京都府・手続き</div>
-        <div class="nav-card-desc">指定申請の流れ・各種届出・担当窓口・実地指導の詳細対応。変更届・更新申請も網羅。</div>
+        <div class="nav-card-desc">指定申請の流れ・各種届出・担当窓口・変更届・更新申請。</div>
       </div>
     </a>
-    <a href="05_請求業務.html" class="nav-card">
-      <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m9 8 3 4 3-4m-3 4v5m-3-3h6m-6-2.5h6"/></svg></div>
+  </div>
+
+  <div class="section-label">サービス別ガイド</div>
+  <div class="nav-grid">
+    <a href="13_障害介護サービス.html" class="nav-card">
+      <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m4 11 8-7 8 7M6 9.5V20h12V9.5M10 20v-6h4v6"/></svg></div>
       <div class="nav-card-body">
-        <div class="nav-card-title">請求業務</div>
-        <div class="nav-card-desc">請求の仕組み・加算一覧（体制届要否・算定詳細）・収益シミュレーション・返戻対応。</div>
+        <div class="nav-card-title">障害介護サービス</div>
+        <div class="nav-card-desc">居宅介護・重度訪問介護・同行援護・行動援護の人員基準・報酬・加算。</div>
       </div>
     </a>
     <a href="06_就労継続A型.html" class="nav-card">
       <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16M3 21h18M9 7h2m2 0h2M9 11h2m2 0h2M9 15h2m2 0h2"/></svg></div>
       <div class="nav-card-body">
         <div class="nav-card-title">就労継続A型</div>
-        <div class="nav-card-desc">人員基準・雇用契約・賃金管理・加算一覧（就労移行支援体制加算等）・生産活動収支。</div>
+        <div class="nav-card-desc">人員基準・雇用契約・賃金管理・加算一覧・生産活動収支。</div>
       </div>
     </a>
     <a href="07_就労継続B型.html" class="nav-card">
       <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V8l6 4V8l6 4V4h4v17zM8 17h2m4 0h2"/></svg></div>
       <div class="nav-card-body">
         <div class="nav-card-title">就労継続B型</div>
-        <div class="nav-card-desc">工賃管理・目標工賃達成加算・工賃向上計画・基本報酬区分・加算一覧。</div>
+        <div class="nav-card-desc">工賃管理・目標工賃達成加算・工賃向上計画・基本報酬区分。</div>
       </div>
     </a>
     <a href="08_相談支援.html" class="nav-card">
       <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H4l2.5-2.5A8 8 0 1 1 21 12z"/><path d="M9 11h.01M12 11h.01M15 11h.01"/></svg></div>
       <div class="nav-card-body">
         <div class="nav-card-title">相談支援</div>
-        <div class="nav-card-desc">計画相談・地域移行・地域定着。サビ管資格要件・業務フロー・加算・多職種連携。</div>
+        <div class="nav-card-desc">計画相談・地域移行・地域定着。資格要件・業務フロー・加算。</div>
       </div>
     </a>
-    <a href="09_監査対応.html" class="nav-card">
-      <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></div>
+  </div>
+
+  <div class="section-label">請求・経営</div>
+  <div class="nav-grid">
+    <a href="05_請求業務.html" class="nav-card">
+      <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m9 8 3 4 3-4m-3 4v5m-3-3h6m-6-2.5h6"/></svg></div>
       <div class="nav-card-body">
-        <div class="nav-card-title">監査対応</div>
-        <div class="nav-card-desc">実地指導・監査の違い・よくある指摘事項と対応策・不正請求防止・準備チェックリスト。</div>
+        <div class="nav-card-title">請求業務</div>
+        <div class="nav-card-desc">請求の仕組み・加算一覧・収益シミュレーション・返戻対応。</div>
       </div>
     </a>
     <a href="10_収入向上.html" class="nav-card">
       <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10m6 10V4m6 16v-7m4 7H2"/></svg></div>
       <div class="nav-card-body">
         <div class="nav-card-title">収入向上</div>
-        <div class="nav-card-desc">加算算定・利用者数増加・稼働率改善の3軸。病院・相談支援連携・ICT活用の具体策。</div>
+        <div class="nav-card-desc">加算算定・利用者数増加・稼働率改善の3軸と連携の具体策。</div>
       </div>
     </a>
     <a href="11_年間スケジュール.html" class="nav-card">
       <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4m8-4v4M4 11h16M8 15h2m4 0h2"/></svg></div>
       <div class="nav-card-body">
         <div class="nav-card-title">年間スケジュール</div>
-        <div class="nav-card-desc">処遇改善加算の締切・各種届出・月次定例業務。見落としゼロへの月別カレンダー。</div>
+        <div class="nav-card-desc">処遇改善加算の締切・各種届出・月次定例業務の月別カレンダー。</div>
       </div>
     </a>
-    <a href="12_QA.html" class="nav-card">
-      <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1 .9-1 1.7m0 3h.01"/></svg></div>
+    <a href="15_データ管理.html" class="nav-card">
+      <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.66 3.13 3 7 3s7-1.34 7-3V6M5 12c0 1.66 3.13 3 7 3s7-1.34 7-3"/></svg></div>
       <div class="nav-card-body">
-        <div class="nav-card-title">Q&amp;A</div>
-        <div class="nav-card-desc">申請・請求・加算・人員管理・就労継続支援のよくある質問と回答。</div>
+        <div class="nav-card-title">データ管理</div>
+        <div class="nav-card-desc">利用者情報・工賃・稼働率の記録と分析。グラフ・レポート出力。</div>
       </div>
     </a>
+  </div>
+
+  <div class="section-label">監査・実地指導</div>
+  <div class="nav-grid">
+    <a href="09_監査対応.html" class="nav-card">
+      <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></div>
+      <div class="nav-card-body">
+        <div class="nav-card-title">監査対応</div>
+        <div class="nav-card-desc">実地指導・監査の違い・よくある指摘事項と対応策・不正請求防止。</div>
+      </div>
+    </a>
+    <a href="16_実地指導チェックリスト.html" class="nav-card">
+      <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="m9 11 2 2 4-4m-6 7h6"/></svg></div>
+      <div class="nav-card-body">
+        <div class="nav-card-title">実地指導チェックリスト</div>
+        <div class="nav-card-desc">75項目のセルフチェック。進捗保存・カテゴリ別の達成率表示付き。</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="section-label">サポート・ツール</div>
+  <div class="nav-grid">
     <a href="14_AI作成支援.html" class="nav-card">
       <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3m0 12v3m9-9h-3M6 12H3m13.5-6.5L15 7m-6 6-1.5 1.5m9 0L15 13m-6-6L7.5 5.5"/><circle cx="12" cy="12" r="3"/></svg></div>
       <div class="nav-card-body">
         <div class="nav-card-title">AI作成支援</div>
-        <div class="nav-card-desc">個別支援計画・アセスメント・モニタリング等の書類をAIが自動下書き。加算診断・法令Q&amp;A・事故報告書にも対応。</div>
+        <div class="nav-card-desc">個別支援計画・アセスメント・モニタリング等をAIが自動下書き。</div>
       </div>
     </a>
     <a href="フォーマット/index.html" class="nav-card">
       <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
       <div class="nav-card-body">
         <div class="nav-card-title">様式ダウンロード</div>
-        <div class="nav-card-desc">訪問看護・就労支援・相談支援・処遇改善加算の全様式56種類（公式・オリジナル）</div>
+        <div class="nav-card-desc">訪問看護・就労支援・相談支援・処遇改善加算の全様式56種類。</div>
+      </div>
+    </a>
+    <a href="12_QA.html" class="nav-card">
+      <div class="nav-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1 .9-1 1.7m0 3h.01"/></svg></div>
+      <div class="nav-card-body">
+        <div class="nav-card-title">Q&amp;A</div>
+        <div class="nav-card-desc">申請・請求・加算・人員管理・就労継続支援のよくある質問。</div>
       </div>
     </a>
   </div>
 
   <!-- 更新情報 -->
-  <div class="section-label" style="margin-top:2.5rem;">更新情報・法令改正ニュース</div>
+  <div class="section-label">更新情報・法令改正ニュース</div>
   <div class="card" style="padding:0;overflow:hidden;">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem 0.6rem;border-bottom:2px solid var(--coral-light);">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem 0.6rem;border-bottom:1px solid var(--border);">
       <div style="font-size:0.82rem;color:var(--text-mid);">
-        <span style="background:#E53935;color:white;font-size:0.65rem;font-weight:800;padding:0.1rem 0.45rem;border-radius:99px;margin-right:0.5rem;">NEW!</span>
+        <span style="background:var(--danger);color:white;font-size:0.65rem;font-weight:800;padding:0.1rem 0.45rem;border-radius:99px;margin-right:0.5rem;">NEW!</span>
         公開から<strong>30日以内</strong>の更新に表示されます。
       </div>
       <div style="font-size:0.75rem;color:var(--text-light);">クリックで該当ページへ</div>
     </div>
     <div id="news-container">
-      <p style="padding:1rem;color:#aaa;font-size:0.85rem;">読み込み中...</p>
+      <p style="padding:1rem;color:var(--text-light);font-size:0.85rem;">読み込み中...</p>
     </div>
   </div>
 
@@ -237,12 +259,10 @@
   <p>障碍者福祉事業所 運営ガイド</p>
   <p>※ 法令・制度・報酬は改定されることがあります。最新情報は各官公庁の公式情報をご確認ください。</p>
 </footer>
-<script src="auth.js"></script><script src="popup.js"></script><script src="news.js"></script><script src="table-responsive.js"></script><script src="nav.js"></script>
-<script src="deadlines.js"></script>
-<script src="search-data.js"></script><script src="search.js"></script>
+<script src="auth.js?v=20260613b"></script><script src="popup.js?v=20260613b"></script><script src="news.js?v=20260613b"></script><script src="table-responsive.js?v=20260613b"></script><script src="nav.js?v=20260613b"></script>
+<script src="deadlines.js?v=20260613b"></script>
+<script src="search-data.js?v=20260613b"></script><script src="search.js?v=20260613b"></script>
 <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/nursing/sw.js").catch(function(){});}</script>
-<script src="animations.js"></script>
+<script src="animations.js?v=20260613b"></script>
 </body>
 </html>
-
-

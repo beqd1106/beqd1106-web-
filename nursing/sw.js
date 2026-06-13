@@ -2,7 +2,7 @@
    Service Worker — 障碍者福祉事業所 運営ガイド
    キャッシュファーストで主要リソースをオフライン対応する
 ================================================================ */
-const CACHE_NAME = 'fukushi-guide-v8';
+const CACHE_NAME = 'fukushi-guide-v9';
 
 // オフラインでも使えるようにキャッシュするファイル
 const PRECACHE = [
@@ -12,8 +12,9 @@ const PRECACHE = [
   '/nursing/design-upgrade.css',
   '/nursing/animations.js',
   '/nursing/auth.js',
-  '/nursing/images/hero_care.webp',
-  '/nursing/images/bg_leaf.webp',
+  '/nursing/images/photo_consult.webp',
+  '/nursing/images/texture_komorebi.webp',
+  '/nursing/images/illust_scenes.webp',
   '/nursing/popup.js',
   '/nursing/nav.js',
   '/nursing/news.js',

@@ -1,41 +1,49 @@
 /* ================================================================
    障碍者福祉事業所 運営ガイド — スタイルシート
-   デザイン参照: nami-nami.jp (白ベース・パステルブロック・遊び心)
+   デザイン: クリーン・メディカルモダン（深緑×生成り×ライトグレー）
+   参考: fukushi-greencoop.or.jp / yamatoen.or.jp / gosaiji-kenshin.com
 ================================================================ */
 
 :root {
-  /* ── メインカラー（ソフトコーラル）──────────── */
-  --coral:        #F0956A;
-  --coral-dark:   #D4784C;
-  --coral-mid:    #F0A882;
-  --coral-light:  #FDE8D8;
+  /* ── メインカラー（深緑）──────────────
+     ※ 旧コーラル変数名は互換のため緑系へマッピング */
+  --green:        #1B5E4B;
+  --green-deep:   #14463A;
+  --green-mid:    #2E7D63;
+  --green-soft:   #4D9B77;
+  --green-light:  #E3EFE9;
+  --green-faint:  #F0F6F2;
+  --coral:        var(--green-mid);
+  --coral-dark:   var(--green);
+  --coral-mid:    var(--green-soft);
+  --coral-light:  var(--green-light);
 
-  /* ── セクション背景パレット（nami-nami式ブロック）── */
-  --blk-peach:    #FDE8D8;  /* ピーチ */
-  --blk-mint:     #E0F2E8;  /* ミント */
-  --blk-sky:      #DFF0FB;  /* スカイ */
-  --blk-cream:    #FEF6E0;  /* クリーム */
-  --blk-lavender: #EEE8F8;  /* ラベンダー */
-  --blk-rose:     #FAE0E4;  /* ローズ */
+  /* ── セクション背景パレット（ナチュラルトーン）── */
+  --blk-peach:    #F2EDE1;  /* サンド */
+  --blk-mint:     #E4EFE7;  /* セージ */
+  --blk-sky:      #E4EDF2;  /* ミスト */
+  --blk-cream:    #F6F1E3;  /* リネン */
+  --blk-lavender: #EBEAE4;  /* ストーン */
+  --blk-rose:     #F0E9E1;  /* クレイ */
 
   /* ── 状態カラー ────────────────────── */
-  --success:       #7DC49A;
-  --success-light: #DCEFE5;
-  --warning:       #F0BE6A;
-  --warning-light: #FEF4D8;
-  --danger:        #E88080;
-  --danger-light:  #FDE8E8;
-  --info-light:    #DFF0FB;
+  --success:       #4D9B77;
+  --success-light: #DFEFE7;
+  --warning:       #C99A45;
+  --warning-light: #F6EDDA;
+  --danger:        #C25E5E;
+  --danger-light:  #F7E4E4;
+  --info-light:    #E3EEF6;
 
   /* ── ベース ─────────────────────────── */
-  --bg:         #FAFAF8;    /* ほぼ白・極薄クリーム */
+  --bg:         #F7F6F1;    /* 生成り */
   --card:       #FFFFFF;
-  --text:       #2A2020;    /* 温かい深みのある黒 */
-  --text-mid:   #7A6560;
-  --text-light: #B8A898;
-  --border:     #EDE0D4;
-  --shadow:     0 2px 14px rgba(200,110,70,0.06);
-  --shadow-lg:  0 8px 36px rgba(200,110,70,0.10);
+  --text:       #22302A;    /* 緑がかった深い黒 */
+  --text-mid:   #5C6B63;
+  --text-light: #98A49C;
+  --border:     #E3E2D8;
+  --shadow:     0 2px 14px rgba(27,62,50,0.05);
+  --shadow-lg:  0 10px 36px rgba(27,62,50,0.09);
 
   /* ── ラジウス ───────────────────────── */
   --r:    16px;
@@ -47,9 +55,9 @@
   --primary:      var(--coral);
   --primary-dark: var(--coral-dark);
   --primary-light:var(--coral-light);
-  --primary-bg:   #FFF8F3;
+  --primary-bg:   var(--green-faint);
   --secondary:    #9DC4AE;
-  --secondary-light: #E0F2E8;
+  --secondary-light: #E4EFE7;
   --radius:    var(--r);
   --radius-sm: var(--r-sm);
   --radius-lg: var(--r-lg);
@@ -146,7 +154,7 @@ a { color: var(--coral-dark); }
    PAGE HERO — nami-nami 風: 大きい文字 + 薄いパステル背景 + 円装飾
 ================================================================ */
 .page-hero {
-  background: linear-gradient(150deg, #FFF5EE 0%, #FDE8D8 50%, #FFF0E8 100%);
+  background: linear-gradient(150deg, #F4F2EA 0%, #E9F0EA 55%, #F6F4EC 100%);
   color: var(--text);
   padding: 4rem 2rem 3rem;
   position: relative;
@@ -160,12 +168,12 @@ a { color: var(--coral-dark); }
   right: -6rem; top: -6rem;
   width: 26rem; height: 26rem;
   border-radius: 50%;
-  border: 2px solid rgba(240,149,106,0.18);
+  border: 2px solid rgba(46,125,99,0.18);
   box-shadow:
-    0 0 0 3rem  rgba(240,149,106,0.07),
-    0 0 0 6rem  rgba(240,149,106,0.05),
-    0 0 0 9rem  rgba(240,149,106,0.035),
-    0 0 0 12rem rgba(240,149,106,0.02);
+    0 0 0 3rem  rgba(46,125,99,0.07),
+    0 0 0 6rem  rgba(46,125,99,0.05),
+    0 0 0 9rem  rgba(46,125,99,0.035),
+    0 0 0 12rem rgba(46,125,99,0.02);
 }
 
 .hero-inner {
@@ -209,7 +217,7 @@ a { color: var(--coral-dark); }
 
 /* サブページヒーロー */
 .page-hero-sm {
-  background: linear-gradient(150deg, #FFF5EE 0%, #FDE8D8 60%, #FFF0E8 100%);
+  background: linear-gradient(150deg, #F4F2EA 0%, #E9F0EA 60%, #F6F4EC 100%);
   color: var(--text);
   padding: 2.25rem 2rem;
   position: relative;
@@ -223,10 +231,10 @@ a { color: var(--coral-dark); }
   right: -4rem; top: -4rem;
   width: 18rem; height: 18rem;
   border-radius: 50%;
-  border: 2px solid rgba(240,149,106,0.15);
+  border: 2px solid rgba(46,125,99,0.15);
   box-shadow:
-    0 0 0 2.5rem rgba(240,149,106,0.07),
-    0 0 0 5rem  rgba(240,149,106,0.04);
+    0 0 0 2.5rem rgba(46,125,99,0.07),
+    0 0 0 5rem  rgba(46,125,99,0.04);
 }
 
 .page-hero-sm h1 {
@@ -447,7 +455,7 @@ td {
 /* 長い説明文セルは上揃えに戻す */
 td.td-top { vertical-align: top; }
 
-tr:nth-child(even) td { background: #FFF8F5; }
+tr:nth-child(even) td { background: #F6F8F4; }
 tr:hover td { background: var(--coral-light); transition: background 0.12s; }
 
 /* ================================================================
@@ -466,7 +474,7 @@ tr:hover td { background: var(--coral-light); transition: background 0.12s; }
 .badge-success   { background: var(--success-light); color: #2A6A4A; }
 .badge-warning   { background: var(--warning-light); color: #8A5A10; }
 .badge-danger    { background: var(--danger-light); color: #8A2828; }
-.badge-gray      { background: #F0EAE4; color: #6A5A50; }
+.badge-gray      { background: #ECEBE3; color: #5C645C; }
 
 /* ================================================================
    ALERTS
@@ -673,7 +681,7 @@ tr:hover td { background: var(--coral-light); transition: background 0.12s; }
 }
 .deadline-item .date-tag.red    { background: #FDE0E0; color: #901818; }
 .deadline-item .date-tag.green  { background: #D8F0E0; color: #186030; }
-.deadline-item .date-tag.gray   { background: #EEE8E0; color: #5A5048; }
+.deadline-item .date-tag.gray   { background: #ECEBE3; color: #5C645C; }
 
 /* ================================================================
    FAQ
@@ -756,7 +764,7 @@ tr:hover td { background: var(--coral-light); transition: background 0.12s; }
    FOOTER — やわらかいコーラル
 ================================================================ */
 footer {
-  background: linear-gradient(150deg, #C87858 0%, var(--coral) 100%);
+  background: linear-gradient(150deg, var(--green-deep) 0%, var(--green) 100%);
   color: rgba(255,255,255,0.88);
   text-align: center;
   padding: 2.25rem 1.5rem;
@@ -772,7 +780,7 @@ footer p + p { margin-top: 0.45rem; font-size: 0.72rem; color: rgba(255,255,255,
 @media print {
   .site-header, footer, .nav-hamburger { display: none; }
   .card { break-inside: avoid; box-shadow: none; border: 1px solid #DDD; }
-  .page-hero, .page-hero-sm { background: #FFF0E8 !important; color: #000 !important; }
+  .page-hero, .page-hero-sm { background: #F0F4EE !important; color: #000 !important; }
   .page-hero::before, .page-hero-sm::before { display: none; }
   a { color: var(--coral-dark); }
 }

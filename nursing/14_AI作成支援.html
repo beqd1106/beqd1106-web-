@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI作成支援 — 障碍者福祉事業所 運営ガイド</title>
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="design-upgrade.css">
+<link rel="stylesheet" href="style.css?v=20260613b">
+<link rel="stylesheet" href="design-upgrade.css?v=20260613b">
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#F0956A">
+<meta name="theme-color" content="#1B5E4B">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <style>
@@ -166,7 +166,7 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.85rem 2rem;
-  background: linear-gradient(135deg, var(--coral), #E07A48);
+  background: linear-gradient(135deg, var(--green-mid), var(--green));
   color: #fff;
   border: none;
   border-radius: 999px;
@@ -388,7 +388,7 @@
   border-radius: 999px;
   font-weight: 700;
 }
-.model-badge.quality { background: var(--blk-lavender); color: #6040a0; }
+.model-badge.quality { background: var(--green-light); color: var(--green-deep); }
 .model-badge.fast { background: var(--blk-mint); color: #4a7a5e; }
 
 /* ── セクション区切り ── */
@@ -537,19 +537,19 @@
     <a href="10_収入向上.html">収入</a>
     <a href="11_年間スケジュール.html">年間</a>
     <a href="12_QA.html">Q&amp;A</a>
-    <a href="14_AI作成支援.html" class="active" style="background:var(--blk-lavender);color:#6040a0;">AI支援</a>
+    <a href="14_AI作成支援.html" class="active">AI支援</a>
     <a href="15_データ管理.html" style="color:var(--success);font-weight:600;">データ</a>
     <a href="16_実地指導チェックリスト.html" style="color:#B71C1C;font-weight:600;">指導</a>
     <a href="フォーマット/index.html" >様式DL</a>
   </nav>
 </header>
 
-<div class="page-hero" style="background:linear-gradient(135deg,#F0EBF8 0%,#E8E0F4 50%,#EDE8F8 100%);">
+<div class="page-hero">
   <div class="hero-inner">
     <div class="hero-text">
-      <div class="hero-badge" style="background:#E8E0F4;color:#6040a0;border-color:#c0a0e0;">AI作成支援</div>
-      <h1 style="color:#3a2060;">書類・計画書を<br>AIが自動作成</h1>
-      <p style="color:#5a4080;">個別支援計画・アセスメント・モニタリングなど<br>実務書類をAIが下書き。スタッフの負担を大幅削減。</p>
+      <div class="hero-badge">AI作成支援</div>
+      <h1>書類・計画書を<br>AIが自動作成</h1>
+      <p style="color:var(--text-mid);">個別支援計画・アセスメント・モニタリングなど<br>実務書類をAIが下書き。スタッフの負担を大幅削減。</p>
       <div class="ai-notice" style="margin-top:1.25rem;max-width:520px;">
         <span>⚠</span>
         <span><strong>ご注意：</strong>AI出力は下書きです。内容の正確性・適切性は必ず担当者が確認・修正してください。個人情報の入力はお控えください。</span>
@@ -677,7 +677,7 @@
               <button class="ai-action-btn primary-action" onclick="copyOutput('plan_shuro')">コピー</button>
               <button class="ai-action-btn" onclick="printOutput('plan_shuro')">印刷</button>
               <button class="ai-action-btn" onclick="clearOutput('plan_shuro')">クリア</button>
-              <button class="ai-action-btn" onclick="downloadFilledTemplate('plan_shuro')" style="background:var(--blk-lavender);color:#6040a0;border:none;">Excelで保存</button>
+              <button class="ai-action-btn" onclick="downloadFilledTemplate('plan_shuro')" style="background:var(--green-light);color:var(--green-deep);border:none;">Excelで保存</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-plan_shuro"></div>
@@ -807,7 +807,7 @@
               <button class="ai-action-btn primary-action" onclick="copyOutput('plan_kyotaku')">コピー</button>
               <button class="ai-action-btn" onclick="printOutput('plan_kyotaku')">印刷</button>
               <button class="ai-action-btn" onclick="clearOutput('plan_kyotaku')">クリア</button>
-              <button class="ai-action-btn" onclick="downloadFilledTemplate('plan_kyotaku')" style="background:var(--blk-lavender);color:#6040a0;border:none;">Excelで保存</button>
+              <button class="ai-action-btn" onclick="downloadFilledTemplate('plan_kyotaku')" style="background:var(--green-light);color:var(--green-deep);border:none;">Excelで保存</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-plan_kyotaku"></div>
@@ -886,7 +886,7 @@
               <button class="ai-action-btn primary-action" onclick="copyOutput('assessment')">コピー</button>
               <button class="ai-action-btn" onclick="printOutput('assessment')">印刷</button>
               <button class="ai-action-btn" onclick="clearOutput('assessment')">クリア</button>
-              <button class="ai-action-btn" onclick="downloadFilledTemplate('assessment')" style="background:var(--blk-lavender);color:#6040a0;border:none;">Excelで保存</button>
+              <button class="ai-action-btn" onclick="downloadFilledTemplate('assessment')" style="background:var(--green-light);color:var(--green-deep);border:none;">Excelで保存</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-assessment"></div>
@@ -959,7 +959,7 @@
               <button class="ai-action-btn primary-action" onclick="copyOutput('monitoring')">コピー</button>
               <button class="ai-action-btn" onclick="printOutput('monitoring')">印刷</button>
               <button class="ai-action-btn" onclick="clearOutput('monitoring')">クリア</button>
-              <button class="ai-action-btn" onclick="downloadFilledTemplate('monitoring')" style="background:var(--blk-lavender);color:#6040a0;border:none;">Excelで保存</button>
+              <button class="ai-action-btn" onclick="downloadFilledTemplate('monitoring')" style="background:var(--green-light);color:var(--green-deep);border:none;">Excelで保存</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-monitoring"></div>
@@ -1028,7 +1028,7 @@
               <button class="ai-action-btn primary-action" onclick="copyOutput('nursing_report')">コピー</button>
               <button class="ai-action-btn" onclick="printOutput('nursing_report')">印刷</button>
               <button class="ai-action-btn" onclick="clearOutput('nursing_report')">クリア</button>
-              <button class="ai-action-btn" onclick="downloadFilledTemplate('nursing_report')" style="background:var(--blk-lavender);color:#6040a0;border:none;">Excelで保存</button>
+              <button class="ai-action-btn" onclick="downloadFilledTemplate('nursing_report')" style="background:var(--green-light);color:var(--green-deep);border:none;">Excelで保存</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-nursing_report"></div>
@@ -1112,7 +1112,7 @@
             <div class="ai-output-actions">
               <button class="ai-action-btn primary-action" onclick="copyOutput('kasan_check')">コピー</button>
               <button class="ai-action-btn" onclick="clearOutput('kasan_check')">クリア</button>
-              <button class="ai-action-btn" onclick="downloadFilledTemplate('kasan_check')" style="background:var(--blk-lavender);color:#6040a0;border:none;">Excelで保存</button>
+              <button class="ai-action-btn" onclick="downloadFilledTemplate('kasan_check')" style="background:var(--green-light);color:var(--green-deep);border:none;">Excelで保存</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-kasan_check"></div>
@@ -1172,7 +1172,7 @@
             <div class="ai-output-actions">
               <button class="ai-action-btn primary-action" onclick="copyOutput('claim_check')">コピー</button>
               <button class="ai-action-btn" onclick="clearOutput('claim_check')">クリア</button>
-              <button class="ai-action-btn" onclick="downloadFilledTemplate('claim_check')" style="background:var(--blk-lavender);color:#6040a0;border:none;">Excelで保存</button>
+              <button class="ai-action-btn" onclick="downloadFilledTemplate('claim_check')" style="background:var(--green-light);color:var(--green-deep);border:none;">Excelで保存</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-claim_check"></div>
@@ -1227,7 +1227,7 @@
             <div class="ai-output-actions">
               <button class="ai-action-btn primary-action" onclick="copyOutput('law_summary')">コピー</button>
               <button class="ai-action-btn" onclick="clearOutput('law_summary')">クリア</button>
-              <button class="ai-action-btn" onclick="downloadFilledTemplate('law_summary')" style="background:var(--blk-lavender);color:#6040a0;border:none;">Excelで保存</button>
+              <button class="ai-action-btn" onclick="downloadFilledTemplate('law_summary')" style="background:var(--green-light);color:var(--green-deep);border:none;">Excelで保存</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-law_summary"></div>
@@ -1319,7 +1319,7 @@
               <button class="ai-action-btn primary-action" onclick="copyOutput('incident_docs')">コピー</button>
               <button class="ai-action-btn" onclick="printOutput('incident_docs')">印刷</button>
               <button class="ai-action-btn" onclick="clearOutput('incident_docs')">クリア</button>
-              <button class="ai-action-btn" onclick="downloadFilledTemplate('incident_docs')" style="background:var(--blk-lavender);color:#6040a0;border:none;">Excelで保存</button>
+              <button class="ai-action-btn" onclick="downloadFilledTemplate('incident_docs')" style="background:var(--green-light);color:var(--green-deep);border:none;">Excelで保存</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-incident_docs"></div>
@@ -1394,7 +1394,7 @@
               <button class="ai-action-btn primary-action" onclick="copyOutput('wage_plan')">コピー</button>
               <button class="ai-action-btn" onclick="printOutput('wage_plan')">印刷</button>
               <button class="ai-action-btn" onclick="clearOutput('wage_plan')">クリア</button>
-              <button class="ai-action-btn" onclick="downloadFilledTemplate('wage_plan')" style="background:var(--blk-lavender);color:#6040a0;border:none;">Excelで保存</button>
+              <button class="ai-action-btn" onclick="downloadFilledTemplate('wage_plan')" style="background:var(--green-light);color:var(--green-deep);border:none;">Excelで保存</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-wage_plan"></div>
@@ -1451,7 +1451,7 @@
               <button class="ai-action-btn primary-action" onclick="copyOutput('easy_read')">コピー</button>
               <button class="ai-action-btn" onclick="printOutput('easy_read')">印刷</button>
               <button class="ai-action-btn" onclick="clearOutput('easy_read')">クリア</button>
-              <button class="ai-action-btn" onclick="downloadFilledTemplate('easy_read')" style="background:var(--blk-lavender);color:#6040a0;border:none;">Excelで保存</button>
+              <button class="ai-action-btn" onclick="downloadFilledTemplate('easy_read')" style="background:var(--green-light);color:var(--green-deep);border:none;">Excelで保存</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-easy_read"></div>
@@ -1521,7 +1521,7 @@
             <div class="ai-output-actions">
               <button class="ai-action-btn primary-action" onclick="copyOutput('staff_sim')">コピー</button>
               <button class="ai-action-btn" onclick="clearOutput('staff_sim')">クリア</button>
-              <button class="ai-action-btn" onclick="downloadFilledTemplate('staff_sim')" style="background:var(--blk-lavender);color:#6040a0;border:none;">Excelで保存</button>
+              <button class="ai-action-btn" onclick="downloadFilledTemplate('staff_sim')" style="background:var(--green-light);color:var(--green-deep);border:none;">Excelで保存</button>
             </div>
           </div>
           <div class="ai-output-box" id="output-box-staff_sim"></div>
@@ -1538,9 +1538,9 @@
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="auth.js"></script>
-<script src="nav.js"></script>
-<script src="ai-support.js?v=20260522"></script>
-<script src="animations.js?v=20260522"></script>
+<script src="auth.js?v=20260613b"></script>
+<script src="nav.js?v=20260613b"></script>
+<script src="ai-support.js?v=20260613b"></script>
+<script src="animations.js?v=20260613b"></script>
 </body>
 </html>
