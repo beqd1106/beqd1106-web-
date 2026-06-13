@@ -17,34 +17,33 @@
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-<link rel="stylesheet" href="css/style.css?v=20260612">
-<link rel="stylesheet" href="css/dental-v3.css?v=20260613b">
+<link rel="stylesheet" href="css/style.css?v=20260613v4">
 </head>
 <body>
 
 <!-- ========== PASSWORD GATE ========== -->
 <div id="pwGate" style="
   position:fixed;inset:0;z-index:99999;
-  background:linear-gradient(135deg,#0d2137 0%,#1a3a5c 60%,#0d2137 100%);
+  background:linear-gradient(135deg,#1c1c20 0%,#111113 60%,#0d0d0f 100%);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:1.5rem;padding:2rem;
 ">
   <div style="text-align:center;">
-    <div style="font-size:3rem;margin-bottom:0.5rem;color:#00c9a7;"><i class="ic ic-tooth"></i></div>
-    <div style="font-size:1.5rem;font-weight:700;color:#fff;font-family:'Noto Serif JP',serif;letter-spacing:0.05em;">歯科経営コンパス</div>
-    <div style="font-size:0.82rem;color:rgba(255,255,255,0.45);margin-top:0.4rem;letter-spacing:0.08em;">DENTAL COMPASS — PRIVATE ACCESS</div>
+    <div style="font-size:3rem;margin-bottom:0.5rem;color:#dcc995;"><i class="ic ic-tooth"></i></div>
+    <div style="font-size:1.5rem;font-weight:600;color:#fff;font-family:'Noto Serif JP',serif;letter-spacing:0.08em;">歯科経営コンパス</div>
+    <div style="font-size:0.78rem;color:rgba(255,255,255,0.5);margin-top:0.5rem;letter-spacing:0.22em;">DENTAL COMPASS — PRIVATE ACCESS</div>
   </div>
-  <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:2rem 2.5rem;width:100%;max-width:360px;backdrop-filter:blur(10px);">
-    <label style="display:block;font-size:0.82rem;color:rgba(255,255,255,0.6);margin-bottom:0.6rem;letter-spacing:0.06em;">パスワードを入力</label>
+  <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:4px;padding:2rem 2.5rem;width:100%;max-width:360px;backdrop-filter:blur(10px);">
+    <label style="display:block;font-size:0.78rem;color:rgba(255,255,255,0.6);margin-bottom:0.6rem;letter-spacing:0.08em;">パスワードを入力</label>
     <input id="pwInput" type="password" placeholder="password"
-      style="width:100%;padding:0.75rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:#fff;font-size:1rem;outline:none;letter-spacing:0.1em;"
+      style="width:100%;padding:0.75rem 1rem;border-radius:2px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:#fff;font-size:1rem;outline:none;letter-spacing:0.1em;"
       onkeydown="if(event.key==='Enter')checkPw()"
     >
     <button onclick="checkPw()"
-      style="width:100%;margin-top:0.9rem;padding:0.75rem;border-radius:8px;background:#00c9a7;color:#0d2137;font-weight:700;font-size:0.95rem;border:none;cursor:pointer;transition:background 0.2s;"
-      onmouseover="this.style.background='#00b096'" onmouseout="this.style.background='#00c9a7'"
-    >入る →</button>
-    <div id="pwError" style="color:#ff6b6b;font-size:0.8rem;text-align:center;margin-top:0.6rem;display:none;">パスワードが違います</div>
+      style="width:100%;margin-top:0.9rem;padding:0.8rem;border-radius:2px;background:#dcc995;color:#17171a;font-weight:700;font-size:0.92rem;letter-spacing:0.08em;border:none;cursor:pointer;transition:background 0.2s;"
+      onmouseover="this.style.background='#b6985a'" onmouseout="this.style.background='#dcc995'"
+    >入る</button>
+    <div id="pwError" style="color:#e0a0a0;font-size:0.8rem;text-align:center;margin-top:0.6rem;display:none;">パスワードが違います</div>
   </div>
 </div>
 <script>
@@ -211,7 +210,6 @@ function checkPw(){
       </div>
     </div>
   </div>
-  <img class="hero-mascot" src="img/tooth_mascot.webp" alt="" aria-hidden="true">
   <div class="hero-scroll">SCROLL</div>
 </section>
 
@@ -220,7 +218,7 @@ function checkPw(){
   <div class="container">
     <div class="about-grid">
       <div class="fade-up">
-        <span class="section-label">About This Site</span>
+        <span class="section-label">01 — About</span>
         <h2 class="section-title">なぜこのサイトが必要か</h2>
         <p style="color:var(--text-muted);line-height:1.9;margin-bottom:1.5rem;">
           歯科医院の経営を取り巻く環境は急速に変化しています。
@@ -289,7 +287,7 @@ function checkPw(){
 <!-- ========== CATEGORY OVERVIEW ========== -->
 <section id="cat-overview" class="section">
   <div class="container">
-    <span class="section-label fade-up">18 Categories</span>
+    <span class="section-label fade-up">02 — Categories</span>
     <h2 class="section-title fade-up">専門カテゴリ一覧</h2>
     <p class="section-desc fade-up">開業前から閉院まで、歯科経営のあらゆる局面をカバーする18の専門分野。</p>
     <div class="content-grid" style="margin-top:2.5rem;">
@@ -392,7 +390,7 @@ function checkPw(){
 <!-- ========== SCANNER SECTION ========== -->
 <section id="scanner" class="scanner-section section noise">
   <div class="container" style="position:relative;z-index:2;">
-    <span class="section-label fade-up">Management Diagnosis</span>
+    <span class="section-label fade-up">03 — Diagnosis</span>
     <h2 class="section-title fade-up">経営スキャナー</h2>
     <p class="section-desc scanner-desc fade-up">8つの主要KPIを入力するだけで、あなたの医院の経営状態をレーダーチャートで即診断。業界平均との比較・リスク評価・改善アクションを自動提示します。</p>
 
@@ -547,7 +545,7 @@ function checkPw(){
 <!-- ========== TOOLS SECTION ========== -->
 <section id="tools" class="tools-section section noise">
   <div class="container" style="position:relative;z-index:2;">
-    <span class="section-label fade-up">Free Tools</span>
+    <span class="section-label fade-up">04 — Tools</span>
     <h2 class="section-title fade-up">無料シミュレーションツール 10選</h2>
     <p class="section-desc fade-up">数値を入れるだけで即計算。開業準備から経営改善まで幅広くサポートします。</p>
     <div class="tools-grid">
@@ -639,7 +637,7 @@ function checkPw(){
 <!-- ========== DOWNLOADS ========== -->
 <section id="downloads" class="section" style="background:var(--gray-50);">
   <div class="container">
-    <span class="section-label fade-up">Free Templates</span>
+    <span class="section-label fade-up">05 — Templates</span>
     <h2 class="section-title fade-up">書類テンプレート 無料ダウンロード</h2>
     <p class="section-desc fade-up">行政届出・施設基準・医療安全・経営管理に必要な書類フォーマットを印刷用HTMLで提供。そのまま印刷してご利用ください。</p>
 
@@ -769,7 +767,7 @@ function checkPw(){
   <div class="container" style="position:relative;z-index:1;">
     <div class="v3-about-grid">
       <div>
-        <span class="section-label" style="color:rgba(255,255,255,0.7);">Free Consultation</span>
+        <span class="section-label">06 — Consultation</span>
         <h2 class="section-title">まずは無料相談から</h2>
         <p class="section-desc">
           開業・運営・収益改善など、歯科経営のあらゆるお悩みをお気軽に<br>ご相談ください。<br>専門コンサルタントが丁寧にお答えします。
@@ -778,7 +776,7 @@ function checkPw(){
           無料相談を申し込む →
         </a>
       </div>
-      <div class="v3-photo" style="aspect-ratio:4/3;">
+      <div class="v3-photo fade-up" style="aspect-ratio:4/3;">
         <img src="img/doctor.webp" alt="コンサルタントによる相談風景" loading="lazy">
       </div>
     </div>
@@ -922,8 +920,8 @@ function checkPw(){
 <script src="js/card_details.js?v=20260612"></script>
 <script src="js/categories.js?v=20260612"></script>
 <script src="js/tools.js?v=20260612"></script>
-<script src="js/main.js?v=20260613b"></script>
-<script src="js/scanner.js?v=20260612"></script>
+<script src="js/main.js?v=20260613v4"></script>
+<script src="js/scanner.js?v=20260613v4"></script>
 <script src="js/search.js?v=20260612"></script>
 </body>
 </html>

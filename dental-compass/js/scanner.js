@@ -121,7 +121,7 @@
   }
 
   function getGrade(avg) {
-    if (avg >= 88) return { grade: 'A+', label: '経営トップクラス',    color: '#00c9a7' };
+    if (avg >= 88) return { grade: 'A+', label: '経営トップクラス',    color: '#b6985a' };
     if (avg >= 75) return { grade: 'A',  label: '優良経営',            color: '#27ae60' };
     if (avg >= 62) return { grade: 'B+', label: '良好な状態',          color: '#3b9eca' };
     if (avg >= 50) return { grade: 'B',  label: '標準的',              color: '#c9a84c' };
@@ -146,7 +146,7 @@
     if (pts >= 5) return { level: 'high',     label: '高リスク',       color: '#e67e22', width: 70, flags };
     if (pts >= 3) return { level: 'medium',   label: '中程度のリスク', color: '#c9a84c', width: 45, flags };
     if (pts >= 1) return { level: 'low',      label: '低リスク',       color: '#27ae60', width: 20, flags };
-    return          { level: 'none',   label: 'リスク良好',       color: '#00c9a7', width: 5,  flags };
+    return          { level: 'none',   label: 'リスク良好',       color: '#b6985a', width: 5,  flags };
   }
 
   // ─── レーダーチャート（業界平均リング付き） ───
@@ -180,7 +180,7 @@
         i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
       }
       ctx.closePath();
-      ctx.strokeStyle = lv === 5 ? 'rgba(0,201,167,0.18)' : 'rgba(255,255,255,0.05)';
+      ctx.strokeStyle = lv === 5 ? 'rgba(182,152,90,0.18)' : 'rgba(255,255,255,0.05)';
       ctx.lineWidth   = lv === 5 ? 1.5 : 0.8;
       ctx.stroke();
       // level number
@@ -231,13 +231,13 @@
     ctx.closePath();
 
     const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
-    grad.addColorStop(0, 'rgba(0,201,167,0.38)');
-    grad.addColorStop(1, 'rgba(0,201,167,0.04)');
+    grad.addColorStop(0, 'rgba(182,152,90,0.38)');
+    grad.addColorStop(1, 'rgba(182,152,90,0.04)');
     ctx.fillStyle   = grad;
     ctx.fill();
-    ctx.shadowColor = '#00c9a7';
+    ctx.shadowColor = '#b6985a';
     ctx.shadowBlur  = 10;
-    ctx.strokeStyle = '#00c9a7';
+    ctx.strokeStyle = '#b6985a';
     ctx.lineWidth   = 2.5;
     ctx.stroke();
     ctx.shadowBlur  = 0;
@@ -247,8 +247,8 @@
       const p = pt(i, (R * s) / 100);
       ctx.beginPath();
       ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
-      ctx.fillStyle   = '#00c9a7';
-      ctx.shadowColor = '#00c9a7';
+      ctx.fillStyle   = '#b6985a';
+      ctx.shadowColor = '#b6985a';
       ctx.shadowBlur  = 8;
       ctx.fill();
       ctx.shadowBlur  = 0;
@@ -264,7 +264,7 @@
       ctx.fillStyle = 'rgba(255,255,255,0.78)';
       ctx.fillText(AXES[i].shortLabel, p.x, p.y - 7);
       ctx.font      = "bold 12px 'Noto Sans JP', sans-serif";
-      ctx.fillStyle = score >= 75 ? '#00c9a7' : score >= 50 ? '#c9a84c' : '#e74c3c';
+      ctx.fillStyle = score >= 75 ? '#b6985a' : score >= 50 ? '#c9a84c' : '#e74c3c';
       ctx.fillText(score, p.x, p.y + 8);
     }
 
@@ -273,7 +273,7 @@
     if (la > 0) {
       ctx.font = "9px 'Noto Sans JP', sans-serif";
       const lx = cx - 72, ly = cH - 16;
-      ctx.fillStyle = `rgba(0,201,167,${la})`;
+      ctx.fillStyle = `rgba(182,152,90,${la})`;
       ctx.fillRect(lx, ly - 4, 16, 3);
       ctx.fillStyle = `rgba(255,255,255,${la * 0.55})`;
       ctx.textAlign = 'left';
@@ -318,15 +318,15 @@
     ctx.lineTo(pts[pts.length - 1].x, H);
     ctx.closePath();
     const fg = ctx.createLinearGradient(0, 0, 0, H);
-    fg.addColorStop(0, 'rgba(0,201,167,0.25)');
-    fg.addColorStop(1, 'rgba(0,201,167,0)');
+    fg.addColorStop(0, 'rgba(182,152,90,0.25)');
+    fg.addColorStop(1, 'rgba(182,152,90,0)');
     ctx.fillStyle = fg;
     ctx.fill();
 
     // line
     const lg = ctx.createLinearGradient(0, 0, W, 0);
-    lg.addColorStop(0, 'rgba(0,201,167,0.45)');
-    lg.addColorStop(1, '#00c9a7');
+    lg.addColorStop(0, 'rgba(182,152,90,0.45)');
+    lg.addColorStop(1, '#b6985a');
     ctx.beginPath();
     pts.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
     ctx.strokeStyle = lg;
@@ -338,11 +338,11 @@
     pts.forEach((p, i) => {
       ctx.beginPath();
       ctx.arc(p.x, p.y, i === pts.length - 1 ? 4 : 2.5, 0, Math.PI * 2);
-      ctx.fillStyle = i === pts.length - 1 ? '#00c9a7' : 'rgba(0,201,167,0.45)';
+      ctx.fillStyle = i === pts.length - 1 ? '#b6985a' : 'rgba(182,152,90,0.45)';
       ctx.fill();
       ctx.font      = "9px 'Noto Sans JP', sans-serif";
       ctx.textAlign = 'center';
-      ctx.fillStyle = i === pts.length - 1 ? '#00c9a7' : 'rgba(255,255,255,0.4)';
+      ctx.fillStyle = i === pts.length - 1 ? '#b6985a' : 'rgba(255,255,255,0.4)';
       ctx.fillText(Math.round(avgs[i]), p.x, p.y - 7);
     });
   }
@@ -368,7 +368,7 @@
     const min = +slider.min, max = +slider.max, val = +slider.value;
     const pct = ((val - min) / (max - min)) * 100;
     slider.style.backgroundImage =
-      `linear-gradient(to right, #00c9a7 ${pct}%, rgba(255,255,255,0.12) ${pct}%)`;
+      `linear-gradient(to right, #b6985a ${pct}%, rgba(255,255,255,0.12) ${pct}%)`;
   }
 
   // ─── 履歴パネルを更新 ───
@@ -385,7 +385,7 @@
       el.querySelector('.hist-date').textContent  = h.date;
       const scoreEl = el.querySelector('.hist-score');
       scoreEl.textContent  = h.avg;
-      scoreEl.style.color  = h.avg >= 75 ? '#00c9a7' : h.avg >= 50 ? '#c9a84c' : '#e74c3c';
+      scoreEl.style.color  = h.avg >= 75 ? '#b6985a' : h.avg >= 50 ? '#c9a84c' : '#e74c3c';
     });
   }
 
@@ -473,7 +473,7 @@
         if (prevAvg !== null) {
           const d = Math.round(avg) - prevAvg;
           deltaBadge.textContent = (d >= 0 ? '+' : '') + d + ' vs 前回';
-          deltaBadge.style.color   = d >= 0 ? '#00c9a7' : '#e74c3c';
+          deltaBadge.style.color   = d >= 0 ? '#b6985a' : '#e74c3c';
           deltaBadge.style.display = 'inline-block';
         } else {
           deltaBadge.style.display = 'none';
@@ -512,14 +512,14 @@
         const s   = Math.round(scores[a.key]);
         const bm  = benchmarks[i];
         const d   = s - bm;
-        const clr = s >= 75 ? '#00c9a7' : s >= 55 ? '#3b9eca' : s >= 40 ? '#c9a84c' : '#e74c3c';
+        const clr = s >= 75 ? '#b6985a' : s >= 55 ? '#3b9eca' : s >= 40 ? '#c9a84c' : '#e74c3c';
         const lbl = s >= 75 ? '良好' : s >= 55 ? '普通' : s >= 40 ? '要注意' : '要改善';
         return `
           <div class="kpi-item" style="animation-delay:${0.4 + i * 0.07}s">
             <div class="kpi-item-top">
               <span class="kpi-name">${a.label}</span>
               <div class="kpi-right">
-                <span class="kpi-delta" style="color:${d >= 0 ? '#00c9a7' : '#e74c3c'}">${d >= 0 ? '▲' : '▼'}${Math.abs(d)}</span>
+                <span class="kpi-delta" style="color:${d >= 0 ? '#b6985a' : '#e74c3c'}">${d >= 0 ? '▲' : '▼'}${Math.abs(d)}</span>
                 <span class="kpi-status" style="color:${clr}">${lbl}&nbsp;${inputs[a.key]}${a.unit}</span>
               </div>
             </div>

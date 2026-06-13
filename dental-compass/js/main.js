@@ -339,6 +339,31 @@ document.querySelectorAll('.tool-card .tool-card-icon').forEach((el, i) => {
 
 console.log('歯科経営コンパス — Loaded successfully');
 
+// ─── ヒーロー統計のカウントアップ（先頭が数字のものだけ） ───
+(function heroCountUp() {
+  const nums = document.querySelectorAll('.hero-stat-num');
+  nums.forEach((el, i) => {
+    const m = el.textContent.match(/^(\d+)/);
+    if (!m) return;                 // 「R8」「最新」等はそのまま
+    const target = parseInt(m[1], 10);
+    const suffix = el.innerHTML.slice(m[1].length); // <span>分野</span> 等
+    let started = false;
+    const run = () => {
+      if (started) return; started = true;
+      const dur = 1100, t0 = performance.now();
+      const tick = (now) => {
+        const p = Math.min((now - t0) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.innerHTML = Math.round(target * eased) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    // ヒーローは初期表示で見えているので少し遅らせて開始
+    setTimeout(run, 1100 + i * 120);
+  });
+})();
+
 // ─── ドロワー ツールマップ ───
 const DRAWER_TOOL_MAP = {
   'cat-01': { id: 'tool1',  label: '開業資金シミュレーター',   desc: '開業に必要な資金を自動計算・シミュレート' },
