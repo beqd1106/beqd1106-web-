@@ -586,3 +586,59 @@ tr:hover td { background: var(--green-faint); }
   .stats-section { background: #fff; }
   .stat-item { color: #000; }
 }
+
+/* ================================================================
+   エディトリアル統一レイヤー（TOP以外の全ページ）
+   TOPの「縦書き明朝・生成り・金茶」の世界観をサブページにも反映。
+   ※ body.home は home.css が別途管理するため対象外。
+================================================================ */
+body:not(.home) {
+  --gold:      #A9854A;
+  --gold-soft: #C2A877;
+  --cream:     #F7F4EC;
+  --forest:    #1F4D3A;
+  --forest-deep: #163A2B;
+  background: var(--cream);
+}
+
+/* 見出しを明朝に */
+body:not(.home) .page-hero-sm h1,
+body:not(.home) .section-label,
+body:not(.home) .section-header h2,
+body:not(.home) .card > h2,
+body:not(.home) footer p:first-child {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* サブページ・ヒーローをエディトリアルに */
+body:not(.home) .page-hero-sm {
+  background:
+    linear-gradient(105deg, rgba(247,244,236,0.97) 0%, rgba(237,242,236,0.9) 100%),
+    url('images/texture_komorebi.webp') right top / 48% no-repeat;
+  border-bottom: 1px solid var(--border);
+}
+body:not(.home) .page-hero-sm h1 { color: var(--forest-deep); }
+body:not(.home) .hero-badge {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold-soft);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+/* セクションラベル：金茶の縦罫 */
+body:not(.home) .section-label { border-left-color: var(--gold); color: var(--forest-deep); }
+
+/* 戻るリンク・見出し下線の差し色を金茶に */
+body:not(.home) .section-header { border-bottom-color: var(--green-light); }
+body:not(.home) .section-header h2 { color: var(--forest-deep); }
+
+/* ヘッダー：現在グループ／TOPタブの下線を金茶アクセントに */
+body:not(.home) .gnav-top.active::after,
+body:not(.home) .gnav-item.has-current .gnav-btn::after { background: var(--gold); }
+body:not(.home) .gnav-btn svg:first-child { color: var(--gold-soft); }
+
+/* 統計バンドの数字を明朝・生成り（TOPと統一） */
+body:not(.home) .stat-item .stat-num { font-family: var(--font-serif); }

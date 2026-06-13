@@ -1,0 +1,547 @@
+/* ================================================================
+   home.css — TOPページ専用エディトリアルデザイン（ゼロから設計）
+   方向性: 縦書き明朝 × 写真 × 生成り × 余白（参考: グリーンコープ）
+   動き: home.js（Lenis + GSAP）と連携
+   ※ TOPページ（body.home）のみ読み込む。content/sub は対象外。
+================================================================ */
+
+body.home {
+  /* ── エディトリアル・パレット ── */
+  --cream:       #F7F4EC;
+  --cream-2:     #EFEADC;
+  --paper:       #FCFAF4;
+  --ink:         #283129;   /* 本文：緑がかった黒 */
+  --ink-soft:    #5C665C;
+  --forest:      #1F4D3A;
+  --forest-deep: #163A2B;
+  --forest-soft: #3E7A5E;
+  --gold:        #A9854A;   /* 差し色：ほのかな金茶 */
+  --gold-soft:   #C2A877;
+  --line:        #DAD3C2;
+
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Noto Sans JP', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.home .serif { font-family: 'Noto Serif JP', 'Yu Mincho', serif; }
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+/* ================================================================
+   ヘッダー（nav.js が中身を構築。TOPでは透過 → スクロールで生成り）
+================================================================ */
+body.home .site-header {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+  transition: background 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease;
+}
+body.home .site-header.scrolled {
+  background: rgba(247, 244, 236, 0.86);
+  backdrop-filter: blur(14px) saturate(1.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  border-bottom-color: var(--line);
+}
+body.home .site-logo { color: var(--forest-deep); }
+body.home .site-logo svg { color: var(--gold); }
+body.home .site-logo .logo-text em { color: var(--ink-soft); }
+body.home .gnav-top, body.home .gnav-btn { color: var(--ink); }
+body.home .gnav-top:hover, body.home .gnav-top.active,
+body.home .gnav-btn:hover, body.home .gnav-item.open .gnav-btn { color: var(--forest); }
+body.home .gnav-top.active::after,
+body.home .gnav-item.has-current .gnav-btn::after { background: var(--gold); }
+body.home .gnav-btn svg:first-child { color: var(--gold-soft); }
+body.home .gnav-search {
+  background: rgba(255,255,255,0.5);
+  border-color: var(--line);
+  color: var(--ink-soft);
+}
+body.home .gnav-search:hover { color: var(--forest); border-color: var(--gold-soft); }
+body.home .gnav-burger { background: var(--forest); }
+body.home .gnav-panel a:hover { background: var(--cream-2); }
+body.home .gnav-panel .gp-title { color: var(--ink); }
+body.home .gnav-panel a:hover .gp-title { color: var(--forest); }
+
+/* ================================================================
+   1. HERO — 写真 ＋ 巨大縦書き明朝 ＋ 余白
+================================================================ */
+.hm-hero {
+  position: relative;
+  min-height: 100svh;
+  padding: clamp(6rem, 12vh, 9rem) clamp(1.25rem, 5vw, 5rem) clamp(3rem, 6vh, 5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  grid-template-rows: 1fr auto;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: center;
+  isolation: isolate;
+}
+
+/* 木漏れ日テクスチャを薄く敷く */
+.hm-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('images/texture_komorebi.webp') right -10% top -20% / 55% no-repeat;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.hm-hero-figure {
+  position: relative;
+  grid-row: 1 / 2;
+  grid-column: 1 / 2;
+  align-self: center;
+  will-change: transform;
+}
+.hm-hero-figure .hm-photo-mask {
+  overflow: hidden;
+  border-radius: 4px;
+}
+.hm-hero-figure img {
+  width: 100%;
+  aspect-ratio: 4 / 3.1;
+  object-fit: cover;
+  display: block;
+  will-change: transform;
+}
+.hm-hero-figure figcaption {
+  position: absolute;
+  left: -0.5rem; bottom: -1.1rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 0.55rem 0.95rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--forest-deep);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 12px 30px rgba(30, 60, 45, 0.1);
+}
+.hm-hero-figure figcaption svg { width: 16px; height: 16px; color: var(--gold); }
+
+/* 巨大縦書き見出し */
+.hm-hero-vertical {
+  grid-row: 1 / 2;
+  grid-column: 2 / 3;
+  justify-self: end;
+  align-self: center;
+}
+.hm-vtitle {
+  writing-mode: vertical-rl;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 700;
+  font-size: clamp(2.6rem, 7vw, 5.6rem);
+  line-height: 1.18;
+  letter-spacing: 0.12em;
+  color: var(--forest-deep);
+  margin: 0;
+}
+.hm-vtitle .ch { display: inline-block; }
+.hm-vtitle .accent { color: var(--gold); }
+
+/* 下段：コピー＋CTA */
+.hm-hero-copy {
+  grid-row: 2 / 3;
+  grid-column: 1 / 2;
+  max-width: 560px;
+}
+.hm-overline {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.hm-overline::before {
+  content: '';
+  width: 2.2rem; height: 1px;
+  background: var(--gold-soft);
+}
+.hm-lead {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1rem, 1.4vw + 0.6rem, 1.35rem);
+  line-height: 2;
+  color: var(--ink);
+  margin-bottom: 1.75rem;
+  font-weight: 500;
+}
+.hm-cta { display: flex; flex-wrap: wrap; gap: 0.85rem; }
+.hm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.85rem 1.6rem;
+  border-radius: 2px;
+  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), background 0.25s, color 0.25s, border-color 0.25s;
+  will-change: transform;
+}
+.hm-btn-primary { background: var(--forest); color: var(--cream); }
+.hm-btn-primary:hover { background: var(--forest-deep); }
+.hm-btn-primary .arr { transition: transform 0.3s; }
+.hm-btn-primary:hover .arr { transform: translateX(4px); }
+.hm-btn-ghost { color: var(--forest); border: 1px solid var(--line); background: rgba(255,255,255,0.4); }
+.hm-btn-ghost:hover { border-color: var(--forest-soft); }
+
+/* SCROLL インジケータ */
+.hm-scroll {
+  position: absolute;
+  right: clamp(1rem, 3vw, 2.5rem);
+  bottom: clamp(1.5rem, 4vh, 3rem);
+  writing-mode: vertical-rl;
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  font-weight: 700;
+  color: var(--ink-soft);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.hm-scroll::after {
+  content: '';
+  width: 1px; height: 3.5rem;
+  background: linear-gradient(var(--gold-soft), transparent);
+  animation: scrollPulse 2.2s ease-in-out infinite;
+  transform-origin: top;
+}
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleY(0.4); opacity: 0.4; }
+  50%      { transform: scaleY(1);   opacity: 1; }
+}
+
+/* ================================================================
+   2. MARQUEE — サービス名が流れる帯
+================================================================ */
+.hm-marquee {
+  background: var(--forest-deep);
+  color: var(--cream);
+  padding: 0.85rem 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border-block: 1px solid rgba(255,255,255,0.08);
+}
+.hm-marquee-track {
+  display: inline-flex;
+  gap: 2.5rem;
+  align-items: center;
+  animation: marquee 32s linear infinite;
+  will-change: transform;
+}
+.hm-marquee:hover .hm-marquee-track { animation-play-state: paused; }
+.hm-marquee span {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  opacity: 0.92;
+}
+.hm-marquee .dot { color: var(--gold-soft); opacity: 0.7; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* ================================================================
+   3. INTRO — 理念ブロック
+================================================================ */
+.hm-intro {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(5rem, 12vh, 9rem) clamp(1.5rem, 5vw, 3rem);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: center;
+}
+.hm-intro-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+.hm-intro-h {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 2.4vw + 0.6rem, 2.4rem);
+  line-height: 1.7;
+  color: var(--forest-deep);
+  margin-bottom: 1.5rem;
+}
+.hm-intro-h .mark { color: var(--gold); }
+.hm-intro-p {
+  font-size: 0.92rem;
+  line-height: 2.1;
+  color: var(--ink-soft);
+}
+/* 統計 */
+.hm-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.hm-stat {
+  background: var(--paper);
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+}
+.hm-stat-num {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 700;
+  font-size: clamp(2.4rem, 5vw, 3.4rem);
+  line-height: 1;
+  color: var(--forest);
+}
+.hm-stat-num .u { font-size: 0.9rem; color: var(--gold); margin-left: 0.2rem; }
+.hm-stat-label {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+  margin-top: 0.6rem;
+}
+
+/* ================================================================
+   4. CONTENTS — エディトリアル目次（グループ別・大きなリスト行）
+================================================================ */
+.hm-contents { background: var(--paper); border-top: 1px solid var(--line); }
+.hm-contents-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(4rem, 9vh, 7rem) clamp(1.5rem, 5vw, 3rem);
+}
+.hm-sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+.hm-sec-head .en {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: var(--gold);
+}
+.hm-sec-head h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.4rem, 2vw + 0.5rem, 2rem);
+  font-weight: 700;
+  color: var(--forest-deep);
+}
+
+.hm-group { margin-bottom: clamp(2.5rem, 5vh, 4rem); }
+.hm-group-label {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--forest);
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.25rem;
+  border-bottom: 1px solid var(--line);
+}
+.hm-group-label svg { width: 18px; height: 18px; color: var(--gold); }
+
+.hm-row {
+  display: grid;
+  grid-template-columns: 3rem 1fr auto;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.4rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--ink);
+  position: relative;
+  overflow: hidden;
+}
+.hm-row::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 100%;
+  background: var(--cream-2);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+  z-index: 0;
+}
+.hm-row:hover::before { transform: scaleX(1); }
+.hm-row > * { position: relative; z-index: 1; }
+.hm-row .num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1rem;
+  color: var(--gold);
+  font-weight: 600;
+}
+.hm-row .body { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
+.hm-row .title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.05rem, 1.4vw + 0.4rem, 1.3rem);
+  font-weight: 600;
+  color: var(--forest-deep);
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+}
+.hm-row:hover .title { transform: translateX(8px); }
+.hm-row .desc {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1) 0.03s;
+}
+.hm-row:hover .desc { transform: translateX(8px); }
+.hm-row .arrow {
+  width: 38px; height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--forest);
+  flex-shrink: 0;
+  transition: background 0.3s, border-color 0.3s, transform 0.4s cubic-bezier(0.22,1,0.36,1);
+}
+.hm-row .arrow svg { width: 16px; height: 16px; transition: transform 0.3s; }
+.hm-row:hover .arrow { background: var(--forest); border-color: var(--forest); color: var(--cream); }
+.hm-row:hover .arrow svg { transform: translate(2px, -2px); }
+
+/* ================================================================
+   5. AI ハイライト
+================================================================ */
+.hm-ai {
+  position: relative;
+  background: var(--forest-deep);
+  color: var(--cream);
+  overflow: hidden;
+}
+.hm-ai-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(4rem, 9vh, 7rem) clamp(1.5rem, 5vw, 3rem);
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+.hm-ai-label {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.26em;
+  color: var(--gold-soft); margin-bottom: 1.25rem;
+}
+.hm-ai h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.6rem, 2.6vw + 0.5rem, 2.6rem);
+  font-weight: 700;
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+}
+.hm-ai h2 .mk { color: var(--gold-soft); }
+.hm-ai p { font-size: 0.9rem; line-height: 2; color: rgba(247,244,236,0.78); margin-bottom: 2rem; max-width: 460px; }
+.hm-ai .hm-btn-primary { background: var(--cream); color: var(--forest-deep); }
+.hm-ai .hm-btn-primary:hover { background: var(--gold-soft); }
+.hm-ai-figure {
+  background: #fff;
+  border-radius: 6px;
+  padding: 1.75rem;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.22);
+}
+.hm-ai-figure img {
+  width: 100%;
+  display: block;
+  border-radius: 2px;
+}
+
+/* ================================================================
+   6. UPDATES — 更新情報
+================================================================ */
+.hm-updates {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(4rem, 9vh, 7rem) clamp(1.5rem, 5vw, 3rem);
+}
+.hm-updates .hm-sec-head { margin-bottom: 1.75rem; }
+
+/* 締切ウィジェット枠 */
+.hm-deadline {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2.5rem;
+}
+.hm-deadline > h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1rem;
+  color: var(--forest-deep);
+  margin-bottom: 0.85rem;
+}
+
+/* news.js / deadlines.js が流し込む既存コンテナの色味調整 */
+.hm-updates #news-container { border: 1px solid var(--line); background: var(--paper); }
+
+/* ================================================================
+   フッター（エディトリアル）
+================================================================ */
+body.home footer {
+  background: var(--forest-deep);
+  color: rgba(247,244,236,0.82);
+  padding: clamp(3rem, 7vh, 5rem) 1.5rem clamp(2rem, 4vh, 3rem);
+  text-align: center;
+}
+body.home footer p:first-child {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.15rem;
+  letter-spacing: 0.14em;
+  color: var(--cream);
+  margin-bottom: 0.75rem;
+}
+
+/* ================================================================
+   reveal 初期状態（home.js が is-in を付与）
+================================================================ */
+.home [data-reveal] { opacity: 0; transform: translateY(28px); }
+.home [data-reveal].is-in { opacity: 1; transform: none; }
+
+/* ================================================================
+   レスポンシブ
+================================================================ */
+@media (max-width: 860px) {
+  .hm-hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    min-height: auto;
+    padding-top: 5.5rem;
+    gap: 2rem;
+  }
+  .hm-hero-vertical { grid-row: 1; grid-column: 1; justify-self: center; }
+  .hm-vtitle { writing-mode: horizontal-tb; text-align: center; font-size: clamp(2.2rem, 9vw, 3.2rem); letter-spacing: 0.06em; }
+  .hm-hero-figure { grid-row: 2; grid-column: 1; }
+  .hm-hero-copy { grid-row: 3; grid-column: 1; max-width: none; }
+  .hm-scroll { display: none; }
+  .hm-intro { grid-template-columns: 1fr; }
+  .hm-ai-inner { grid-template-columns: 1fr; }
+  .hm-ai-figure { order: -1; max-width: 320px; }
+  .hm-row { grid-template-columns: 2rem 1fr auto; gap: 0.85rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home [data-reveal] { opacity: 1; transform: none; }
+  .hm-marquee-track { animation: none; }
+  .hm-scroll::after { animation: none; }
+}
