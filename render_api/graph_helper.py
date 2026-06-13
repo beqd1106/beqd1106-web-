@@ -121,7 +121,8 @@ def chart_utilization(records: list[dict]) -> io.BytesIO:
 # ================================================================
 def chart_additions(records: list[dict]) -> io.BytesIO:
     """
-    records = [{"加算名": "処遇改善加算Ⅰ", "単価": 13.7, "取得": True}, ...]
+    records = [{"加算名": "福祉・介護職員等処遇改善加算Ⅰ", "単価": 0.0, "取得": True}, ...]
+    ※「単価」はサービス別の加算率(%)または単位/日。実値は最新告示で確認のこと。
     """
     df = pd.DataFrame(records)
     df_sorted = df.sort_values("単価", ascending=True)

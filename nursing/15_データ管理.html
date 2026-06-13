@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>データ管理・グラフ — 障碍者福祉事業所 運営ガイド</title>
-<link rel="stylesheet" href="style.css?v=20260614">
-<link rel="stylesheet" href="design-upgrade.css?v=20260614">
+<link rel="stylesheet" href="style.css?v=20260614b">
+<link rel="stylesheet" href="design-upgrade.css?v=20260614b">
 <style>
 /* ================================================================
    データ管理ページ 専用スタイル
@@ -273,7 +273,7 @@
             <div style="font-size:0.75rem;color:var(--text-mid);margin-bottom:0.4rem;">加算名,単価,取得（true/false）</div>
             <textarea id="add-data" placeholder="処遇改善加算Ⅰ,13.7,true
 福祉専門職員配置等加算Ⅰ,15,true
-目標工賃達成加算,109,false
+目標工賃達成加算,10,false
 就労移行支援体制加算,27,true
 送迎加算（片道）,54,false"></textarea>
             <button class="chart-btn" onclick="generateChart('additions','add-data','add-chart')">グラフ生成</button>
@@ -662,8 +662,8 @@
   <p>障碍者福祉事業所 運営ガイド — データ管理</p>
 </footer>
 
-<script src="auth.js?v=20260614"></script>
-<script src="nav.js?v=20260614"></script>
+<script src="auth.js?v=20260614b"></script>
+<script src="nav.js?v=20260614b"></script>
 <script>
 /* ================================================================
    データ管理ページ スクリプト
@@ -982,6 +982,6 @@ loadUsers();
 renderAddTable(JSON.parse(localStorage.getItem('add_data')||'[]'));
 loadStaff();
 </script>
-<script src="animations.js?v=20260614"></script>
+<script src="animations.js?v=20260614b"></script>
 </body>
 </html>
