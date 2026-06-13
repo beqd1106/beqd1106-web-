@@ -7,13 +7,15 @@
 
   // ── 単価定数（2024年度参考値） ─────────────────────────────────
   const RATE = {
-    // 訪問看護（医療保険）
-    VN_BASE:        5610,   // 基本療養費(I)イ 週3日まで
-    VN_24H:         6520,   // 24時間対応体制加算/月/人
-    VN_TOKUKANⅡ:   2550,   // 特別管理加算Ⅱ/月/人
-    VN_TOKUKANⅠ:   5100,   // 特別管理加算Ⅰ/月/人
-    VN_TERMINAL:   25000,   // ターミナルケア加算/件
-    VN_SHORYO_RATE: 0.137,  // 処遇改善加算Ⅰ率
+    // 訪問看護（医療保険）※2024年6月改定後の参考額
+    VN_BASE:        5550,   // 基本療養費(I)イ 週3日まで
+    VN_24H:         6520,   // 24時間対応体制加算（ロ）/月/人
+    VN_TOKUKANⅡ:   2500,   // 特別管理加算Ⅱ/月/人
+    VN_TOKUKANⅠ:   5000,   // 特別管理加算Ⅰ/月/人
+    VN_TERMINAL:   25000,   // 訪問看護ターミナルケア療養費/件
+    // ※医療保険の訪問看護に「処遇改善加算」は存在しない。
+    //   賃金改善は「訪問看護ベースアップ評価料(Ⅰ) 1,050円/月/人」で評価する。
+    VN_BASEUP:      1050,   // ベースアップ評価料(Ⅰ)/月/人（2026年6月改定で780→1,050）
 
     // 就労継続A型（1単位10.18円 京都府 2024年度参考）
     A_UNIT:         10.18,
@@ -53,8 +55,8 @@
     const toku1    = num('vn-toku1');      // 特別管理加算Ⅰ対象者数
     const toku2    = num('vn-toku2');      // 特別管理加算Ⅱ対象者数
     const terminal = num('vn-terminal');   // ターミナル件数/月
-    const add24h   = checked('vn-24h');
-    const addShoryo = checked('vn-shoryo');
+    const add24h    = checked('vn-24h');
+    const addBaseup = checked('vn-baseup');
 
     const basicIncome = users * visits * RATE.VN_BASE;
     const income24h   = add24h ? users * RATE.VN_24H : 0;
@@ -62,15 +64,16 @@
     const incomeToku2 = toku2 * RATE.VN_TOKUKANⅡ;
     const incomeTerminal = terminal * RATE.VN_TERMINAL;
     const subtotal = basicIncome + income24h + incomeToku1 + incomeToku2 + incomeTerminal;
-    const shoryo   = addShoryo ? subtotal * RATE.VN_SHORYO_RATE : 0;
-    const total    = subtotal + shoryo;
+    // 医療保険の訪問看護はベースアップ評価料(Ⅰ)=1,050円/月/人で賃金改善を評価
+    const baseup   = addBaseup ? users * RATE.VN_BASEUP : 0;
+    const total    = subtotal + baseup;
 
     setVal('vn-res-basic',    '¥' + fmt(basicIncome));
     setVal('vn-res-24h',      '¥' + fmt(income24h));
     setVal('vn-res-toku1',    '¥' + fmt(incomeToku1));
     setVal('vn-res-toku2',    '¥' + fmt(incomeToku2));
     setVal('vn-res-terminal', '¥' + fmt(incomeTerminal));
-    setVal('vn-res-shoryo',   '¥' + fmt(shoryo));
+    setVal('vn-res-baseup',   '¥' + fmt(baseup));
     setVal('vn-res-total',    '¥' + fmt(total));
     const yearEl = document.getElementById('vn-res-year');
     if (yearEl) yearEl.textContent = '年間概算: ¥' + fmt(total * 12);

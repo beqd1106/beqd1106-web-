@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>収入向上 ｜ 障碍者福祉事業所 運営ガイド</title>
-<link rel="stylesheet" href="style.css?v=20260613c">
-<link rel="stylesheet" href="design-upgrade.css?v=20260613c">
+<link rel="stylesheet" href="style.css?v=20260614">
+<link rel="stylesheet" href="design-upgrade.css?v=20260614">
 <link rel="manifest" href="manifest.json"><meta name="theme-color" content="#1B5E4B"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="福祉ガイド">
 </head>
 <body>
@@ -423,17 +423,17 @@
           <label class="sim-row"><span>特別管理加算Ⅱ対象者（人）<small>留置カテーテル・人工肛門等</small></span><input type="number" id="vn-toku2" value="2" min="0" max="100"></label>
           <label class="sim-row"><span>ターミナルケア加算（件/月）</span><input type="number" id="vn-terminal" value="0" min="0" max="20"></label>
           <h4 class="sim-section-title">○ 算定中の加算</h4>
-          <label class="sim-check"><input type="checkbox" id="vn-24h" checked><span>24時間対応体制加算（6,520円/月/人）</span></label>
-          <label class="sim-check"><input type="checkbox" id="vn-shoryo" checked><span>処遇改善加算Ⅰ（所定費用×13.7%）</span></label>
+          <label class="sim-check"><input type="checkbox" id="vn-24h" checked><span>24時間対応体制加算（ロ 6,520円/月/人）</span></label>
+          <label class="sim-check"><input type="checkbox" id="vn-baseup" checked><span>訪問看護ベースアップ評価料(Ⅰ)（1,050円/月/人）</span></label>
         </div>
         <div class="sim-results">
           <h4 class="sim-section-title">月間収益内訳（概算）</h4>
-          <div class="sim-result-row"><span>基本療養費（5,610円×訪問回数）</span><strong id="vn-res-basic">¥0</strong></div>
+          <div class="sim-result-row"><span>基本療養費（5,550円×訪問回数）</span><strong id="vn-res-basic">¥0</strong></div>
           <div class="sim-result-row"><span>24時間対応体制加算</span><strong id="vn-res-24h">¥0</strong></div>
-          <div class="sim-result-row"><span>特別管理加算Ⅰ（5,100円/人）</span><strong id="vn-res-toku1">¥0</strong></div>
-          <div class="sim-result-row"><span>特別管理加算Ⅱ（2,550円/人）</span><strong id="vn-res-toku2">¥0</strong></div>
-          <div class="sim-result-row"><span>ターミナルケア加算（25,000円/件）</span><strong id="vn-res-terminal">¥0</strong></div>
-          <div class="sim-result-row"><span>処遇改善加算Ⅰ（13.7%）</span><strong id="vn-res-shoryo">¥0</strong></div>
+          <div class="sim-result-row"><span>特別管理加算Ⅰ（5,000円/人）</span><strong id="vn-res-toku1">¥0</strong></div>
+          <div class="sim-result-row"><span>特別管理加算Ⅱ（2,500円/人）</span><strong id="vn-res-toku2">¥0</strong></div>
+          <div class="sim-result-row"><span>ターミナルケア療養費（25,000円/件）</span><strong id="vn-res-terminal">¥0</strong></div>
+          <div class="sim-result-row"><span>ベースアップ評価料(Ⅰ)（1,050円/人）</span><strong id="vn-res-baseup">¥0</strong></div>
           <div class="sim-total-row"><span>月間合計収益（概算）</span><strong id="vn-res-total">¥0</strong></div>
           <div class="sim-year-row" id="vn-res-year">年間概算: ¥0</div>
         </div>
@@ -503,9 +503,9 @@
   <p>障碍者福祉事業所 運営ガイド｜収入向上ページ</p>
   <p>※ 法令・制度・報酬は改定されることがあります。最新情報は各官公庁の公式情報をご確認ください。</p>
 </footer>
-<script src="popup.js?v=20260613c"></script><script src="table-responsive.js?v=20260613c"></script><script src="nav.js?v=20260613c"></script>
-<script src="simulator.js?v=20260613c"></script><script src="deadlines.js?v=20260613c"></script>
-<script src="search-data.js?v=20260613c"></script><script src="search.js?v=20260613c"></script>
+<script src="popup.js?v=20260614"></script><script src="table-responsive.js?v=20260614"></script><script src="nav.js?v=20260614"></script>
+<script src="simulator.js?v=20260614"></script><script src="deadlines.js?v=20260614"></script>
+<script src="search-data.js?v=20260614"></script><script src="search.js?v=20260614"></script>
 <script>
 function switchSim(id, btn) {
   document.querySelectorAll('.sim-panel').forEach(function(p){ p.style.display='none'; });
@@ -515,7 +515,7 @@ function switchSim(id, btn) {
 }
 </script>
 <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/nursing/sw.js").catch(function(){});}</script>
-<script src="animations.js?v=20260613c"></script>
+<script src="animations.js?v=20260614"></script>
 </body>
 </html>
 

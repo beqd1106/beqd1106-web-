@@ -195,11 +195,11 @@ body.home .gnav-panel a:hover .gp-title { color: var(--forest); }
   will-change: transform;
 }
 .hm-btn-primary { background: var(--forest); color: var(--cream); }
-.hm-btn-primary:hover { background: var(--forest-deep); }
+.hm-btn-primary:hover { background: var(--forest-deep); transform: translateY(-2px); }
 .hm-btn-primary .arr { transition: transform 0.3s; }
 .hm-btn-primary:hover .arr { transform: translateX(4px); }
 .hm-btn-ghost { color: var(--forest); border: 1px solid var(--line); background: rgba(255,255,255,0.4); }
-.hm-btn-ghost:hover { border-color: var(--forest-soft); }
+.hm-btn-ghost:hover { border-color: var(--forest-soft); transform: translateY(-2px); }
 
 /* SCROLL インジケータ */
 .hm-scroll {

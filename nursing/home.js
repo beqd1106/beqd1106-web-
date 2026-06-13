@@ -174,7 +174,6 @@
     initParallax();
     initReveal();
     initCounters();
-    initMagnetic();
     if (hasST) setTimeout(function () { window.ScrollTrigger.refresh(); }, 400);
   }
 

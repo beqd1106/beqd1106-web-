@@ -1066,12 +1066,24 @@ dialog::backdrop {
   font-weight: 700;
   margin: 0.2rem 0;
 }
-/* テーブルセル内のrev-chipは中央揃え */
+/* テーブルセル内の rev-chip は「セル全体を丸ピル」にしない。
+   複数行で楕円状に崩れるため、緑の太字テキストとして表示する。 */
 td.rev-chip {
-  text-align: center;
+  background: none;
+  border-radius: 0;
+  padding: 0.65rem 0.9rem;        /* 通常セルと同じ余白 */
+  margin: 0;
+  display: table-cell;
+  text-align: left;
   vertical-align: middle;
-  white-space: nowrap;
+  white-space: normal;
+  color: #2e7d32;
+  font-weight: 700;
+  line-height: 1.65;
 }
+/* 2行目（例示・補足）は小さく淡く */
+td.rev-chip br + * , td.rev-chip small { font-weight: 600; }
+td.rev-chip { font-size: 0.84rem; }
 .warn-chip {
   display: inline-block;
   background: #fff3e0;
