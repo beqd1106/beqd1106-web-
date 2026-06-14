@@ -293,6 +293,25 @@ body.cursoring { cursor: none; }
 .proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 60px); align-items: center; margin-top: 40px; }
 @media (max-width: 860px) { .proof-grid { grid-template-columns: 1fr; } }
 
+/* AI output demo cards (anonymized reproductions of real runs) */
+.demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 26px; }
+@media (max-width: 860px) { .demo-grid { grid-template-columns: 1fr; } }
+.demo { background: #fff; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 18px 44px rgba(32,33,36,.1); overflow: hidden; }
+.demo .dhead { display: flex; align-items: center; gap: 6px; padding: 11px 16px; background: var(--bg-soft); border-bottom: 1px solid var(--line); font-size: .76rem; font-weight: 700; color: var(--gray); }
+.demo .dhead .d { width: 9px; height: 9px; border-radius: 50%; }
+.demo .dbody { padding: 18px 20px; font-size: .82rem; }
+.demo .sec { margin-bottom: 14px; }
+.demo .sec:last-child { margin-bottom: 0; }
+.demo h4 { font-size: .9rem; font-weight: 900; margin: 0 0 7px; }
+.demo ul { list-style: none; margin: 0; }
+.demo li { padding: 4px 0 4px 16px; position: relative; color: var(--gray); line-height: 1.65; }
+.demo li::before { content: ''; position: absolute; left: 0; top: 11px; width: 5px; height: 5px; border-radius: 50%; background: var(--blue); }
+.demo li b { color: var(--ink); }
+.demo .mt { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.demo .mt td { padding: 7px 8px; border-bottom: 1px solid var(--line); }
+.demo .mt tr:last-child td { border-bottom: none; }
+.badge2 { display: inline-block; font-size: 10.5px; font-weight: 800; padding: 2px 10px; border-radius: 99px; }
+
 /* comparison table marks */
 .cmp-wrap { overflow-x: auto; margin-top: 40px; }
 .cmp th.us { background: var(--blue); }
@@ -439,7 +458,41 @@ body.cursoring { cursor: none; }
         <a class="btn" href="guide.html">導入ガイドを開く</a>
       </div>
     </div>
-    <p class="note fade-in">※2026年6月14日に実機検証。個人Googleアカウント＋読み取り専用スコープ（gmail.readonly 他）での実測です。書き込み（メール下書き・シート追記）はPhase 2でスコープを追加し段階的に解放します。</p>
+    <h3 class="fade-in" style="font-weight:900;font-size:1.15rem;margin-top:46px;">実際の出力イメージ</h3>
+    <p class="fade-in" style="font-size:.86rem;color:var(--gray);margin-top:6px;">下記は、実機で動かした「ダッシュボード生成」「メール自動仕分け」の出力を、<strong>社外提示用に業務例へ匿名化して再現</strong>したものです（構成・粒度は実物どおり）。</p>
+    <div class="demo-grid">
+      <div class="demo fade-in">
+        <div class="dhead"><span class="d" style="background:#ff5f57"></span><span class="d" style="background:#febc2e"></span><span class="d" style="background:#28c840"></span><span style="margin-left:6px;">AI出力例 ① 今日のダッシュボード</span></div>
+        <div class="dbody">
+          <div class="sec"><h4 style="color:var(--red)">重要アラート</h4><ul><li>取引先A社：見積書の差し戻し依頼（本日中の対応推奨）</li><li>請求書の支払期限が明後日（2件・未処理）</li></ul></div>
+          <div class="sec"><h4 style="color:var(--green)">本日の予定</h4><ul><li>10:00 定例MTG ／ 14:00 A社訪問 ／ 16:00 見積レビュー</li></ul></div>
+          <div class="sec"><h4 style="color:var(--blue)">要返信メール</h4><ul><li>B社 納期確認 ／ C社 打ち合わせ日程の調整依頼</li></ul></div>
+          <div class="sec"><h4>優先ToDo（AIの提案）</h4><ul><li><b>①</b> A社見積の修正・再送（最優先）</li><li><b>②</b> 請求書2件の支払処理</li><li><b>③</b> B社へ納期を回答</li></ul></div>
+        </div>
+      </div>
+      <div class="demo fade-in">
+        <div class="dhead"><span class="d" style="background:#ff5f57"></span><span class="d" style="background:#febc2e"></span><span class="d" style="background:#28c840"></span><span style="margin-left:6px;">AI出力例 ② メールの自動仕分け</span></div>
+        <div class="dbody">
+          <div class="sec">
+            <h4>受信メールの分類</h4>
+            <table class="mt">
+              <tr><td style="width:74px;"><span class="badge2" style="background:#fce8e6;color:#c5221f">至急</span></td><td style="width:42px;">5件</td><td>見積・請求・納期の要対応</td></tr>
+              <tr><td><span class="badge2" style="background:#e8f0fe;color:#1967d2">通常</span></td><td>4件</td><td>社内連絡・報告</td></tr>
+              <tr><td><span class="badge2" style="background:#fef7e0;color:#b06000">情報共有</span></td><td>11件</td><td>メルマガ・通知（自動でまとめ）</td></tr>
+            </table>
+          </div>
+          <div class="sec">
+            <h4>要対応 3件（AIが厳選）</h4>
+            <ul>
+              <li><b>A社</b>：見積書の修正依頼 → 返信下書きを用意</li>
+              <li><b>B社</b>：請求書の金額確認 → 担当へ転送を提案</li>
+              <li><b>C社</b>：納期の問い合わせ → 過去履歴から回答案</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="note fade-in">※2026年6月14日に実機検証。個人Googleアカウント＋読み取り専用スコープ（gmail.readonly 他）での実測です。上の出力イメージは社外提示用に匿名化・業務例へ置き換えた再現で、生データではありません。書き込み（メール下書き・シート追記）はPhase 2でスコープを追加し段階的に解放します。</p>
   </div>
 </section>
 
