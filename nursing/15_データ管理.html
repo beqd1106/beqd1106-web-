@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>データ管理・グラフ — 障碍者福祉事業所 運営ガイド</title>
-<link rel="stylesheet" href="style.css?v=20260614b">
-<link rel="stylesheet" href="design-upgrade.css?v=20260614b">
+<link rel="stylesheet" href="style.css?v=20260614c">
+<link rel="stylesheet" href="design-upgrade.css?v=20260614c">
 <style>
 /* ================================================================
    データ管理ページ 専用スタイル
@@ -24,20 +24,20 @@
 
 /* 設定バナー */
 .setup-banner {
-  background:var(--blk-lavender); border:2px solid #c0a0e0;
+  background:var(--green-faint,#F0F6F2); border:1px solid var(--green-light,#E3EFE9);
   border-radius:var(--r); padding:1.25rem 1.5rem;
   display:flex; gap:1rem; align-items:flex-start; margin-bottom:1.5rem;
 }
 .setup-banner .setup-icon { font-size:2rem; flex-shrink:0; }
-.setup-banner h3 { font-size:1rem; color:#4020a0; margin:0 0 0.4rem; }
-.setup-banner p  { font-size:0.82rem; color:#6040a0; margin:0 0 0.75rem; line-height:1.6; }
+.setup-banner h3 { font-size:1rem; color:var(--green-deep,#163A2B); margin:0 0 0.4rem; }
+.setup-banner p  { font-size:0.82rem; color:var(--text-mid); margin:0 0 0.75rem; line-height:1.6; }
 .setup-steps { list-style:none; padding:0; margin:0; }
 .setup-steps li {
-  font-size:0.8rem; color:#6040a0; padding:0.3rem 0;
+  font-size:0.8rem; color:var(--text-mid); padding:0.3rem 0;
   display:flex; align-items:flex-start; gap:0.5rem;
 }
 .step-num {
-  background:#6040a0; color:#fff; border-radius:50%;
+  background:var(--green,#1F4D3A); color:#fff; border-radius:50%;
   width:1.3rem; height:1.3rem; display:flex; align-items:center;
   justify-content:center; font-size:0.65rem; font-weight:800;
   flex-shrink:0; margin-top:0.05rem;
@@ -46,7 +46,7 @@
 /* スプレッドシートID入力 */
 .sheet-id-input {
   display:flex; gap:0.5rem; align-items:center;
-  background:#fff; border:2px solid #c0a0e0;
+  background:#fff; border:1px solid var(--border,#E3E2D8);
   border-radius:var(--r-sm); padding:0.5rem 0.75rem;
   margin-top:0.75rem; flex-wrap:wrap;
 }
@@ -55,7 +55,7 @@
   font-family:monospace; color:var(--text); min-width:200px;
 }
 .sheet-id-input button {
-  background:#6040a0; color:#fff; border:none;
+  background:var(--green,#1F4D3A); color:#fff; border:none;
   border-radius:var(--r-sm); padding:0.35rem 0.85rem;
   font-size:0.78rem; font-weight:700; cursor:pointer;
 }
@@ -622,7 +622,7 @@
         <div style="flex:1;">
           <h3>初回セットアップ手順</h3>
           <ol class="setup-steps">
-            <li><span class="step-num">1</span><span><a href="https://console.cloud.google.com" target="_blank" style="color:#6040a0;">Google Cloud Console</a> でプロジェクト作成 → Google Sheets API を有効化</span></li>
+            <li><span class="step-num">1</span><span><a href="https://console.cloud.google.com" target="_blank" style="color:var(--green,#1F4D3A);font-weight:600;">Google Cloud Console</a> でプロジェクト作成 → <strong>Google Sheets API</strong> と <strong>Google Drive API</strong> を有効化</span></li>
             <li><span class="step-num">2</span><span>「IAM と管理」→「サービスアカウント」でアカウント作成 → JSONキーをダウンロード</span></li>
             <li><span class="step-num">3</span><span>Render.com の「Environment」→ 変数名 <code style="background:#fff;padding:0.1rem 0.3rem;border-radius:4px;">GOOGLE_CREDENTIALS_JSON</code> に JSONの中身をそのまま貼り付け</span></li>
             <li><span class="step-num">4</span><span>Google Sheetsで新規スプレッドシートを作成 → サービスアカウントのメールアドレスを「編集者」として共有</span></li>
@@ -662,8 +662,8 @@
   <p>障碍者福祉事業所 運営ガイド — データ管理</p>
 </footer>
 
-<script src="auth.js?v=20260614b"></script>
-<script src="nav.js?v=20260614b"></script>
+<script src="auth.js?v=20260614c"></script>
+<script src="nav.js?v=20260614c"></script>
 <script>
 /* ================================================================
    データ管理ページ スクリプト
@@ -982,6 +982,6 @@ loadUsers();
 renderAddTable(JSON.parse(localStorage.getItem('add_data')||'[]'));
 loadStaff();
 </script>
-<script src="animations.js?v=20260614b"></script>
+<script src="animations.js?v=20260614c"></script>
 </body>
 </html>
