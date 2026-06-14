@@ -10,15 +10,15 @@ import matplotlib.ticker as mticker
 import japanize_matplotlib   # 日本語フォント自動設定
 import pandas as pd
 
-# ── 共通スタイル ──────────────────────────────────────────
-CORAL      = "#F0956A"
-CORAL_DARK = "#D4784C"
-MINT       = "#7DC49A"
-SKY        = "#5BA3D4"
-LAVENDER   = "#9B7FD4"
-CREAM      = "#FEF6E0"
-TEXT_DARK  = "#2A2020"
-GRID_COLOR = "#EDE0D4"
+# ── 共通スタイル（クリーン・メディカルモダン：深緑×生成り×金茶）──
+CORAL      = "#1F4D3A"   # 主線（深緑）※旧名は互換のため維持
+CORAL_DARK = "#A9854A"   # 副線・目標（金茶）
+MINT       = "#4D9B77"   # 取得済み（セージグリーン）
+SKY        = "#5C8AA6"   # 稼働率バー（ミストブルー）
+LAVENDER   = "#7E9C8A"
+CREAM      = "#F7F4EC"   # 背景（生成り）
+TEXT_DARK  = "#283129"
+GRID_COLOR = "#DAD3C2"
 
 def _base_fig(title: str, figsize=(10, 5)):
     fig, ax = plt.subplots(figsize=figsize)
