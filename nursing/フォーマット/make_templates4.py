@@ -994,11 +994,10 @@ if __name__ == "__main__":
     make_service_riyou_keikaku()
     make_monitoring_soudan()
     make_assessment_soudan()
-    print("\n--- 05_処遇改善加算様式 ---")
-    make_shoguu_keikaku()
-    make_shoguu_jisseki()
-    make_tokutei_shoguu()
-    make_base_up()
+    # 05_処遇改善加算様式は京都府の公式「別紙様式」を使用するため自作版は廃止。
+    # 旧3加算（処遇改善・特定処遇改善・ベースアップ等支援）は2024年度改定で
+    # 「福祉・介護職員等処遇改善加算」に一本化。以下は生成しない。
+    # make_shoguu_keikaku(); make_shoguu_jisseki(); make_tokutei_shoguu(); make_base_up()
     print("\n--- 07_運営規程ひな形 ---")
     make_kojin_joho()
     print("\n=== 完了 ===")
