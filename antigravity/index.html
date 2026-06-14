@@ -293,6 +293,17 @@ body.cursoring { cursor: none; }
 .proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 60px); align-items: center; margin-top: 40px; }
 @media (max-width: 860px) { .proof-grid { grid-template-columns: 1fr; } }
 
+/* objection handling cards */
+.obj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 40px; }
+@media (max-width: 760px) { .obj-grid { grid-template-columns: 1fr; } }
+.obj { background: #fff; border: 1px solid var(--line); border-top: 4px solid var(--blue); border-radius: 16px; padding: 24px 26px; transition: transform .3s var(--ease), box-shadow .3s; }
+.obj:hover { transform: translateY(-4px); box-shadow: 0 18px 44px rgba(32,33,36,.1); }
+.obj .q { font-weight: 900; font-size: .98rem; margin-bottom: 11px; display: flex; gap: 11px; align-items: flex-start; line-height: 1.55; }
+.obj .q::before { content: 'Q'; font-family: var(--en); font-weight: 800; color: var(--red); background: #fce8e6; width: 24px; height: 24px; border-radius: 7px; display: grid; place-items: center; flex: none; font-size: .8rem; margin-top: 1px; }
+.obj .a { font-size: .85rem; color: var(--gray); }
+.obj .a strong { color: var(--ink); font-weight: 700; }
+.obj .tagline { display: inline-block; margin-top: 13px; font-size: .74rem; font-weight: 800; color: #137333; background: #e6f4ea; border-radius: 99px; padding: 5px 14px; }
+
 /* AI output demo cards (anonymized reproductions of real runs) */
 .demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 26px; }
 @media (max-width: 860px) { .demo-grid { grid-template-columns: 1fr; } }
@@ -350,7 +361,7 @@ body.cursoring { cursor: none; }
 <header class="site">
   <div class="logo"><span class="dot"></span>ANTIGRAVITY <span style="color:#9aa0a6; font-weight:500;">&times; BACK OFFICE</span></div>
   <nav>
-    <a href="#proof">実証</a><a href="#workflows">使い方</a><a href="#features">できること</a><a href="#usecases">活用例</a><a href="#compare">比較</a><a href="#security">安全</a><a href="#pricing">料金</a><a href="#faq">FAQ</a><a href="intro.html" style="color:var(--blue);font-weight:700;">3分でわかる版</a>
+    <a href="#proof">実証</a><a href="#workflows">使い方</a><a href="#features">できること</a><a href="#usecases">活用例</a><a href="#compare">比較</a><a href="#security">安全</a><a href="#pricing">料金</a><a href="#objections">懸念</a><a href="#faq">FAQ</a><a href="intro.html" style="color:var(--blue);font-weight:700;">3分でわかる版</a>
   </nav>
 </header>
 
@@ -917,6 +928,47 @@ body.cursoring { cursor: none; }
           <li>ブラウザ操作系（Web調査・定型入力）の追加</li>
           <li>効果測定→法人プラン移行・横展開の判断</li>
         </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OBJECTIONS ============ -->
+<section id="objections" style="background:var(--bg-soft);">
+  <div class="inner">
+    <span class="tag fade-in">CONCERNS ── 導入判断の論点</span>
+    <h2 class="fade-in">「それでも不安」に、逃げずに答えます</h2>
+    <p class="lead fade-in">便利さよりも、まず“安心して任せられるか”。決裁の場で必ず出る厳しい質問に、対策とセットで正直にお答えします。</p>
+    <div class="obj-grid">
+      <div class="obj fade-in">
+        <div class="q">もし情報が漏れたら、責任は誰が持つの？</div>
+        <div class="a">AIが扱えるのは<strong>お客様のアカウント権限の範囲内だけ</strong>。本人が見られない情報には触れません。外部送信・外部共有は人の承認なしに発生しない設定にし、本格運用ではGemini Enterprise契約で「入力データを学習に使わない」ことを規約レベルで担保します。</div>
+        <span class="tagline">権限・承認・契約の三重で守る</span>
+      </div>
+      <div class="obj fade-in">
+        <div class="q">今のExcelや既存システムと、ケンカしない？</div>
+        <div class="a">置き換えではなく<strong>“上に乗せる”導入</strong>です。Excelマクロはターミナル経由でそのまま実行でき、既存のフォルダ運用も維持。まずは現行フローを壊さない読み取り・下書きから始めます。</div>
+        <span class="tagline">今のやり方を壊さず、横に足すだけ</span>
+      </div>
+      <div class="obj fade-in">
+        <div class="q">AIが止まったら、業務も止まる？</div>
+        <div class="a">本提案は<strong>“手作業の高速化”</strong>であり、止まってもいつでも手作業に戻せます。基幹システムの置き換えではないため影響は限定的。重要工程には人の確認を必ず挟み、AI単独で完結＝止まると致命的、という構造を作りません。</div>
+        <span class="tagline">止まっても、手作業に戻すだけ</span>
+      </div>
+      <div class="obj fade-in">
+        <div class="q">運用できる人が社内にいない／属人化しない？</div>
+        <div class="a">作った設定・ルール・手順は<strong>すべてドキュメント化してお渡し</strong>し、操作は日本語の指示だけ。定着まで私たちが伴走し、担当が変わっても回る状態を目指します。「詳しい人がいないと動かない」を作りません。</div>
+        <span class="tagline">手順を残し、担当交代でも回る</span>
+      </div>
+      <div class="obj fade-in">
+        <div class="q">無料が終わったり、値上げされたら？</div>
+        <div class="a">料金変動が速いのは事実。だからこそ提案時に最新を確認し、法人プランや他ツールへの乗り換え余地も含めて設計します。費用は常に<strong>削減効果（工数）と並べて提示</strong>し、効果が上回る前提でのみ継続します。</div>
+        <span class="tagline">効果が費用を上回る前提でだけ続ける</span>
+      </div>
+      <div class="obj fade-in">
+        <div class="q">プレビュー版を本番業務に使って大丈夫？</div>
+        <div class="a">いきなり基幹業務には使いません。<strong>Phase 1は読み取り中心の低リスク領域から</strong>。仕様変更には月次で追従し、影響が出る変更は事前に検知・調整します。リスクの低い順に段階導入するのが基本方針です。</div>
+        <span class="tagline">低リスクな業務から、段階的に</span>
       </div>
     </div>
   </div>
