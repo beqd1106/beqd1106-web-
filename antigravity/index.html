@@ -293,6 +293,27 @@ body.cursoring { cursor: none; }
 .proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 60px); align-items: center; margin-top: 40px; }
 @media (max-width: 860px) { .proof-grid { grid-template-columns: 1fr; } }
 
+/* comparison table marks */
+.cmp-wrap { overflow-x: auto; margin-top: 40px; }
+.cmp th.us { background: var(--blue); }
+.cmp td.us { background: #e8f0fe; }
+.cmp td .yes { color: var(--green); font-weight: 800; }
+.cmp td .no { color: var(--red); font-weight: 800; }
+.cmp td .mid { color: #b06000; font-weight: 800; }
+.cmp td.first { font-weight: 700; color: var(--ink); }
+
+/* workflow command chip */
+.wf-cmd { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font-size: .78rem; font-weight: 700; color: var(--blue); background: #e8f0fe; border-radius: 10px; padding: 9px 13px; line-height: 1.6; }
+.wf-cmd::before { content: '>'; font-family: var(--en); font-weight: 800; opacity: .6; }
+
+/* support / partner steps */
+.support .card { position: relative; padding-top: 30px; }
+.support .card .snum { font-family: var(--en); font-weight: 800; font-size: 1.4rem; color: var(--purple); margin-bottom: 8px; display: block; }
+
+/* roi headcount highlight */
+.roi td.eff { color: var(--blue); font-weight: 800; }
+.roi tr:last-child td { background: #e8f0fe; }
+
 @media print {
   header.site { position: static; }
   section { page-break-inside: avoid; }
@@ -310,7 +331,7 @@ body.cursoring { cursor: none; }
 <header class="site">
   <div class="logo"><span class="dot"></span>ANTIGRAVITY <span style="color:#9aa0a6; font-weight:500;">&times; BACK OFFICE</span></div>
   <nav>
-    <a href="#problem">課題</a><a href="#about">Antigravityとは</a><a href="#proof">実証</a><a href="#features">できること</a><a href="#security">セキュリティ</a><a href="#pricing">料金</a><a href="#faq">FAQ</a><a href="intro.html" style="color:var(--blue);font-weight:700;">3分でわかる版</a>
+    <a href="#proof">実証</a><a href="#workflows">使い方</a><a href="#features">できること</a><a href="#usecases">活用例</a><a href="#compare">比較</a><a href="#security">安全</a><a href="#pricing">料金</a><a href="#faq">FAQ</a><a href="intro.html" style="color:var(--blue);font-weight:700;">3分でわかる版</a>
   </nav>
 </header>
 
@@ -419,6 +440,42 @@ body.cursoring { cursor: none; }
       </div>
     </div>
     <p class="note fade-in">※2026年6月14日に実機検証。個人Googleアカウント＋読み取り専用スコープ（gmail.readonly 他）での実測です。書き込み（メール下書き・シート追記）はPhase 2でスコープを追加し段階的に解放します。</p>
+  </div>
+</section>
+
+<!-- ============ WORKFLOWS ============ -->
+<section id="workflows">
+  <div class="inner">
+    <span class="tag fade-in">WORKFLOWS ── 定番の型</span>
+    <h2 class="fade-in">「で、結局どう使う？」<br>毎日まわる4つの型から始めます</h2>
+    <p class="lead fade-in">いきなり全自動を目指すのではなく、効果が出やすく失敗しない“型”から導入します。すべて<strong>声かけ1回</strong>で完結し、書き込みが必要な操作は人の承認を挟みます。</p>
+    <div class="cards c4">
+      <div class="card fade-in">
+        <span class="mini native">毎朝・読むだけ</span>
+        <h3>① 今日のダッシュボード</h3>
+        <p>予定・重要メール・要返信・関連資料を集約し、優先ToDoを提案。出社して最初の5分で一日が見渡せます。</p>
+        <span class="wf-cmd">今日のダッシュボードを作って</span>
+      </div>
+      <div class="card fade-in">
+        <span class="mini native">会議前</span>
+        <h3>② 会議前の準備</h3>
+        <p>次の会議の参加者・関連メール・過去議事録・資料を横断収集し、アジェンダ案まで用意します。</p>
+        <span class="wf-cmd">次の会議の準備をして</span>
+      </div>
+      <div class="card fade-in">
+        <span class="mini">会議後</span>
+        <h3>③ 議事録・お礼メール</h3>
+        <p>メモから議事録を整形し、決定事項・ToDoを抽出。お礼や確認の返信は<strong>下書き</strong>として用意（送信は承認制）。</p>
+        <span class="wf-cmd">このメモを議事録にして返信下書きも</span>
+      </div>
+      <div class="card fade-in">
+        <span class="mini">日次・営業</span>
+        <h3>④ 営業日報の整形</h3>
+        <p>走り書きメモから日報・次アクション・CRM入力文を整形し、スプレッドシートに1行追記します。</p>
+        <span class="wf-cmd">このメモを日報にしてシートに記録</span>
+      </div>
+    </div>
+    <p class="note fade-in">※①②は読み取りのみで完結。③④の書き込みは「下書き作成・新規追記」に限定し、送信・上書き・削除はしない設計です。</p>
   </div>
 </section>
 
@@ -550,6 +607,53 @@ body.cursoring { cursor: none; }
   </div>
 </section>
 
+<!-- ============ USE CASES ============ -->
+<section id="usecases">
+  <div class="inner">
+    <span class="tag fade-in">USE CASES ── 部門別の使いどころ</span>
+    <h2 class="fade-in">あなたの部署では、こう効きます</h2>
+    <p class="lead fade-in">同じAntigravityでも、部門によって“刺さる業務”は違います。代表的な4部門の活用例です。まずは1部門・1業務から小さく始め、効果を見て広げます。</p>
+    <div class="cards c4">
+      <div class="card fade-in">
+        <div class="icon b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v6H3zM3 13h18v8H3z"/><path d="M7 6h.01M7 17h6"/></svg></div>
+        <h3>経理・バックオフィス</h3>
+        <ul class="checks" style="font-size:.84rem;">
+          <li>請求書・領収書の内容判別とフォルダ振り分け</li>
+          <li>メール／CSVから経費・売上データをシートへ転記</li>
+          <li>月次集計・前月比・異常値チェックの自動化</li>
+        </ul>
+      </div>
+      <div class="card fade-in">
+        <div class="icon g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 3-3 3 3 5-6"/></svg></div>
+        <h3>営業</h3>
+        <ul class="checks" style="font-size:.84rem;">
+          <li>商談メモから日報・次アクションを自動整形</li>
+          <li>議事録＋過去事例から提案書のたたき台を生成</li>
+          <li>顧客への返信・フォローメールの下書き作成</li>
+        </ul>
+      </div>
+      <div class="card fade-in">
+        <div class="icon y"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg></div>
+        <h3>総務・人事</h3>
+        <ul class="checks" style="font-size:.84rem;">
+          <li>社内問い合わせメールの一次回答ドラフト</li>
+          <li>申請書類・契約書の整理と命名規則の適用</li>
+          <li>日程調整・候補日抽出・関係者への連絡下書き</li>
+        </ul>
+      </div>
+      <div class="card fade-in">
+        <div class="icon p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>カスタマーサポート</h3>
+        <ul class="checks" style="font-size:.84rem;">
+          <li>過去対応・FAQを横断検索して回答案を提示</li>
+          <li>問い合わせの分類・優先度づけ・担当割り振り</li>
+          <li>定型返信の下書き作成（送信は人が確認）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ FEASIBILITY ============ -->
 <section style="background:var(--bg-soft);">
   <div class="inner">
@@ -571,6 +675,37 @@ body.cursoring { cursor: none; }
       </table>
     </div>
     <p class="note">※2026年6月時点の公開情報・事例に基づく評価。Phase 1の検証で貴社環境での実測値に更新します。</p>
+  </div>
+</section>
+
+<!-- ============ COMPARISON ============ -->
+<section id="compare">
+  <div class="inner">
+    <span class="tag fade-in">COMPARISON ── 他の手段との違い</span>
+    <h2 class="fade-in">ChatGPTや従来RPAと、何が違うの？</h2>
+    <p class="lead fade-in">「すでにChatGPTを使っている」「昔RPAを試した」という方へ。バックオフィス自動化という目的で比べると、Antigravityの強みは“Google連携・自律実行・証跡”にあります。</p>
+    <div class="cmp-wrap fade-in">
+      <table class="cmp">
+        <thead>
+          <tr>
+            <th style="width:30%;">観点</th>
+            <th class="us">Antigravity</th>
+            <th>汎用AIチャット<br><span style="font-weight:400;opacity:.7;">(ChatGPT等)</span></th>
+            <th>従来RPA<br><span style="font-weight:400;opacity:.7;">(ルール型)</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="first">Google Workspace連携</td><td class="us"><span class="yes">◎</span> 公式ネイティブ</td><td><span class="mid">△</span> 拡張機能頼み</td><td><span class="mid">△</span> 個別設定が必要</td></tr>
+          <tr><td class="first">複数ステップの自律実行</td><td class="us"><span class="yes">◎</span> 計画して実行</td><td><span class="no">×</span> 都度指示が必要</td><td><span class="mid">△</span> 決めた手順のみ</td></tr>
+          <tr><td class="first">本文を“理解”した判断</td><td class="us"><span class="yes">◎</span> 内容ベース</td><td><span class="yes">◎</span> 得意</td><td><span class="no">×</span> ルールのみ</td></tr>
+          <tr><td class="first">プログラミング不要</td><td class="us"><span class="yes">◎</span> 日本語で指示</td><td><span class="yes">◎</span> 会話で利用</td><td><span class="no">×</span> 開発・保守が必要</td></tr>
+          <tr><td class="first">作業の証跡（録画・計画）</td><td class="us"><span class="yes">◎</span> Artifacts自動生成</td><td><span class="no">×</span> なし</td><td><span class="mid">△</span> ログのみ</td></tr>
+          <tr><td class="first">仕様変更への柔軟性</td><td class="us"><span class="yes">◎</span> 指示し直すだけ</td><td><span class="yes">◎</span> 柔軟</td><td><span class="no">×</span> 作り直しが多い</td></tr>
+          <tr><td class="first">導入の初期費用</td><td class="us"><span class="yes">◎</span> 無料で検証可</td><td><span class="yes">◎</span> 低い</td><td><span class="no">×</span> 高くなりがち</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">※2026年6月時点の一般的な比較。汎用AIチャットも有用であり、用途で使い分けます。Antigravityは「Google環境で・人手の定型作業を・自律的に」こなす点が強みです。</p>
   </div>
 </section>
 
@@ -678,6 +813,28 @@ body.cursoring { cursor: none; }
   </div>
 </section>
 
+<!-- ============ ROI BY HEADCOUNT ============ -->
+<section id="roi">
+  <div class="inner">
+    <span class="tag fade-in">ROI ── 人数別の試算</span>
+    <h2 class="fade-in">人数が増えるほど、効果は積み上がる</h2>
+    <p class="lead fade-in">1人あたり月20〜30時間の削減を前提に、人数別の月間効果を試算しました（控えめに月25時間・時給2,500円換算）。ツール費を引いても、効果は明確に上回ります。</p>
+    <div class="cmp-wrap fade-in">
+      <table class="roi">
+        <thead>
+          <tr><th>対象人数</th><th>月間削減時間</th><th>人件費換算</th><th>ツール費（Pro）</th><th>月間ネット効果</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>1名</strong></td><td>約25時間</td><td>62,500円</td><td>2,900円</td><td class="eff">約 6.0万円</td></tr>
+          <tr><td><strong>5名</strong></td><td>約125時間</td><td>312,500円</td><td>14,500円</td><td class="eff">約 30万円</td></tr>
+          <tr><td><strong>10名</strong></td><td>約250時間</td><td>625,000円</td><td>29,000円</td><td class="eff">約 60万円</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">※削減工数は対象業務（メール・転記・整理）が約1/3短縮される想定の試算。Phase 1の無料検証で貴社の実測値に置き換えてご提示します。年換算では10名で約700万円規模の効果が見込まれます。</p>
+  </div>
+</section>
+
 <!-- ============ ROADMAP ============ -->
 <section style="background:var(--bg-soft);">
   <div class="inner">
@@ -750,6 +907,41 @@ body.cursoring { cursor: none; }
         <summary>導入にどのくらいかかりますか？</summary>
         <div class="a">Phase 1（セキュリティ設定＋メールサマリー）は約2週間、ルール整備を含むPhase 2まで約2ヶ月、定時実行を含む全体で約3ヶ月が標準です。最初の検証は1日で開始できます。</div>
       </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SUPPORT / PARTNER ============ -->
+<section class="support" id="support">
+  <div class="inner">
+    <span class="tag fade-in">SUPPORT ── 私たちの役割</span>
+    <h2 class="fade-in">「使いこなせるか不安」を、<br>導入パートナーが引き受けます</h2>
+    <p class="lead fade-in">ツールを渡して終わり、にはしません。安全な初期設定からルール作り、現場が回る仕組みづくり、効果測定までを伴走します。お客様は“本業”に集中できます。</p>
+    <div class="cards c4">
+      <div class="card fade-in">
+        <span class="snum">01</span>
+        <h3>業務の棚卸し・診断</h3>
+        <p>どの業務が・どれだけ時間を奪っているかを可視化し、自動化で効果の大きい対象を一緒に選定します。</p>
+      </div>
+      <div class="card fade-in">
+        <span class="snum">02</span>
+        <h3>安全設定・ガードレール構築</h3>
+        <p>学習オプトアウト・実行前レビュー・送信/削除の承認制・ブラウザ隔離など、安全に使うための初期設定を代行します。</p>
+      </div>
+      <div class="card fade-in">
+        <span class="snum">03</span>
+        <h3>ワークフローのテンプレ化</h3>
+        <p>御社の文体・ルールをRulesに落とし込み、毎日の定型業務を「コマンド1つ」で呼び出せる形に整えます。</p>
+      </div>
+      <div class="card fade-in">
+        <span class="snum">04</span>
+        <h3>運用伴走・効果測定</h3>
+        <p>導入後も定着までフォロー。削減工数を数値で測定し、次に自動化すべき業務と横展開をご提案します。</p>
+      </div>
+    </div>
+    <div class="example fade-in" style="margin-top:28px;">
+      <b>属人化させません</b>
+      作った仕組み・ルール・手順はすべてドキュメント化してお渡しします。担当者が変わっても運用を続けられる状態を目指します。
     </div>
   </div>
 </section>
