@@ -399,8 +399,8 @@ body.cursoring { cursor: none; }
       </div>
       <div class="card fade-in">
         <div class="icon g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div>
-        <h3>Google Workspaceネイティブ連携</h3>
-        <p>2.0からGmail・カレンダー・Drive・Docs・Sheetsの公式ツールを標準搭載。Googleアカウント認証だけで、追加開発なしに連携できます。</p>
+        <h3>Google Workspace公式連携</h3>
+        <p>2.0世代でGmail・カレンダー・Drive・Docs・Sheetsとの公式連携に対応。Google Cloud側の初期設定（API有効化・OAuth認証）を済ませれば、追加のプログラム開発なしで連携できます。</p>
       </div>
       <div class="card fade-in">
         <div class="icon p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></div>
@@ -408,7 +408,7 @@ body.cursoring { cursor: none; }
         <p>作業計画・スクリーンショット・ブラウザ操作の録画を「Artifacts」として自動生成。AIが何をしたか人間が検証でき、安心して任せられます。</p>
       </div>
     </div>
-    <p class="note fade-in">Gemini 3 Pro / 3.1 Pro / 3 Flash 等の最新モデルを選択可能（2026年6月時点）。無料パブリックプレビューで全機能を利用できます。</p>
+    <p class="note fade-in">最新のGeminiモデル（Gemini 3.x系）を中心に、複数のモデルから選択できます（2026年6月時点・対応モデルは随時更新）。無料枠で試せますが、無料の利用上限は縮小傾向のため、日常利用は有料プランが現実的です。</p>
   </div>
 </section>
 
@@ -497,7 +497,7 @@ body.cursoring { cursor: none; }
           <li>ラベル付け・アーカイブ・返信漏れの検知</li>
           <li>毎朝の「要対応リスト」自動レポート</li>
         </ul>
-        <div class="example"><b>実例（公開記事より）</b>未読20通の整理→重要5通への絞り込みが約30秒。「読む→判断する→処理する」が1回の指示で完結。</div>
+        <div class="example"><b>参考（公開記事の例）</b>未読メール20通前後の仕分け・重要メールの絞り込みが短時間で完了したという報告があります。実際の精度・速度は貴社データでPhase 1にて検証します。</div>
       </div>
       <div class="term fade-in">
         <div class="bar"><i></i><i></i><i></i></div>
@@ -734,8 +734,8 @@ body.cursoring { cursor: none; }
       </div>
     </div>
     <div class="alert fade-in">
-      <b>正直なリスク開示：プロンプトインジェクション</b>
-      メール本文やWebページに「悪意ある指示」が仕込まれる攻撃手法が公開研究で報告されています（2025年11月）。対策として、外部から来た文章は「指示」ではなく「処理対象データ」として扱うルール設定＋送信系操作の人間承認を必須とする設計で、実害が出ない運用を構築します。
+      <b>正直なリスク開示：脆弱性は継続的に報告・修正されています</b>
+      メール本文やWebページに悪意ある指示を仕込む「プロンプトインジェクション」が2025年11月に、さらに2026年4月にはリモートコード実行（RCE）につながる脆弱性が研究者から報告され、Googleが修正パッチを公開しました。AIエージェント特有のリスクは「見つかり次第ふさぐ」前提で向き合います。対策として、外部から来た文章は「指示」ではなく「処理対象データ」として扱うルール＋送信系操作の人間承認＋最新版への更新をセットにし、実害が出ない運用を構築します。
     </div>
   </div>
 </section>
@@ -745,25 +745,25 @@ body.cursoring { cursor: none; }
   <div class="inner">
     <span class="tag fade-in">PRICING ── 料金</span>
     <h2 class="fade-in">無料で検証を始めて、効果が出てから課金する</h2>
-    <p class="lead fade-in">Antigravity本体は無料プレビューで全機能が使えます。使用量の上限を上げたい場合のみGoogle AIサブスクリプションを追加する、リスクの低い料金構造です（2026年6月時点・変動が速いため契約前に最新を確認します）。</p>
+    <p class="lead fade-in">Antigravityは無料枠から始められます（ただし無料の利用上限は段階的に縮小しており、恒久的な無料保証はありません）。日常的に使うなら月数千円のGoogle AI Pro、上限を気にせず使うなら上位のUltra、という構造です。料金・上限は変動が速いため、契約前に必ず最新の公式情報を確認します（2026年6月時点）。</p>
     <div class="plans">
       <div class="plan fade-in">
         <div class="pname">FREE PREVIEW</div>
         <div class="price">¥0<small>／月</small></div>
-        <p class="pdesc">まずはここから。検証フェーズはこれで十分</p>
+        <p class="pdesc">まずは無料で操作感を確認</p>
         <ul>
-          <li>Gemini 3系モデル・全機能が利用可能</li>
-          <li>使用量上限は週次リセット</li>
-          <li>上限到達時は待機が必要</li>
+          <li>主要モデルで基本機能を試用可能</li>
+          <li>無料の利用上限は小さめ（短時間でリセット）</li>
+          <li>上限は縮小傾向・恒久保証なし</li>
         </ul>
       </div>
       <div class="plan hot fade-in">
         <span class="badge">推奨（個人運用）</span>
         <div class="pname">GOOGLE AI PRO</div>
         <div class="price">¥2,900<small>／月</small></div>
-        <p class="pdesc">日常運用の標準。キャンペーン時は年払いで実質約半額</p>
+        <p class="pdesc">日常運用の標準。約20ドル/月（¥2,900前後）</p>
         <ul>
-          <li>使用上限が5時間ごとにリセット</li>
+          <li>無料より大幅に拡大した利用上限</li>
           <li>上限到達時はクレジット追い課金で継続可</li>
           <li>NotebookLM等の他Google AI特典も付属</li>
         </ul>
@@ -771,9 +771,9 @@ body.cursoring { cursor: none; }
       <div class="plan fade-in">
         <div class="pname">GOOGLE AI ULTRA</div>
         <div class="price">$100〜<small>／月</small></div>
-        <p class="pdesc">ヘビーユース向け（Pro比5倍／上位$200プランは20倍）</p>
+        <p class="pdesc">ヘビーユース向け（上位は月200〜250ドル規模・要確認）</p>
         <ul>
-          <li>複数エージェント並列・長時間タスク向け</li>
+          <li>週次上限の撤廃・複数エージェント並列向け</li>
           <li>動画生成等の上位特典も含む</li>
         </ul>
       </div>
