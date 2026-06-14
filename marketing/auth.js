@@ -163,7 +163,7 @@
       e.preventDefault();
       var val = input.value;
 
-      if (val === '19921106') {
+      if (val === 'test1106') {
         sessionStorage.setItem(SESSION_KEY, '1');
         overlay.classList.add('auth-success');
         setTimeout(function () {

@@ -2,7 +2,7 @@
    Service Worker — マーケティング資格学習ガイド
    Cache-first 戦略でオフライン対応
 ================================================================ */
-var CACHE = 'marketing-v1.1';
+var CACHE = 'marketing-v1.2';
 var ASSETS = [
   './',
   './index.html',

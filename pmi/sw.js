@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pmi-learning-v4';
+const CACHE_NAME = 'pmi-learning-v5';
 
 const FILES = [
   'index.html',
