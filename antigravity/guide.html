@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>はじめての導入ガイド — Workspace業務AIアシスタント</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#15223b;--ink-soft:#5a6781;--muted:#8b97ad;--line:#e7ecf5;
+    --bg:#ffffff;--bg-soft:#f5f8fe;--bg-tint:#eef3fd;
+    --blue:#2f6bff;--blue-deep:#1f4fd6;--blue-soft:#e7eeff;
+    --green:#16c79a;--orange:#ff8a3d;--purple:#8b5cf6;--pink:#ff6b9d;
+    --radius:24px;--radius-sm:14px;
+    --shadow:0 18px 50px -24px rgba(31,79,214,.28);
+    --shadow-soft:0 10px 34px -18px rgba(21,34,59,.18);
+    --maxw:920px;--font:"Noto Sans JP","Inter",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{overflow-x:hidden}
+  body{font-family:var(--font);color:var(--ink);background:var(--bg);line-height:1.9;-webkit-font-smoothing:antialiased;letter-spacing:.01em}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;position:relative;z-index:2}
+  h1,h2,h3{line-height:1.35}
+  a{color:var(--blue)}
+  .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.04;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:9998;background:linear-gradient(90deg,var(--blue),var(--purple),var(--pink))}
+  .trail{position:fixed;top:0;left:0;border-radius:50%;pointer-events:none;z-index:9990;transform:translate(-50%,-50%);will-change:transform;mix-blend-mode:multiply}
+  .cursor-core{position:fixed;top:0;left:0;width:9px;height:9px;border-radius:50%;background:var(--blue);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 12px 2px rgba(47,107,255,.5);transition:width .2s,height .2s,background .2s}
+  .cursor-label{position:fixed;top:0;left:0;z-index:9999;pointer-events:none;transform:translate(-50%,-50%) scale(0);background:var(--ink);color:#fff;font-size:11px;font-weight:800;padding:7px 13px;border-radius:999px;white-space:nowrap;transition:transform .3s cubic-bezier(.34,1.6,.64,1);opacity:.95}
+  .cursor-label.show{transform:translate(-50%,-150%) scale(1)}
+  body.cursoring{cursor:none}
+  @media(hover:none){.trail,.cursor-core,.cursor-label{display:none!important}}
+
+  /* hero */
+  .hero{position:relative;padding:120px 0 60px;overflow:hidden}
+  .blob{position:absolute;border-radius:50%;mix-blend-mode:multiply;filter:blur(40px);z-index:0}
+  .blob.b1{width:420px;height:420px;background:radial-gradient(circle,#cdd9ff,transparent 65%);top:-100px;right:-80px;animation:f1 9s ease-in-out infinite}
+  .blob.b2{width:360px;height:360px;background:radial-gradient(circle,#ffd6e8,transparent 65%);top:40px;left:-120px;animation:f2 11s ease-in-out infinite}
+  @keyframes f1{0%,100%{transform:translate(0,0)}50%{transform:translate(36px,28px)}}
+  @keyframes f2{0%,100%{transform:translate(0,0)}50%{transform:translate(-28px,36px)}}
+  .kicker{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);color:var(--ink-soft);font-size:12.5px;font-weight:700;padding:8px 15px;border-radius:999px;box-shadow:var(--shadow-soft)}
+  .kicker .dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(22,199,154,.5)}70%{box-shadow:0 0 0 9px rgba(22,199,154,0)}100%{box-shadow:0 0 0 0 rgba(22,199,154,0)}}
+  .hero h1{font-size:clamp(2rem,5.5vw,3.2rem);font-weight:900;margin:22px 0 0;letter-spacing:-.01em}
+  .hero h1 .grad{background:linear-gradient(100deg,var(--blue),var(--purple) 55%,var(--pink));background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 6s linear infinite}
+  @keyframes flow{to{background-position:200% center}}
+  .hero p{font-size:clamp(1rem,2.2vw,1.12rem);color:var(--ink-soft);max-width:620px;margin:20px 0 0;font-weight:500}
+  .meta-row{display:flex;gap:24px;margin-top:30px;flex-wrap:wrap}
+  .meta-row .m{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--ink-soft);font-weight:600}
+  .meta-row .m svg{width:18px;height:18px;color:var(--blue)}
+
+  /* intro analogy box */
+  .analogy{margin:50px 0;background:linear-gradient(120deg,var(--bg-tint),#f3edff);border:1px solid var(--blue-soft);border-radius:var(--radius);padding:30px 32px}
+  .analogy h2{font-size:1.3rem;font-weight:900;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+  .analogy h2 svg{width:24px;height:24px;color:var(--blue)}
+  .analogy p{font-size:14.5px;color:var(--ink-soft);font-weight:500}
+  .analogy .three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+  @media(max-width:700px){.analogy .three{grid-template-columns:1fr}}
+  .analogy .t{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:18px}
+  .analogy .t b{display:block;font-size:14px;color:var(--ink);margin-bottom:4px}
+  .analogy .t span{font-size:12.5px;color:var(--muted);font-weight:500}
+
+  /* phase map */
+  .map{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:40px 0 10px}
+  @media(max-width:760px){.map{grid-template-columns:1fr 1fr}}
+  .mp{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:18px;text-align:center;position:relative;transition:transform .3s,box-shadow .3s}
+  .mp:hover{transform:translateY(-5px);box-shadow:var(--shadow-soft)}
+  .mp .ph{font-size:11px;font-weight:800;color:var(--blue);letter-spacing:.08em}
+  .mp .ic{width:46px;height:46px;border-radius:13px;margin:10px auto;display:grid;place-items:center;background:var(--blue-soft);color:var(--blue-deep)}
+  .mp .ic svg{width:24px;height:24px}
+  .mp b{display:block;font-size:14px;margin-bottom:2px}
+  .mp span{font-size:11.5px;color:var(--muted);font-weight:600}
+
+  section{padding:48px 0}
+  .phase-head{display:flex;align-items:center;gap:16px;margin-bottom:6px}
+  .phase-head .badge{width:48px;height:48px;flex:none;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:20px;font-family:"Inter";background:linear-gradient(135deg,var(--blue),var(--purple));box-shadow:0 10px 22px -8px rgba(47,107,255,.6)}
+  .phase-head h2{font-size:clamp(1.4rem,3.4vw,1.9rem);font-weight:900}
+  .phase-head .time{font-size:12px;font-weight:700;color:var(--muted);background:var(--bg-soft);border:1px solid var(--line);padding:3px 11px;border-radius:999px;margin-left:auto}
+  .phase-intro{color:var(--ink-soft);font-size:14.5px;margin:8px 0 28px;font-weight:500}
+
+  .steps{display:flex;flex-direction:column;gap:16px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px;box-shadow:var(--shadow-soft);position:relative}
+  .card .stepno{position:absolute;top:-12px;left:24px;background:var(--blue);color:#fff;font-size:12px;font-weight:800;padding:4px 12px;border-radius:999px;font-family:"Inter"}
+  .card h3{font-size:1.08rem;font-weight:900;margin:6px 0 10px}
+  .card p{font-size:13.5px;color:var(--ink-soft);font-weight:500;margin-bottom:8px}
+  .card ol,.card ul{margin:8px 0 4px 0;padding-left:20px}
+  .card li{font-size:13.5px;color:var(--ink-soft);font-weight:500;margin-bottom:7px}
+  .card li b{color:var(--ink)}
+  code{font-family:"Inter",ui-monospace,monospace;background:var(--bg-tint);color:var(--blue-deep);padding:2px 7px;border-radius:6px;font-size:12.5px;font-weight:600}
+  .copybox{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg-soft);border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin:10px 0;font-family:"Inter",monospace;font-size:13px;font-weight:600;color:var(--ink)}
+  .copybox button{border:none;background:var(--blue);color:#fff;font-size:11px;font-weight:800;padding:6px 12px;border-radius:7px;cursor:pointer;font-family:var(--font);transition:transform .15s}
+  .copybox button:active{transform:scale(.92)}
+  .note{display:flex;gap:11px;background:#fff7ec;border:1px solid #ffe0bf;border-radius:12px;padding:14px 16px;margin-top:12px;font-size:13px;color:#9a5a1a;font-weight:600}
+  .note.blue{background:var(--bg-tint);border-color:var(--blue-soft);color:var(--blue-deep)}
+  .note svg{width:18px;height:18px;flex:none;margin-top:2px}
+  .pic-hint{font-size:12.5px;color:var(--muted);font-weight:600;margin-top:8px;padding-left:4px;border-left:3px solid var(--line);padding:4px 0 4px 12px}
+
+  /* faq */
+  .faq{background:var(--bg-soft);border-radius:var(--radius);padding:8px 4px;margin-top:14px}
+  details{border-bottom:1px solid var(--line);padding:6px 20px}
+  details:last-child{border-bottom:none}
+  summary{cursor:pointer;font-size:14px;font-weight:800;padding:14px 0;list-style:none;display:flex;align-items:center;gap:10px}
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:"+";color:var(--blue);font-weight:900;font-size:18px;width:18px}
+  details[open] summary::before{content:"−"}
+  details p{font-size:13.5px;color:var(--ink-soft);font-weight:500;padding:0 0 16px 28px}
+
+  footer{padding:50px 0 40px;border-top:1px solid var(--line);background:var(--bg-soft);margin-top:40px}
+  .foot{font-size:12.5px;color:var(--muted);font-weight:500;text-align:center}
+
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+  .reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="progress" id="progress"></div>
+<div class="cursor-core" id="cursorCore"></div>
+<div class="cursor-label" id="cursorLabel">見る</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="wrap">
+    <span class="kicker"><span class="dot"></span>完全初心者むけ ／ コードは書きません</span>
+    <h1>はじめての<br><span class="grad">導入ガイド</span></h1>
+    <p>Google Workspace × Antigravity の業務AIアシスタントを、ゼロから動かすまでの全手順。専門用語はそのつど言い換えます。クリックとコピペだけで進みます。</p>
+    <div class="meta-row">
+      <span class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>所要 約60分</span>
+      <span class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>費用 0円（無料枠）</span>
+      <span class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 12l2 2 4-4"/></svg>必要なもの: Googleアカウント</span>
+    </div>
+  </div>
+</section>
+
+<!-- ANALOGY -->
+<div class="wrap">
+  <div class="analogy reveal">
+    <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2Z"/></svg>そもそも、今から何をするの？</h2>
+    <p>作るAIアシスタントは、あなたのGmailやカレンダーを「読んだり下書きしたり」します。でもGoogleは、許可なくアプリにあなたのデータを触らせません。今日やるのは、その<b>「AIアシスタント専用の入館証（IDカード）を発行する手続き」</b>です。やることは3つだけ。</p>
+    <div class="three">
+      <div class="t"><b>① 部屋を用意する</b><span>作業をまとめる箱（プロジェクト）を作る</span></div>
+      <div class="t"><b>② 開けていいドアを登録</b><span>Gmail・カレンダー等の利用を許可（API有効化）</span></div>
+      <div class="t"><b>③ 入館証を発行</b><span>アプリ用の鍵（OAuth・クライアントID）を作る</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAP -->
+<div class="wrap">
+  <div class="map">
+    <div class="mp reveal"><div class="ph">PHASE A</div><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="m7.5 4.2 9 5.2M3.3 7 12 12l8.7-5M12 22V12"/></svg></div><b>準備する</b><span>Antigravity導入</span></div>
+    <div class="mp reveal"><div class="ph">PHASE B</div><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><b>入館証づくり</b><span>Google Cloud設定</span></div>
+    <div class="mp reveal"><div class="ph">PHASE C</div><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2M15 7h2a5 5 0 0 1 0 10h-2M8 12h8"/></svg></div><b>つなぐ</b><span>MCP接続・認証</span></div>
+    <div class="mp reveal"><div class="ph">PHASE D</div><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 3 14 9-14 9V3z"/></svg></div><b>動かす</b><span>最初の指示を出す</span></div>
+  </div>
+</div>
+
+<!-- PHASE A -->
+<section>
+  <div class="wrap">
+    <div class="phase-head reveal"><div class="badge">A</div><h2>準備する</h2><span class="time">約10分</span></div>
+    <p class="phase-intro reveal">まず、AIアシスタントの「本体」である Antigravity を自分のパソコンに入れます。アプリを1つインストールするだけです。</p>
+    <div class="steps">
+      <div class="card reveal"><span class="stepno">A-1</span>
+        <h3>Antigravity をダウンロード</h3>
+        <p>Googleの公式サイトを開いて、ダウンロードボタンを押します。</p>
+        <div class="copybox"><span>https://antigravity.google/</span><button data-copy="https://antigravity.google/">コピー</button></div>
+        <ul>
+          <li>サイトを開いたら <b>「Download」</b>（ダウンロード）ボタンを押す</li>
+          <li>あなたのパソコンに合うもの（<b>Windows</b>）が自動で選ばれます</li>
+          <li>ダウンロードフォルダに保存されたインストーラーをダブルクリック</li>
+        </ul>
+        <div class="note blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>「Antigravity」はGoogleが作ったAI開発ツールです。今回はこの中でAIアシスタントを動かします。</div>
+      </div>
+      <div class="card reveal"><span class="stepno">A-2</span>
+        <h3>インストールして起動</h3>
+        <ol>
+          <li>画面の指示にしたがって <b>「次へ／同意する／インストール」</b> を押していくだけ</li>
+          <li>終わったら Antigravity が起動します</li>
+          <li>初回は <b>Googleアカウントでサインイン</b> を求められます → ログイン</li>
+        </ol>
+        <p>これで本体の準備は完了です。次は、データに触る許可（入館証）を作ります。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE B -->
+<section>
+  <div class="wrap">
+    <div class="phase-head reveal"><div class="badge">B</div><h2>入館証づくり（Google Cloud）</h2><span class="time">約30分</span></div>
+    <p class="phase-intro reveal">ここが今日のメイン。Googleの管理画面で「箱を作る → ドアを登録 → 鍵を発行」を行います。ぜんぶブラウザのクリックだけです。</p>
+    <div class="steps">
+      <div class="card reveal"><span class="stepno">B-1</span>
+        <h3>箱を作る（プロジェクト作成）</h3>
+        <p>「プロジェクト」は作業をまとめておく箱（フォルダのようなもの）です。下のページを開きます。</p>
+        <div class="copybox"><span>console.cloud.google.com/projectcreate</span><button data-copy="https://console.cloud.google.com/projectcreate">コピー</button></div>
+        <ul>
+          <li>「プロジェクト名」に <code>workspace-assistant-mvp</code> と入力（半角英数字）</li>
+          <li>「場所／組織」は出ているものでOK。「組織なし」でも問題なし</li>
+          <li>青い <b>「作成」</b> を押す → 20秒ほど待つ</li>
+          <li>画面上部にプロジェクト名が表示されたら成功</li>
+        </ul>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>支払い情報を求められても、使うのは無料枠だけ。課金は発生しません。不安なら一度手を止めて相談を。</div>
+      </div>
+      <div class="card reveal"><span class="stepno">B-2</span>
+        <h3>ドアを登録する（API有効化 ×6）</h3>
+        <p>「API」とは、Gmailやカレンダーを使うための<b>窓口（ドア）</b>のこと。使う6つを「有効にする」だけ。検索欄に名前を入れて開き、青い <b>「有効にする」</b> を押します。</p>
+        <ul>
+          <li>Gmail API</li><li>Google Calendar API</li><li>Google Drive API</li>
+          <li>Google Chat API</li><li>People API（連絡先）</li><li>Google Sheets API</li>
+        </ul>
+        <div class="pic-hint">探し方：左上のメニュー →「APIとサービス」→「ライブラリ」→ 名前で検索 →「有効にする」。これを6回くり返します。</div>
+      </div>
+      <div class="card reveal"><span class="stepno">B-3</span>
+        <h3>誰が使えるか決める（OAuth同意画面）</h3>
+        <p>「このアプリは、あなたのどのデータを使いますか？」を登録する画面です。「APIとサービス」→「OAuth同意画面」へ。</p>
+        <ol>
+          <li>User Type は <b>「外部（External）」</b> を選んで「作成」<br><span style="font-size:12px;color:var(--muted)">※組織と個人の両方を使えるようにするため</span></li>
+          <li>アプリ名：<code>Workspace Assistant</code>／サポートメール・連絡先：自分のアドレス</li>
+          <li>「スコープ」では、まず<b>読み取り専用</b>のものだけ追加（下記6つ）</li>
+        </ol>
+        <div class="copybox" style="flex-wrap:wrap;font-size:11.5px;line-height:1.9"><span>gmail.readonly / calendar.events.readonly / calendar.calendarlist.readonly / drive.readonly / chat.messages.readonly / contacts.readonly</span></div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>「送信」や「削除」の権限は<b>あえて入れません</b>。これでAIが暴走しても送信・削除は不可能になります（安全設計の要）。</div>
+      </div>
+      <div class="card reveal"><span class="stepno">B-4</span>
+        <h3>使う人を登録（テストユーザー）</h3>
+        <p>同じ画面の「テストユーザー」で、使うアカウントを追加します。</p>
+        <ul>
+          <li><b>組織アカウント</b>（あなた@会社ドメイン）を追加</li>
+          <li><b>個人Gmail</b>（あなた@gmail.com）を追加</li>
+        </ul>
+        <div class="note blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>個人Gmailは仕様上、約7日ごとに再ログインが必要です（テスト中のため）。週1の手間だけ、と覚えておけばOK。</div>
+      </div>
+      <div class="card reveal"><span class="stepno">B-5</span>
+        <h3>鍵を発行（クライアントID）</h3>
+        <p>いよいよ入館証の発行です。「APIとサービス」→「認証情報」→「認証情報を作成」→「OAuth クライアント ID」。</p>
+        <ol>
+          <li>種類は <b>「デスクトップアプリ」</b> を選ぶ</li>
+          <li>名前：<code>antigravity-mcp-client</code> →「作成」</li>
+          <li>出てきた画面で <b>「JSONをダウンロード」</b> を押す（これが鍵ファイル）</li>
+          <li>ファイルを安全な場所に保存：<code>C:\Users\user\.gemini\config\client_secret.json</code></li>
+        </ol>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>このJSONは家の鍵と同じ。人に渡したりネットに上げたりしないでください。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE C -->
+<section>
+  <div class="wrap">
+    <div class="phase-head reveal"><div class="badge">C</div><h2>つなぐ（MCP接続）</h2><span class="time">約10分</span></div>
+    <p class="phase-intro reveal">AntigravityとGoogleを「接続」します。設定ファイルを1つ置いて、各サービスにログインで「許可」を押すだけです。</p>
+    <div class="steps">
+      <div class="card reveal"><span class="stepno">C-1</span>
+        <h3>設定ファイルを置く</h3>
+        <p>このフォルダにある <code>mcp_config.json</code> を、次の場所にコピーします。</p>
+        <div class="copybox"><span>C:\Users\user\.gemini\config\mcp_config.json</span><button data-copy="C:\Users\user\.gemini\config\mcp_config.json">コピー</button></div>
+        <ul>
+          <li>ファイルの中の <code>&lt;&lt;&lt; … &gt;&gt;&gt;</code> の部分を自分の値に書き換える（鍵ファイルのパス・自分のメール）</li>
+          <li>Antigravityの「Manage MCP Servers」→「View raw config」からも開けます</li>
+        </ul>
+      </div>
+      <div class="card reveal"><span class="stepno">C-2</span>
+        <h3>6つのサービスにログイン許可</h3>
+        <ol>
+          <li>Antigravityを再起動 → MCPサーバ一覧に6本が出る</li>
+          <li>各サーバの「認証」を押す → ブラウザで <b>「許可」</b> をクリック</li>
+          <li>「このアプリは確認されていません」と出たら、<b>「詳細」→「（アプリ名）に移動」</b>で続行（テスト中の正常表示）</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE D -->
+<section>
+  <div class="wrap">
+    <div class="phase-head reveal"><div class="badge">D</div><h2>動かす</h2><span class="time">約3分</span></div>
+    <p class="phase-intro reveal">準備完了です。最初は「読むだけ」の指示で安全に試しましょう。Antigravityのチャット欄に、こう打つだけ。</p>
+    <div class="steps">
+      <div class="card reveal">
+        <h3>はじめての指示（コピペでOK）</h3>
+        <div class="copybox"><span>今日の予定と、重要メール・要返信メールをまとめてダッシュボードにして</span><button data-copy="今日の予定と、重要メール・要返信メールをまとめてダッシュボードにして">コピー</button></div>
+        <p>これは「読むだけ」なので、何も壊れません。うまく動いたら、会議準備や議事録づくりへ広げていきます。</p>
+        <div class="note blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>メール送信・予定変更・ファイル削除は、必ず<b>あなたの確認</b>を挟む設計です。勝手に実行されることはありません。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="wrap">
+    <div class="phase-head reveal"><div class="badge" style="background:linear-gradient(135deg,var(--orange),var(--pink))">?</div><h2>困ったときは</h2></div>
+    <div class="faq reveal">
+      <details><summary>「このアプリは確認されていません」と警告が出た</summary><p>テスト中のため出る正常な表示です。「詳細」→「（アプリ名）に移動」を押せば先に進めます。あなたが作ったアプリなので安全です。</p></details>
+      <details><summary>数日たったら個人Gmailでエラーになった</summary><p>テストモードの仕様で、約7日ごとに再ログインが必要です。もう一度「認証」を押せば直ります。</p></details>
+      <details><summary>MCPサーバが一覧に出てこない</summary><p>① mcp_config.json の置き場所が正しいか ② ファイルの中身の書き換え漏れがないか ③ Antigravityを再起動したか、を確認してください。</p></details>
+      <details><summary>特定のサービスだけ「403」エラー</summary><p>PHASE B-2 のAPI有効化が抜けています。該当のAPIを「有効にする」で直ります。</p></details>
+      <details><summary>料金が心配</summary><p>今回使う範囲はすべて無料枠です。カード登録を求められても、通常利用で課金されることはありません。</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="foot">Workspace業務AIアシスタント 導入ガイド ／ 2026-06-14 ／ キュリオシティ株式会社<br>くわしい設計の理由は「設計書.html」、各ステップの詳細チェックリストは「GCPセットアップ手順.md」をどうぞ。</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script>
+  /* lenis */
+  let lenis=null;
+  try{ if(window.Lenis){ lenis=new Lenis({lerp:.085,smoothWheel:true}); (function raf(t){lenis.raf(t);requestAnimationFrame(raf)})(); } }catch(e){}
+  document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(!t)return;e.preventDefault();lenis?lenis.scrollTo(t,{offset:-40}):t.scrollIntoView({behavior:'smooth'})}));
+
+  /* reveals */
+  const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}}),{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.steps').forEach(g=>[...g.children].forEach((c,i)=>{if(c.classList.contains('reveal'))c.style.transitionDelay=(Math.min(i,4)*70)+'ms'}));
+  document.querySelectorAll('.map').forEach(g=>[...g.children].forEach((c,i)=>c.style.transitionDelay=(i*70)+'ms'));
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  /* progress + nav */
+  const prog=document.getElementById('progress');
+  function onScroll(){const h=document.documentElement,sy=h.scrollTop||window.scrollY;prog.style.width=((sy/(h.scrollHeight-h.clientHeight))*100)+'%'}
+  window.addEventListener('scroll',onScroll,{passive:true}); if(lenis)lenis.on('scroll',onScroll); onScroll();
+
+  /* copy buttons */
+  document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',()=>{
+    navigator.clipboard.writeText(b.dataset.copy).then(()=>{const o=b.textContent;b.textContent='コピー済';setTimeout(()=>b.textContent=o,1200)});
+  }));
+
+  /* comet cursor */
+  if(matchMedia('(hover:hover) and (pointer:fine)').matches){
+    document.body.classList.add('cursoring');
+    const core=document.getElementById('cursorCore'),label=document.getElementById('cursorLabel');
+    const N=10,cols=['#2f6bff','#3f63ff','#5a5cf6','#7a54f0','#9a4fe6','#b94fd6','#d651bf','#ff6b9d'],trails=[];
+    for(let i=0;i<N;i++){const d=document.createElement('div');d.className='trail';const sz=Math.max(6,26-i*2);d.style.width=d.style.height=sz+'px';d.style.background=cols[Math.min(cols.length-1,Math.floor(i/N*cols.length))];d.style.opacity=(1-i/N)*0.5;document.body.appendChild(d);trails.push({el:d,x:innerWidth/2,y:innerHeight/2})}
+    let mx=innerWidth/2,my=innerHeight/2;
+    addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;core.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`;label.style.left=mx+'px';label.style.top=my+'px'});
+    (function ride(){let px=mx,py=my;trails.forEach(t=>{t.x+=(px-t.x)*.35;t.y+=(py-t.y)*.35;t.el.style.transform=`translate(${t.x}px,${t.y}px) translate(-50%,-50%)`;px=t.x;py=t.y});requestAnimationFrame(ride)})();
+    [['.copybox button','コピー'],['a','開く'],['.mp','フェーズ'],['.card','手順'],['summary','開く']].forEach(([sel,txt])=>{
+      document.querySelectorAll(sel).forEach(el=>{
+        el.addEventListener('mouseenter',()=>{core.style.width=core.style.height='20px';core.style.background='var(--purple)';label.textContent=txt;label.classList.add('show')});
+        el.addEventListener('mouseleave',()=>{core.style.width=core.style.height='9px';core.style.background='var(--blue)';label.classList.remove('show')});
+      });
+    });
+  }
+</script>
+</body>
+</html>

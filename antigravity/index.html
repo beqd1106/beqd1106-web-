@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antigravityで実現する業務自動化のご提案｜Gmail・スプレッドシート・ファイル整理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #1a73e8;
+  --blue-deep: #174ea6;
+  --red: #ea4335;
+  --yellow: #f9ab00;
+  --green: #34a853;
+  --ink: #202124;
+  --gray: #5f6368;
+  --line: #e3e6ea;
+  --bg: #ffffff;
+  --bg-soft: #f8f9fb;
+  --radius: 20px;
+  --ease: cubic-bezier(0.21, 0.51, 0.51, 1);
+  --en: 'Outfit', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--ink); background: var(--bg);
+  line-height: 1.9; letter-spacing: 0.03em;
+  font-feature-settings: 'palt';
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+section { padding: clamp(72px, 11vh, 130px) clamp(22px, 6vw, 80px); position: relative; overflow: hidden; }
+.inner { max-width: 1120px; margin: 0 auto; }
+.center { text-align: center; }
+
+/* header */
+header.site {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px clamp(20px, 4vw, 44px);
+  background: rgba(255,255,255,.88); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+header.site .logo { font-family: var(--en); font-weight: 700; font-size: 17px; letter-spacing: .04em; display: flex; align-items: center; gap: 9px; }
+header.site .logo .dot { width: 11px; height: 11px; border-radius: 50%; background: conic-gradient(var(--blue) 0 25%, var(--red) 0 50%, var(--yellow) 0 75%, var(--green) 0); }
+header.site nav { display: flex; gap: 24px; font-size: 12.5px; font-weight: 500; color: var(--gray); }
+header.site nav a { color: inherit; text-decoration: none; transition: color .3s; }
+header.site nav a:hover { color: var(--blue); }
+@media (max-width: 760px) { header.site nav { display: none; } }
+
+/* common parts */
+.tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 700; letter-spacing: .14em;
+  color: var(--blue); background: #e8f0fe;
+  border-radius: 99px; padding: 7px 18px; margin-bottom: 22px;
+}
+.tag.on-dark { background: rgba(255,255,255,.12); color: #9ec3ff; }
+h2 {
+  font-size: clamp(1.55rem, 1rem + 2.6vw, 2.5rem);
+  font-weight: 900; line-height: 1.5; letter-spacing: .04em;
+  margin-bottom: 18px;
+}
+h2 .en { font-family: var(--en); }
+.lead { font-size: clamp(.9rem, .84rem + .3vw, 1rem); color: var(--gray); max-width: 760px; margin-bottom: clamp(30px, 5vh, 52px); }
+.center .lead { margin-left: auto; margin-right: auto; }
+.accent { background: linear-gradient(100deg, var(--blue), #7c4dff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+strong { color: var(--ink); font-weight: 700; }
+.note { font-size: .74rem; color: #9aa0a6; margin-top: 20px; }
+
+.fade-in { opacity: 0; transform: translateY(26px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+.fade-in.is-visible { opacity: 1; transform: none; }
+.fade-in:nth-child(2) { transition-delay: .07s; }
+.fade-in:nth-child(3) { transition-delay: .14s; }
+.fade-in:nth-child(4) { transition-delay: .21s; }
+.fade-in:nth-child(5) { transition-delay: .28s; }
+.fade-in:nth-child(6) { transition-delay: .35s; }
+
+/* ===== hero ===== */
+.hero {
+  min-height: 100vh; display: flex; align-items: center;
+  background: #fff url('assets/bg-light.png') center / cover no-repeat;
+  padding-top: 120px;
+}
+.hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,.2), rgba(255,255,255,0) 40%); }
+.hero .inner { position: relative; z-index: 2; }
+.hero .display {
+  font-family: var(--en); font-weight: 800;
+  font-size: clamp(3rem, 1.5rem + 9.5vw, 8.2rem);
+  line-height: 1.02; letter-spacing: -0.02em; color: var(--ink);
+  margin-bottom: 26px;
+}
+.hero .display .row2 { display: block; background: linear-gradient(95deg, var(--blue) 10%, #7c4dff 60%, var(--red)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero .jp {
+  font-size: clamp(1.05rem, .9rem + 1vw, 1.6rem); font-weight: 900; letter-spacing: .06em;
+  margin-bottom: 18px;
+}
+.hero .sub { color: var(--gray); font-size: clamp(.88rem, .82rem + .3vw, 1rem); max-width: 640px; margin-bottom: 36px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--blue); color: #fff; text-decoration: none;
+  font-weight: 700; font-size: .95rem; letter-spacing: .05em;
+  padding: 16px 36px; border-radius: 99px;
+  box-shadow: 0 8px 24px rgba(26,115,232,.35);
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(26,115,232,.45); }
+.btn.ghost { background: #fff; color: var(--blue); border: 1.5px solid var(--blue); box-shadow: none; margin-left: 14px; }
+.hero .meta { margin-top: 44px; display: flex; gap: 28px; flex-wrap: wrap; font-size: 12px; color: var(--gray); letter-spacing: .1em; }
+.hero .meta span { display: flex; align-items: center; gap: 7px; }
+.hero .meta i { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+
+/* chips row (yoom風) */
+.chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; max-width: 720px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff; border: 1px solid var(--line); border-radius: 99px;
+  padding: 8px 16px; font-size: 12.5px; font-weight: 700;
+  box-shadow: 0 2px 10px rgba(32,33,36,.06);
+}
+.chip i { width: 9px; height: 9px; border-radius: 50%; }
+.chip:nth-child(4n+1) i { background: var(--blue); }
+.chip:nth-child(4n+2) i { background: var(--red); }
+.chip:nth-child(4n+3) i { background: var(--yellow); }
+.chip:nth-child(4n+4) i { background: var(--green); }
+
+/* ===== problem ===== */
+.problem { background: var(--bg-soft); }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 70px); align-items: center; }
+@media (max-width: 860px) { .split { grid-template-columns: 1fr; } }
+.photo-card { border-radius: var(--radius); overflow: hidden; box-shadow: 0 24px 60px rgba(32,33,36,.16); }
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 30px; }
+.stat { background: #fff; border-radius: 16px; padding: 22px 22px; border: 1px solid var(--line); }
+.stat .v { font-family: var(--en); font-weight: 800; font-size: clamp(1.7rem, 1.2rem + 1.6vw, 2.4rem); color: var(--blue); line-height: 1.15; }
+.stat .v small { font-family: 'Noto Sans JP'; font-size: .42em; color: var(--gray); font-weight: 700; margin-left: 4px; }
+.stat .l { font-size: .76rem; color: var(--gray); margin-top: 6px; line-height: 1.7; }
+
+/* ===== what is ===== */
+.cards { display: grid; gap: clamp(16px, 2.4vw, 26px); }
+.cards.c3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.cards.c4 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.card {
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+  padding: clamp(24px, 3vw, 34px);
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+.card:hover { transform: translateY(-4px); box-shadow: 0 18px 44px rgba(32,33,36,.12); }
+.card .icon {
+  width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center;
+  margin-bottom: 18px; color: #fff;
+}
+.card .icon svg { width: 26px; height: 26px; }
+.card .icon.b { background: var(--blue); } .card .icon.r { background: var(--red); }
+.card .icon.y { background: var(--yellow); } .card .icon.g { background: var(--green); }
+.card .icon.p { background: #7c4dff; } .card .icon.t { background: #12b5cb; }
+.card h3 { font-size: 1.05rem; font-weight: 900; margin-bottom: 8px; line-height: 1.6; }
+.card p { font-size: .84rem; color: var(--gray); }
+.card .mini { display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: .1em; color: var(--blue); background: #e8f0fe; border-radius: 99px; padding: 3px 12px; margin-bottom: 12px; }
+.card .mini.native { color: var(--green); background: #e6f4ea; }
+.card .mini.browser { color: #b06000; background: #fef7e0; }
+.card .mini.mcp { color: #7c4dff; background: #f3e8fd; }
+
+/* feature detail rows */
+.feature-row { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 70px); align-items: center; padding: clamp(34px, 5vh, 56px) 0; border-top: 1px solid var(--line); }
+.feature-row:first-of-type { border-top: 0; }
+@media (max-width: 860px) { .feature-row { grid-template-columns: 1fr; } }
+.feature-row .fnum { font-family: var(--en); font-weight: 800; font-size: .95rem; color: var(--blue); letter-spacing: .18em; margin-bottom: 10px; }
+.feature-row h3 { font-size: clamp(1.2rem, 1rem + 1vw, 1.6rem); font-weight: 900; margin-bottom: 14px; line-height: 1.6; }
+.feature-row .desc { font-size: .88rem; color: var(--gray); margin-bottom: 20px; }
+ul.checks { list-style: none; }
+ul.checks li { padding: 9px 0 9px 32px; position: relative; font-size: .87rem; }
+ul.checks li::before {
+  content: ''; position: absolute; left: 2px; top: 14px;
+  width: 16px; height: 16px; border-radius: 50%; background: #e6f4ea;
+}
+ul.checks li::after {
+  content: ''; position: absolute; left: 6px; top: 19px; width: 7px; height: 4px;
+  border-left: 2px solid var(--green); border-bottom: 2px solid var(--green); transform: rotate(-45deg);
+}
+.example {
+  background: var(--bg-soft); border-radius: 16px; padding: 20px 24px; margin-top: 18px;
+  font-size: .8rem; color: var(--gray); border-left: 4px solid var(--blue);
+}
+.example b { color: var(--ink); display: block; margin-bottom: 4px; font-size: .82rem; }
+
+/* terminal mock */
+.term {
+  background: #1e1f24; border-radius: 16px; padding: 22px 26px;
+  font-family: Consolas, monospace; font-size: .8rem; line-height: 2.1; color: #d7dade;
+  box-shadow: 0 24px 60px rgba(32,33,36,.25);
+}
+.term .bar { display: flex; gap: 7px; margin-bottom: 14px; }
+.term .bar i { width: 11px; height: 11px; border-radius: 50%; display: block; }
+.term .bar i:nth-child(1) { background: #ff5f57; } .term .bar i:nth-child(2) { background: #febc2e; } .term .bar i:nth-child(3) { background: #28c840; }
+.term .p { color: #8ab4f8; }
+.term .c { color: #9aa0a6; }
+.term .ok { color: #81c995; }
+
+/* ===== table ===== */
+table { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; font-size: .85rem; }
+th { background: var(--ink); color: #fff; font-weight: 700; text-align: left; padding: 14px 18px; font-size: .78rem; letter-spacing: .1em; }
+td { padding: 14px 18px; border-top: 1px solid var(--line); vertical-align: top; }
+tr:nth-child(even) td { background: var(--bg-soft); }
+.pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 14px; border-radius: 99px; white-space: nowrap; }
+.pill.g { background: #e6f4ea; color: #137333; }
+.pill.y { background: #fef7e0; color: #b06000; }
+.pill.b { background: #e8f0fe; color: var(--blue-deep); }
+
+/* ===== dark security ===== */
+.dark {
+  background: #15171c url('assets/network-dark.png') center / cover no-repeat;
+  color: #e8eaed;
+}
+.dark::before { content: ''; position: absolute; inset: 0; background: rgba(13,15,20,.78); }
+.dark .inner { position: relative; z-index: 2; }
+.dark h2 { color: #fff; }
+.dark .lead { color: #bdc1c6; }
+.dark .card { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.14); backdrop-filter: blur(6px); }
+.dark .card:hover { box-shadow: 0 18px 44px rgba(0,0,0,.5); }
+.dark .card h3 { color: #fff; }
+.dark .card p { color: #bdc1c6; }
+.dark .alert {
+  margin-top: 26px; border-radius: 16px; padding: 22px 26px;
+  background: rgba(234,67,53,.12); border: 1px solid rgba(234,67,53,.4);
+  font-size: .84rem; color: #f5c6c2;
+}
+.dark .alert b { color: #fff; display: block; margin-bottom: 6px; }
+
+/* ===== pricing ===== */
+.plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: clamp(16px, 2.4vw, 26px); align-items: stretch; }
+.plan { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 30px 28px; position: relative; display: flex; flex-direction: column; }
+.plan.hot { border: 2px solid var(--blue); box-shadow: 0 18px 44px rgba(26,115,232,.16); }
+.plan .pname { font-family: var(--en); font-weight: 700; font-size: .95rem; letter-spacing: .08em; color: var(--gray); }
+.plan .price { font-family: var(--en); font-weight: 800; font-size: 2rem; margin: 10px 0 4px; }
+.plan .price small { font-size: .45em; font-family: 'Noto Sans JP'; color: var(--gray); font-weight: 700; }
+.plan .pdesc { font-size: .78rem; color: var(--gray); margin-bottom: 16px; }
+.plan ul { list-style: none; font-size: .8rem; margin-top: auto; }
+.plan ul li { padding: 7px 0 7px 24px; position: relative; border-top: 1px dashed var(--line); }
+.plan ul li::before { content: ''; position: absolute; left: 2px; top: 15px; width: 6px; height: 3.5px; border-left: 2px solid var(--blue); border-bottom: 2px solid var(--blue); transform: rotate(-45deg); }
+.plan .badge { position: absolute; top: -13px; left: 24px; background: var(--blue); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .1em; border-radius: 99px; padding: 4px 16px; }
+
+/* roadmap */
+.phases { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: clamp(16px, 2.4vw, 26px); }
+.phase { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.phase header { padding: 18px 24px; color: #fff; }
+.phase:nth-child(1) header { background: var(--blue); }
+.phase:nth-child(2) header { background: #7c4dff; }
+.phase:nth-child(3) header { background: var(--green); }
+.phase header .ph { font-family: var(--en); font-size: 11px; letter-spacing: .26em; opacity: .85; }
+.phase header h4 { font-size: 1rem; font-weight: 900; margin-top: 2px; }
+.phase header .term2 { font-size: .74rem; opacity: .85; }
+.phase .body { padding: 20px 24px; }
+.phase .body li { list-style: none; font-size: .82rem; color: var(--gray); padding: 7px 0 7px 18px; position: relative; }
+.phase .body li::before { content: ''; position: absolute; left: 0; top: 16px; width: 7px; height: 7px; border-radius: 50%; background: var(--yellow); }
+
+/* QA */
+details { background: #fff; border: 1px solid var(--line); border-radius: 16px; margin-bottom: 12px; overflow: hidden; }
+summary { cursor: pointer; padding: 18px 52px 18px 56px; font-weight: 700; font-size: .92rem; position: relative; list-style: none; transition: background .3s; }
+summary::-webkit-details-marker { display: none; }
+summary::before { content: 'Q'; position: absolute; left: 22px; top: 15px; font-family: var(--en); font-weight: 800; color: var(--blue); font-size: 1.05rem; }
+summary::after { content: ''; position: absolute; right: 24px; top: 50%; width: 9px; height: 9px; border-right: 2px solid var(--gray); border-bottom: 2px solid var(--gray); transform: translateY(-70%) rotate(45deg); transition: transform .3s; }
+details[open] summary::after { transform: translateY(-30%) rotate(225deg); }
+summary:hover { background: var(--bg-soft); }
+details .a { padding: 2px 26px 20px 56px; font-size: .86rem; color: var(--gray); position: relative; }
+details .a::before { content: 'A'; position: absolute; left: 22px; top: 0; font-family: var(--en); font-weight: 800; color: var(--red); font-size: 1.05rem; }
+
+/* closing */
+.closing { background: linear-gradient(120deg, var(--blue-deep), var(--blue) 55%, #7c4dff); color: #fff; }
+.closing h2 { color: #fff; }
+.closing .lead { color: rgba(255,255,255,.85); }
+.closing .card { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.25); }
+.closing .card h3 { color: #fff; }
+.closing .card p { color: rgba(255,255,255,.8); }
+.closing .step-num { font-family: var(--en); font-weight: 800; font-size: 1.3rem; color: var(--yellow); margin-bottom: 10px; }
+footer { background: var(--ink); color: #9aa0a6; font-size: .76rem; padding: 28px clamp(22px, 6vw, 80px); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+footer .logo { font-family: var(--en); color: #fff; font-weight: 700; }
+
+/* scroll progress */
+.scrollbar { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 200; background: linear-gradient(90deg, var(--blue), #7c4dff, var(--red), var(--yellow), var(--green)); }
+/* comet trail cursor */
+.trail { position: fixed; top: 0; left: 0; border-radius: 50%; pointer-events: none; z-index: 190; transform: translate(-50%,-50%); will-change: transform; mix-blend-mode: multiply; }
+.cursor-core { position: fixed; top: 0; left: 0; width: 9px; height: 9px; border-radius: 50%; background: var(--blue); pointer-events: none; z-index: 201; transform: translate(-50%,-50%); box-shadow: 0 0 12px 2px rgba(26,115,232,.5); transition: width .2s, height .2s, background .2s; }
+.cursor-label { position: fixed; top: 0; left: 0; z-index: 201; pointer-events: none; transform: translate(-50%,-50%) scale(0); background: var(--ink); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .04em; padding: 6px 12px; border-radius: 99px; white-space: nowrap; transition: transform .3s cubic-bezier(.34,1.6,.64,1); }
+.cursor-label.show { transform: translate(-50%,-160%) scale(1); }
+body.cursoring { cursor: none; }
+@media (hover: none) { .trail, .cursor-core, .cursor-label { display: none !important; } }
+
+/* proof terminal result emphasis */
+.proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 60px); align-items: center; margin-top: 40px; }
+@media (max-width: 860px) { .proof-grid { grid-template-columns: 1fr; } }
+
+@media print {
+  header.site { position: static; }
+  section { page-break-inside: avoid; }
+  .fade-in { opacity: 1 !important; transform: none !important; }
+  .hero, .dark, .closing { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .scrollbar, .trail, .cursor-core, .cursor-label { display: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="scrollbar" id="scrollbar"></div>
+<div class="cursor-core" id="cursorCore"></div>
+<div class="cursor-label" id="cursorLabel">見る</div>
+
+<header class="site">
+  <div class="logo"><span class="dot"></span>ANTIGRAVITY <span style="color:#9aa0a6; font-weight:500;">&times; BACK OFFICE</span></div>
+  <nav>
+    <a href="#problem">課題</a><a href="#about">Antigravityとは</a><a href="#proof">実証</a><a href="#features">できること</a><a href="#security">セキュリティ</a><a href="#pricing">料金</a><a href="#faq">FAQ</a><a href="intro.html" style="color:var(--blue);font-weight:700;">3分でわかる版</a>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="inner">
+    <span class="tag fade-in">GOOGLE ANTIGRAVITY ── 業務自動化のご提案</span>
+    <h1 class="display fade-in">WORK,<br><span class="row2">AUTOMATED.</span></h1>
+    <p class="jp fade-in">Googleの“AIエージェント”が、メールも、シートも、ファイル整理も。</p>
+    <p class="sub fade-in">Google Antigravity は、Gemini 3 を搭載したエージェント型ワークスペース。Gmail・スプレッドシート・Drive とネイティブ連携し、ブラウザ操作まで自律実行。バックオフィスの定型業務を「人が承認するだけ」に変えます。</p>
+    <div class="fade-in">
+      <a class="btn" href="#features">できることを見る</a>
+      <a class="btn ghost" href="#pricing">料金を見る</a>
+    </div>
+    <div class="chips fade-in">
+      <span class="chip"><i></i>メール要約・仕分け</span>
+      <span class="chip"><i></i>返信下書き</span>
+      <span class="chip"><i></i>スプレッドシート転記</span>
+      <span class="chip"><i></i>フォルダ自動整理</span>
+      <span class="chip"><i></i>ブラウザ操作</span>
+      <span class="chip"><i></i>週次レポート生成</span>
+      <span class="chip"><i></i>朝のブリーフィング</span>
+      <span class="chip"><i></i>データ分析</span>
+    </div>
+    <div class="meta fade-in">
+      <span><i></i>2026.06.12</span>
+      <span><i></i>CURIOSITY INC.</span>
+      <span><i></i>無料プレビューで今日から検証可能</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROBLEM ============ -->
+<section class="problem" id="problem">
+  <div class="inner">
+    <span class="tag fade-in">PROBLEM ── 現状の課題</span>
+    <h2 class="fade-in">毎日のメール・転記・ファイル整理が、<br>業務時間の<span class="accent">約3割</span>を奪っている</h2>
+    <div class="split">
+      <div>
+        <p class="lead" style="margin-bottom:0;">日本ビジネスメール協会「ビジネスメール実態調査2025」によると、ビジネスパーソンは1日平均52.27通を受信し、メールの送受信だけで1日約2時間26分を費やしています。添付ファイルの保存・シートへの転記・フォルダ整理まで含めると、負担はさらに大きくなります。</p>
+        <div class="stats">
+          <div class="stat fade-in"><div class="v">52.27<small>通/日</small></div><div class="l">平均受信数（2025年調査）</div></div>
+          <div class="stat fade-in"><div class="v">2:26<small>時間/日</small></div><div class="l">送受信に費やす時間（業務時間の約3割）</div></div>
+          <div class="stat fade-in"><div class="v">6<small>分/通</small></div><div class="l">1通の平均作成時間（2024年調査：5分57秒）</div></div>
+          <div class="stat fade-in"><div class="v">50<small>時間/月</small></div><div class="l">月20営業日換算のメール関連工数</div></div>
+        </div>
+        <p class="note">※出典：一般社団法人日本ビジネスメール協会「ビジネスメール実態調査2025／2024」</p>
+      </div>
+      <div class="photo-card fade-in"><img src="assets/desk-stress.png" alt="書類とメール処理に追われるデスク"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="inner center">
+    <span class="tag fade-in">WHAT IS ANTIGRAVITY</span>
+    <h2 class="fade-in"><span class="en">Google Antigravity</span> とは？</h2>
+    <p class="lead fade-in">2025年11月にGoogleが公開した、Gemini 3搭載の「エージェント・ファースト」型プラットフォーム。人が操作するツールではなく、<strong>AIエージェントに仕事を任せて人は監督する</strong>という設計思想で作られています。2026年5月のメジャーアップデート（2.0）で、Google Workspaceとのネイティブ連携が加わりました。</p>
+    <div class="cards c3" style="text-align:left;">
+      <div class="card fade-in">
+        <div class="icon b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></div>
+        <h3>3つの領域を自律操作</h3>
+        <p>エディタ・ターミナル・ブラウザを横断してエージェントが動作。ファイル操作からWeb画面の操作まで、PC上の作業を一気通貫で実行します。</p>
+      </div>
+      <div class="card fade-in">
+        <div class="icon g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div>
+        <h3>Google Workspaceネイティブ連携</h3>
+        <p>2.0からGmail・カレンダー・Drive・Docs・Sheetsの公式ツールを標準搭載。Googleアカウント認証だけで、追加開発なしに連携できます。</p>
+      </div>
+      <div class="card fade-in">
+        <div class="icon p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></div>
+        <h3>仕事の結果を「証拠つき」で報告</h3>
+        <p>作業計画・スクリーンショット・ブラウザ操作の録画を「Artifacts」として自動生成。AIが何をしたか人間が検証でき、安心して任せられます。</p>
+      </div>
+    </div>
+    <p class="note fade-in">Gemini 3 Pro / 3.1 Pro / 3 Flash 等の最新モデルを選択可能（2026年6月時点）。無料パブリックプレビューで全機能を利用できます。</p>
+  </div>
+</section>
+
+<!-- ============ PROOF ============ -->
+<section id="proof">
+  <div class="inner">
+    <span class="tag fade-in">PROOF ── 実証済み</span>
+    <h2 class="fade-in">提案だけでは、ありません。<br><span class="accent">実際に、動かしました。</span></h2>
+    <p class="lead fade-in">2026年6月14日、専門知識ゼロの状態から<strong>約60分</strong>でGoogle Workspace連携を実構築。Googleカレンダーの予定読み取りまで成功しました。しかも送信・削除の権限を一切持たない<strong>読み取り専用</strong>の安全構成です。下は実際の結果です。</p>
+    <div class="stats" style="grid-template-columns:repeat(3,1fr);">
+      <div class="stat fade-in"><div class="v"><span class="count" data-to="60" data-suffix="分">0</span></div><div class="l">ゼロから稼働まで（知識ゼロ→読み取り成功）</div></div>
+      <div class="stat fade-in"><div class="v"><span class="count" data-to="7" data-suffix="種">0</span></div><div class="l">接続サービス（Gmail / カレンダー / Drive / Docs / Sheets / Slides / Chat）</div></div>
+      <div class="stat fade-in"><div class="v"><span class="count" data-to="0" data-suffix="件">0</span></div><div class="l">送信・削除・変更（読み取り専用スコープで安全動作）</div></div>
+    </div>
+    <div class="proof-grid">
+      <div class="term fade-in">
+        <div class="bar"><i></i><i></i><i></i></div>
+        <span class="p">あなた &gt;</span> 今月の予定を読み取って一覧にして。変更や送信はしないで<br>
+        <span class="c">Agent: Googleカレンダーから2026年6月の予定（8件）を取得しました</span><br>
+        <span class="ok">✓ 8件を日付・タイトル・リンク付きの表で出力</span><br>
+        <span class="ok">✓ OAuthは読み取り専用スコープのみ（送信・削除の権限なし）</span><br>
+        <span class="ok">✓ 認証はGoogle公式OAuth・本人アカウントの権限を継承</span><br>
+        <span class="c">データの追加・変更・削除は一切行っていません</span>
+      </div>
+      <div class="fade-in">
+        <h3 style="font-weight:900; font-size:1.2rem; margin-bottom:14px;">この通りに、貴社でも始められます</h3>
+        <p style="font-size:.88rem; color:var(--gray); margin-bottom:20px;">今回の構築手順を、専門用語ぬきの「導入ガイド」にまとめました。クリックとコピペだけで、同じ状態まで到達できます。費用は0円（無料枠）、所要約60分です。</p>
+        <a class="btn" href="guide.html">導入ガイドを開く</a>
+      </div>
+    </div>
+    <p class="note fade-in">※2026年6月14日に実機検証。個人Googleアカウント＋読み取り専用スコープ（gmail.readonly 他）での実測です。書き込み（メール下書き・シート追記）はPhase 2でスコープを追加し段階的に解放します。</p>
+  </div>
+</section>
+
+<!-- ============ FEATURES OVERVIEW + DETAILS ============ -->
+<section style="background:var(--bg-soft);" id="features">
+  <div class="inner">
+    <span class="tag fade-in">FEATURES ── 実務でできること</span>
+    <h2 class="fade-in">ご要望の4業務は、すべて実現可能です</h2>
+    <p class="lead fade-in">Antigravity 2.0のネイティブツール＋ローカルファイル操作＋ブラウザエージェントの組み合わせで、ご相談いただいた業務はすべてカバーできます。それぞれの実現方法と精度を正直にご説明します。</p>
+
+    <div class="feature-row">
+      <div>
+        <div class="fnum">FUNCTION 01 ── GMAIL</div>
+        <h3>メールの確認・要約・返信下書き</h3>
+        <p class="desc">ネイティブGmailツールで受信トレイを読み取り、内容ベースで判断します。件名だけでなく<strong>本文を理解して仕分ける</strong>のがルールベース自動化との決定的な違いです。</p>
+        <ul class="checks">
+          <li>未読メールの一括要約・重要度判定（至急／通常／情報共有）</li>
+          <li>ルールに沿った返信下書きの作成（送信は人が承認）</li>
+          <li>ラベル付け・アーカイブ・返信漏れの検知</li>
+          <li>毎朝の「要対応リスト」自動レポート</li>
+        </ul>
+        <div class="example"><b>実例（公開記事より）</b>未読20通の整理→重要5通への絞り込みが約30秒。「読む→判断する→処理する」が1回の指示で完結。</div>
+      </div>
+      <div class="term fade-in">
+        <div class="bar"><i></i><i></i><i></i></div>
+        <span class="p">あなた &gt;</span> 今朝の未読メールを整理して。請求・見積関連は要対応、メルマガはアーカイブ<br>
+        <span class="c">Agent: 未読23通を確認しました</span><br>
+        <span class="ok">✓ 要対応 3通（A社見積修正・B社請求書・C社納期確認）</span><br>
+        <span class="ok">✓ 返信下書き 2通を作成（下書きフォルダに保存）</span><br>
+        <span class="ok">✓ メルマガ・通知 14通をアーカイブ</span><br>
+        <span class="c">残り6通は判断保留としてラベル「確認待ち」を付与しました</span>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div class="term fade-in" style="order:1;">
+        <div class="bar"><i></i><i></i><i></i></div>
+        <span class="p">あなた &gt;</span> 添付の売上CSVを「月次集計」シートに転記して、前月比も計算<br>
+        <span class="c">Agent: CSVを解析しました（342行）</span><br>
+        <span class="ok">✓ スプレッドシート「月次集計」に342行を追記</span><br>
+        <span class="ok">✓ E列に前月比を数式で追加（平均 +8.2%）</span><br>
+        <span class="ok">✓ 異常値2件を黄色でハイライト（要確認）</span>
+      </div>
+      <div style="order:2;">
+        <div class="fnum">FUNCTION 02 ── SHEETS</div>
+        <h3>スプレッドシートへの転記・集計</h3>
+        <p class="desc">ネイティブSheetsツールで行追加・セル更新・数式の挿入まで実行。<strong>メールやCSVからの転記作業を会話だけで完結</strong>できます。</p>
+        <ul class="checks">
+          <li>メール・CSV・PDFの内容を指定シートへ自動転記</li>
+          <li>集計・前月比・異常値チェックなどの加工も同時に実行</li>
+          <li>Webサイトの情報を収集してシートへ記録（価格調査など）</li>
+          <li>フォーム回答の整形・名寄せ・重複削除</li>
+        </ul>
+        <div class="example"><b>応用</b>「毎週金曜に今週の受注メールを集計してシート更新→サマリーをDocsに出力」のような複合ワークフローも定型化できます。</div>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div>
+        <div class="fnum">FUNCTION 03 ── FILES</div>
+        <h3>フォルダ振り分け・ファイル整理</h3>
+        <p class="desc">AntigravityはPC上で動くため、<strong>ローカルフォルダの操作はもっとも得意な領域</strong>です。明細・見積書・請求書を内容で判別し、ルールどおりに整理します。</p>
+        <ul class="checks">
+          <li>添付ファイルの自動保存と種類別フォルダ振り分け</li>
+          <li>命名規則の適用（例：20260612_A社_見積書.pdf）</li>
+          <li>ダウンロードフォルダの定期整理・重複ファイル検出</li>
+          <li>Google Driveへのアップロード・フォルダ同期</li>
+        </ul>
+        <div class="example"><b>安全設計</b>判別に迷うファイルは「保留フォルダ」へ隔離して通知。削除は行わず移動のみ、という制約も設定できます。</div>
+      </div>
+      <div class="photo-card fade-in"><img src="assets/flow-monitor.png" alt="自動振り分けワークフローのイメージ"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MORE FEATURES ============ -->
+<section>
+  <div class="inner">
+    <span class="tag fade-in">MORE ── ここまでできる</span>
+    <h2 class="fade-in">調査で見つかった、その他の実務級機能</h2>
+    <p class="lead fade-in">ご相談の4業務以外にも、バックオフィスで即戦力になる機能が揃っています。いずれも公開事例・公式ドキュメントで確認できたものです。</p>
+    <div class="cards c3">
+      <div class="card fade-in">
+        <span class="mini browser">ブラウザエージェント</span>
+        <h3>Web画面の自律操作</h3>
+        <p>クリック・入力・スクロールを自動実行し、操作過程を録画で残せます。競合サイトの価格チェック、SaaS管理画面への定型入力、Webフォームの一括登録などに。普段のChromeとは隔離された専用プロファイルで動作します。</p>
+      </div>
+      <div class="card fade-in">
+        <span class="mini">Workflows</span>
+        <h3>定型業務の「ボタン化」</h3>
+        <p>作業手順をMarkdownで書いておくと「/週次レポート」のようなコマンドとして呼び出せます。週次レポート作成、月初の請求処理など、繰り返し業務をプログラミングなしで定型化できます。</p>
+      </div>
+      <div class="card fade-in">
+        <span class="mini">Rules / Skills</span>
+        <h3>社内ルール・文体の常時適用</h3>
+        <p>「敬語のトーン」「ファイル命名規則」「やってはいけないこと」をRulesに書いておくと全作業に自動適用。Skillsに専門知識を登録しておけば、必要な時だけ呼び出されます。</p>
+      </div>
+      <div class="card fade-in">
+        <span class="mini native">ネイティブ連携</span>
+        <h3>朝のブリーフィング自動生成</h3>
+        <p>カレンダー＋Gmail＋Driveを横断し、「今日の予定・要対応メール・関連資料」をまとめた日次ブリーフィングをDocsに自動出力。公式ガイドでも紹介されている代表的ワークフローです。</p>
+      </div>
+      <div class="card fade-in">
+        <span class="mini">Agent Manager</span>
+        <h3>複数エージェントの並列実行</h3>
+        <p>管制塔画面（Agent Manager）から複数のエージェントに別々の仕事を同時に任せられます。「Aは市場調査、Bは資料たたき台作成」のような並行作業で、待ち時間を大幅に削減します。</p>
+      </div>
+      <div class="card fade-in">
+        <span class="mini">ローカルAI分析</span>
+        <h3>データ分析・グラフ・ミニツール作成</h3>
+        <p>内部でPythonスクリプトを自動生成して実行するため、プログラミング知識なしでデータ分析・グラフ作成・自分専用の業務ミニツール開発まで「丸投げ」できます。</p>
+      </div>
+      <div class="card fade-in">
+        <span class="mini native">ドキュメント生成</span>
+        <h3>議事録→提案資料のたたき台</h3>
+        <p>「このフォルダの議事録と過去の成功事例を読んで、新規顧客向け提案書のたたき台を作って」のように、フォルダ内の文脈を理解した文書生成ができます。</p>
+      </div>
+      <div class="card fade-in">
+        <span class="mini">CLI + スケジューラ</span>
+        <h3>定時の自動実行</h3>
+        <p>Antigravity CLIとOSのタスクスケジューラを組み合わせ、毎朝8時のメール整理・毎週金曜のレポート生成など、人がいなくても回る定時バッチとして運用できます。</p>
+      </div>
+      <div class="card fade-in">
+        <span class="mini mcp">MCP Store</span>
+        <h3>外部サービスの追加連携</h3>
+        <p>Slack・Notion・GitHubなど、ネイティブ対応外のサービスもMCP Storeからワンクリックで接続可能。MCPは業界標準規格のため、対応サービスは継続的に増えています。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEASIBILITY ============ -->
+<section style="background:var(--bg-soft);">
+  <div class="inner">
+    <span class="tag fade-in">FEASIBILITY ── 実現可能性</span>
+    <h2 class="fade-in">機能別の実現度評価</h2>
+    <p class="lead fade-in">いずれも公開事例のある実証済みの使い方です。実現手段（ネイティブ／ブラウザ操作／ローカル処理）によって安定度が異なるため、正直に評価を付けています。</p>
+    <div class="fade-in" style="overflow-x:auto;">
+      <table>
+        <thead><tr><th style="width:28%;">業務</th><th style="width:13%;">実現度</th><th style="width:24%;">実現手段</th><th>補足</th></tr></thead>
+        <tbody>
+          <tr><td><strong>メール要約・仕分け・返信下書き</strong></td><td><span class="pill g">高い</span></td><td>ネイティブGmailツール</td><td>読み取り＋下書きまで。送信は人の承認を挟む運用を推奨</td></tr>
+          <tr><td><strong>スプレッドシート転記・集計</strong></td><td><span class="pill g">高い</span></td><td>ネイティブSheetsツール</td><td>行追加・セル更新・数式挿入に対応。大量データはCSV経由が安定</td></tr>
+          <tr><td><strong>フォルダ振り分け・ファイル整理</strong></td><td><span class="pill g">高い</span></td><td>ローカルファイル操作</td><td>PC上で完結。「削除禁止・移動のみ」等の制約設定が可能</td></tr>
+          <tr><td><strong>朝ブリーフィング・定型レポート</strong></td><td><span class="pill g">高い</span></td><td>Workflows＋ネイティブ連携</td><td>公式ガイド掲載のワークフロー。Docs出力まで自動化可</td></tr>
+          <tr><td><strong>Web調査・SaaS画面の定型操作</strong></td><td><span class="pill y">中〜高</span></td><td>ブラウザエージェント</td><td>サイト構造の変化に影響を受けるため、録画確認とセットで運用</td></tr>
+          <tr><td><strong>定時自動実行（毎朝8時など）</strong></td><td><span class="pill y">中〜高</span></td><td>CLI＋タスクスケジューラ</td><td>構築は可能。エラー時の通知設計まで含めてPhase 3で対応</td></tr>
+          <tr><td><strong>Slack・Notion等の外部連携</strong></td><td><span class="pill b">サービス次第</span></td><td>MCP Store</td><td>対応MCPの品質に依存。導入前に個別検証</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">※2026年6月時点の公開情報・事例に基づく評価。Phase 1の検証で貴社環境での実測値に更新します。</p>
+  </div>
+</section>
+
+<!-- ============ SECURITY ============ -->
+<section class="dark" id="security">
+  <div class="inner">
+    <span class="tag on-dark fade-in">SECURITY ── 導入前に必ず行う設定</span>
+    <h2 class="fade-in">「便利」と「安全」は設定で両立する</h2>
+    <p class="lead fade-in">Antigravityは強力な反面、初期設定のまま業務利用するのは推奨できません。当社が導入時に必ず実施する4つのガードレールをご説明します。誠実にお伝えすると、リリース直後に脆弱性の報告もあったツールです。だからこそ「設定と運用ルール」をセットで導入します。</p>
+    <div class="cards c4" style="text-align:left;">
+      <div class="card fade-in">
+        <h3>1. 学習オプトアウト</h3>
+        <p>個人プランは既定でデータがサービス改善に利用される設定です。導入時にテレメトリーとアクティビティ保存をオフにし、入力データが学習に使われない状態にしてから運用を開始します。</p>
+      </div>
+      <div class="card fade-in">
+        <h3>2. 実行前レビュー必須化</h3>
+        <p>コマンド自動実行を「Request Review」に設定し、AIがシステムを操作する前に必ず人間の許可を挟みます。メール送信・ファイル削除は常に人の承認が必要な構成にします。</p>
+      </div>
+      <div class="card fade-in">
+        <h3>3. ブラウザの隔離</h3>
+        <p>エージェントのブラウザ操作は普段使いのChromeと分離された専用プロファイルで実行。業務アカウントのCookieやログイン状態に触れない構造になっています。</p>
+      </div>
+      <div class="card fade-in">
+        <h3>4. 法人プランでの本格運用</h3>
+        <p>本格展開時はGemini Enterprise等の法人契約を推奨。契約で「入力データを学習に使わない」ことが保証され、データを国内リージョンに留める構成も選択できます。</p>
+      </div>
+    </div>
+    <div class="alert fade-in">
+      <b>正直なリスク開示：プロンプトインジェクション</b>
+      メール本文やWebページに「悪意ある指示」が仕込まれる攻撃手法が公開研究で報告されています（2025年11月）。対策として、外部から来た文章は「指示」ではなく「処理対象データ」として扱うルール設定＋送信系操作の人間承認を必須とする設計で、実害が出ない運用を構築します。
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section id="pricing">
+  <div class="inner">
+    <span class="tag fade-in">PRICING ── 料金</span>
+    <h2 class="fade-in">無料で検証を始めて、効果が出てから課金する</h2>
+    <p class="lead fade-in">Antigravity本体は無料プレビューで全機能が使えます。使用量の上限を上げたい場合のみGoogle AIサブスクリプションを追加する、リスクの低い料金構造です（2026年6月時点・変動が速いため契約前に最新を確認します）。</p>
+    <div class="plans">
+      <div class="plan fade-in">
+        <div class="pname">FREE PREVIEW</div>
+        <div class="price">¥0<small>／月</small></div>
+        <p class="pdesc">まずはここから。検証フェーズはこれで十分</p>
+        <ul>
+          <li>Gemini 3系モデル・全機能が利用可能</li>
+          <li>使用量上限は週次リセット</li>
+          <li>上限到達時は待機が必要</li>
+        </ul>
+      </div>
+      <div class="plan hot fade-in">
+        <span class="badge">推奨（個人運用）</span>
+        <div class="pname">GOOGLE AI PRO</div>
+        <div class="price">¥2,900<small>／月</small></div>
+        <p class="pdesc">日常運用の標準。キャンペーン時は年払いで実質約半額</p>
+        <ul>
+          <li>使用上限が5時間ごとにリセット</li>
+          <li>上限到達時はクレジット追い課金で継続可</li>
+          <li>NotebookLM等の他Google AI特典も付属</li>
+        </ul>
+      </div>
+      <div class="plan fade-in">
+        <div class="pname">GOOGLE AI ULTRA</div>
+        <div class="price">$100〜<small>／月</small></div>
+        <p class="pdesc">ヘビーユース向け（Pro比5倍／上位$200プランは20倍）</p>
+        <ul>
+          <li>複数エージェント並列・長時間タスク向け</li>
+          <li>動画生成等の上位特典も含む</li>
+        </ul>
+      </div>
+      <div class="plan fade-in">
+        <div class="pname">GEMINI ENTERPRISE</div>
+        <div class="price">個別<small>見積</small></div>
+        <p class="pdesc">全社展開時の本命。セキュリティ要件が厳しい場合はこちら</p>
+        <ul>
+          <li>入力データの学習不使用を契約で保証</li>
+          <li>データ境界・国内リージョン指定が可能</li>
+          <li>管理者によるガバナンス機能</li>
+        </ul>
+      </div>
+    </div>
+    <div class="split" style="margin-top:48px; align-items:start;">
+      <div class="fade-in">
+        <h3 style="font-weight:900; font-size:1.1rem; margin-bottom:14px;">投資対効果の試算（1名あたり）</h3>
+        <table>
+          <tbody>
+            <tr><td>ツール費（Google AI Pro）</td><td><strong>月2,900円</strong></td></tr>
+            <tr><td>削減工数（メール・転記・整理の約1/3短縮）</td><td><strong>月20〜30時間</strong></td></tr>
+            <tr><td>人件費換算（時給2,500円）</td><td><strong>月5万〜7.5万円相当</strong></td></tr>
+          </tbody>
+        </table>
+        <p class="note">※削減工数は1日90分の対象業務が約3分の1になる想定の試算。Phase 1で実測します。</p>
+      </div>
+      <div class="card fade-in" style="border-left:4px solid var(--blue);">
+        <h3>Claude Code案との違い</h3>
+        <p style="margin-bottom:10px;">以前ご提案したClaude Code構成と同じ業務をカバーしつつ、Antigravityには次の利点があります。</p>
+        <ul class="checks" style="font-size:.84rem;">
+          <li><strong>無料で検証開始できる</strong>（Claude Codeは有料プラン前提）</li>
+          <li><strong>Google純正</strong>のため、Gmail・Sheets連携の設定が簡単で安定</li>
+          <li>Agent Managerなど<strong>非エンジニアにも扱いやすい画面</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROADMAP ============ -->
+<section style="background:var(--bg-soft);">
+  <div class="inner">
+    <span class="tag fade-in">ROADMAP ── 導入の進め方</span>
+    <h2 class="fade-in">リスクの低い機能から、3段階で導入</h2>
+    <div class="phases">
+      <div class="phase fade-in">
+        <header><div class="ph">PHASE 1</div><h4>無料検証（読み取り中心）</h4><div class="term2">導入〜2週間・費用¥0</div></header>
+        <ul class="body">
+          <li>セキュリティ初期設定（オプトアウト・実行レビュー）</li>
+          <li>Workspace接続・毎朝のメールサマリー開始</li>
+          <li>返信漏れ検知・現状工数の計測</li>
+        </ul>
+      </div>
+      <div class="phase fade-in">
+        <header><div class="ph">PHASE 2</div><h4>半自動化（下書き・転記・整理）</h4><div class="term2">3週目〜2ヶ月</div></header>
+        <ul class="body">
+          <li>返信ルール（Rules）の整備・返信下書き開始</li>
+          <li>添付ファイルの自動振り分け・命名規則適用</li>
+          <li>スプレッドシート転記・週次レポートのWorkflow化</li>
+        </ul>
+      </div>
+      <div class="phase fade-in">
+        <header><div class="ph">PHASE 3</div><h4>本格運用（定時実行・拡張）</h4><div class="term2">3ヶ月目〜</div></header>
+        <ul class="body">
+          <li>CLI＋スケジューラで定時バッチ化</li>
+          <li>ブラウザ操作系（Web調査・定型入力）の追加</li>
+          <li>効果測定→法人プラン移行・横展開の判断</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq">
+  <div class="inner">
+    <span class="tag fade-in">FAQ ── よくあるご質問</span>
+    <h2 class="fade-in">導入前の疑問にお答えします</h2>
+    <div class="fade-in" style="margin-top:32px;">
+      <details open>
+        <summary>AIが勝手にメールを送信したりファイルを消したりしませんか？</summary>
+        <div class="a">設定で防ぎます。コマンド実行前レビューを必須化し、送信・削除などの不可逆操作は必ず人の承認を挟む構成にします。さらに「削除は禁止、移動のみ」のようなルールも常時適用できます。</div>
+      </details>
+      <details>
+        <summary>メールや社内データがAIの学習に使われませんか？</summary>
+        <div class="a">個人プランは既定で学習利用がオンのため、導入時に必ずオプトアウト設定（テレメトリー・アクティビティ保存オフ）を行います。本格展開時はGemini Enterprise等の法人契約で「学習不使用」を規約レベルで保証する形を推奨します。</div>
+      </details>
+      <details>
+        <summary>無料のままずっと使えますか？</summary>
+        <div class="a">現在は無料プレビュー期間で全機能が使えますが、使用量上限が週次リセットのため、毎日の業務利用ではGoogle AI Pro（月2,900円）が現実的です。検証フェーズは無料で十分です。料金体系は変動が速いため、契約前に最新情報を確認します。</div>
+      </details>
+      <details>
+        <summary>プログラミングの知識は必要ですか？</summary>
+        <div class="a">日常の利用は日本語の指示だけで完結します。内部ではAIがスクリプトを自動生成・実行しますが、利用者がコードを書く必要はありません。定型化（Workflows）も、手順を日本語のMarkdownで書くだけです。</div>
+      </details>
+      <details>
+        <summary>Excelマクロとの連携はできますか？</summary>
+        <div class="a">可能です。AntigravityはPC上のターミナルを操作できるため、PowerShell経由で既存のExcelマクロを実行する構成（以前のご提案と同じ方式）が組めます。Google Sheets中心への移行も併せてご提案できます。</div>
+      </details>
+      <details>
+        <summary>障害やメンテナンスで止まったら業務に支障が出ませんか？</summary>
+        <div class="a">本提案は「従来の手作業の高速化」であり、止まった場合はいつでも手作業に戻せます。基幹システムを置き換えるものではないため、影響は限定的です。プレビュー版という性質上、仕様変更には月次で追従します。</div>
+      </details>
+      <details>
+        <summary>Microsoft 365（Outlook）環境でも使えますか？</summary>
+        <div class="a">ネイティブ連携はGoogle Workspace向けですが、MCP経由でOutlook・Teams等とも接続可能です。ただし安定性はGoogle環境が優位のため、メール業務の自動化を最優先する場合はGmail併用もご検討ください。</div>
+      </details>
+      <details>
+        <summary>導入にどのくらいかかりますか？</summary>
+        <div class="a">Phase 1（セキュリティ設定＋メールサマリー）は約2週間、ルール整備を含むPhase 2まで約2ヶ月、定時実行を含む全体で約3ヶ月が標準です。最初の検証は1日で開始できます。</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLOSING ============ -->
+<section class="closing">
+  <div class="inner">
+    <span class="tag on-dark fade-in">NEXT ACTION</span>
+    <h2 class="fade-in">まずは、費用ゼロの2週間検証から</h2>
+    <p class="lead fade-in">無料プレビューを活用するため、検証フェーズの追加費用はかかりません。効果を数字で確認してから、本導入をご判断ください。</p>
+    <div class="cards c3" style="text-align:left;">
+      <div class="card fade-in"><div class="step-num">01</div><h3>業務ヒアリング（30分）</h3><p>メール・転記・ファイル整理の実態を伺い、自動化対象と現状工数を確定します。今週中に実施可能です。</p></div>
+      <div class="card fade-in"><div class="step-num">02</div><h3>無料検証（2週間）</h3><p>セキュリティ設定済みの環境で、毎朝のメールサマリーと返信漏れ検知を実運用。読み取り中心の安全な構成です。</p></div>
+      <div class="card fade-in"><div class="step-num">03</div><h3>効果測定・本導入判断</h3><p>削減工数の実測値をレポートし、Phase 2以降の範囲・体制・費用をご提案します。</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="logo">CURIOSITY INC.</span>
+  <span>Antigravity業務自動化のご提案 ── 2026.06.12 ── CONFIDENTIAL</span>
+</footer>
+
+<script>
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+
+/* scroll progress */
+const sb = document.getElementById('scrollbar');
+addEventListener('scroll', () => {
+  const h = document.documentElement;
+  sb.style.width = ((h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100) + '%';
+}, { passive: true });
+
+/* number counters */
+const cio = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  const el = e.target, to = +el.dataset.to, suf = el.dataset.suffix || '', t0 = performance.now();
+  (function step(t){ const p = Math.min(1,(t-t0)/1200), v = 1-Math.pow(1-p,3); el.textContent = Math.round(to*v)+suf; if(p<1) requestAnimationFrame(step); })(t0);
+  cio.unobserve(el);
+}), { threshold: 0.6 });
+document.querySelectorAll('.count').forEach(el => cio.observe(el));
+
+/* comet trail cursor */
+if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
+  document.body.classList.add('cursoring');
+  const core = document.getElementById('cursorCore'), label = document.getElementById('cursorLabel');
+  const N = 10, cols = ['#1a73e8','#4866e0','#7c4dff','#a93cdb','#d23ba3','#ea4335','#f9ab00','#34a853'], trails = [];
+  for (let i=0;i<N;i++){ const d=document.createElement('div'); d.className='trail'; const s=Math.max(6,26-i*2); d.style.width=d.style.height=s+'px'; d.style.background=cols[Math.min(cols.length-1,Math.floor(i/N*cols.length))]; d.style.opacity=(1-i/N)*0.5; document.body.appendChild(d); trails.push({el:d,x:innerWidth/2,y:innerHeight/2}); }
+  let mx=innerWidth/2, my=innerHeight/2;
+  addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; core.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`; label.style.left=mx+'px'; label.style.top=my+'px'; });
+  (function ride(){ let px=mx,py=my; trails.forEach(t=>{ t.x+=(px-t.x)*.35; t.y+=(py-t.y)*.35; t.el.style.transform=`translate(${t.x}px,${t.y}px) translate(-50%,-50%)`; px=t.x; py=t.y; }); requestAnimationFrame(ride); })();
+  [['.btn','開く'],['a','見る'],['.card','詳しく'],['.plan','プラン'],['summary','Q&A'],['.stat','実績']].forEach(([sel,txt])=>{
+    document.querySelectorAll(sel).forEach(el=>{
+      el.addEventListener('mouseenter',()=>{ core.style.width=core.style.height='20px'; core.style.background='#7c4dff'; label.textContent=txt; label.classList.add('show'); });
+      el.addEventListener('mouseleave',()=>{ core.style.width=core.style.height='9px'; core.style.background='var(--blue)'; label.classList.remove('show'); });
+    });
+  });
+}
+</script>
+</body>
+</html>
