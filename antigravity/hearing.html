@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>業務ヒアリングシート｜Antigravity 業務自動化</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1a73e8;--blue-deep:#174ea6;--red:#ea4335;--green:#34a853;--purple:#7c4dff;--ink:#202124;--gray:#5f6368;--line:#e3e6ea;--bg:#fff;--bg-soft:#f8f9fb;--en:'Outfit',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans JP',sans-serif;color:var(--ink);background:var(--bg-soft);line-height:1.8;letter-spacing:.02em;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+
+/* top */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar .in{max-width:860px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.topbar .logo{font-family:var(--en);font-weight:800;font-size:15px;display:flex;align-items:center;gap:9px}
+.topbar .logo .dot{width:11px;height:11px;border-radius:50%;background:conic-gradient(var(--blue) 0 25%,var(--red) 0 50%,#f9ab00 0 75%,var(--green) 0)}
+.topbar .acts{display:flex;gap:8px}
+.btn{font-family:'Noto Sans JP';border:none;cursor:pointer;font-weight:700;font-size:13px;padding:9px 16px;border-radius:99px;transition:transform .2s,box-shadow .2s,background .2s;text-decoration:none;display:inline-flex;align-items:center;gap:7px}
+.btn.p{background:var(--blue);color:#fff;box-shadow:0 6px 16px rgba(26,115,232,.32)}
+.btn.p:hover{transform:translateY(-2px)}
+.btn.g{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn.g:hover{background:var(--bg-soft)}
+
+/* hero */
+.head{padding:46px 0 26px}
+.tag{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.12em;color:var(--blue);background:#e8f0fe;border-radius:99px;padding:6px 15px;margin-bottom:14px}
+h1{font-size:clamp(1.6rem,1.1rem+2.2vw,2.3rem);font-weight:900;line-height:1.4}
+.head p{color:var(--gray);font-size:.92rem;margin-top:12px;max-width:640px}
+.save-note{font-size:.74rem;color:var(--green);font-weight:700;margin-top:10px}
+
+/* sections */
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:clamp(22px,4vw,34px);margin-bottom:20px;box-shadow:0 8px 24px rgba(32,33,36,.05)}
+.snum{font-family:var(--en);font-weight:800;color:var(--blue);font-size:.9rem;letter-spacing:.1em}
+.card h2{font-size:1.15rem;font-weight:900;margin:4px 0 4px}
+.card .hint{font-size:.8rem;color:var(--gray);margin-bottom:20px}
+.field{margin-bottom:20px}
+.field:last-child{margin-bottom:0}
+.flabel{display:block;font-size:.86rem;font-weight:700;margin-bottom:8px}
+.flabel .opt{font-weight:500;color:#9aa0a6;font-size:.76rem;margin-left:6px}
+input[type=text],textarea,select{width:100%;font-family:'Noto Sans JP';font-size:.88rem;color:var(--ink);background:var(--bg-soft);border:1px solid var(--line);border-radius:11px;padding:12px 14px;transition:border-color .2s,background .2s}
+input[type=text]:focus,textarea:focus,select:focus{outline:none;border-color:var(--blue);background:#fff}
+textarea{resize:vertical;min-height:74px;line-height:1.7}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.row3,.row2{grid-template-columns:1fr}}
+.checks{display:flex;flex-wrap:wrap;gap:9px}
+.chk{display:inline-flex;align-items:center;gap:8px;background:var(--bg-soft);border:1px solid var(--line);border-radius:11px;padding:9px 14px;font-size:.83rem;font-weight:600;cursor:pointer;transition:.2s;user-select:none}
+.chk input{accent-color:var(--blue);width:15px;height:15px}
+.chk:has(input:checked){background:#e8f0fe;border-color:var(--blue);color:var(--blue-deep)}
+.top3 .trow{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:8px;margin-bottom:8px}
+.top3 .trow .th{font-size:.72rem;color:var(--gray);font-weight:700}
+@media(max-width:600px){.top3 .trow{grid-template-columns:1fr 1fr;}.top3 .thead{display:none}}
+
+/* sticky footer actions */
+.foot{position:sticky;bottom:0;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:14px 20px;margin-top:6px}
+.foot .in{max-width:860px;margin:0 auto;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13px;font-weight:700;padding:11px 22px;border-radius:99px;opacity:0;transition:.3s;pointer-events:none;z-index:99}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+footer{text-align:center;color:#9aa0a6;font-size:.74rem;padding:30px 20px 16px}
+
+@media print{
+  .topbar,.foot,.btn,.save-note{display:none!important}
+  body{background:#fff}
+  .card{box-shadow:none;break-inside:avoid;border-color:#ccc}
+  input,textarea,select{background:#fff;border-color:#ccc}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="in">
+    <span class="logo"><span class="dot"></span>業務ヒアリングシート</span>
+    <div class="acts">
+      <button class="btn g" onclick="window.print()">印刷 / PDF</button>
+      <button class="btn p" id="copyBtn">回答をコピー</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="head">
+    <span class="tag">DISCOVERY ── 30分ヒアリング用</span>
+    <h1>あなたの会社に“刺さる”提案にするための<br>業務ヒアリングシート</h1>
+    <p>Antigravity導入を検討する前に、現状を整理するためのシートです。商談中に一緒に埋めても、事前にお客様に記入いただいてもOK。記入後に上の「回答をコピー」を押すと、提案カスタマイズ用にまとめて書き出せます。</p>
+    <p class="save-note" id="saveNote">入力内容はこの端末に自動保存されます（送信されません）。</p>
+  </div>
+
+  <!-- 1 -->
+  <div class="card">
+    <span class="snum">SECTION 01</span>
+    <h2>会社・体制</h2>
+    <p class="hint">まずは基本情報から。</p>
+    <div class="row2">
+      <div class="field"><span class="flabel">会社名 / 部署</span><input type="text" placeholder="例：株式会社○○ 経理部"></div>
+      <div class="field"><span class="flabel">業種</span><input type="text" placeholder="例：製造業 / 士業 / 小売 など"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><span class="flabel">従業員数</span><input type="text" placeholder="例：50名"></div>
+      <div class="field"><span class="flabel">自動化を検討する対象人数</span><input type="text" placeholder="例：まず3名から"></div>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="card">
+    <span class="snum">SECTION 02</span>
+    <h2>IT環境・使用ツール</h2>
+    <p class="hint">連携のしやすさ・安定性を左右する、最重要パートです。</p>
+    <div class="field">
+      <span class="flabel">メール・グループウェアの基盤</span>
+      <div class="checks" data-single>
+        <label class="chk"><input type="radio" name="base" data-label="Google Workspace">Google Workspace</label>
+        <label class="chk"><input type="radio" name="base" data-label="Microsoft 365">Microsoft 365</label>
+        <label class="chk"><input type="radio" name="base" data-label="混在">両方/混在</label>
+        <label class="chk"><input type="radio" name="base" data-label="その他">その他</label>
+      </div>
+    </div>
+    <div class="field">
+      <span class="flabel">よく使うツール<span class="opt">複数選択可</span></span>
+      <div class="checks">
+        <label class="chk"><input type="checkbox" data-label="Gmail/Outlook">メール</label>
+        <label class="chk"><input type="checkbox" data-label="スプレッドシート/Excel">表計算（Sheets/Excel）</label>
+        <label class="chk"><input type="checkbox" data-label="Drive/SharePoint">ファイル共有</label>
+        <label class="chk"><input type="checkbox" data-label="Slack/Teams/Chat">チャット</label>
+        <label class="chk"><input type="checkbox" data-label="kintone">kintone</label>
+        <label class="chk"><input type="checkbox" data-label="Notion">Notion</label>
+        <label class="chk"><input type="checkbox" data-label="CRM/SFA">CRM/SFA</label>
+        <label class="chk"><input type="checkbox" data-label="会計ソフト">会計ソフト</label>
+      </div>
+    </div>
+    <div class="field"><span class="flabel">すでに使っているAI・自動化ツール<span class="opt">任意</span></span><input type="text" placeholder="例：ChatGPT、Excelマクロ、RPA など"></div>
+  </div>
+
+  <!-- 3 -->
+  <div class="card">
+    <span class="snum">SECTION 03</span>
+    <h2>自動化したい業務・現状の痛み</h2>
+    <p class="hint">「時間がかかる・繰り返しが多い・ミスが怖い」業務を挙げてください。</p>
+    <div class="field top3">
+      <span class="flabel">自動化したい業務 TOP3</span>
+      <div class="trow thead"><span class="th">業務名</span><span class="th">頻度</span><span class="th">1回の時間</span><span class="th">担当人数</span></div>
+      <div class="trow"><input type="text" placeholder="例：請求書処理"><input type="text" placeholder="毎日"><input type="text" placeholder="30分"><input type="text" placeholder="2名"></div>
+      <div class="trow"><input type="text" placeholder="例：メール仕分け"><input type="text" placeholder="毎日"><input type="text" placeholder="60分"><input type="text" placeholder="全員"></div>
+      <div class="trow"><input type="text" placeholder="例：日報・週報作成"><input type="text" placeholder="毎週"><input type="text" placeholder="90分"><input type="text" placeholder="5名"></div>
+    </div>
+    <div class="field"><span class="flabel">いちばんの困りごと・解決したいこと</span><textarea placeholder="例：メール対応で午前中が埋まる／転記ミスが多い／属人化していて担当が休むと止まる など"></textarea></div>
+  </div>
+
+  <!-- 4 -->
+  <div class="card">
+    <span class="snum">SECTION 04</span>
+    <h2>データ・セキュリティ要件</h2>
+    <p class="hint">提案の構成（個人プラン or 法人プラン等）を左右します。</p>
+    <div class="field">
+      <span class="flabel">扱う情報の種類<span class="opt">複数選択可</span></span>
+      <div class="checks">
+        <label class="chk"><input type="checkbox" data-label="個人情報">個人情報</label>
+        <label class="chk"><input type="checkbox" data-label="顧客情報">顧客情報</label>
+        <label class="chk"><input type="checkbox" data-label="契約・財務">契約・財務</label>
+        <label class="chk"><input type="checkbox" data-label="社外秘の技術情報">機密の技術情報</label>
+        <label class="chk"><input type="checkbox" data-label="特に機密性は高くない">特に機密性は高くない</label>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <span class="flabel">「入力データを学習に使わせない」要件</span>
+        <select><option value="">選択してください</option><option>必須（規約レベルで担保したい）</option><option>できれば必須</option><option>特にこだわらない</option></select>
+      </div>
+      <div class="field"><span class="flabel">社内のAI利用ポリシー<span class="opt">任意</span></span><input type="text" placeholder="例：あり（要確認）／なし／検討中"></div>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="card">
+    <span class="snum">SECTION 05</span>
+    <h2>体制・意思決定・予算</h2>
+    <div class="row3">
+      <div class="field"><span class="flabel">意思決定者</span><input type="text" placeholder="例：管理部長"></div>
+      <div class="field"><span class="flabel">想定予算<span class="opt">月額</span></span><input type="text" placeholder="例：3万円程度"></div>
+      <div class="field"><span class="flabel">導入希望時期</span><input type="text" placeholder="例：来月から検証"></div>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="card">
+    <span class="snum">SECTION 06</span>
+    <h2>成功の定義</h2>
+    <p class="hint">何が実現したら「導入してよかった」と言えるか。ここが提案のゴールになります。</p>
+    <div class="field"><span class="flabel">これが実現したら成功</span><textarea placeholder="例：メール対応時間が半分になる／月末の締め作業が2日早まる／残業が減る など"></textarea></div>
+    <div class="field"><span class="flabel">測りたい指標（KPI）<span class="opt">任意</span></span><input type="text" placeholder="例：対象業務の作業時間、処理件数、ミス件数 など"></div>
+  </div>
+
+  <footer>業務ヒアリングシート ── CURIOSITY INC. ／ 入力内容は端末内のみに保存され、外部送信されません。</footer>
+</div>
+
+<div class="foot">
+  <div class="in">
+    <button class="btn g" onclick="window.print()">印刷 / PDFで保存</button>
+    <button class="btn p" id="copyBtn2">回答をコピーする</button>
+  </div>
+</div>
+<div class="toast" id="toast">コピーしました</div>
+
+<script>
+  // ---- autosave (localStorage) ----
+  const KEY='antigravity-hearing-v1';
+  const fields=[...document.querySelectorAll('input,textarea,select')];
+  function save(){
+    const data=fields.map(f=>f.type==='checkbox'||f.type==='radio'?f.checked:f.value);
+    localStorage.setItem(KEY,JSON.stringify(data));
+  }
+  function load(){
+    try{const data=JSON.parse(localStorage.getItem(KEY)||'[]');
+      data.forEach((v,i)=>{if(!fields[i])return;if(fields[i].type==='checkbox'||fields[i].type==='radio')fields[i].checked=v;else fields[i].value=v});
+    }catch(e){}
+  }
+  load();
+  fields.forEach(f=>f.addEventListener('input',save));
+
+  // ---- build copy text ----
+  function collect(){
+    let out='【Antigravity 業務ヒアリング 回答】\n\n';
+    document.querySelectorAll('.card').forEach(card=>{
+      const sec=card.querySelector('h2')?.textContent.trim();
+      out+='■ '+sec+'\n';
+      card.querySelectorAll('.field').forEach(fl=>{
+        const label=fl.querySelector('.flabel')?.textContent.replace(/複数選択可|任意|月額/g,'').trim();
+        // checkbox group
+        const checks=[...fl.querySelectorAll('input[type=checkbox]:checked,input[type=radio]:checked')].map(c=>c.dataset.label||c.value);
+        const sel=fl.querySelector('select');
+        const ta=fl.querySelector('textarea');
+        const top3=fl.classList.contains('top3');
+        let val='';
+        if(top3){
+          const rows=[...fl.querySelectorAll('.trow')].filter(r=>!r.classList.contains('thead'));
+          const lines=rows.map(r=>[...r.querySelectorAll('input')].map(i=>i.value.trim()).filter(Boolean)).filter(a=>a.length).map(a=>'  ・'+a.join(' / '));
+          val=lines.length?'\n'+lines.join('\n'):'';
+        }else if(checks.length){ val=checks.join('、'); }
+        else if(sel&&sel.value){ val=sel.value; }
+        else if(ta){ val=ta.value.trim(); }
+        else { const t=fl.querySelector('input[type=text]'); val=t?t.value.trim():''; }
+        if(val) out+='・'+label+'： '+val+'\n';
+      });
+      out+='\n';
+    });
+    return out.trim();
+  }
+  function doCopy(){
+    const txt=collect();
+    navigator.clipboard.writeText(txt).then(()=>{
+      const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1600);
+    });
+  }
+  document.getElementById('copyBtn').addEventListener('click',doCopy);
+  document.getElementById('copyBtn2').addEventListener('click',doCopy);
+</script>
+</body>
+</html>
