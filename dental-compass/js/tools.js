@@ -440,6 +440,74 @@ const TOOL_DEFS = {
         <button class="btn-calc" onclick="calcTool10()" style="margin-top:1rem;">スコア診断 →</button>
         <div id="t10_result" style="display:none;margin-top:1.5rem;"></div>
       </div>`
+  },
+
+  // ─── Tool 11: 令和8年度改定 自院インパクト診断 ───
+  tool11: {
+    title: '<i class="ic ic-chart-up"></i> 令和8年度改定 自院インパクト診断',
+    html: `
+      <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:0.6rem;">令和8年度（2026年6月施行）改定で、あなたの医院の収益がいくら変わるかを概算し、今すぐやるべきアクションを提示します。</p>
+      <div class="alert alert-info" style="margin-bottom:1.25rem;"><span class="alert-icon">ℹ</span><span>保険1点=10円で概算。初再診の増点と物価対応料は<strong>届出不要で全患者に自動適用</strong>（確実なプラス）です。</span></div>
+      <div class="tool-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>月間 初診数</label>
+            <input type="number" id="t11_sho" value="80" placeholder="人/月">
+            <span class="form-hint">初診料+5点＋物価対応料+3点＝<b>+8点</b>が自動加算</span>
+          </div>
+          <div class="form-group">
+            <label>月間 再診数</label>
+            <input type="number" id="t11_sai" value="600" placeholder="人/月">
+            <span class="form-hint">再診料+1点＋物価対応料+1点＝<b>+2点</b>が自動加算</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>歯科疾患管理料 月間算定回数</label>
+            <input type="number" id="t11_shikan" value="300" placeholder="回/月">
+            <span class="form-hint">100点→90点（通常月 -10点）。不明なら再診数の半分が目安</span>
+          </div>
+          <div class="form-group">
+            <label>口腔機能管理料「検査なし」運用の回数</label>
+            <input type="number" id="t11_kokuki" value="0" placeholder="回/月">
+            <span class="form-hint">検査あり化で1件 +40点（50→90点）の上乗せ余地</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="flex:1 1 100%;">
+            <label>歯科外来ベースアップ評価料Ⅰの届出状況</label>
+            <select id="t11_baseup">
+              <option value="done">新基準で再届出済み（2026/6/1までに完了）</option>
+              <option value="not">未届 ／ 再届出していない</option>
+              <option value="unknown">わからない</option>
+            </select>
+            <span class="form-hint">改定で初診21点・再診4点に増点。再届出が必要だった項目です</span>
+          </div>
+        </div>
+        <button class="btn-calc" onclick="calcTool11()">改定インパクトを診断 →</button>
+        <div class="result-box" id="t11_result">
+          <div class="result-grid">
+            <div class="result-item">
+              <div class="result-label">自動増収（確実・届出不要）</div>
+              <div class="result-value" id="t11_auto">—<span class="unit">円/月</span></div>
+            </div>
+            <div class="result-item">
+              <div class="result-label">改定後の純増（自動分）</div>
+              <div class="result-value" id="t11_net">—<span class="unit">円/月</span></div>
+            </div>
+            <div class="result-item">
+              <div class="result-label">年間ベース（純増）</div>
+              <div class="result-value" id="t11_year">—<span class="unit">円/年</span></div>
+            </div>
+            <div class="result-item">
+              <div class="result-label">算定見直しの上乗せ余地</div>
+              <div class="result-value" id="t11_upside">—<span class="unit">円/月</span></div>
+            </div>
+          </div>
+          <div id="t11_alerts" style="margin-top:1rem;"></div>
+          <p class="result-note" id="t11_comment"></p>
+        </div>
+      </div>`
   }
 };
 
@@ -975,4 +1043,48 @@ function calcTool10() {
   const result = document.getElementById('t10_result');
   result.innerHTML = html;
   result.style.display = 'block';
+}
+
+// =====================================================
+// Tool 11: 令和8年度改定 自院インパクト診断
+// =====================================================
+function calcTool11() {
+  const sho    = +document.getElementById('t11_sho').value || 0;
+  const sai    = +document.getElementById('t11_sai').value || 0;
+  const shikan = +document.getElementById('t11_shikan').value || 0;
+  const kokuki = +document.getElementById('t11_kokuki').value || 0;
+  const baseup = document.getElementById('t11_baseup').value;
+  const YEN = 10; // 保険1点 = 10円
+
+  const auto       = (8 * sho + 2 * sai) * YEN;
+  const shikanLoss = (10 * shikan) * YEN;
+  const net        = auto - shikanLoss;
+  const upside     = (40 * kokuki) * YEN;
+
+  const fmt = n => (n < 0 ? '-' : '') + '¥' + Math.abs(Math.round(n)).toLocaleString();
+
+  document.getElementById('t11_auto').innerHTML   = `${fmt(auto)}<span class="unit">円/月</span>`;
+  document.getElementById('t11_net').innerHTML    = `${fmt(net)}<span class="unit">円/月</span>`;
+  document.getElementById('t11_year').innerHTML   = `${fmt(net * 12)}<span class="unit">円/年</span>`;
+  document.getElementById('t11_upside').innerHTML = `${fmt(upside)}<span class="unit">円/月</span>`;
+
+  let a = '';
+  if (baseup === 'not' || baseup === 'unknown') {
+    const miss = (21 * sho + 4 * sai) * YEN;
+    a += `<div class="alert alert-danger" style="margin-bottom:0.6rem;"><span class="alert-icon"><i class="ic ic-alert"></i></span><span><strong>要対応：</strong>歯科外来ベースアップ評価料Ⅰは改定で初診21点・再診4点に増点。<strong>新基準での再届出（2026/6/1期限）</strong>が必要でした。未了だと月<strong>${miss.toLocaleString()}円</strong>相当を取り逃します。至急ご確認を。</span></div>`;
+  }
+  if (kokuki > 0) {
+    a += `<div class="alert alert-info" style="margin-bottom:0.6rem;"><span class="alert-icon">ℹ</span><span>口腔機能管理料を「検査あり」運用に切り替えると、月<strong>${upside.toLocaleString()}円</strong>の上乗せ余地。検査体制の整備で実現できます。</span></div>`;
+  }
+  a += `<div class="alert alert-warn"><span class="alert-icon"><i class="ic ic-alert"></i></span><span>SPT・P重防は「歯周病継続支援治療」へ統合。レセコンのマスタ変更が必要です（移行漏れは算定エラーの原因に）。</span></div>`;
+  document.getElementById('t11_alerts').innerHTML = a;
+
+  let c = '<i class="ic ic-check"></i> 初再診の自動増点＋物価対応料だけでも確実にプラスです。さらに口腔機能管理の算定強化（検査あり化）が収益維持の鍵になります。';
+  if (net < 0) {
+    c = '<i class="ic ic-alert"></i> 歯科疾患管理料の減点が自動増収を上回っています。口腔機能管理料の算定強化（検査あり90点）で十分カバー可能です。算定構成の見直しを推奨します。';
+  }
+  c += '<br><small style="color:var(--text-muted);">※保険1点=10円での概算。初診月の歯科疾患管理料は逓減廃止によりプラス要因（本試算は通常月ベース）。正確な算定は青本2026・レセコンでご確認ください。</small>';
+  document.getElementById('t11_comment').innerHTML = c;
+
+  document.getElementById('t11_result').classList.add('show');
 }
