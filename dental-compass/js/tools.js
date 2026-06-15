@@ -508,6 +508,69 @@ const TOOL_DEFS = {
           <p class="result-note" id="t11_comment"></p>
         </div>
       </div>`
+  },
+
+  // ─── Tool 12: リコール率改善 増収シミュレーター ───
+  tool12: {
+    title: '<i class="ic ic-refresh"></i> リコール率改善 増収シミュレーター',
+    html: `
+      <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:0.6rem;">リコール（定期メンテ来院）は歯科で最も安定した収益源。リコール率を上げると年間いくら増えるかを試算します。</p>
+      <div class="alert alert-info" style="margin-bottom:1.25rem;"><span class="alert-icon">ℹ</span><span>リコール率の目安は<strong>60〜80%</strong>。新患獲得より既存患者の定着の方が低コストで収益が安定します。</span></div>
+      <div class="tool-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>メンテ対象（アクティブ）患者数</label>
+            <input type="number" id="t12_pt" value="1500" placeholder="人">
+            <span class="form-hint">過去2年以内に来院した患者の概数</span>
+          </div>
+          <div class="form-group">
+            <label>リコール1回あたり平均単価</label>
+            <input type="number" id="t12_val" value="3000" placeholder="円">
+            <span class="form-hint">メンテ1回の保険＋自費の平均（目安2,000〜4,000円）</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>現在のリコール率</label>
+            <input type="number" id="t12_cur" value="50" placeholder="%">
+            <span class="form-hint">定期来院につながっている患者の割合</span>
+          </div>
+          <div class="form-group">
+            <label>目標リコール率</label>
+            <input type="number" id="t12_tgt" value="70" placeholder="%">
+            <span class="form-hint">+10〜20%の改善が現実的な目標</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>年間リコール回数／人</label>
+            <input type="number" id="t12_freq" value="3" placeholder="回/年">
+            <span class="form-hint">通常3〜4回（3〜4ヶ月ごと）</span>
+          </div>
+        </div>
+        <button class="btn-calc" onclick="calcTool12()">増収額を試算 →</button>
+        <div class="result-box" id="t12_result">
+          <div class="result-grid">
+            <div class="result-item">
+              <div class="result-label">現在の年間リコール売上</div>
+              <div class="result-value" id="t12_cur_rev">—<span class="unit">円/年</span></div>
+            </div>
+            <div class="result-item">
+              <div class="result-label">目標達成時の年間売上</div>
+              <div class="result-value" id="t12_tgt_rev">—<span class="unit">円/年</span></div>
+            </div>
+            <div class="result-item">
+              <div class="result-label">年間増収額</div>
+              <div class="result-value" id="t12_gain_y">—<span class="unit">円/年</span></div>
+            </div>
+            <div class="result-item">
+              <div class="result-label">月あたり増収</div>
+              <div class="result-value" id="t12_gain_m">—<span class="unit">円/月</span></div>
+            </div>
+          </div>
+          <p class="result-note" id="t12_comment"></p>
+        </div>
+      </div>`
   }
 };
 
@@ -1087,4 +1150,39 @@ function calcTool11() {
   document.getElementById('t11_comment').innerHTML = c;
 
   document.getElementById('t11_result').classList.add('show');
+}
+
+// =====================================================
+// Tool 12: リコール率改善 増収シミュレーター
+// =====================================================
+function calcTool12() {
+  const pt   = +document.getElementById('t12_pt').value || 0;
+  const val  = +document.getElementById('t12_val').value || 0;
+  const cur  = (+document.getElementById('t12_cur').value || 0) / 100;
+  const tgt  = (+document.getElementById('t12_tgt').value || 0) / 100;
+  const freq = +document.getElementById('t12_freq').value || 0;
+
+  const curRev   = Math.round(pt * cur * freq * val);
+  const tgtRev   = Math.round(pt * tgt * freq * val);
+  const gainYear = tgtRev - curRev;
+  const gainMon  = Math.round(gainYear / 12);
+
+  const fmt = n => (n < 0 ? '-' : '') + '¥' + Math.abs(Math.round(n)).toLocaleString();
+
+  document.getElementById('t12_cur_rev').innerHTML = `${fmt(curRev)}<span class="unit">円/年</span>`;
+  document.getElementById('t12_tgt_rev').innerHTML = `${fmt(tgtRev)}<span class="unit">円/年</span>`;
+  document.getElementById('t12_gain_y').innerHTML  = `${fmt(gainYear)}<span class="unit">円/年</span>`;
+  document.getElementById('t12_gain_m').innerHTML  = `${fmt(gainMon)}<span class="unit">円/月</span>`;
+
+  let c = '';
+  if (tgt <= cur) {
+    c = '<i class="ic ic-alert"></i> 目標リコール率が現在値以下です。現実的な改善目標（現状+10〜20%）を設定してください。';
+  } else {
+    const addPatients = Math.round(pt * (tgt - cur));
+    c = `<i class="ic ic-check"></i> リコール率を${(cur*100).toFixed(0)}%→${(tgt*100).toFixed(0)}%に改善すると、定着患者が約<strong>${addPatients.toLocaleString()}人</strong>増え、年間<strong>${fmt(gainYear)}円</strong>の増収が見込めます。次回予約の院内固定・LINE/ハガキリマインド・担当衛生士制が効果的です。`;
+  }
+  c += '<br><small style="color:var(--text-muted);">※入力値に基づく概算。単価は自院のメンテ1回あたり平均で調整してください。新患の生涯価値（LTV）向上にも直結します。</small>';
+  document.getElementById('t12_comment').innerHTML = c;
+
+  document.getElementById('t12_result').classList.add('show');
 }
