@@ -244,7 +244,8 @@ const TOOL_DEFS = {
   tool5: {
     title: '<i class="ic ic-hospital"></i> 施設基準・加算チェックツール（令和8年度）',
     html: `
-      <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:1.5rem;">体制・設備・研修の充足状況をチェックし、算定可能な加算を判定します。</p>
+      <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:0.75rem;">体制・設備・研修の充足状況をチェックし、算定可能な加算を判定します。令和8年度改定の新要件・再届出にも対応。</p>
+      <div class="alert alert-warn" style="margin-bottom:1.25rem;"><span class="alert-icon"><i class="ic ic-alert"></i></span><span><strong>改定の再届出に注意：</strong>「外来環」は医療安全対策加算・感染対策加算に分離。旧届出院も<strong>再届出が必要</strong>です（ベースアップ評価料も同様）。</span></div>
       <div class="tool-form">
         <div class="checklist" id="t5_checklist">
           <label class="check-item"><input type="checkbox" id="t5_c1"><div class="check-box"></div><div class="check-text">AEDを設置している<div class="check-sub">歯科外来診療医療安全対策加算の要件</div></div></label>
@@ -257,6 +258,7 @@ const TOOL_DEFS = {
           <label class="check-item"><input type="checkbox" id="t5_c8"><div class="check-box"></div><div class="check-text">過去1年間に歯科訪問診療を5回以上実施している（または在宅体制確保）<div class="check-sub">口腔管理体制強化加算の要件（在宅実績）</div></div></label>
           <label class="check-item"><input type="checkbox" id="t5_c9"><div class="check-box"></div><div class="check-text">口腔内写真撮影を日常的に実施している<div class="check-sub">口腔機能管理・口腔管理体制強化加算の要件</div></div></label>
           <label class="check-item"><input type="checkbox" id="t5_c10"><div class="check-box"></div><div class="check-text">歯科訪問診療の実施体制がある（24時間連絡可能）<div class="check-sub">在宅療養支援歯科診療所の要件</div></div></label>
+          <label class="check-item"><input type="checkbox" id="t5_c11"><div class="check-box"></div><div class="check-text">過去1年間に口腔機能管理（低下症・発達不全症）を12回以上算定している<div class="check-sub">口腔管理体制強化加算の新要件（令和8年度・新規追加）</div></div></label>
         </div>
         <button class="btn-calc" onclick="calcTool5()" style="margin-top:1rem;">算定可能加算を判定 →</button>
         <div id="t5_result" style="display:none;margin-top:1.5rem;"></div>
@@ -858,9 +860,10 @@ function calcTool5() {
     document.getElementById('t5_c8').checked,
     document.getElementById('t5_c9').checked,
     document.getElementById('t5_c10').checked,
+    document.getElementById('t5_c11').checked,
   ];
 
-  const [aed, safety, infect, myna, rx, dh, kanri100, visit24, photo, homecare] = checks;
+  const [aed, safety, infect, myna, rx, dh, perio30, visit5, photo, homecare, kokukinou12] = checks;
 
   const results = [];
   const missing = [];
@@ -885,12 +888,13 @@ function calcTool5() {
     missing.push('マイナ保険証（オンライン資格確認）の導入');
   }
 
-  if (dh && kanri100 && visit24 && photo) {
-    results.push({ name: '口腔管理体制強化加算', note: '主要要件を充足。詳細は地方厚生局に確認' });
+  if (dh && perio30 && visit5 && kokukinou12 && photo) {
+    results.push({ name: '口腔管理体制強化加算', note: '令和8年度の新要件（歯周継続30回・訪問5回・口腔機能管理12回/年）を充足。詳細は地方厚生局に確認' });
   } else {
     if (!dh) missing.push('歯科衛生士の常勤配置（1名以上）');
-    if (!kanri100) missing.push('歯科疾患管理料100回/年以上の実績');
-    if (!visit24) missing.push('歯科訪問診療24回/年以上の実績');
+    if (!perio30) missing.push('歯周病継続支援治療 30回/年以上の実績（令和8年度要件）');
+    if (!visit5) missing.push('歯科訪問診療 5回/年以上の実績（令和8年度要件）');
+    if (!kokukinou12) missing.push('口腔機能管理 12回/年以上の実績（令和8年度・新規追加要件）');
     if (!photo) missing.push('口腔内写真の日常的な撮影');
   }
 
@@ -911,7 +915,8 @@ function calcTool5() {
       html += `<div class="point-item" style="margin-bottom:0.5rem;"><div class="pi-num" style="background:var(--gold);color:var(--navy);">!</div><div class="pi-text">${m}</div></div>`;
     });
   }
-  html += `<div class="alert alert-warn" style="margin-top:1rem;"><span class="alert-icon"><i class="ic ic-alert"></i></span><span>本ツールは簡易判定です。実際の施設基準届出は、必ず最新の告示・通知を確認のうえ地方厚生（支）局にお問い合わせください。</span></div>`;
+  html += `<div class="alert alert-info" style="margin-top:1rem;"><span class="alert-icon">ℹ</span><span><strong>令和8年度改定の再届出チェック：</strong>旧「外来環」は<strong>歯科外来診療医療安全対策加算</strong>と<strong>歯科外来診療感染対策加算</strong>に分離。旧届出院も<strong>新体系での再届出が必要</strong>です。歯科外来ベースアップ評価料Ⅰも新基準での再届出（2026/6/1期限）が必要でした。届出済みか今一度ご確認ください。</span></div>`;
+  html += `<div class="alert alert-warn" style="margin-top:0.75rem;"><span class="alert-icon"><i class="ic ic-alert"></i></span><span>本ツールは簡易判定です。実際の施設基準届出は、必ず最新の告示・通知を確認のうえ地方厚生（支）局にお問い合わせください。</span></div>`;
 
   const result = document.getElementById('t5_result');
   result.innerHTML = html;
