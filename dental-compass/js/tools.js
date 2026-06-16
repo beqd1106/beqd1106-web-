@@ -571,6 +571,67 @@ const TOOL_DEFS = {
           <p class="result-note" id="t12_comment"></p>
         </div>
       </div>`
+  },
+
+  // ─── Tool 13: 自費 vs 保険 損益比較 ───
+  tool13: {
+    title: '<i class="ic ic-diamond"></i> 自費 vs 保険 損益比較',
+    html: `
+      <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:0.6rem;">自費診療1件が保険の何来院分の粗利に相当するかを試算。自費比率を上げる経営判断を数字で後押しします。</p>
+      <div class="alert alert-info" style="margin-bottom:1.25rem;"><span class="alert-icon">ℹ</span><span>自費診療比率の目安は<strong>30%以上</strong>。自費は材料・技工原価を差し引いても1件あたりの粗利が大きいのが特徴です。</span></div>
+      <div class="tool-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>保険 来院数／月</label>
+            <input type="number" id="t13_hN" value="900" placeholder="来院/月">
+          </div>
+          <div class="form-group">
+            <label>保険 1来院あたり平均単価</label>
+            <input type="number" id="t13_hV" value="1600" placeholder="円">
+            <span class="form-hint">点数×10円。歯科は1来院1,300〜1,800円が目安</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>自費 件数／月</label>
+            <input type="number" id="t13_jN" value="4" placeholder="件/月">
+          </div>
+          <div class="form-group">
+            <label>自費 1件あたり平均単価</label>
+            <input type="number" id="t13_jV" value="120000" placeholder="円">
+            <span class="form-hint">インプラント・矯正・セラミック等の平均</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>自費の材料・技工 原価率</label>
+            <input type="number" id="t13_jC" value="30" placeholder="%">
+            <span class="form-hint">補綴物の材料・技工料の割合（目安20〜40%）</span>
+          </div>
+        </div>
+        <button class="btn-calc" onclick="calcTool13()">損益を比較する →</button>
+        <div class="result-box" id="t13_result">
+          <div class="result-grid">
+            <div class="result-item">
+              <div class="result-label">月商合計（保険＋自費）</div>
+              <div class="result-value" id="t13_total">—<span class="unit">円/月</span></div>
+            </div>
+            <div class="result-item">
+              <div class="result-label">自費診療比率</div>
+              <div class="result-value" id="t13_ratio">—<span class="unit">%</span></div>
+            </div>
+            <div class="result-item">
+              <div class="result-label">自費の粗利／月</div>
+              <div class="result-value" id="t13_gross">—<span class="unit">円/月</span></div>
+            </div>
+            <div class="result-item">
+              <div class="result-label">自費1件 ＝ 保険◯来院分の粗利</div>
+              <div class="result-value" id="t13_equiv">—<span class="unit">来院</span></div>
+            </div>
+          </div>
+          <p class="result-note" id="t13_comment"></p>
+        </div>
+      </div>`
   }
 };
 
@@ -1185,4 +1246,42 @@ function calcTool12() {
   document.getElementById('t12_comment').innerHTML = c;
 
   document.getElementById('t12_result').classList.add('show');
+}
+
+// =====================================================
+// Tool 13: 自費 vs 保険 損益比較
+// =====================================================
+function calcTool13() {
+  const hN = +document.getElementById('t13_hN').value || 0;
+  const hV = +document.getElementById('t13_hV').value || 0;
+  const jN = +document.getElementById('t13_jN').value || 0;
+  const jV = +document.getElementById('t13_jV').value || 0;
+  const jC = (+document.getElementById('t13_jC').value || 0) / 100;
+
+  const hokenRev = hN * hV;
+  const jihiRev  = jN * jV;
+  const total    = hokenRev + jihiRev;
+  const ratio    = total > 0 ? (jihiRev / total * 100) : 0;
+  const jihiGross = jihiRev * (1 - jC);
+  const jihiGrossPer = jV * (1 - jC);
+  const hokenGrossPer = hV * 0.85; // 保険粗利率は材料費15%想定の概算
+  const equiv = hokenGrossPer > 0 ? (jihiGrossPer / hokenGrossPer) : 0;
+
+  const fmt = n => '¥' + Math.round(n).toLocaleString();
+
+  document.getElementById('t13_total').innerHTML  = `${fmt(total)}<span class="unit">円/月</span>`;
+  document.getElementById('t13_ratio').innerHTML  = `${ratio.toFixed(1)}<span class="unit">%</span>`;
+  document.getElementById('t13_gross').innerHTML  = `${fmt(jihiGross)}<span class="unit">円/月</span>`;
+  document.getElementById('t13_equiv').innerHTML  = `${equiv.toFixed(0)}<span class="unit">来院分</span>`;
+
+  let c = '';
+  if (ratio < 30) {
+    c = `<i class="ic ic-alert"></i> 自費比率が目安30%を下回っています。自費1件は保険<strong>約${equiv.toFixed(0)}来院分</strong>の粗利に相当。自費を月+2件増やすだけで粗利が年<strong>${fmt(jihiGrossPer * 2 * 12)}円</strong>増えます。カウンセリング強化が収益改善の近道です。`;
+  } else {
+    c = `<i class="ic ic-check"></i> 自費比率は目安30%をクリア。自費1件は保険<strong>約${equiv.toFixed(0)}来院分</strong>の粗利に相当します。質を保ちつつ自費の成約率・単価維持を続けましょう。`;
+  }
+  c += '<br><small style="color:var(--text-muted);">※保険の粗利率は材料費15%想定の概算。自費原価率・単価は自院の実績で調整してください。チェア時間あたりの効率は自費が大きく上回ります。</small>';
+  document.getElementById('t13_comment').innerHTML = c;
+
+  document.getElementById('t13_result').classList.add('show');
 }
