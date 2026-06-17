@@ -414,7 +414,7 @@ async function handleOorasuComment(request, env, ctx) {
   // 一時診断：キー有無とGeminiの応答ステータスを返す（キー値は出さない）
   if (body.debug === 'gemini') {
     const k = env.GEMINI_API_KEY;
-    const m = env.GEMINI_MODEL || 'gemini-2.0-flash';
+    const m = env.GEMINI_MODEL || 'gemini-2.5-flash';
     let status = 'no-key', detail = '';
     if (k) {
       try {
@@ -445,30 +445,33 @@ async function handleOorasuComment(request, env, ctx) {
 
   let comment = null, source = null;
 
-  // 1) Gemini（無料枠・高品質）
+  // 1) Gemini（無料枠・高品質）。モデル提供終了に備え複数候補を順に試行。
   const key = env.GEMINI_API_KEY;
-  const model = env.GEMINI_MODEL || 'gemini-2.0-flash';
   if (key) {
-    try {
-      const r = await fetch(
-        'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + key,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            system_instruction: { parts: [{ text: system }] },
-            contents: [{ role: 'user', parts: [{ text: facts }] }],
-            generationConfig: { maxOutputTokens: 256, temperature: 0.7 },
-          }),
+    const models = [env.GEMINI_MODEL, 'gemini-2.5-flash', 'gemini-flash-latest', 'gemini-2.5-flash-lite']
+      .filter(Boolean);
+    for (const model of models) {
+      try {
+        const r = await fetch(
+          'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + key,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              system_instruction: { parts: [{ text: system }] },
+              contents: [{ role: 'user', parts: [{ text: facts }] }],
+              generationConfig: { maxOutputTokens: 256, temperature: 0.7 },
+            }),
+          }
+        );
+        if (r.ok) {
+          const j = await r.json();
+          const parts = j && j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts;
+          const t = Array.isArray(parts) ? parts.map((p) => p.text || '').join('') : '';
+          if (t.trim()) { comment = t.trim(); source = 'gemini'; break; }
         }
-      );
-      if (r.ok) {
-        const j = await r.json();
-        const parts = j && j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts;
-        const t = Array.isArray(parts) ? parts.map((p) => p.text || '').join('') : '';
-        if (t.trim()) { comment = t.trim(); source = 'gemini'; }
-      }
-    } catch (e) { /* フォールバックへ */ }
+      } catch (e) { /* 次のモデルへ */ }
+    }
   }
 
   // 2) Cloudflare Workers AI（¥0フォールバック・キー不要）
