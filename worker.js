@@ -341,6 +341,11 @@ export default {
       return handleAIGenerate(request, env);
     }
 
+    // オーラス条件トレーナー：AI解説（Gemini優先→Workers AIフォールバック・キャッシュ）
+    if (url.pathname === "/api/oorasu/comment" && request.method === "POST") {
+      return handleOorasuComment(request, env, ctx);
+    }
+
     // 静的アセット配信
     return env.ASSETS.fetch(request);
   },
@@ -398,6 +403,85 @@ async function handleAIGenerate(request, env) {
       'Access-Control-Allow-Origin': '*',
     },
   });
+}
+
+// ── オーラス条件トレーナー：AI解説 ─────────────────────────
+// 計算はアプリ側で確定済み。AIは「確定した条件の言語化」だけを担当（数値は変えない）。
+// Gemini（無料枠・高品質）→ Cloudflare Workers AI（¥0）の順でフォールバック。同条件はキャッシュ。
+async function handleOorasuComment(request, env, ctx) {
+  let body;
+  try { body = await request.json(); } catch { return jsonError('リクエストボディが不正です', 400); }
+  const facts = (body.facts || '').toString().slice(0, 1500);
+  if (!facts.trim()) return jsonError('facts が空です', 400);
+
+  const system = 'あなたは麻雀のコーチです。次の「計算済みの逆転条件」を、初心者にも分かる自然な日本語で簡潔に（100〜160字程度）解説してください。点数や実現率などの数値は絶対に変更しないこと。実現率はあくまで目安として断定しすぎず、狙うべき方針（狙う役・押し引き・連荘など）に一言だけ触れてください。専門用語は最小限にしてください。';
+
+  // キャッシュ（同じ条件は再利用してAPI呼び出しを減らす）
+  const cache = caches.default;
+  const hash = await sha256(system + '\n' + facts);
+  const cacheKey = new Request('https://cache.oorasu.local/comment/' + hash);
+  const hit = await cache.match(cacheKey);
+  if (hit) return hit;
+
+  let comment = null, source = null;
+
+  // 1) Gemini（無料枠・高品質）
+  const key = env.GEMINI_API_KEY;
+  const model = env.GEMINI_MODEL || 'gemini-2.0-flash';
+  if (key) {
+    try {
+      const r = await fetch(
+        'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + key,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            system_instruction: { parts: [{ text: system }] },
+            contents: [{ role: 'user', parts: [{ text: facts }] }],
+            generationConfig: { maxOutputTokens: 256, temperature: 0.7 },
+          }),
+        }
+      );
+      if (r.ok) {
+        const j = await r.json();
+        const parts = j && j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts;
+        const t = Array.isArray(parts) ? parts.map((p) => p.text || '').join('') : '';
+        if (t.trim()) { comment = t.trim(); source = 'gemini'; }
+      }
+    } catch (e) { /* フォールバックへ */ }
+  }
+
+  // 2) Cloudflare Workers AI（¥0フォールバック・キー不要）
+  if (!comment) {
+    try {
+      const ai = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
+        messages: [
+          { role: 'system', content: system },
+          { role: 'user', content: facts },
+        ],
+        max_tokens: 256,
+      });
+      const t = (ai && (ai.response || (ai.result && ai.result.response))) || '';
+      if (t.trim()) { comment = t.trim(); source = 'workers-ai'; }
+    } catch (e) { /* 失敗 */ }
+  }
+
+  if (!comment) return jsonError('AI解説の生成に失敗しました', 502);
+
+  const res = new Response(JSON.stringify({ comment, source }), {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Cache-Control': 'public, max-age=2592000', // 30日キャッシュ
+    },
+  });
+  ctx.waitUntil(cache.put(cacheKey, res.clone()));
+  return res;
+}
+
+async function sha256(text) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
 // ── ユーザーメッセージ構築 ──────────────────────────────
