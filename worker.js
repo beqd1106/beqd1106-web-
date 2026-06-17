@@ -411,6 +411,26 @@ async function handleAIGenerate(request, env) {
 async function handleOorasuComment(request, env, ctx) {
   let body;
   try { body = await request.json(); } catch { return jsonError('リクエストボディが不正です', 400); }
+  // 一時診断：キー有無とGeminiの応答ステータスを返す（キー値は出さない）
+  if (body.debug === 'gemini') {
+    const k = env.GEMINI_API_KEY;
+    const m = env.GEMINI_MODEL || 'gemini-2.0-flash';
+    let status = 'no-key', detail = '';
+    if (k) {
+      try {
+        const rr = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + m + ':generateContent?key=' + k, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: 'こんにちは' }] }] }),
+        });
+        status = String(rr.status);
+        detail = (await rr.text()).slice(0, 300);
+      } catch (e) { status = 'throw'; detail = String(e).slice(0, 200); }
+    }
+    return new Response(JSON.stringify({ hasKey: !!k, keyLen: k ? k.length : 0, model: m, status, detail }), {
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    });
+  }
+
   const facts = (body.facts || '').toString().slice(0, 1500);
   if (!facts.trim()) return jsonError('facts が空です', 400);
 
