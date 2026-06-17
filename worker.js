@@ -411,30 +411,10 @@ async function handleAIGenerate(request, env) {
 async function handleOorasuComment(request, env, ctx) {
   let body;
   try { body = await request.json(); } catch { return jsonError('リクエストボディが不正です', 400); }
-  // 一時診断：キー有無とGeminiの応答ステータスを返す（キー値は出さない）
-  if (body.debug === 'gemini') {
-    const k = env.GEMINI_API_KEY;
-    const m = env.GEMINI_MODEL || 'gemini-2.5-flash';
-    let status = 'no-key', detail = '';
-    if (k) {
-      try {
-        const rr = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + m + ':generateContent?key=' + k, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: 'こんにちは' }] }] }),
-        });
-        status = String(rr.status);
-        detail = (await rr.text()).slice(0, 300);
-      } catch (e) { status = 'throw'; detail = String(e).slice(0, 200); }
-    }
-    return new Response(JSON.stringify({ hasKey: !!k, keyLen: k ? k.length : 0, model: m, status, detail }), {
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
-    });
-  }
-
   const facts = (body.facts || '').toString().slice(0, 1500);
   if (!facts.trim()) return jsonError('facts が空です', 400);
 
-  const system = 'あなたは麻雀のコーチです。次に渡す【解説】は計算済みで内容は正しいものです。これを、麻雀コーチが励ますような温かい口調の日本語（110〜170字）に整えてください。\n絶対厳守:\n・元の解説に含まれる具体的な要素（打点の目安＝満貫/跳満など、実現率の%、親番・連荘、ロン/ツモ、狙う役、押し引きの方針）は省略せず必ず残す。一般論に薄めない。\n・数値・パーセント・打点・着順・ロン/ツモ・親/子は一切変えない、足さない。\n・新しい数値や事実を勝手に加えない。\n・口調と言い回しだけを整える。前置き・復唱・自己説明はせず、本文だけを書く。';
+  const system = 'あなたは麻雀のコーチです。次に渡す【解説】は計算済みで内容は正しいものです。これを、コーチが話しかけるような自然で前向きな日本語（元と同程度の長さ）に言い換えてください。\n絶対厳守:\n・事実・数値・パーセント・着順・打点（満貫/跳満など）・ロン/ツモ・親/子を一切変えない、足さない、消さない。\n・新しい数値や事実、点数、着順、役などを勝手に追加しない（元の解説にある語句だけを使う）。\n・元の解説のキーワードは省略しない。\n・口調と言い回しだけを整える。前置き・復唱・自己説明はせず、言い換えた本文だけを書く。';
 
   // キャッシュ（同じ条件は再利用してAPI呼び出しを減らす）
   const cache = caches.default;
