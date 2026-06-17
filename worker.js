@@ -434,7 +434,7 @@ async function handleOorasuComment(request, env, ctx) {
   const facts = (body.facts || '').toString().slice(0, 1500);
   if (!facts.trim()) return jsonError('facts が空です', 400);
 
-  const system = 'あなたは麻雀のコーチです。次の「計算済みの逆転条件」を、初心者にも分かる自然な日本語で簡潔に（100〜160字程度）解説してください。局・席・点数・必要打点・実現率はファクトに書かれた数値をそのまま使い、勝手に変えたり創作したりしないこと。実現率はあくまで目安として断定しすぎず、狙うべき方針（狙う役・押し引き・連荘など）に一言だけ触れてください。専門用語は最小限にしてください。前置きや復唱はせず、解説本文だけを書いてください。';
+  const system = 'あなたは麻雀のコーチです。次の「計算済みの逆転条件」を、初心者にも分かるよう簡潔に（100〜160字）解説してください。\n厳守事項:\n・誰が何点という盤面の復唱はしないこと（取り違えの元になるため）。\n・「逆転条件:」行に書かれた“何点アガれば何位に上がれるか”と“実現率%”だけを使い、数値・着順・打点を勝手に変えたり創作したりしないこと。\n・実現率は目安として断定を避ける。\n・最後に狙うべき方針（狙う役・押し引き・連荘など）を一言。\n・前置きや復唱はせず、解説本文だけを書く。';
 
   // キャッシュ（同じ条件は再利用してAPI呼び出しを減らす）
   const cache = caches.default;
@@ -461,9 +461,9 @@ async function handleOorasuComment(request, env, ctx) {
               system_instruction: { parts: [{ text: system }] },
               contents: [{ role: 'user', parts: [{ text: facts }] }],
               generationConfig: {
-                maxOutputTokens: 512,
-                temperature: 0.7,
-                thinkingConfig: { thinkingBudget: 0 }, // 思考オフ（短文用・本文を出し切る）
+                maxOutputTokens: 1024,
+                temperature: 0.6,
+                thinkingConfig: { thinkingBudget: 256 }, // 軽い思考で取り違えを抑制
               },
             }),
           }
