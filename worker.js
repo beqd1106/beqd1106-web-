@@ -448,7 +448,7 @@ async function handleOorasuComment(request, env, ctx) {
   // 1) Gemini（無料枠・高品質）。モデル提供終了に備え複数候補を順に試行。
   const key = env.GEMINI_API_KEY;
   if (key) {
-    const models = [env.GEMINI_MODEL, 'gemini-2.5-flash', 'gemini-flash-latest', 'gemini-2.5-flash-lite']
+    const models = [env.GEMINI_MODEL, 'gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-flash-latest']
       .filter(Boolean);
     for (const model of models) {
       try {
@@ -462,8 +462,8 @@ async function handleOorasuComment(request, env, ctx) {
               contents: [{ role: 'user', parts: [{ text: facts }] }],
               generationConfig: {
                 maxOutputTokens: 2048,
-                temperature: 0.5,
-                thinkingConfig: { thinkingBudget: 1024 }, // 十分な思考で取り違えを防ぐ
+                temperature: 0.3,
+                thinkingConfig: { thinkingBudget: 1024 },
               },
             }),
           }
