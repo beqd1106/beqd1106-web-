@@ -434,7 +434,7 @@ async function handleOorasuComment(request, env, ctx) {
   const facts = (body.facts || '').toString().slice(0, 1500);
   if (!facts.trim()) return jsonError('facts が空です', 400);
 
-  const system = 'あなたは麻雀のコーチです。次の「計算済みの逆転条件」を、初心者にも分かる自然な日本語で簡潔に（100〜160字程度）解説してください。点数や実現率などの数値は絶対に変更しないこと。実現率はあくまで目安として断定しすぎず、狙うべき方針（狙う役・押し引き・連荘など）に一言だけ触れてください。専門用語は最小限にしてください。';
+  const system = 'あなたは麻雀のコーチです。次の「計算済みの逆転条件」を、初心者にも分かる自然な日本語で簡潔に（100〜160字程度）解説してください。局・席・点数・必要打点・実現率はファクトに書かれた数値をそのまま使い、勝手に変えたり創作したりしないこと。実現率はあくまで目安として断定しすぎず、狙うべき方針（狙う役・押し引き・連荘など）に一言だけ触れてください。専門用語は最小限にしてください。前置きや復唱はせず、解説本文だけを書いてください。';
 
   // キャッシュ（同じ条件は再利用してAPI呼び出しを減らす）
   const cache = caches.default;
@@ -460,7 +460,11 @@ async function handleOorasuComment(request, env, ctx) {
             body: JSON.stringify({
               system_instruction: { parts: [{ text: system }] },
               contents: [{ role: 'user', parts: [{ text: facts }] }],
-              generationConfig: { maxOutputTokens: 256, temperature: 0.7 },
+              generationConfig: {
+                maxOutputTokens: 512,
+                temperature: 0.7,
+                thinkingConfig: { thinkingBudget: 0 }, // 思考オフ（短文用・本文を出し切る）
+              },
             }),
           }
         );
