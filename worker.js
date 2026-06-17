@@ -414,7 +414,15 @@ async function handleOorasuComment(request, env, ctx) {
   const facts = (body.facts || '').toString().slice(0, 1500);
   if (!facts.trim()) return jsonError('facts が空です', 400);
 
-  const system = 'あなたは麻雀のコーチです。次に渡す【解説】は計算済みで内容は正しいものです。これを、コーチが話しかけるような自然で前向きな日本語（元と同程度の長さ）に言い換えてください。\n絶対厳守:\n・事実・数値・パーセント・着順・打点（満貫/跳満など）・ロン/ツモ・親/子を一切変えない、足さない、消さない。\n・新しい数値や事実、点数、着順、役などを勝手に追加しない（元の解説にある語句だけを使う）。\n・元の解説のキーワードは省略しない。\n・口調と言い回しだけを整える。前置き・復唱・自己説明はせず、言い換えた本文だけを書く。';
+  const system = '渡された【解説】の意味・数値・パーセント・着順・打点（満貫/跳満など）・ロン/ツモ・親/子を一切変えず、口調だけ自然で前向きなコーチ口調に整えて出力する。新しい数値・事実・役・着順は足さない。元のキーワードは省略しない。前置きや自己説明はせず、言い換えた本文だけを出す。';
+
+  // few-shot のお手本（忠実な言い換えのパターンを示す）
+  const fewshot = [
+    { role: 'user', parts: [{ text: 'トップは満貫が必要で、やや厳しめですが狙えます（実現率の目安30%）。' }] },
+    { role: 'model', parts: [{ text: 'トップを取るには満貫が必要だね。やや厳しめだけど、実現率は約30%。十分に狙っていける範囲だよ。' }] },
+    { role: 'user', parts: [{ text: '2位は跳満以上が必要で、かなり厳しい条件です（実現率の目安6%）。親番が残るなら連荘も視野に。' }] },
+    { role: 'model', parts: [{ text: '2位浮上には跳満以上が必要で、実現率は約6%とかなり厳しいね。親番が残ってるなら、無理に決めず連荘を狙うのも手だよ。' }] },
+  ];
 
   // キャッシュ（同じ条件は再利用してAPI呼び出しを減らす）
   const cache = caches.default;
@@ -428,7 +436,7 @@ async function handleOorasuComment(request, env, ctx) {
   // 1) Gemini（無料枠・高品質）。モデル提供終了に備え複数候補を順に試行。
   const key = env.GEMINI_API_KEY;
   if (key) {
-    const models = [env.GEMINI_MODEL, 'gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-flash-latest']
+    const models = [env.GEMINI_MODEL, 'gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-flash-latest']
       .filter(Boolean);
     for (const model of models) {
       try {
@@ -439,11 +447,11 @@ async function handleOorasuComment(request, env, ctx) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               system_instruction: { parts: [{ text: system }] },
-              contents: [{ role: 'user', parts: [{ text: facts }] }],
+              contents: [...fewshot, { role: 'user', parts: [{ text: facts }] }],
               generationConfig: {
-                maxOutputTokens: 2048,
-                temperature: 0.3,
-                thinkingConfig: { thinkingBudget: 1024 },
+                maxOutputTokens: 1024,
+                temperature: 0,
+                thinkingConfig: { thinkingBudget: 0 },
               },
             }),
           }
