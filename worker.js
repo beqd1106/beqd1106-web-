@@ -453,17 +453,19 @@ async function handleOorasuComment(request, env, ctx) {
 
   // 2) Cloudflare Workers AI（¥0フォールバック・キー不要）
   if (!comment) {
-    try {
-      const ai = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
-        messages: [
-          { role: 'system', content: system },
-          { role: 'user', content: facts },
-        ],
-        max_tokens: 256,
-      });
-      const t = (ai && (ai.response || (ai.result && ai.result.response))) || '';
-      if (t.trim()) { comment = t.trim(); source = 'workers-ai'; }
-    } catch (e) { /* 失敗 */ }
+    for (const model of [MODEL_FAST, MODEL_QUALITY]) {
+      try {
+        const ai = await env.AI.run(model, {
+          messages: [
+            { role: 'system', content: system },
+            { role: 'user', content: facts },
+          ],
+          max_tokens: 300,
+        });
+        const t = (ai && (ai.response || (ai.result && ai.result.response))) || '';
+        if (t.trim()) { comment = t.trim(); source = 'workers-ai'; break; }
+      } catch (e) { /* 次のモデルへ */ }
+    }
   }
 
   if (!comment) return jsonError('AI解説の生成に失敗しました', 502);
