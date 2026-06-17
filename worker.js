@@ -461,9 +461,9 @@ async function handleOorasuComment(request, env, ctx) {
               system_instruction: { parts: [{ text: system }] },
               contents: [{ role: 'user', parts: [{ text: facts }] }],
               generationConfig: {
-                maxOutputTokens: 1024,
-                temperature: 0.6,
-                thinkingConfig: { thinkingBudget: 256 }, // 軽い思考で取り違えを抑制
+                maxOutputTokens: 2048,
+                temperature: 0.5,
+                thinkingConfig: { thinkingBudget: 1024 }, // 十分な思考で取り違えを防ぐ
               },
             }),
           }
