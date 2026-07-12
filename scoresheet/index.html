@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スコアシート｜サポート</title>
+<meta name="description" content="三麻・四麻に対応した麻雀スコア記録アプリ「スコアシート」のサポートページ。表形式でサッと記録、iCloudで自動バックアップ。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#1f63e0; --accent-red:#e2413f; --accent-yellow:#e5a812;
+    --ink:#1b1e23; --muted:#5a616b; --faint:#9aa1ab;
+    --bg:#f6f7fb; --card:#ffffff; --rule:#e2e4ea; --grid:#e7e9ef;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:"Noto Sans JP",sans-serif;color:var(--ink);line-height:1.85;-webkit-font-smoothing:antialiased;
+    background:
+      linear-gradient(var(--grid) 1px,transparent 1px) 0 0/28px 28px,
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/28px 28px,
+      var(--bg);
+  }
+  .serif{font-family:"Noto Serif JP",serif}
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+
+  header{
+    background:linear-gradient(150deg,#f9fbff,#eef3fd);
+    border-bottom:1px solid var(--rule);
+    padding:clamp(48px,9vw,84px) 0 clamp(36px,6vw,52px);position:relative;overflow:hidden;
+  }
+  .eyebrow{letter-spacing:.16em;font-size:.76rem;font-weight:700;color:var(--accent)}
+  header h1{font-size:clamp(1.9rem,6vw,2.7rem);font-weight:700;margin:.35em 0 .25em;line-height:1.3}
+  header p{color:var(--muted);font-size:clamp(.95rem,2.6vw,1.05rem)}
+  .chips{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:.8rem;font-weight:700;color:var(--accent);
+    background:rgba(31,99,224,.09);padding:6px 13px;border-radius:999px}
+
+  main{padding:clamp(40px,8vw,64px) 0}
+  section{margin-bottom:clamp(36px,6vw,56px)}
+  h2{font-size:clamp(1.25rem,4vw,1.55rem);font-weight:700;margin-bottom:.8em;
+    padding-left:14px;border-left:4px solid var(--accent)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+  .feat{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:22px}
+  .feat h3{font-size:1.02rem;font-weight:700;margin-bottom:.35em}
+  .feat p{color:var(--muted);font-size:.92rem}
+  .feat .n{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;
+    border-radius:8px;background:rgba(31,99,224,.1);color:var(--accent);font-weight:700;margin-bottom:12px;
+    font-family:"Noto Serif JP",serif}
+
+  .faq{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:clamp(18px,4vw,26px)}
+  .faq details{border-bottom:1px solid var(--rule);padding:12px 0}
+  .faq details:last-child{border-bottom:none}
+  .faq summary{font-weight:700;cursor:pointer;list-style:none;position:relative;padding-right:28px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";position:absolute;right:4px;top:-2px;color:var(--accent);font-size:1.3rem}
+  .faq details[open] summary::after{content:"–"}
+  .faq p{color:var(--muted);font-size:.92rem;margin-top:.6em}
+
+  .contact{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:clamp(22px,4vw,30px)}
+  a{color:var(--accent);text-decoration:none;font-weight:700}
+
+  footer{text-align:center;color:var(--muted);font-size:.85rem;padding:34px 0 56px;border-top:1px solid var(--rule)}
+  footer .links{margin-bottom:10px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <span class="eyebrow">SCORESHEET</span>
+    <h1 class="serif">スコアシート</h1>
+    <p>三麻・四麻に対応した、麻雀のスコア記録・集計アプリ。<br>表形式でサッと入力、合計は自動計算。</p>
+    <div class="chips">
+      <span class="chip">三麻 / 四麻</span>
+      <span class="chip">表形式入力</span>
+      <span class="chip">チップ集計</span>
+      <span class="chip">成績グラフ</span>
+      <span class="chip">iCloud同期</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section>
+    <h2 class="serif">主な機能</h2>
+    <div class="grid">
+      <div class="feat">
+        <span class="n">1</span>
+        <h3>表形式でサッと記録</h3>
+        <p>行＝回戦、列＝プレイヤー。マスに点数を打ち込むだけ。合計・チップ・総合計は画面下部に常時表示。</p>
+      </div>
+      <div class="feat">
+        <span class="n">2</span>
+        <h3>入力ミスに気づける</h3>
+        <p>各回の横合計が0にならないと、行が赤・黄で警告表示。ズレた点数の合計もその場で分かります。</p>
+      </div>
+      <div class="feat">
+        <span class="n">3</span>
+        <h3>係数で成績換算</h3>
+        <p>1000点あたり・チップ1枚あたりのポイント係数を設定して総合ポイントを集計。和了点や符の計算は不要。</p>
+      </div>
+      <div class="feat">
+        <span class="n">4</span>
+        <h3>成績グラフ・履歴</h3>
+        <p>累計推移の折れ線や順位分布を表示。タグでまとめた集計、カレンダーからの振り返りも。</p>
+      </div>
+      <div class="feat">
+        <span class="n">5</span>
+        <h3>iCloudで自動バックアップ</h3>
+        <p>iCloudにサインインしていれば記録を自動同期。機種変更やアプリ削除・再インストール後も復元できます。</p>
+      </div>
+      <div class="feat">
+        <span class="n">6</span>
+        <h3>シンプル・オフライン</h3>
+        <p>広告なし・アプリ内課金なし。iCloudを使わなくても端末内で完結して動作します。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">使い方</h2>
+    <div class="faq">
+      <details open>
+        <summary>スコアを記録するには？</summary>
+        <p>ホームで「新しいゲーム」から三麻／四麻とプレイヤーを設定。表の各マスに、その回戦の点数（プラス・マイナス）を入力します。1人だけ空欄でEnterを押すと、横合計が0になるよう自動補完されます。</p>
+      </details>
+      <details>
+        <summary>総合ポイントはどう計算される？</summary>
+        <p>総合計 ＝ 対局ポイント合計 × 1000点係数 ＋ チップ枚数 × チップ係数、で算出します。係数は画面上部の設定（歯車）からいつでも変更できます。</p>
+      </details>
+      <details>
+        <summary>行が赤や黄色になるのはなぜ？</summary>
+        <p>その回戦の横合計が0になっていないサインです。全員分を入力済みで合計が合わない場合は赤、まだ入力途中の場合は黄で表示し、ズレている点数も表示します。</p>
+      </details>
+      <details>
+        <summary>データはどこに保存される？</summary>
+        <p>端末内、およびiCloudにサインインしている場合は利用者自身のiCloudに保存されます。開発者のサーバーには送信されません。詳しくは<a href="./privacy.html">プライバシーポリシー</a>をご覧ください。</p>
+      </details>
+      <details>
+        <summary>iCloud同期が反映されない</summary>
+        <p>端末が同じApple IDでiCloudにサインインしているかご確認ください（設定 &gt; 一番上の名前）。ネットワーク接続がある状態でアプリを起動すると同期されます。反映まで数十秒かかる場合があります。</p>
+      </details>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="serif">お問い合わせ</h2>
+    <div class="contact">
+      <p>ご質問・ご要望・不具合のご報告は、下記までお気軽にご連絡ください。</p>
+      <p style="margin-top:.5em"><a href="mailto:beqd1106@gmail.com">beqd1106@gmail.com</a></p>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <div class="links">
+    <a href="./privacy.html">プライバシーポリシー</a>
+    <a href="mailto:beqd1106@gmail.com">お問い合わせ</a>
+  </div>
+  <p>© 2026 スコアシート</p>
+</footer>
+</body>
+</html>
