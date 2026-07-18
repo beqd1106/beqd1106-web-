@@ -1,0 +1,2153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WinActor入門｜RPA自動化 体系教材</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f7f4ee; --paper2:#fffdf9; --ink:#20211d; --ink2:#54544d;
+  --line:#e3ddd1; --accent:#2a4d69; --accent2:#b0854a; --brass:#a9822f;
+  --ok:#3a7d52; --warn:#b4592a; --sidebar:#23261f; --sidebar-ink:#e9e5da;
+  --shadow:0 1px 3px rgba(30,25,15,.06),0 6px 24px rgba(30,25,15,.06);
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Noto Sans JP",system-ui,sans-serif;line-height:1.9;
+  font-size:clamp(15px,1.6vw,16.5px);-webkit-font-smoothing:antialiased}
+.app{display:grid;grid-template-columns:300px 1fr;min-height:100vh}
+
+/* サイドバー */
+.side{background:var(--sidebar);color:var(--sidebar-ink);position:sticky;top:0;
+  height:100vh;overflow-y:auto;padding:0;display:flex;flex-direction:column}
+.brand{padding:22px 22px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+.brand .logo{font-family:"Noto Serif JP",serif;font-weight:700;font-size:1.28rem;
+  letter-spacing:.02em;line-height:1.35}
+.brand .logo b{color:var(--accent2)}
+.brand .sub{font-size:.72rem;color:#a7a291;margin-top:6px;letter-spacing:.08em}
+.progress-wrap{padding:14px 22px;border-bottom:1px solid rgba(255,255,255,.08)}
+.progress-lbl{display:flex;justify-content:space-between;font-size:.72rem;
+  color:#a7a291;margin-bottom:7px}
+.bar{height:6px;background:rgba(255,255,255,.12);border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--brass));
+  border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.nav{padding:10px 12px;flex:1}
+.nav-item{display:grid;grid-template-columns:30px 1fr 18px;align-items:center;gap:10px;
+  width:100%;text-align:left;background:none;border:0;color:var(--sidebar-ink);
+  padding:9px 11px;border-radius:9px;cursor:pointer;font-family:inherit;
+  font-size:.86rem;line-height:1.4;transition:background .15s}
+.nav-item:hover{background:rgba(255,255,255,.06)}
+.nav-item.active{background:rgba(176,133,74,.18)}
+.nav-item.active .nav-ttl{color:#fff}
+.nav-num{font-family:"Noto Serif JP",serif;font-weight:700;font-size:.78rem;
+  width:28px;height:28px;display:grid;place-items:center;border-radius:7px;
+  background:rgba(255,255,255,.08);color:var(--accent2)}
+.nav-item.active .nav-num{background:var(--accent2);color:#23261f}
+.nav-ttl{color:#cdc8ba}
+.nav-check{width:16px;height:16px;fill:var(--ok);opacity:0;transition:opacity .2s}
+.nav-item.read .nav-check{opacity:1}
+.side-foot{padding:14px 22px;font-size:.68rem;color:#84806f;
+  border-top:1px solid rgba(255,255,255,.08);line-height:1.7}
+
+/* 本文 */
+.main{min-width:0}
+.topbar{display:none;position:sticky;top:0;z-index:20;background:var(--paper2);
+  border-bottom:1px solid var(--line);padding:12px 16px;align-items:center;gap:12px}
+.menu-btn{background:none;border:1px solid var(--line);border-radius:9px;
+  padding:8px 10px;cursor:pointer;display:grid;place-items:center}
+.menu-btn svg{width:20px;height:20px;fill:var(--ink)}
+.topbar .t-title{font-family:"Noto Serif JP",serif;font-weight:700;font-size:.98rem}
+.wrap{max-width:820px;margin:0 auto;padding:clamp(24px,4vw,56px) clamp(18px,4vw,44px) 120px}
+
+.chapter{animation:fade .45s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* タイポ */
+.chapter h1{font-family:"Noto Serif JP",serif;font-weight:700;
+  font-size:clamp(1.6rem,4vw,2.15rem);line-height:1.4;letter-spacing:.01em;
+  margin:.2em 0 .7em;padding-bottom:.5em;border-bottom:2px solid var(--ink)}
+.chapter h2{font-family:"Noto Serif JP",serif;font-weight:700;
+  font-size:clamp(1.28rem,3vw,1.62rem);line-height:1.45;margin:2.4em 0 .7em;
+  padding-left:14px;border-left:5px solid var(--accent2)}
+.chapter h3{font-family:"Noto Serif JP",serif;font-weight:600;
+  font-size:clamp(1.1rem,2.4vw,1.3rem);margin:2em 0 .6em;color:var(--accent)}
+.chapter h4{font-weight:700;font-size:1.02rem;margin:1.6em 0 .5em;color:var(--ink)}
+.chapter h5{font-weight:700;font-size:.94rem;margin:1.3em 0 .4em;color:var(--ink2)}
+.chapter p{margin:.9em 0}
+.chapter strong{font-weight:700;color:#111;
+  background:linear-gradient(transparent 62%,rgba(176,133,74,.28) 0);padding:0 1px}
+.chapter code{font-family:"SFMono-Regular",Consolas,Menlo,monospace;
+  font-size:.86em;background:#efe9dd;color:#7a4b16;padding:.12em .45em;
+  border-radius:5px;word-break:break-word}
+.chapter a{color:var(--accent);text-underline-offset:3px}
+
+.chapter ul,.chapter ol{margin:.8em 0;padding-left:1.4em}
+.chapter li{margin:.35em 0}
+.chapter ul{list-style:none;padding-left:.2em}
+.chapter ul>li{position:relative;padding-left:1.4em}
+.chapter ul>li::before{content:"";position:absolute;left:.2em;top:.72em;
+  width:6px;height:6px;background:var(--accent2);border-radius:50%}
+.chapter li.chk{padding-left:1.9em}
+.chapter li.chk::before{content:"";width:15px;height:15px;border-radius:4px;
+  border:2px solid var(--accent);background:transparent;top:.42em;left:.1em}
+.chapter li.chk.done::before{background:var(--ok);border-color:var(--ok)}
+
+.chapter pre{background:#23261f;color:#e9e5da;border-radius:var(--radius);
+  padding:18px 20px;overflow-x:auto;margin:1.2em 0;font-size:.83rem;line-height:1.65;
+  box-shadow:var(--shadow)}
+.chapter pre code{background:none;color:inherit;padding:0;font-size:inherit}
+
+.chapter blockquote{margin:1.3em 0;padding:14px 18px;background:#fbf6ea;
+  border:1px solid #ecdcb8;border-left:4px solid var(--brass);border-radius:10px;
+  color:#5c4a29;font-size:.94em}
+
+.tbl-wrap{overflow-x:auto;margin:1.3em 0;border:1px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow)}
+.chapter table{border-collapse:collapse;width:100%;font-size:.88rem;background:var(--paper2)}
+.chapter th{background:#2f3229;color:#f3efe6;font-weight:600;text-align:left;
+  padding:11px 14px;white-space:nowrap;font-family:"Noto Sans JP"}
+.chapter td{padding:10px 14px;border-top:1px solid var(--line);vertical-align:top}
+.chapter tbody tr:nth-child(even){background:#f3eee4}
+
+hr{border:0;border-top:1px dashed var(--line);margin:2.4em 0}
+
+/* クイズ */
+.quiz{margin:.7em 0 1.4em}
+.quiz-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);
+  color:#fff;border:0;border-radius:10px;padding:10px 18px;cursor:pointer;
+  font-family:inherit;font-size:.9rem;font-weight:500;transition:filter .15s,transform .1s}
+.quiz-btn:hover{filter:brightness(1.12)}
+.quiz-btn:active{transform:translateY(1px)}
+.quiz-btn .ic{width:18px;height:18px;fill:currentColor}
+.quiz-btn.open{background:var(--ok)}
+.quiz-ans{margin-top:10px;padding:14px 18px;background:#eef4ee;
+  border:1px solid #bcd8c4;border-left:4px solid var(--ok);border-radius:10px;
+  font-size:.92rem;color:#22452f;animation:fade .3s ease}
+
+/* 章送り */
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:56px;
+  padding-top:28px;border-top:1px solid var(--line)}
+.pager button{flex:1;background:var(--paper2);border:1px solid var(--line);
+  border-radius:12px;padding:14px 18px;cursor:pointer;font-family:inherit;
+  text-align:left;transition:border-color .15s,box-shadow .15s;min-width:0}
+.pager button:hover:not(:disabled){border-color:var(--accent2);box-shadow:var(--shadow)}
+.pager button:disabled{opacity:.4;cursor:default}
+.pager .pg-dir{font-size:.7rem;color:var(--ink2);letter-spacing:.1em}
+.pager .pg-ttl{font-family:"Noto Serif JP",serif;font-weight:600;font-size:.9rem;
+  margin-top:3px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pager .next{text-align:right}
+
+.scrim{display:none;position:fixed;inset:0;background:rgba(20,18,12,.5);z-index:25}
+
+@media(max-width:900px){
+  .app{grid-template-columns:1fr}
+  .side{position:fixed;left:0;top:0;z-index:30;width:290px;transform:translateX(-100%);
+    transition:transform .28s cubic-bezier(.4,0,.2,1)}
+  .side.open{transform:none}
+  .topbar{display:flex}
+  .scrim.show{display:block}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side" id="side">
+    <div class="brand">
+      <div class="logo">WinActor<b>入門</b></div>
+      <div class="sub">RPA・業務自動化 体系教材 / 全13章</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-lbl"><span>学習の進み</span><span id="pgtxt">0 / 13</span></div>
+      <div class="bar"><i id="pgbar"></i></div>
+    </div>
+    <nav class="nav" id="nav">
+      <button class="nav-item" data-idx="0"><span class="nav-num">序</span><span class="nav-ttl">はじめに・設計書＋入門</span><svg class="nav-check" viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg></button>
+<button class="nav-item" data-idx="1"><span class="nav-num">1</span><span class="nav-ttl">基本画面とはじめてのシナリオ</span><svg class="nav-check" viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg></button>
+<button class="nav-item" data-idx="2"><span class="nav-num">2</span><span class="nav-ttl">変数マスター</span><svg class="nav-check" viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg></button>
+<button class="nav-item" data-idx="3"><span class="nav-num">3</span><span class="nav-ttl">Excel操作の自動化</span><svg class="nav-check" viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg></button>
+<button class="nav-item" data-idx="4"><span class="nav-num">4</span><span class="nav-ttl">Web操作の自動化</span><svg class="nav-check" viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg></button>
+<button class="nav-item" data-idx="5"><span class="nav-num">5</span><span class="nav-ttl">ファイル・フォルダ操作</span><svg class="nav-check" viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg></button>
+<button class="nav-item" data-idx="6"><span class="nav-num">6</span><span class="nav-ttl">条件分岐と繰り返し</span><svg class="nav-check" viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg></button>
+<button class="nav-item" data-idx="7"><span class="nav-num">7</span><span class="nav-ttl">エラー対応とデバッグ</span><svg class="nav-check" viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg></button>
+<button class="nav-item" data-idx="8"><span class="nav-num">8</span><span class="nav-ttl">実務シナリオ設計</span><svg class="nav-check" viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg></button>
+<button class="nav-item" data-idx="9"><span class="nav-num">9</span><span class="nav-ttl">実務総合ハンズオン</span><svg class="nav-check" viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg></button>
+<button class="nav-item" data-idx="10"><span class="nav-num">10</span><span class="nav-ttl">運用・保守・改善</span><svg class="nav-check" viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg></button>
+<button class="nav-item" data-idx="11"><span class="nav-num">11</span><span class="nav-ttl">応用編</span><svg class="nav-check" viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg></button>
+<button class="nav-item" data-idx="12"><span class="nav-num">12</span><span class="nav-ttl">総復習</span><svg class="nav-check" viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg></button>
+    </nav>
+    <div class="side-foot">
+      バージョン・価格・機能は変わります。導入時は必ず公式情報で確認してください。
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <button class="menu-btn" id="menuBtn" aria-label="目次">
+        <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+      </button>
+      <span class="t-title" id="tTitle">はじめに</span>
+    </div>
+    <div class="wrap">
+      <section class="chapter active" id="ch0" data-idx="0"><h2>WinActor 教材 総合設計書 ＋ 第1教材本文</h2>
+<blockquote>作成日：2026-07-18 ／ 対象製品：WinActor（NTTデータ）<br>本書は「初心者が業務で使えるレベルまで到達する体系教材」の設計図と、最初の1本の本文をまとめたものです。</blockquote>
+<hr>
+<h3>0. 最初に：この教材が前提とする公式ファクト（2026-07-18時点で確認）</h3>
+<p>WinActor は仕様・バージョン・ライセンス・生成AI連携が頻繁に変わるため、本教材では下表を「確認済みの土台」とし、<strong>バージョン依存項目は必ず社内導入版で再確認</strong>する方針とします。</p>
+<div class="tbl-wrap"><table><thead><tr><th>項目</th><th>確認できた内容（2026-07時点）</th><th>出典の性格</th><th>注意</th></tr></thead><tbody><tr><td>最新バージョン</td><td><strong>Ver.7.6.1</strong>（Ver.7.6 は 2025-07-31 公開、生成AI連携を強化。前系列は Ver.7.5.1 = 2024-10-24）</td><td>WinActor公式（winactor.com / winactor.biz）</td><td>導入済み社内環境のバージョンを必ず確認</td></tr><tr><td>対応OS</td><td>Windows 11 Pro／Windows Server 2016・2019・2022・2025</td><td>公式 動作環境ページ</td><td>旧Ver.は対応OSが異なる。古い「Windows 7/8/10」表記は旧情報</td></tr><tr><td>実行基盤</td><td>.NET Framework 4.8 以上</td><td>公式 動作環境ページ</td><td></td></tr><tr><td>推奨スペック</td><td>CPU：Core i3-6100（2コア3.7GHz）以上、空きメモリ3.0GB以上、FHD(1920×1080)表示可能</td><td>公式 動作環境ページ</td><td>あくまで推奨最低ライン</td></tr><tr><td>対応ブラウザ（自動記録/操作）</td><td>Google Chrome(100以降)／Firefox(96以降)／Edge Chromium版(100以降)</td><td>公式 動作環境ページ</td><td>IE系は対象外の流れ</td></tr><tr><td>対応Excel</td><td>Excel 2021／2024（xls/xlsx/xlsm 利用時）</td><td>公式 動作環境ページ</td><td>Office無しだとExcel系ノードに制限</td></tr><tr><td>ライセンス（エディション）</td><td><strong>フル機能版</strong>＝シナリオ作成・編集・実行／<strong>実行版</strong>＝実行のみ</td><td>公式・販売代理店</td><td>作る人にはフル機能版が必須</td></tr><tr><td>ライセンス（方式）</td><td><strong>ノードロック方式</strong>（端末固定）／<strong>フローティング方式</strong>（同時利用数管理）／AI連携ライセンス</td><td>公式・サポートサイト</td><td>方式の混在利用は非推奨</td></tr><tr><td>価格（参考）</td><td>フル機能版 約110万円/年、実行版 約30万円/年（※販売代理店・構成で変動）</td><td>代理店公開情報</td><td><strong>断定不可。必ず見積で確認</strong></td></tr><tr><td>評価版</td><td>ノードロック方式・フル機能版を試用可能</td><td>公式</td><td>期間・機能制限は都度確認</td></tr><tr><td>生成AI連携</td><td>Ver.7.5以降 OpenAI／Azure OpenAI 連携でシナリオひな型作成、Ver.7.6で強化</td><td>公式</td><td>契約・利用可否は社内ポリシー確認</td></tr><tr><td>WinActor Manager on Cloud</td><td>複数WinActorの集中管理（シナリオ一括管理・スケジュール実行・実行結果確認等）を行うクラウド管理サービス</td><td>公式・代理店</td><td>機能範囲はプラン依存</td></tr></tbody></table></div>
+<p><strong>教材内の断定禁止ルール</strong>：バージョン番号・画面名・メニュー名・ノード名・価格・ライセンス条件は「一例。お使いのバージョンの公式マニュアルで確認」と必ず添える。</p>
+<hr>
+<h3>1. 教材全体のコンセプト</h3>
+<p><strong>「読むだけで終わらせない、手を動かして“自分の業務が1つ自動化できる”までを最短で運ぶ実務教材」</strong></p>
+<ul><li>用語解説の羅列ではなく、「業務の選び方 → 作り方 → 壊れない運用」までを一本の物語として学ぶ。</li><li>各章は「一言説明 → 初心者向け言い換え → 身近な例 → WinActorでの使い方 → 実務の注意点」の5ステップで統一。</li><li>すべての章にハンズオン・確認テスト・失敗例を付け、非エンジニアでも一人で進められる。</li><li>「自動化してはいけない業務」「人が確認すべき点」を必ず明示し、暴走・事故を防ぐ設計思想を最初から仕込む。</li></ul>
+<hr>
+<h3>2. 学習ゴール（受講後にできること）</h3>
+<ol><li>RPA と WinActor を自分の言葉で説明できる</li><li>自動化に向く／向かない業務を判断できる</li><li>WinActor の基本画面を理解し、簡単なシナリオを作れる</li><li>Excel の読み取り→別ファイル転記ができる</li><li>Web 画面へログイン・入力ができる</li><li>フォルダ内ファイルを処理できる（振り分け・リネーム）</li><li>条件分岐・繰り返し・変数でシナリオを汎用化できる</li><li>エラーの原因をログ・ステップ実行で調べられる</li><li>業務フローを整理して自動化対象を設計できる</li><li>テスト・本番前チェック・保守・引き継ぎまで回せる</li></ol>
+<hr>
+<h3>3. 対象者</h3>
+<p>WinActor／RPA を初めて触る人、非エンジニアの業務担当（営業事務・経理・人事・総務）、バックオフィス担当、ITコンサル会社の若手、業務改善担当、社内導入担当、これからRPA案件に関わる人。</p>
+<hr>
+<h3>4. 前提知識（これだけあればOK）</h3>
+<ul><li>Windows の基本操作（クリック、ファイル保存、フォルダ移動）</li><li>Excel の基本（セル、シート、コピー＆ペースト、簡単な表）</li><li>ブラウザで Web サイトにログインした経験</li><li>プログラミング知識は <strong>不要</strong>（本教材で必要な考え方はすべて解説）</li></ul>
+<hr>
+<h3>5. 全体カリキュラム（15章）</h3>
+<div class="tbl-wrap"><table><thead><tr><th>章</th><th>タイトル</th><th>ねらい</th><th>ハンズオン</th></tr></thead><tbody><tr><td>1</td><td>RPAとWinActorの基礎</td><td>全体像・できる/できない</td><td>確認テストのみ</td></tr><tr><td>2</td><td>自動化できる業務</td><td>向く/向かない業務の判断</td><td>業務選定ワーク</td></tr><tr><td>3</td><td>基本画面と操作</td><td>画面・シナリオ・ノード・変数</td><td>画面ツアー</td></tr><tr><td>4</td><td>最初のシナリオ作成</td><td>起動→操作→保存→実行</td><td>メモ帳自動入力</td></tr><tr><td>5</td><td>変数の使い方</td><td>汎用化の基礎</td><td>変数で挨拶文作成</td></tr><tr><td>6</td><td>Excel操作の自動化</td><td>読む/書く/転記</td><td>演習：売上転記</td></tr><tr><td>7</td><td>Web操作の自動化</td><td>ログイン/入力/取得</td><td>演習：顧客入力</td></tr><tr><td>8</td><td>ファイル・フォルダ操作</td><td>一覧/移動/リネーム</td><td>演習：請求書振り分け</td></tr><tr><td>9</td><td>条件分岐と繰り返し</td><td>判断と反復</td><td>演習：複数行をWeb入力</td></tr><tr><td>10</td><td>エラー対応とデバッグ</td><td>原因特定と例外設計</td><td>エラー再現ハンズオン</td></tr><tr><td>11</td><td>実務シナリオ設計</td><td>整理→設計→保守</td><td>業務フロー設計ワーク</td></tr><tr><td>12</td><td>実務ハンズオン</td><td>総合演習7本</td><td>演習1〜7</td></tr><tr><td>13</td><td>運用・保守・改善</td><td>安定運用</td><td>運用ルール作成</td></tr><tr><td>14</td><td>応用編</td><td>連携・クラウド・AI</td><td>Manager on Cloud概要</td></tr><tr><td>15</td><td>総復習</td><td>定着・次の一歩</td><td>総合テスト</td></tr></tbody></table></div>
+<p><strong>推奨学習順序（ロードマップ）</strong></p>
+<pre><code>STEP0 導入判断     STEP1 基礎理解    STEP2 単機能    STEP3 組み合わせ   STEP4 実務   STEP5 運用
+ (第1-2章)          (第3-5章)         (第6-8章)        (第9-10章)        (第11-12章)  (第13-14章)
+   ↓                  ↓                 ↓                ↓                 ↓            ↓
+どの業務を選ぶか   画面と変数を       Excel/Web/       条件分岐と        業務丸ごと    壊れない
+を見極める         理解する           ファイルを個別   繰り返しで        設計して      運用に乗せる
+                                      に動かせる       つなげる          作り切る</code></pre>
+<p>到達の目安：STEP2 まで（第8章）で「単純作業の自動化」、STEP4（第12章）で「実務で使えるレベル」、STEP5 で「一人で運用・引き継ぎまで」。</p>
+<hr>
+<h3>6. 各章の詳しい内容 ＋ 7. 章ごとの到達目標</h3>
+<p>各章は共通で「講義 → ハンズオン → 失敗例 → 確認テスト」構成。以下は要点と到達目標。</p>
+<h4>第1章：RPAとWinActorの基礎</h4>
+<ul><li>RPAとは「人がPCで行う定型操作を、ソフトのロボットに代行させる仕組み」。</li><li>できること（定型・ルール化できる・繰り返し）／できないこと（判断・創造・例外だらけ・紙のみ）。</li><li>WinActorは純国産・日本語UI・プログラミング不要でシナリオを作れるデスクトップ型RPA。</li><li><strong>到達目標</strong>：RPAとWinActorを一言で説明でき、導入時の注意点（対象業務の選定・現場巻き込み・スモールスタート）を挙げられる。</li></ul>
+<h4>第2章：WinActorで自動化できる業務</h4>
+<ul><li>向く：Excel転記、Webシステム入力、メール定型処理、ファイル整理、定型レポート、CSV加工、基幹系入力、帳票処理。</li><li>向かない：判断が要る、例外が多い、頻繁に画面が変わる、月1回だけ・件数が極端に少ない、紙・手書きのみ（OCR前提なら別）。</li><li>「ルール化できるか」「回数×時間が十分か」「画面が安定しているか」の3軸で判定。</li><li><strong>到達目標</strong>：自分の業務を向く/向かないで仕分けし、費用対効果の高い候補を1つ選べる。</li></ul>
+<h4>第3章：WinActorの基本画面と操作</h4>
+<ul><li>画面構成：フローチャート（作業の流れ）、シナリオ全体（一覧）、変数一覧、ライブラリ、ログ。</li><li>用語：シナリオ＝作業手順書／ノード＝手順の部品／ライブラリ＝便利部品集／変数＝値を入れる箱。</li><li>実行・停止・一時停止・ステップ実行（1つずつ）・ログ確認・保存/管理。</li><li><strong>到達目標</strong>：主要パネルの役割を説明でき、既存シナリオをステップ実行で追える。</li></ul>
+<h4>第4章：最初のシナリオ作成</h4>
+<ul><li>アプリ起動→クリック→文字入力→待機→保存→実行までを体験。</li><li>記録機能と手動ノード配置の違いを理解。</li><li>うまく動かない時の初動チェック（対象ウィンドウ・待機不足・座標依存）。</li><li><strong>到達目標</strong>：メモ帳やブラウザに文字を自動入力する最小シナリオを自作・実行できる。</li></ul>
+<h4>第5章：変数の使い方</h4>
+<ul><li>変数＝「あとで使う値を入れておく箱」。固定値ではなく変数にすると使い回せる。</li><li>型：文字列/数値/日付/ファイルパス。命名ルール（用途がわかる日本語 or ローマ字＋接頭辞）。</li><li><strong>到達目標</strong>：入力値を変数化し、値を変えるだけで結果が変わるシナリオを作れる。</li></ul>
+<h4>第6章：Excel操作の自動化</h4>
+<ul><li>開く/値を読む/値を書く/行追加/表読み込み/CSV/集計/別ファイル転記。</li><li>失敗しやすい点：ファイルの開きっぱなし、シート名・セル番地のズレ、拡張子違い、絶対パス依存。</li><li><strong>到達目標</strong>：売上一覧を読み、別フォーマットへ転記・保存できる（演習）。</li></ul>
+<h4>第7章：Web操作の自動化</h4>
+<ul><li>ページを開く/ログイン/フォーム入力/クリック/検索結果取得/画面遷移待ち。</li><li>要素が見つからない時：待機を入れる、要素指定方法を変える、画面変更を疑う。</li><li><strong>到達目標</strong>：テストWebにログインし、Excelの値をフォームへ入力できる（演習）。</li></ul>
+<h4>第8章：ファイル・フォルダ操作</h4>
+<ul><li>存在確認/一覧取得/リネーム/移動/コピー/削除/日付付きファイル名。</li><li><strong>到達目標</strong>：請求書ファイルを月別フォルダへ自動振り分けできる（演習）。</li></ul>
+<h4>第9章：条件分岐と繰り返し</h4>
+<ul><li>条件分岐＝「もし〇〇なら…そうでなければ…」。繰り返し＝一覧を上から順に処理。</li><li>条件に合う行だけ処理、エラー行はスキップ。</li><li><strong>到達目標</strong>：Excelの複数行を1件ずつ処理し、条件で分岐できる（演習）。</li></ul>
+<h4>第10章：エラー対応とデバッグ</h4>
+<ul><li>典型エラー：画面が見つからない/クリック不可/入力不可/待機不足/ファイル無し/Excel開けない/変数値が想定外。</li><li>ログの見方、ステップ実行での原因特定、例外時に「止める/スキップ/通知」の設計。</li><li><strong>到達目標</strong>：エラーの原因を切り分け、例外処理を1つ組み込める。</li></ul>
+<h4>第11章：実務で使えるシナリオ設計</h4>
+<ul><li>いきなり作らず業務フローを整理 → 入力/処理/出力に分割 → 例外洗い出し → 人の確認点を残す。</li><li>保守しやすさ・属人化防止・処理ログ・運用ルール・引き継ぎ資料。</li><li><strong>到達目標</strong>：1業務を設計書（フロー＋例外＋確認点）に落とせる。</li></ul>
+<h4>第12章：実務ハンズオン（演習1〜7）</h4>
+<p>後述「13. 実務演習課題」に詳細。<strong>到達目標</strong>：実務相当の日次業務シナリオを最後まで作り切る。</p>
+<h4>第13章：運用・保守・改善</h4>
+<ul><li>業務変更/画面変更/担当変更への対応、連絡ルール、ログ管理、改修履歴、テスト手順、本番前チェック。</li><li><strong>到達目標</strong>：本番前チェックリストで自分のシナリオを点検できる。</li></ul>
+<h4>第14章：応用編</h4>
+<ul><li>複数アプリ連携、Excel×Web、メール通知、OCR連携、生成AI連携（Ver.7.5+）、WinActor Manager on Cloud、スケジュール実行、複数ロボット管理、社内展開。</li><li><strong>到達目標</strong>：応用の選択肢を理解し、次に学ぶ領域を選べる。</li></ul>
+<h4>第15章：総復習</h4>
+<ul><li>用語・手順・チェックリストの総まとめ、総合テスト、実務課題、次に学ぶこと。</li></ul>
+<hr>
+<h3>8. ハンズオン一覧</h3>
+<div class="tbl-wrap"><table><thead><tr><th>No</th><th>章</th><th>タイトル</th><th>難易度</th></tr></thead><tbody><tr><td>H1</td><td>4</td><td>メモ帳へ自動で定型文を入力</td><td>★</td></tr><tr><td>H2</td><td>5</td><td>変数で宛名入り挨拶文を作る</td><td>★</td></tr><tr><td>H3</td><td>6</td><td>売上一覧を別フォーマットへ転記</td><td>★★</td></tr><tr><td>H4</td><td>7</td><td>テストWebに顧客情報を入力</td><td>★★</td></tr><tr><td>H5</td><td>8</td><td>請求書ファイルを月別フォルダへ振り分け</td><td>★★</td></tr><tr><td>H6</td><td>9</td><td>Excel複数行を1件ずつWeb入力</td><td>★★★</td></tr><tr><td>H7</td><td>10</td><td>わざとエラーを起こし原因特定→例外処理</td><td>★★★</td></tr><tr><td>E1-E7</td><td>12</td><td>実務総合演習（後述）</td><td>★★〜★★★</td></tr></tbody></table></div>
+<p>各ハンズオンは共通テンプレ：<strong>目的／完成イメージ／使用データ／事前準備／操作手順／シナリオ設計／使用ノード・ライブラリ／変数一覧／動作確認／よくあるエラー／改善ポイント／応用課題</strong>。</p>
+<hr>
+<h3>9. サンプルデータ一覧（すべて架空・個人情報なし）</h3>
+<p><code>samples/</code> フォルダに以下を同梱（本書末尾にCSV実体を掲載）。</p>
+<div class="tbl-wrap"><table><thead><tr><th>ファイル名</th><th>内容</th><th>用途</th></tr></thead><tbody><tr><td>顧客一覧.csv</td><td>顧客ID/氏名/会社/メール/電話</td><td>Web入力・転記</td></tr><tr><td>売上一覧.csv</td><td>日付/商品/数量/単価/担当</td><td>Excel集計・転記</td></tr><tr><td>請求書一覧.csv</td><td>請求書番号/取引先/金額/請求日</td><td>ファイル振り分け</td></tr><tr><td>申請一覧.csv</td><td>申請ID/申請者/種別/日付/ステータス</td><td>条件抽出</td></tr><tr><td>社員一覧.csv</td><td>社員番号/氏名/部署/入社日</td><td>マスタ参照</td></tr><tr><td>商品マスタ.csv</td><td>商品コード/商品名/単価/カテゴリ</td><td>参照・突合</td></tr><tr><td>処理ログ_テンプレート.csv</td><td>実行日時/処理名/対象/結果/メモ</td><td>ログ出力</td></tr><tr><td>エラー一覧_テンプレート.csv</td><td>発生日時/シナリオ/対象行/エラー内容/対応</td><td>例外記録</td></tr></tbody></table></div>
+<hr>
+<h3>10. 重要用語集（初心者言い換え付き）</h3>
+<div class="tbl-wrap"><table><thead><tr><th>用語</th><th>一言</th><th>初心者向け言い換え</th><th>身近な例</th></tr></thead><tbody><tr><td>RPA</td><td>PC定型操作の自動化</td><td>パソコン作業を代わりにやってくれるロボット</td><td>毎朝の転記をロボに任せる</td></tr><tr><td>WinActor</td><td>純国産デスクトップ型RPA</td><td>日本語で作れる自動化ソフト</td><td>手順を絵で並べて動かす</td></tr><tr><td>シナリオ</td><td>実行させる作業手順書</td><td>ロボへの指示書</td><td>料理のレシピ</td></tr><tr><td>ノード</td><td>手順の部品1つ</td><td>動作のブロック</td><td>レゴの1ピース</td></tr><tr><td>ライブラリ</td><td>便利部品集</td><td>よく使う操作の完成品</td><td>電子レンジの自動メニュー</td></tr><tr><td>変数</td><td>値を入れる箱</td><td>あとで使う値のメモ欄</td><td>付箋にメモした金額</td></tr><tr><td>フローチャート</td><td>流れの図</td><td>作業の流れ図</td><td>乗換案内の経路図</td></tr><tr><td>ステップ実行</td><td>1つずつ実行</td><td>コマ送り再生</td><td>動画のコマ送り</td></tr><tr><td>ログ</td><td>実行の記録</td><td>作業日誌</td><td>家計簿の履歴</td></tr><tr><td>ノードロック</td><td>端末固定ライセンス</td><td>このPCだけで使える券</td><td>指定席</td></tr><tr><td>フローティング</td><td>同時利用数管理</td><td>席数だけ誰でも使える券</td><td>自由席（定員あり）</td></tr><tr><td>フル機能版</td><td>作成＋実行可</td><td>作れる版</td><td>料理を作れる厨房</td></tr><tr><td>実行版</td><td>実行のみ</td><td>動かすだけ版</td><td>温めるだけの電子レンジ</td></tr><tr><td>例外処理</td><td>想定外時の対応</td><td>困った時の代替手順</td><td>傘を忘れた時の対応</td></tr></tbody></table></div>
+<hr>
+<h3>11. 図解案（教材に入れる図）</h3>
+<ol><li>RPAの仕組み図（人の操作 → 手順化 → ロボが代行）</li><li>できること/できないこと 対比表</li><li>自動化に向く/向かない業務 マトリクス（ルール化 × 回数）</li><li>シナリオ作成の流れ（整理→設計→作成→テスト→運用）</li><li>変数の考え方（値を箱に入れて使い回す）</li><li>Excel自動化フロー（開く→読む→加工→書く→保存→閉じる）</li><li>Web自動化フロー（開く→待つ→入力→クリック→取得→次へ）</li><li>エラー対応フロー（検知→止める/スキップ/通知→記録→復旧）</li><li>実務導入フロー（候補選定→PoC→本番→運用→改善）</li><li>運用チェックリスト（本番前点検の一覧）</li></ol>
+<p>（各図はテキスト版を本文に併記。制作時はSVG/図版化。絵文字は使わない方針。）</p>
+<hr>
+<h3>12. 確認テスト案（形式）</h3>
+<p>各章末に以下を配置。すべて<strong>解答・解説付き</strong>。</p>
+<ul><li>選択問題（4択）</li><li>穴埋め問題</li><li>一問一答</li><li>実務判断問題（この業務は自動化すべき？）</li><li>操作手順並べ替え問題</li></ul>
+<p>（サンプルは「18. 第1教材本文」内に実装済み。）</p>
+<hr>
+<h3>13. 実務演習課題（第12章 演習1〜7）</h3>
+<p>各演習は共通テンプレで作成。以下は仕様概要。</p>
+<div class="tbl-wrap"><table><thead><tr><th>演習</th><th>課題</th><th>使用サンプル</th><th>主な学び</th></tr></thead><tbody><tr><td>E1</td><td>Excel一覧を別フォーマットへ転記</td><td>売上一覧.csv</td><td>表読み込み・繰り返し・書き込み</td></tr><tr><td>E2</td><td>フォルダ内ファイル名をルール変更</td><td>ダミーPDF群</td><td>一覧取得・リネーム・日付付与</td></tr><tr><td>E3</td><td>CSVから条件に合う行だけ抽出</td><td>申請一覧.csv</td><td>条件分岐・フィルタ・出力</td></tr><tr><td>E4</td><td>Webにログインし1件ずつ入力</td><td>顧客一覧.csv＋テストWeb</td><td>ログイン・繰り返し入力・待機</td></tr><tr><td>E5</td><td>処理結果をログファイル出力</td><td>処理ログ_テンプレート.csv</td><td>ログ設計・追記書き込み</td></tr><tr><td>E6</td><td>エラー時に止めずエラー一覧へ記録</td><td>エラー一覧_テンプレート.csv</td><td>例外処理・スキップ・記録</td></tr><tr><td>E7</td><td>日次業務を想定した一連シナリオ</td><td>上記の組合せ</td><td>統合設計・入力/処理/出力分離</td></tr></tbody></table></div>
+<p><strong>E7 完成イメージ（日次業務モデル）</strong></p>
+<pre><code>[開始]
+  → 当日CSVをダウンロード先から取得（存在確認）
+  → Excelで内容をチェック（不正行はエラー一覧へ）
+  → 正常行を1件ずつWebシステムへ入力（繰り返し）
+  → 入力結果を処理ログへ追記
+  → 完了件数・エラー件数をメール通知（応用）
+[終了]
+人の確認点：エラー一覧の目視確認、金額の最終承認</code></pre>
+<hr>
+<h3>14. トラブルシューティング集（抜粋・現場頻出）</h3>
+<div class="tbl-wrap"><table><thead><tr><th>症状</th><th>ありがちな原因</th><th>対処</th></tr></thead><tbody><tr><td>画面（要素）が見つからない</td><td>画面表示前に操作した/画面レイアウト変更</td><td>待機ノード追加、要素指定を見直す、画面変更を確認</td></tr><tr><td>クリックできない</td><td>座標依存で解像度/位置が変わった</td><td>画像・要素指定に変更、ウィンドウ最大化を固定</td></tr><tr><td>入力が途中で切れる</td><td>入力速度が速すぎ/フォーカス外れ</td><td>ウェイト挿入、対象ウィンドウを明示</td></tr><tr><td>Excelが開けない/固まる</td><td>別プロセスが開きっぱなし</td><td>実行前にExcelを閉じる、処理後に確実にクローズ</td></tr><tr><td>ファイルが見つからない</td><td>相対パス/フォルダ移動/日付フォルダ未作成</td><td>パスを変数化、存在確認とフォルダ作成を先に</td></tr><tr><td>変数の値が想定と違う</td><td>型違い・初期化漏れ・上書き</td><td>変数一覧で確認、ステップ実行で値を追跡</td></tr><tr><td>途中で全部止まる</td><td>例外未処理で異常終了</td><td>try/例外処理でスキップ＋記録に変更</td></tr><tr><td>ブラウザ操作が不安定</td><td>拡張機能未導入/バージョン不一致</td><td>対応ブラウザ版・拡張を公式手順で確認</td></tr></tbody></table></div>
+<hr>
+<h3>15. 運用・保守チェックリスト（本番前・運用中）</h3>
+<p><strong>本番稼働前チェック</strong></p>
+<ul><li class="chk">対象業務の入力/処理/出力を文書化した</li><li class="chk">例外パターンを洗い出し、対応（止/飛/報）を決めた</li><li class="chk">人が確認すべきポイントを残した（特に金額・送信・削除）</li><li class="chk">テストデータで正常系・異常系を実行した</li><li class="chk">ファイルパス・ログイン情報を変数/設定に外出しした</li><li class="chk">処理ログとエラー一覧が出力される</li><li class="chk">変数名・シナリオ名が第三者に分かる命名</li><li class="chk">実行手順書と引き継ぎ資料を用意した</li></ul>
+<p><strong>運用中の定期点検</strong></p>
+<ul><li class="chk">画面変更・システム更新の影響確認</li><li class="chk">エラー発生時の連絡ルールが機能している</li><li class="chk">改修履歴（誰が・いつ・何を）を記録</li><li class="chk">実行結果（件数・時間）を月次で確認</li></ul>
+<hr>
+<h3>16. ファクトチェック方針</h3>
+<ul><li>数値・法令・仕様・価格・バージョンは <strong>必ず一次情報（公式）で照合</strong>。教材内では出典と確認日を残す。</li><li>バージョン依存項目は「一例。お使いの版で確認」を必ず併記し、断定しない。</li><li>価格・ライセンスは代理店・契約で変動 → <strong>見積・契約書で確認</strong>を明記。</li><li>生成AI・クラウド機能は提供状況が変わるため「提供有無・条件は最新の公式で確認」。</li><li>制作後は「ファクトチェック表」（項目/教材記載/出典/確認日/要再確認フラグ）で自己点検。</li></ul>
+<hr>
+<h3>17. 公式情報の確認項目（教材公開前に必ず見る）</h3>
+<ul><li>WinActor公式（winactor.com）製品・動作環境ページ：最新Ver./対応OS/推奨環境/ブラウザ/Excel対応</li><li>WinActor公式（winactor.biz）トピックス：新Ver.機能・生成AI連携</li><li>NTT-AT WinActor公式FAQ：動作環境・トラブル</li><li>WinActor サポートサイト：バージョンアップ情報・ノードロック/フローティング</li><li>公式マニュアル（導入版に同梱）：画面名・ノード名・操作手順の正確な名称</li><li>WinActor Manager on Cloud 製品情報：機能範囲・プラン</li><li>販売代理店の見積：価格・ライセンス条件</li></ul>
+<p><strong>確認すべきバージョン依存項目</strong>：最新Ver.番号／画面・メニュー名／ノード名・場所／対応OS・Office・ブラウザ／生成AI連携の可否と設定／ライセンス種別と価格／Manager on Cloud機能。</p>
+<hr>
+<hr>
+<h2>18. 第1教材本文（完成品）</h2>
+<h2>WinActor入門｜初心者でも分かるRPAと自動化の基本</h2>
+<blockquote>対象：WinActor／RPAを初めて学ぶ人・非エンジニアの業務担当者<br>所要：約60〜90分（読み＋確認テスト）<br>ゴール：RPAとWinActorの全体像を理解し、「自分のどの業務を自動化すべきか」の当たりをつけられる状態になる</blockquote>
+<hr>
+<h3>この教材の使い方</h3>
+<p>むずかしい言葉は、必ず次の5ステップでかみ砕きます。</p>
+<ol><li>まず一言で説明</li><li>初心者向けに言い換え</li><li>身近な例</li><li>WinActorでどう使うか</li><li>実務での注意点</li></ol>
+<p>読み飛ばさず、上から順に進めてください。最後に確認テストがあります。</p>
+<blockquote>注意：バージョン番号・画面名・メニュー名・価格は変わります。本教材の数値は「2026年7月時点の公式情報の一例」です。実際に操作する時は、お使いのWinActorの公式マニュアルで名称を確認してください。</blockquote>
+<hr>
+<h3>1. RPAとは何か</h3>
+<p><strong>1. 一言で</strong>：RPAとは、人がパソコンで行う「決まった手順の作業」を、ソフトのロボットに代わりにやってもらう仕組みです。RPA＝Robotic Process Automation（ロボットによる業務自動化）の略。</p>
+<p><strong>2. 言い換え</strong>：パソコンの中に「あなたの作業をマネして代わりにやってくれる、まじめな新人アシスタント」を雇うイメージです。ただしこの新人は、教えた手順どおりにしか動きません。</p>
+<p><strong>3. 身近な例</strong>：毎朝、届いたメールの添付Excelを開いて、数字を別のシステムに1件ずつ入力する——この「同じ動きの繰り返し」を、あなたの代わりにロボットがやってくれます。</p>
+<p><strong>4. WinActorでどう使うか</strong>：あなたは「クリックする」「文字を入れる」「ファイルを開く」といった動作を、部品を並べて手順書（シナリオ）にします。実行ボタンを押すと、ロボットがその手順どおりにマウスとキーボードを自動で動かします。</p>
+<p><strong>5. 実務での注意点</strong>：RPAは「考えて判断する」ことは苦手です。手順が毎回変わる仕事や、その場の判断が必要な仕事には向きません。<strong>「決まった手順の繰り返し」だけをまかせる</strong>のが鉄則です。</p>
+<h4>RPAの仕組み（図）</h4>
+<pre><code>  人がやっていた作業            RPA導入後
+  ┌─────────────┐            ┌─────────────┐
+  │ Excelを開く      │            │ 人：手順を1回だけ教える │
+  │ 数字を読む       │   ──▶      │           ↓            │
+  │ システムに入力   │            │ ロボット：毎回自動で実行 │
+  │ 保存する         │            │ （早い・ミスしない・24h）│
+  └─────────────┘            └─────────────┘</code></pre>
+<hr>
+<h3>2. RPAでできること・できないこと</h3>
+<h4>できること（得意）</h4>
+<ul><li><strong>決まった手順の繰り返し</strong>：毎日・毎週の同じ作業</li><li><strong>転記・入力</strong>：ExcelからWeb、システムからExcelなど</li><li><strong>ルールで判断できる仕分け</strong>：「金額が1万円以上なら別フォルダ」など</li><li><strong>複数アプリをまたぐ作業</strong>：Excel→ブラウザ→メールなど</li><li><strong>大量・単純</strong>：件数が多くて人がやると疲れる作業</li></ul>
+<h4>できないこと（苦手）</h4>
+<ul><li><strong>人の判断・創造</strong>：文章の良し悪し、例外的な交渉、企画</li><li><strong>手順が毎回変わる仕事</strong>：ルール化できないもの</li><li><strong>画面が頻繁に変わるシステム</strong>：崩れると止まりやすい</li><li><strong>紙・手書きだけの情報</strong>：そのままでは読めない（OCRなど別の仕組みが必要）</li><li><strong>「たまにしかない・件数が少ない」仕事</strong>：作る手間の方が大きい</li></ul>
+<h4>できること・できないこと 対比表</h4>
+<div class="tbl-wrap"><table><thead><tr><th>観点</th><th>向いている</th><th>向いていない</th></tr></thead><tbody><tr><td>手順</td><td>毎回同じ</td><td>毎回変わる</td></tr><tr><td>判断</td><td>ルールで決まる</td><td>人の裁量が必要</td></tr><tr><td>画面</td><td>安定している</td><td>よく変わる</td></tr><tr><td>回数</td><td>多い/定期的</td><td>まれ/単発</td></tr><tr><td>情報</td><td>デジタル</td><td>紙・手書きのみ</td></tr></tbody></table></div>
+<hr>
+<h3>3. WinActorとは何か</h3>
+<p><strong>1. 一言で</strong>：WinActorは、NTTデータが提供する<strong>純国産のデスクトップ型RPAツール</strong>です。日本語の画面で、プログラミングなしに自動化の手順（シナリオ）を作れます。</p>
+<p><strong>2. 言い換え</strong>：「自動化ロボを、絵のブロックを並べる感覚で作れる日本語ソフト」。英語やコードが読めなくても始められます。</p>
+<p><strong>3. 身近な例</strong>：料理のレシピカードを順番に並べるように、「Excelを開く」「値を読む」「入力する」というカードを上から並べていくと、それがそのままロボットの作業手順になります。</p>
+<p><strong>4. WinActorでどう使うか</strong>：</p>
+<ul><li>画面に手順（シナリオ）を組み立てる</li><li>実行すると、あなたのPCを自動操作してくれる</li><li>Excel・ブラウザ・各種業務システムなど、画面上で操作できるものを幅広く扱える</li><li>「よく使う操作」は<strong>ライブラリ</strong>という完成部品として用意されている</li></ul>
+<p><strong>5. 実務での注意点</strong>：WinActorは基本「1台のPCで動くデスクトップ型」です。複数の台数をまとめて管理・スケジュール実行したい場合は、別途 <strong>WinActor Manager on Cloud</strong> のような管理サービスを使います（第14章・応用編で扱います）。</p>
+<h4>WinActorのバージョン・環境（2026年7月時点の一例／要確認）</h4>
+<div class="tbl-wrap"><table><thead><tr><th>項目</th><th>内容の一例</th></tr></thead><tbody><tr><td>最新バージョン</td><td>Ver.7.6.1（Ver.7.6は2025年7月に生成AI連携を強化）</td></tr><tr><td>対応OS</td><td>Windows 11 Pro／Windows Server 2016・2019・2022・2025</td></tr><tr><td>実行基盤</td><td>.NET Framework 4.8以上</td></tr><tr><td>対応ブラウザ</td><td>Chrome / Firefox / Edge（いずれも一定バージョン以上）</td></tr><tr><td>対応Excel</td><td>Excel 2021 / 2024</td></tr><tr><td>エディション</td><td>フル機能版（作成＋実行）／実行版（実行のみ）</td></tr><tr><td>ライセンス方式</td><td>ノードロック（端末固定）／フローティング（同時利用数管理）</td></tr></tbody></table></div>
+<blockquote>これらは変更されます。<strong>必ずお使いの版の公式情報で確認</strong>してください。価格は販売代理店・構成で変わるため、見積で確認します。</blockquote>
+<h4>WinActorの特徴（まとめ）</h4>
+<ul><li>純国産・<strong>日本語UI</strong>で初心者にやさしい</li><li><strong>プログラミング不要</strong>（部品を並べる方式）</li><li>Excel・Web・各種システムを<strong>幅広く自動操作</strong></li><li><strong>国内シェアが高く</strong>、導入事例・情報が豊富</li><li>近年は<strong>生成AI連携</strong>（シナリオのひな型作成など）も強化</li></ul>
+<hr>
+<h3>4. 人が行うPC操作を自動化する考え方</h3>
+<p>自動化は「魔法」ではありません。<strong>人がやっている操作を、そのまま手順に翻訳する</strong>だけです。</p>
+<p>コツは3つ。</p>
+<ol><li><strong>作業を細かく分解する</strong>：「システムに入力する」ではなく、「ブラウザを開く→ログインする→検索する→値を入れる→保存する」まで分ける。</li><li><strong>毎回同じ部分と、変わる部分を分ける</strong>：変わる部分（顧客名・金額など）は後で<strong>変数</strong>にして使い回す。</li><li><strong>例外を先に考える</strong>：「ファイルが無かったら？」「エラーが出たら？」を最初に決めておく。</li></ol>
+<pre><code>人の頭の中（あいまい）        →   ロボの手順（明確・分解）
+「請求書を処理する」          →   1. フォルダを開く
+                              →   2. ファイルがあるか確認
+                              →   3. 1件ずつ開く
+                              →   4. 金額を読む
+                              →   5. 月別フォルダへ移動
+                              →   6. 処理結果を記録</code></pre>
+<hr>
+<h3>5. どんな業務を自動化できるか（具体例）</h3>
+<ul><li><strong>Excel転記</strong>：一覧表を別フォーマットへ写す</li><li><strong>Webシステム入力</strong>：Excelの内容を1件ずつ画面に入力</li><li><strong>メール定型処理</strong>：定型メールの作成・仕分け</li><li><strong>ファイル整理</strong>：フォルダ振り分け・リネーム</li><li><strong>定型レポート作成</strong>：毎週同じ形の集計表を作る</li><li><strong>CSV加工</strong>：条件で抽出・整形</li><li><strong>基幹システム入力</strong>：受発注・勤怠などの定型入力</li><li><strong>帳票処理</strong>：請求書・申請書・一覧表の処理</li></ul>
+<hr>
+<h3>6. 自動化に向く業務・向かない業務</h3>
+<p>「やりたいから」ではなく、<strong>効果が出るか</strong>で選びます。判断は次の2軸（マトリクス）が便利です。</p>
+<pre><code>        回数・頻度が多い
+              ▲
+   （B）      │      （A） ★最優先
+  作れるが    │   ルール化でき、
+  効果は中    │   回数も多い＝一番おいしい
+──────────┼──────────▶ ルール化しやすい
+   （D）      │      （C）
+  自動化      │   ルール化できるが
+  向かない    │   回数が少なく効果小
+              │
+        回数・頻度が少ない</code></pre>
+<h4>向く業務の条件</h4>
+<ul><li>手順が<strong>毎回同じ</strong>（ルール化できる）</li><li><strong>回数が多い／定期的</strong>（毎日・毎週）</li><li>画面・様式が<strong>安定</strong>している</li><li>情報が<strong>デジタル</strong>（Excel/CSV/システム）</li><li>ミスが許されず、<strong>正確さが重要</strong></li></ul>
+<h4>向かない業務の条件</h4>
+<ul><li><strong>判断・交渉・創造</strong>が必要</li><li><strong>例外が多く</strong>、毎回やり方が違う</li><li>画面・帳票が<strong>頻繁に変わる</strong></li><li><strong>月1回だけ・数件だけ</strong>など効果が小さい</li><li><strong>紙・手書きのみ</strong>（OCRなど別対応が前提）</li></ul>
+<h4>向く/向かない 判定表</h4>
+<div class="tbl-wrap"><table><thead><tr><th>業務例</th><th>判定</th><th>理由</th></tr></thead><tbody><tr><td>毎日の売上Excelをシステムに転記</td><td>向く</td><td>定型・毎日・多い</td></tr><tr><td>請求書ファイルを月別に振り分け</td><td>向く</td><td>ルール明確</td></tr><tr><td>顧客からの問い合わせに回答文を考える</td><td>向かない</td><td>判断・創造が必要</td></tr><tr><td>年1回の特殊な集計（毎回様式が違う）</td><td>向かない</td><td>単発・非定型</td></tr><tr><td>手書きアンケートの内容入力</td><td>条件付き</td><td>OCR等の併用が前提</td></tr></tbody></table></div>
+<hr>
+<h3>7. WinActor学習の全体像</h3>
+<p>この入門のあと、次の順で学ぶと最短で実務に届きます。</p>
+<pre><code>STEP1 基礎理解      画面・シナリオ・ノード・変数を知る（第3〜5章）
+STEP2 単機能        Excel / Web / ファイルを個別に動かす（第6〜8章）
+STEP3 組み合わせ    条件分岐・繰り返しでつなげる（第9〜10章）
+STEP4 実務          業務を丸ごと設計して作り切る（第11〜12章）
+STEP5 運用          壊れない運用・引き継ぎ（第13〜14章）</code></pre>
+<hr>
+<h3>8. 実務で使えるようになるまでのロードマップ</h3>
+<div class="tbl-wrap"><table><thead><tr><th>段階</th><th>期間の目安</th><th>できること</th><th>次の一歩</th></tr></thead><tbody><tr><td>入門（この教材）</td><td>半日〜1日</td><td>RPA/WinActorを説明できる、対象業務を選べる</td><td>基本画面を触る</td></tr><tr><td>初級</td><td>1〜2週間</td><td>簡単なシナリオを自作・実行できる</td><td>Excel/Web/ファイルを個別に自動化</td></tr><tr><td>中級</td><td>1〜2か月</td><td>条件分岐・繰り返し・変数で実務シナリオを作れる</td><td>エラー対応・例外設計</td></tr><tr><td>実務</td><td>2〜3か月</td><td>1業務を設計〜テスト〜運用まで回せる</td><td>保守・引き継ぎ・社内展開</td></tr></tbody></table></div>
+<blockquote>期間はあくまで目安です。触れる時間と対象業務の複雑さで変わります。<strong>小さく作って早く動かす（スモールスタート）</strong>が上達の近道です。</blockquote>
+<hr>
+<h3>9. 導入時に気をつけること（最初に知っておく）</h3>
+<ul><li><strong>小さく始める</strong>：いきなり大きな業務より、単純な1業務から。</li><li><strong>現場を巻き込む</strong>：実際にその作業をしている人の手順を正確に聞く。</li><li><strong>人の確認点を残す</strong>：金額・送信・削除など、間違うと影響が大きい操作は人が最終確認。</li><li><strong>止まる前提で作る</strong>：エラーは必ず起きる。止まった時どうするか（止める/飛ばす/知らせる）を決める。</li><li><strong>属人化させない</strong>：分かりやすい名前・手順書・引き継ぎ資料を残す。</li><li><strong>ルール・仕様・価格は必ず公式で確認</strong>：バージョンで変わるため断定しない。</li></ul>
+<hr>
+<h3>10. 確認テスト（解答・解説付き）</h3>
+<h4>選択問題</h4>
+<p><strong>Q1. RPAの説明として最も正しいものは？</strong><br>A. 人の判断が必要な業務を自動で考えてくれる仕組み<br>B. 人がPCで行う決まった手順の作業を、ソフトのロボットが代行する仕組み<br>C. 紙の書類を自動で作る印刷機<br>D. インターネットを速くする技術</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。解説：RPAは「決まった手順の繰り返し」を代行する仕組み。判断や創造は苦手（A/C/Dは誤り）。</div></div>
+<p><strong>Q2. WinActorの説明として正しいものは？</strong><br>A. 英語のプログラミングが必須の海外製ツール<br>B. 紙をスキャンする専用機器<br>C. 日本語で使える純国産のデスクトップ型RPAツール<br>D. 表計算専用ソフト</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：C。解説：WinActorはNTTデータの純国産RPA。日本語UI・プログラミング不要が特徴。</div></div>
+<p><strong>Q3. 自動化に「向いていない」業務はどれ？</strong><br>A. 毎日同じ形式でExcelをシステムに転記する<br>B. 請求書を金額ルールでフォルダ振り分け<br>C. 問い合わせ内容を読んで最適な回答文を考える<br>D. 毎週同じ集計表を作る</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：C。解説：判断・創造が必要な仕事はRPAの苦手分野。A/B/Dは定型で向いている。</div></div>
+<h4>穴埋め問題</h4>
+<p><strong>Q4.</strong> WinActorに実行させる作業手順書のことを「（　①　）」と呼び、その手順を構成する部品1つ1つを「（　②　）」と呼ぶ。</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：①シナリオ ②ノード</div></div>
+<p><strong>Q5.</strong> 自動化に向くのは、手順が毎回（　③　）で、回数が（　④　）業務である。</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：③同じ（ルール化できる） ④多い（定期的）</div></div>
+<h4>一問一答</h4>
+<p><strong>Q6.</strong> WinActorで「作成もできる版」と「実行だけの版」、シナリオを作るのに必要なのはどちら？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：フル機能版（作成＋実行ができる版）。実行版は動かすだけ。</div></div>
+<p><strong>Q7.</strong> 「あとで使う値を入れておく箱」を何という？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：変数</div></div>
+<h4>実務判断問題</h4>
+<p><strong>Q8.</strong> 次の業務は自動化すべき？理由も一言で。<br>「毎朝、届いた注文Excel（毎回同じ様式・1日80件）を基幹システムに1件ずつ入力している。」</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：自動化すべき。理由：様式が毎回同じ（ルール化可）＋件数が多く毎日（効果大）＝向く業務の典型。ただし金額の最終確認は人が残すと安全。</div></div>
+<p><strong>Q9.</strong> 次はどうすべき？<br>「年に1回、その年ごとに様式が変わる特殊レポートを、判断しながら作っている。」</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：自動化に向かない。理由：単発（年1回）＋非定型（毎回様式・判断が変わる）＝作る手間が効果を上回る。</div></div>
+<h4>操作手順 並べ替え問題</h4>
+<p><strong>Q10.</strong> 業務を自動化する時の進め方として、正しい順に並べ替えなさい。<br>（ア）テストする （イ）業務の手順を整理・分解する （ウ）シナリオを作る （エ）本番運用する （オ）自動化する業務を選ぶ</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：オ → イ → ウ → ア → エ。解説：「選ぶ→整理→作る→テスト→運用」。いきなり作らず、整理とテストを飛ばさないのが失敗しないコツ。</div></div>
+<hr>
+<h3>11. この章のまとめ</h3>
+<ul><li>RPAは「決まった手順の繰り返し」を代行する仕組み。判断・創造は苦手。</li><li>WinActorは日本語で使える純国産のデスクトップ型RPA。プログラミング不要。</li><li>自動化は「ルール化できる × 回数が多い」業務が最優先。</li><li>いきなり作らず「業務を選ぶ→整理→作る→テスト→運用」の順で進める。</li><li>バージョン・仕様・価格は変わるので、必ず公式で確認する。</li></ul>
+<p><strong>次の教材</strong>：第3章「WinActorの基本画面と操作」で、実際の画面（シナリオ・ノード・変数・ライブラリ）を見ていきます。</p>
+<hr>
+<hr>
+<h2>19. 次に作るべき教材一覧（制作ロードマップ）</h2>
+<div class="tbl-wrap"><table><thead><tr><th>順</th><th>教材タイトル</th><th>章</th><th>中身の要点</th><th>付属ハンズオン</th></tr></thead><tbody><tr><td>2</td><td>基本画面と操作の完全ツアー</td><td>3</td><td>各パネルの役割・実行/ステップ実行/ログ</td><td>既存シナリオを追う</td></tr><tr><td>3</td><td>はじめてのシナリオ作成</td><td>4</td><td>起動→入力→保存→実行</td><td>H1 メモ帳自動入力</td></tr><tr><td>4</td><td>変数マスター</td><td>5</td><td>型・命名・使い回し</td><td>H2 宛名入り挨拶文</td></tr><tr><td>5</td><td>Excel自動化 実践</td><td>6</td><td>読む/書く/転記/CSV</td><td>H3/E1 売上転記</td></tr><tr><td>6</td><td>Web自動化 実践</td><td>7</td><td>ログイン/入力/取得/待機</td><td>H4/E4 顧客入力</td></tr><tr><td>7</td><td>ファイル・フォルダ操作</td><td>8</td><td>一覧/移動/リネーム</td><td>H5/E2 請求書振り分け</td></tr><tr><td>8</td><td>条件分岐と繰り返し</td><td>9</td><td>判断と反復・フィルタ</td><td>H6/E3 複数行処理</td></tr><tr><td>9</td><td>エラー対応とデバッグ</td><td>10</td><td>ログ/ステップ/例外設計</td><td>H7/E6 例外記録</td></tr><tr><td>10</td><td>実務シナリオ設計</td><td>11</td><td>入力/処理/出力・例外・確認点</td><td>設計ワーク</td></tr><tr><td>11</td><td>実務総合ハンズオン</td><td>12</td><td>E1〜E7 総合</td><td>E5/E7 日次業務</td></tr><tr><td>12</td><td>運用・保守・改善</td><td>13</td><td>本番前チェック・引き継ぎ</td><td>運用ルール作成</td></tr><tr><td>13</td><td>応用編（連携/クラウド/AI）</td><td>14</td><td>Excel×Web/メール/OCR/生成AI/Manager on Cloud</td><td>応用課題</td></tr><tr><td>14</td><td>総復習・卒業課題</td><td>15</td><td>総合テスト・自業務の自動化</td><td>卒業制作</td></tr></tbody></table></div>
+<p><strong>制作の推奨順</strong>：まず「3→4→5→6」を優先（初心者が最短で成功体験を得られる単機能系）。その後「7→8→9」で組み合わせ、「10→11」で実務化、「12→13→14」で運用・応用へ。</p>
+<hr>
+<h3>付録A：サンプルデータ（架空・そのままCSVで利用可）</h3>
+<h4>顧客一覧.csv</h4>
+<pre><code>顧客ID,氏名,会社名,メール,電話
+C001,山田太郎,あおぞら商事,taro@example.com,03-1111-0001
+C002,佐藤花子,みどり物産,hanako@example.com,03-1111-0002
+C003,鈴木一郎,つばさ工業,ichiro@example.com,03-1111-0003
+C004,高橋美咲,ひかり食品,misaki@example.com,03-1111-0004
+C005,田中健二,さくら電機,kenji@example.com,03-1111-0005</code></pre>
+<h4>売上一覧.csv</h4>
+<pre><code>日付,商品コード,商品名,数量,単価,担当
+2026-07-01,P100,ノートA,10,120,山田
+2026-07-01,P200,ペンB,50,80,佐藤
+2026-07-02,P100,ノートA,5,120,鈴木
+2026-07-02,P300,消しゴムC,30,50,山田
+2026-07-03,P200,ペンB,20,80,高橋</code></pre>
+<h4>請求書一覧.csv</h4>
+<pre><code>請求書番号,取引先,金額,請求日
+INV-2026-001,あおぞら商事,120000,2026-07-05
+INV-2026-002,みどり物産,84000,2026-07-06
+INV-2026-003,つばさ工業,256000,2026-06-28
+INV-2026-004,ひかり食品,45000,2026-07-10</code></pre>
+<h4>申請一覧.csv</h4>
+<pre><code>申請ID,申請者,種別,申請日,ステータス
+A001,山田太郎,経費,2026-07-01,承認待ち
+A002,佐藤花子,休暇,2026-07-02,承認済
+A003,鈴木一郎,経費,2026-07-03,却下
+A004,高橋美咲,出張,2026-07-04,承認待ち</code></pre>
+<h4>社員一覧.csv</h4>
+<pre><code>社員番号,氏名,部署,入社日
+E001,山田太郎,営業部,2020-04-01
+E002,佐藤花子,経理部,2019-04-01
+E003,鈴木一郎,人事部,2021-10-01
+E004,高橋美咲,総務部,2022-04-01</code></pre>
+<h4>商品マスタ.csv</h4>
+<pre><code>商品コード,商品名,単価,カテゴリ
+P100,ノートA,120,文具
+P200,ペンB,80,文具
+P300,消しゴムC,50,文具
+P400,ファイルD,200,事務用品</code></pre>
+<h4>処理ログ_テンプレート.csv</h4>
+<pre><code>実行日時,処理名,対象,結果,メモ
+2026-07-18 09:00:00,売上転記,売上一覧.csv,成功,5件処理</code></pre>
+<h4>エラー一覧_テンプレート.csv</h4>
+<pre><code>発生日時,シナリオ名,対象行,エラー内容,対応状況
+2026-07-18 09:05:12,Web顧客入力,C003,要素が見つからない,要確認</code></pre>
+<hr>
+<h3>付録B：ファクトチェック表（本教材の自己点検）</h3>
+<div class="tbl-wrap"><table><thead><tr><th>記載項目</th><th>教材での記載</th><th>確認した出典の性格</th><th>確認日</th><th>要再確認</th></tr></thead><tbody><tr><td>最新Ver.</td><td>Ver.7.6.1（7.6は2025-07）</td><td>WinActor公式</td><td>2026-07-18</td><td>○ 導入版で確認</td></tr><tr><td>対応OS</td><td>Win11 Pro/Server2016-2025</td><td>公式 動作環境</td><td>2026-07-18</td><td>○ Ver依存</td></tr><tr><td>.NET</td><td>4.8以上</td><td>公式 動作環境</td><td>2026-07-18</td><td>△</td></tr><tr><td>ブラウザ</td><td>Chrome/Firefox/Edge</td><td>公式 動作環境</td><td>2026-07-18</td><td>○ 版数注意</td></tr><tr><td>Excel</td><td>2021/2024</td><td>公式 動作環境</td><td>2026-07-18</td><td>△</td></tr><tr><td>エディション</td><td>フル機能版/実行版</td><td>公式・代理店</td><td>2026-07-18</td><td>△</td></tr><tr><td>ライセンス方式</td><td>ノードロック/フローティング</td><td>公式サポート</td><td>2026-07-18</td><td>△</td></tr><tr><td>価格</td><td>フル約110万/実行約30万（参考）</td><td>代理店公開情報</td><td>2026-07-18</td><td>○ 必ず見積</td></tr><tr><td>生成AI連携</td><td>Ver.7.5+/7.6強化</td><td>公式</td><td>2026-07-18</td><td>○ 提供条件確認</td></tr><tr><td>Manager on Cloud</td><td>集中管理サービス</td><td>公式・代理店</td><td>2026-07-18</td><td>○ プラン依存</td></tr></tbody></table></div>
+<p><strong>凡例</strong>：○＝バージョン・契約で変わるため公開前に必ず再確認 ／ △＝比較的安定だが要注意。</p>
+<pre><code></code></pre></section>
+<section class="chapter" id="ch1" data-idx="1" hidden><h2>WinActor 教材2・3｜基本画面ツアー と はじめてのシナリオ作成</h2>
+<blockquote>対象：WinActor／RPAを初めて学ぶ人・非エンジニアの業務担当者<br>前提：教材1「WinActor入門」を読み終えていること<br>共通注意：画面名・タブ名・ノード名・メニュー名は<strong>バージョンで変わります</strong>。本教材の名称は「Ver.7系の一例」です。実機と違う場合は、お使いの版の公式マニュアルの名称を正としてください。</blockquote>
+<hr>
+<h2>教材2｜WinActorの基本画面と操作（第3章）</h2>
+<p><strong>この教材のゴール</strong>：WinActorの主要な画面パネルの役割を説明でき、既存のシナリオを「ステップ実行（コマ送り）」で追えるようになる。</p>
+<p>むずかしい言葉は、教材1と同じ5ステップ（一言→言い換え→身近な例→WinActorでの使い方→実務注意点）でかみ砕きます。</p>
+<hr>
+<h3>3-1. まず全体像：WinActorは「4つの部屋」でできている</h3>
+<p>WinActorの画面は、ざっくり<strong>4つの役割</strong>に分かれています。名前より「何をする場所か」を覚えてください。</p>
+<pre><code>┌──────────────────────────────────────────────┐
+│  [メニュー・実行ボタン]  ← 実行/停止/一時停止/保存/設定       │
+├───────────┬──────────────────┬───────────┤
+│ ①部品置き場   │  ②作業台（フローチャート）   │ ③値の箱一覧   │
+│ ノード       │  ← ここに手順を組み立てる      │ 変数（データ）  │
+│ ライブラリ    │                          │ 一覧          │
+│              │                          │              │
+├───────────┴──────────────────┴───────────┤
+│  ④ログ（実行の記録・エラーが出る場所）                       │
+└──────────────────────────────────────────────┘</code></pre>
+<div class="tbl-wrap"><table><thead><tr><th>部屋</th><th>名前（一例）</th><th>役割</th><th>身近な例</th></tr></thead><tbody><tr><td>①</td><td>ノード／ライブラリ</td><td>使える「部品」の置き場</td><td>料理の食材・調理器具の棚</td></tr><tr><td>②</td><td>フローチャート</td><td>部品を並べて手順を作る作業台</td><td>まな板（ここで料理を組み立てる）</td></tr><tr><td>③</td><td>変数一覧（データ一覧）</td><td>あとで使う値を入れる箱の一覧</td><td>材料メモ・計量カップ</td></tr><tr><td>④</td><td>ログ</td><td>実行の記録・エラー表示</td><td>作業日誌</td></tr></tbody></table></div>
+<blockquote>補足：WinActorには手順の見せ方が2種類あります。<strong>フローチャート表示</strong>（流れを図で見る）と、<strong>ノード一覧（構造化）表示</strong>（手順を上から並べたリストで見る）です。同じシナリオを別の見た目で編集しているだけなので、最初は「フローチャート」で覚えればOKです。</blockquote>
+<hr>
+<h3>3-2. シナリオとは何か</h3>
+<p><strong>1. 一言で</strong>：シナリオとは、WinActorに実行させる<strong>作業手順書</strong>（1本の自動化プログラム）です。</p>
+<p><strong>2. 言い換え</strong>：ロボットへの「指示書」。上から順に「これをやって、次にこれ」と書いた紙。</p>
+<p><strong>3. 身近な例</strong>：料理のレシピ。「①水を沸かす→②麺を入れる→③3分待つ→④湯を切る」。</p>
+<p><strong>4. WinActorでどう使うか</strong>：フローチャートに部品（ノード）を上から順に並べると、それが1本のシナリオになります。保存すると <code>.ums6</code>（版により拡張子は異なる）などのファイルになります。</p>
+<p><strong>5. 実務注意点</strong>：1シナリオに全部詰め込みすぎない。「請求書取込」「入力」「通知」のように<strong>役割ごとに分けて</strong>作ると、壊れた時に直しやすく、使い回しもできます。</p>
+<hr>
+<h3>3-3. ノードとは何か</h3>
+<p><strong>1. 一言で</strong>：ノードとは、手順の<strong>部品1つ1つ</strong>（1つの動作）です。</p>
+<p><strong>2. 言い換え</strong>：作業ブロック。「クリックする」「文字を入れる」「3秒待つ」など、動作1個＝1ブロック。</p>
+<p><strong>3. 身近な例</strong>：レゴのピース。1つずつは小さいが、積むと形になる。</p>
+<p><strong>4. WinActorでどう使うか</strong>：ノードを部品置き場からドラッグして、フローチャートの線の上に置く。代表的なノード：</p>
+<ul><li><strong>値の設定</strong>：変数に値を入れる</li><li><strong>待機ボックス／ウェイト</strong>：指定秒だけ待つ</li><li><strong>分岐</strong>：条件で処理を分ける</li><li><strong>繰り返し</strong>：同じ処理を何度も回す</li><li><strong>クリック／文字列送信（エミュレーション）</strong>：画面を操作する</li></ul>
+<p><strong>5. 実務注意点</strong>：「待機」を軽視しない。画面が出る前に操作すると失敗するため、<strong>適切な待ちを入れる</strong>のが安定の第一歩。</p>
+<hr>
+<h3>3-4. ライブラリとは何か</h3>
+<p><strong>1. 一言で</strong>：ライブラリとは、<strong>よく使う操作をまとめた完成部品集</strong>です。</p>
+<p><strong>2. 言い換え</strong>：電子レンジの「自動あたためボタン」。細かい設定なしで、よくある処理を一発でやってくれる。</p>
+<p><strong>3. 身近な例</strong>：カップ麺（材料と手順が最初からセットになっている）。</p>
+<p><strong>4. WinActorでどう使うか</strong>：ライブラリには「Excel関連」「ファイル関連」「文字列操作」「日付」などのカテゴリがあり、たとえば「Excel操作（値の取得）」「ファイル移動」などを選んで置くだけ。中の細かい処理は用意済み。</p>
+<p><strong>5. 実務注意点</strong>：ライブラリは便利だが、<strong>設定項目（引数）</strong>を正しく埋める必要がある。何を入力し、何が出力されるか（＝どの変数に結果が入るか）を必ず確認する。</p>
+<hr>
+<h3>3-5. 変数とは何か（ここが最重要）</h3>
+<p><strong>1. 一言で</strong>：変数とは、<strong>あとで使う値を一時的に入れておく箱</strong>です。</p>
+<p><strong>2. 言い換え</strong>：中身を入れ替えられる「名前つきの箱」。箱の名前は変えず、中身だけ変えられる。</p>
+<p><strong>3. 身近な例</strong>：付箋に「今日の担当＝山田」と書いておき、後で「山田」の部分だけ差し替える。</p>
+<p><strong>4. WinActorでどう使うか</strong>：変数一覧（データ一覧）に箱を作り、名前を付ける。ノードやライブラリの結果を箱に入れ、別のノードでその箱を使う。</p>
+<ul><li>例：Excelから読んだ金額を変数「金額」に入れ→Web入力ノードで変数「金額」を使う</li></ul>
+<p><strong>5. 実務注意点</strong>：<strong>分かりやすい名前</strong>を付ける（<code>変数1</code>はNG、<code>顧客名</code> <code>請求金額</code> のように用途がわかる名前に）。初期値・型（文字列/数値/日付）を意識する。</p>
+<hr>
+<h3>3-6. フローチャートの考え方</h3>
+<p>シナリオは基本、<strong>上から下へ順番に</strong>流れます。分かれ道（分岐）や、ぐるぐる回る道（繰り返し）を足していきます。</p>
+<pre><code>[開始]
+   │
+   ▼
+（ノード：Excelを開く）
+   │
+   ▼
+（分岐：金額 &gt;= 10000 ？）──No──▶（そのまま次へ）
+   │Yes
+   ▼
+（ノード：別フォルダへ移動）
+   │
+   ▼
+[終了]</code></pre>
+<hr>
+<h3>3-7. 実行・停止・一時停止・ステップ実行</h3>
+<div class="tbl-wrap"><table><thead><tr><th>操作</th><th>何をする</th><th>身近な例</th><th>いつ使う</th></tr></thead><tbody><tr><td>実行</td><td>シナリオを最初から最後まで動かす</td><td>再生ボタン</td><td>完成後・本番</td></tr><tr><td>停止</td><td>途中で止める</td><td>停止ボタン</td><td>暴走・間違いに気づいた時</td></tr><tr><td>一時停止</td><td>いったん止めて再開できる</td><td>ポーズ</td><td>途中確認</td></tr><tr><td><strong>ステップ実行（デバッグ）</strong></td><td><strong>1ノードずつコマ送りで実行</strong></td><td>動画のコマ送り</td><td><strong>原因調査・学習</strong></td></tr></tbody></table></div>
+<p><strong>ステップ実行はデバッグ（原因調べ）の主役</strong>です。1つずつ動かして、「どのノードで、どの変数が、どんな値になったか」を確認できます。うまく動かない時は、まずステップ実行。</p>
+<hr>
+<h3>3-8. ログの見方</h3>
+<p>ログ（画面下部）には「いつ・何のノードを・成功/失敗したか」が記録されます。<strong>エラーが出たら、まずログの一番下（最後の行）を読む</strong>のが鉄則。「どのノードで」「何が起きたか」が書かれています。</p>
+<hr>
+<h3>3-9. 保存と管理</h3>
+<ul><li>こまめに<strong>上書き保存</strong>（作業中はショートカットでも保存）。</li><li>大きく直す前は<strong>別名保存でバックアップ</strong>（<code>_v1</code> <code>_v2</code> <code>_backup</code> など）。</li><li>ファイル名に<strong>日付や版</strong>を入れると迷子にならない（例：<code>請求書取込_v3_20260718.ums6</code>）。</li><li>チームで使うなら<strong>保存場所のルール</strong>（共有フォルダ・命名規則）を先に決める。</li></ul>
+<hr>
+<h3>3-10. ハンズオン（画面ツアー）：既存シナリオをステップ実行で追う</h3>
+<p><strong>目的</strong>：画面の各パネルを実際に見て、ステップ実行で変数の値が変わる様子を体感する。</p>
+<p><strong>事前準備</strong>：</p>
+<ul><li>WinActor（フル機能版 または 評価版）が起動できること</li><li>サンプル用に、教材1付録の <code>売上一覧.csv</code> を任意フォルダに置く</li></ul>
+<p><strong>操作手順</strong>：</p>
+<ol><li>WinActorを起動し、新規シナリオを開く</li><li>ライブラリから「CSVを読み込む」系の部品を1つ置く（無ければ「値の設定」ノードでOK）</li><li>変数一覧に <code>メッセージ</code> という変数を作り、初期値に <code>こんにちは</code> と入れる</li><li>「値の設定」ノードで、<code>メッセージ</code> に <code>テスト実行OK</code> を上書き設定</li><li><strong>ステップ実行</strong>で1ノードずつ進め、変数一覧の <code>メッセージ</code> の値が <code>こんにちは</code> → <code>テスト実行OK</code> に変わるのを確認</li><li>ログに各ノードの実行記録が出ることを確認</li></ol>
+<p><strong>動作確認のポイント</strong>：ステップを進めるたびに、変数一覧の値が変化する／ログが増えていく。</p>
+<p><strong>よくあるエラー</strong>：</p>
+<ul><li>何も起きない → ノードがフローの線に正しく載っていない（宙に浮いている）</li><li>値が変わらない → 別の変数を編集している（名前を再確認）</li></ul>
+<p><strong>改善ポイント</strong>：ノードに分かりやすい名前（表示名）を付けておくと、ログもフローも読みやすい。</p>
+<hr>
+<h3>3-11. 確認テスト（解答・解説付き）</h3>
+<p><strong>Q1.（選択）</strong> 手順の部品1つ1つを何と呼ぶ？<br>A. シナリオ B. ノード C. ライブラリ D. ログ</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。解説：シナリオ＝手順書全体、ノード＝部品1つ、ライブラリ＝完成部品集、ログ＝記録。</div></div>
+<p><strong>Q2.（選択）</strong> うまく動かない原因を1ノードずつ調べるのに最適な機能は？<br>A. 実行 B. 停止 C. ステップ実行（デバッグ） D. 保存</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：C。1つずつ動かして値と挙動を確認できる。</div></div>
+<p><strong>Q3.（穴埋め）</strong> あとで使う値を入れておく箱を（　①　）と呼び、分かりやすい（　②　）を付けることが実務では重要。</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：①変数 ②名前（変数名）</div></div>
+<p><strong>Q4.（一問一答）</strong> エラーが出た時、最初に読むべき場所は？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：ログの一番下（最後の行）。どのノードで何が起きたかが分かる。</div></div>
+<p><strong>Q5.（並べ替え）</strong> シナリオを安全に大きく直す時の手順を正しい順に。<br>（ア）別名でバックアップ保存 （イ）修正する （ウ）ステップ実行で確認 （エ）上書き保存</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：ア → イ → ウ → エ。まず退避、直して、確認してから保存。</div></div>
+<hr>
+<h2>教材3｜はじめてのシナリオ作成（第4章）／ハンズオンH1</h2>
+<p><strong>この教材のゴール</strong>：アプリの起動→文字入力→待機→保存→実行までを自分の手で行い、<strong>最小の自動化シナリオを完成・実行</strong>できる。</p>
+<hr>
+<h3>4-1. 最初の一歩は「小さく・確実に」</h3>
+<p>いきなり業務システムを自動化しないでください。最初は<strong>メモ帳（Notepad）に決まった文章を自動で書く</strong>だけの、いちばん壊れにくい題材で「動いた！」を体験します。</p>
+<hr>
+<h3>4-2. シナリオ作成の基本の流れ</h3>
+<pre><code>① どんな動きにするか決める（日本語で手順を書く）
+        ▼
+② ノード／ライブラリを並べる（フローチャート）
+        ▼
+③ 各ノードの設定を埋める（対象・入力値・変数）
+        ▼
+④ ステップ実行で確認する
+        ▼
+⑤ 通しで実行 → 保存</code></pre>
+<p><strong>「いきなり作らず、まず日本語で手順を書く」</strong>——これがプロの作り方です。</p>
+<hr>
+<h3>4-3. 記録機能 と 手動で並べる、2つのやり方</h3>
+<div class="tbl-wrap"><table><thead><tr><th>やり方</th><th>内容</th><th>長所</th><th>短所</th></tr></thead><tbody><tr><td>自動記録</td><td>実際の操作を録画するように記録</td><td>速い・初心者向け</td><td>余計な操作も記録され、後で崩れやすい</td></tr><tr><td>手動で配置</td><td>ノードを自分で並べる</td><td>安定・意図が明確・保守しやすい</td><td>少し手間</td></tr></tbody></table></div>
+<p><strong>おすすめ</strong>：まず記録で雰囲気をつかみ、<strong>実務では手動配置ベース</strong>で作る（安定・保守性が段違い）。本ハンズオンは手動配置で進めます。</p>
+<hr>
+<h3>4-4. ハンズオンH1：メモ帳に定型文を自動入力する</h3>
+<h4>目的</h4>
+<p>アプリ起動・文字入力・待機・保存・実行の一連を体験し、最小シナリオを完成させる。</p>
+<h4>完成イメージ</h4>
+<p>実行すると、メモ帳が自動で立ち上がり、次の文章が自動でタイプされる。</p>
+<pre><code>本日の業務を開始します。
+担当：山田
+自動化テスト：成功</code></pre>
+<h4>使用するサンプルデータ</h4>
+<p>なし（文章はシナリオ内に直接記述）。慣れたら変数化する（後述の応用課題）。</p>
+<h4>事前準備</h4>
+<ul><li>WinActorが起動できること</li><li>Windowsのメモ帳（notepad.exe）が使えること</li><li>新規シナリオを1つ開いておく</li></ul>
+<h4>操作手順（シナリオ設計）</h4>
+<p>まず<strong>日本語で手順</strong>を書きます。</p>
+<pre><code>1. メモ帳を起動する
+2. メモ帳が開くまで少し待つ
+3. 1行目の文章を入力する
+4. 改行する
+5. 2行目の文章を入力する
+6. 改行する
+7. 3行目の文章を入力する
+8. （確認のため）1秒待つ</code></pre>
+<p>次にWinActorで並べます（ノード構成の一例）。</p>
+<div class="tbl-wrap"><table><thead><tr><th>順</th><th>ノード／ライブラリ（一例）</th><th>設定内容</th></tr></thead><tbody><tr><td>1</td><td>アプリ起動（「アプリケーション実行」系ライブラリ）</td><td>実行するファイル：<code>notepad.exe</code></td></tr><tr><td>2</td><td>待機ボックス／ウェイト</td><td>待機時間：1〜2秒</td></tr><tr><td>3</td><td>文字列送信（エミュレーション：キー送信）</td><td><code>本日の業務を開始します。</code></td></tr><tr><td>4</td><td>キー送信（Enter）</td><td>改行</td></tr><tr><td>5</td><td>文字列送信</td><td><code>担当：山田</code></td></tr><tr><td>6</td><td>キー送信（Enter）</td><td>改行</td></tr><tr><td>7</td><td>文字列送信</td><td><code>自動化テスト：成功</code></td></tr><tr><td>8</td><td>待機ボックス</td><td>1秒</td></tr></tbody></table></div>
+<blockquote>名称は版で異なります。「アプリを起動する部品」「キー入力を送る部品」「待つ部品」を選ぶ、と理解すればOK。文字入力は「エミュレーション（キー送信）」または「文字列設定」系を使います。</blockquote>
+<h4>使用するノード・ライブラリ（まとめ）</h4>
+<ul><li>アプリケーション実行（起動）</li><li>待機ボックス／ウェイト（待つ）</li><li>文字列送信・キー送信（エミュレーション）（入力・改行）</li></ul>
+<h4>変数一覧</h4>
+<p>本ハンズオンでは変数なし（次のステップで導入）。</p>
+<h4>完成後の動作確認</h4>
+<ol><li><strong>ステップ実行</strong>で1つずつ動かし、メモ帳が起動→文字が入る流れを確認</li><li>問題なければ<strong>通しで実行</strong></li><li>メモ帳に3行の文章が正しく表示されればクリア</li><li>シナリオを保存（例：<code>H1_メモ帳自動入力_v1</code>）</li></ol>
+<h4>よくあるエラーと対処</h4>
+<div class="tbl-wrap"><table><thead><tr><th>症状</th><th>原因</th><th>対処</th></tr></thead><tbody><tr><td>文字が入らない/途中で切れる</td><td>メモ帳が開く前に入力した</td><td>起動後の<strong>待機を長めに</strong>（2〜3秒）</td></tr><tr><td>別のウィンドウに入力される</td><td>入力先（フォーカス）がメモ帳でない</td><td>起動直後にメモ帳を最前面にする、待機を入れる</td></tr><tr><td>何も起きない</td><td>ノードが線に載っていない</td><td>フローの線の上に正しく配置し直す</td></tr><tr><td>日本語が化ける/入らない</td><td>入力方式（IME）や送信方法の相性</td><td>文字列設定系ノードに変える、半角で試して切り分け</td></tr></tbody></table></div>
+<h4>改善ポイント</h4>
+<ul><li>待機時間を「固定秒」ではなく、<strong>必要最小限</strong>に調整（長すぎると遅い、短すぎると失敗）。</li><li>ノードに表示名を付ける（例：「①メモ帳起動」）。ログが読みやすくなる。</li></ul>
+<h4>応用課題（変数への橋渡し）</h4>
+<ol><li>「担当：山田」の<strong>山田</strong>を変数 <code>担当者名</code> にして、値を変えるだけで出力が変わるようにする。</li><li>3行目に<strong>今日の日付</strong>を自動で入れる（日付取得のライブラリを使う）。</li><li>最後に「名前を付けて保存」まで自動化する（ファイル名に日付を付ける）。</li></ol>
+<blockquote>応用1の「変数化」は次の教材4（変数マスター）につながります。ここで「固定値をやめて変数にすると使い回せる」という感覚をつかんでください。</blockquote>
+<hr>
+<h3>4-5. うまく動かないときの初動チェック（保存版）</h3>
+<p>自動化が失敗する原因の多くは、次のどれかです。上から順に確認してください。</p>
+<pre><code>1. 待ちが足りない       → 画面が出る前に操作していないか？（待機を足す）
+2. 対象が違う           → 操作先ウィンドウ/要素は合っているか？
+3. フォーカス外れ       → 入力先が別ウィンドウに移っていないか？
+4. 配置ミス             → ノードがフローの線に正しく載っているか？
+5. 値・変数の間違い     → 変数名/値/型は想定どおりか？（ステップ実行で確認）
+6. 画面変更             → 対象アプリの画面が変わっていないか？</code></pre>
+<p><strong>困ったら「ステップ実行」で1つずつ確認</strong>——これが最短の解決法です。</p>
+<hr>
+<h3>4-6. 確認テスト（解答・解説付き）</h3>
+<p><strong>Q1.（選択）</strong> 最初の練習題材として最も適切なのは？<br>A. 本番の基幹システムへの入力 B. メモ帳に定型文を入力 C. 複数アプリをまたぐ複雑処理 D. 手書き書類の読み取り</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。壊れにくく「動いた」を体験しやすい。最初は小さく確実に。</div></div>
+<p><strong>Q2.（選択）</strong> アプリ起動直後に文字が途中で切れる。最初に見直すべきは？<br>A. 変数の型 B. ライセンス C. 起動後の待機時間 D. 保存場所</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：C。画面が出る前に入力している典型。待機を足す。</div></div>
+<p><strong>Q3.（穴埋め）</strong> シナリオ作成は、いきなり作らず、まず（　①　）で手順を書き、次にノードを並べ、（　②　）実行で1つずつ確認するとよい。</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：①日本語 ②ステップ（デバッグ）</div></div>
+<p><strong>Q4.（一問一答）</strong> 自動記録と手動配置、実務で保守しやすいのはどちら？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：手動配置。意図が明確で崩れにくく、後から直しやすい。</div></div>
+<p><strong>Q5.（並べ替え）</strong> シナリオ作成の基本の流れを正しい順に。<br>（ア）通しで実行して保存 （イ）日本語で手順を書く （ウ）ノードを並べて設定を埋める （エ）ステップ実行で確認</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：イ → ウ → エ → ア。</div></div>
+<p><strong>Q6.（実務判断）</strong> 「メモ帳入力」が動いた次に取り組むべきステップとして適切なのは？<br>A. いきなり全社の請求処理を自動化 B. 山田の部分を変数化して使い回せるようにする C. 学習をやめる D. 記録機能だけで複雑処理を量産</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。小さな成功を「変数化」で一歩発展させるのが正攻法。次は教材4（変数）へ。</div></div>
+<hr>
+<h3>4-7. この教材のまとめ</h3>
+<ul><li>WinActorの画面は「①部品置き場（ノード/ライブラリ）②作業台（フローチャート）③値の箱（変数一覧）④記録（ログ）」の4つ。</li><li>シナリオ＝手順書、ノード＝部品、ライブラリ＝完成部品、変数＝値の箱。</li><li>作る時は「日本語で手順→並べる→ステップ実行で確認→通し実行→保存」。</li><li>失敗の多くは「待ち不足・対象違い・配置ミス・変数間違い」。<strong>困ったらステップ実行</strong>。</li><li>最初は小さく確実に。動いたら「変数化」で発展させる。</li></ul>
+<p><strong>次の教材</strong>：教材4「変数マスター（第5章）」——固定値をやめて変数にし、シナリオを“使い回せる”ものにします。ハンズオンH2「宛名入り挨拶文」を作ります。</p>
+<blockquote>リマインド：ノード名・画面名・拡張子・機能の有無は<strong>バージョンで変わります</strong>。実機と本教材が違う場合は、お使いの版の公式マニュアルを正としてください。</blockquote></section>
+<section class="chapter" id="ch2" data-idx="2" hidden><h2>WinActor 教材4｜変数マスター（第5章）／ハンズオンH2</h2>
+<blockquote>対象：WinActor／RPAを初めて学ぶ人・非エンジニアの業務担当者<br>前提：教材1〜3（入門・基本画面・はじめてのシナリオ作成）を終えていること<br>共通注意：ノード名・画面名・機能の有無は<strong>バージョンで変わります</strong>。本教材の名称は「Ver.7系の一例」です。実機と違う場合は、お使いの版の公式マニュアルを正としてください。</blockquote>
+<p><strong>この教材のゴール</strong>：固定値をやめて<strong>変数</strong>を使い、値を変えるだけで結果が変わる「使い回せるシナリオ」を作れるようになる。</p>
+<hr>
+<h3>5-1. 変数とは何か（復習＋深掘り）</h3>
+<p><strong>1. 一言で</strong>：変数とは、<strong>あとで使う値を一時的に入れておく、名前つきの箱</strong>です。</p>
+<p><strong>2. 言い換え</strong>：中身を入れ替えられる箱。箱の<strong>名前は変えず、中身だけ</strong>を差し替えられる。</p>
+<p><strong>3. 身近な例</strong>：宛名ラベルのテンプレート。「〇〇様」の〇〇に入れる名前を差し替えれば、同じ書式で全員分作れる。</p>
+<p><strong>4. WinActorでどう使うか</strong>：変数一覧（データ一覧）に箱を作って名前を付け、ノードやライブラリの結果を入れたり、入れた値を別のノードで使ったりする。</p>
+<p><strong>5. 実務注意点</strong>：箱の<strong>名前</strong>と<strong>型</strong>と<strong>初期値</strong>を最初にきちんと決める。ここが雑だと、後でエラーの温床になる。</p>
+<hr>
+<h3>5-2. なぜ変数が必要なのか（固定値との違い）</h3>
+<p>固定値（直接書き込み）だと、条件が変わるたびにシナリオを開いて中身を書き換える必要があります。変数にしておけば、<strong>入口の値を変えるだけ</strong>で全体が変わります。</p>
+<pre><code>【固定値だけのシナリオ】               【変数を使ったシナリオ】
+&quot;山田様、こんにちは&quot; と直接記述        変数[宛名]=&quot;山田&quot; を先頭で1回設定
+&quot;山田様、資料を...&quot;   と直接記述        本文では [宛名]様、こんにちは と参照
+&quot;山田様、では...&quot;     と直接記述        → [宛名]を&quot;佐藤&quot;に変えるだけで全部変わる
+
+担当が変わるたびに                      値を1か所変えるだけ／
+全部の&quot;山田&quot;を探して書き換え(ミスる)     繰り返しで100人分にも展開できる</code></pre>
+<h4>固定値 vs 変数 比較表</h4>
+<div class="tbl-wrap"><table><thead><tr><th>観点</th><th>固定値（直書き）</th><th>変数</th></tr></thead><tbody><tr><td>変更のしやすさ</td><td>全箇所を手直し（漏れやすい）</td><td>1か所変えるだけ</td></tr><tr><td>使い回し</td><td>できない</td><td>できる</td></tr><tr><td>繰り返し処理</td><td>不向き</td><td>100件でも回せる</td></tr><tr><td>ミス</td><td>書き換え漏れが起きやすい</td><td>起きにくい</td></tr><tr><td>保守</td><td>大変</td><td>楽</td></tr></tbody></table></div>
+<p><strong>結論</strong>：「1回しか使わない・絶対変わらない値」以外は、基本すべて変数にする。</p>
+<hr>
+<h3>5-3. 変数の型（入れられる値の種類）</h3>
+<p>箱には「何を入れるか」の種類（型）があります。型が合っていないとエラーになります。</p>
+<div class="tbl-wrap"><table><thead><tr><th>型</th><th>入れるもの</th><th>例</th><th>実務での使いどころ</th></tr></thead><tbody><tr><td>文字列</td><td>文字・文章</td><td><code>山田</code>、<code>INV-2026-001</code></td><td>名前・ID・メール本文</td></tr><tr><td>数値</td><td>計算する数</td><td><code>1200</code>、<code>50</code></td><td>金額・数量・合計</td></tr><tr><td>日付</td><td>日付・時刻</td><td><code>2026-07-18</code></td><td>処理日・ファイル名の日付</td></tr><tr><td>ファイルパス</td><td>場所を表す文字列</td><td><code>C:\data\売上.csv</code></td><td>読み書き対象の場所</td></tr></tbody></table></div>
+<blockquote>注意：「金額」を文字列で持つと足し算できません。<strong>計算するなら数値型</strong>。逆に、先頭に0が付く番号（<code>007</code>）は数値だと0が消えるので<strong>文字列</strong>で持つ、など使い分けが大事です。</blockquote>
+<h4>よくある型の落とし穴</h4>
+<ul><li>数値のつもりが文字列 → 合計が計算されず、文字がくっつくだけ（<code>50</code>+<code>30</code>が<code>5030</code>）</li><li>日付を文字列で扱い、書式がバラバラ → 並べ替え・比較で崩れる</li><li>Excelから読んだ値は<strong>文字列で入ってくることが多い</strong> → 計算前に数値へ変換</li></ul>
+<hr>
+<h3>5-4. 変数の作り方・使い方（基本操作）</h3>
+<ol><li><strong>変数一覧（データ一覧）</strong>を開く</li><li>新しい変数を追加し、<strong>名前</strong>を付ける（例：<code>宛名</code>）</li><li>必要なら<strong>初期値</strong>を入れる（例：<code>山田</code>）</li><li>ノードで値を入れる：「値の設定」ノードなどで <code>宛名 ← 佐藤</code></li><li>ノードで値を使う：文字入力などで <code>[宛名]様、こんにちは</code>（版により参照の書き方は異なる）</li></ol>
+<blockquote>「値を入れる（代入）」と「値を使う（参照）」の2つを区別して覚えると混乱しません。</blockquote>
+<hr>
+<h3>5-5. 分かりやすい変数名の付け方（実務の肝）</h3>
+<p>変数名が雑だと、後で自分でも他人でも読めません。<strong>名前だけで用途が分かる</strong>ようにします。</p>
+<h4>良い例 / 悪い例</h4>
+<div class="tbl-wrap"><table><thead><tr><th>悪い例</th><th>なぜダメか</th><th>良い例</th></tr></thead><tbody><tr><td><code>変数1</code> <code>a</code> <code>data</code></td><td>中身が分からない</td><td><code>顧客名</code> <code>請求金額</code> <code>対象ファイルパス</code></td></tr><tr><td><code>x1</code> <code>tmp</code></td><td>一時なのか本命か不明</td><td><code>合計金額</code> <code>ループカウンタ</code></td></tr><tr><td><code>名前</code></td><td>何の名前か曖昧</td><td><code>担当者名</code> <code>商品名</code> <code>顧客氏名</code></td></tr></tbody></table></div>
+<h4>命名のルール（おすすめ）</h4>
+<ul><li><strong>用途がわかる日本語</strong>にする（非エンジニアのチームでは日本語が読みやすい）</li><li>種類が分かる接頭辞を付けても良い：<code>str_顧客名</code>（文字列）、<code>num_金額</code>（数値）、<code>path_出力先</code></li><li>一時的なカウンタは <code>i</code> ではなく <code>行番号</code> <code>カウンタ</code> など意味を持たせる</li><li>チームで<strong>命名ルールを1つに統一</strong>する（人によってバラバラにしない）</li></ul>
+<hr>
+<h3>5-6. 実務でよく使う変数の例</h3>
+<div class="tbl-wrap"><table><thead><tr><th>変数名（例）</th><th>型</th><th>用途</th></tr></thead><tbody><tr><td><code>対象ファイルパス</code></td><td>ファイルパス</td><td>読み書きするExcel/CSVの場所</td></tr><tr><td><code>出力先フォルダ</code></td><td>ファイルパス</td><td>結果の保存先</td></tr><tr><td><code>顧客名</code> <code>顧客ID</code></td><td>文字列</td><td>Web入力・転記</td></tr><tr><td><code>請求金額</code> <code>数量</code> <code>単価</code></td><td>数値</td><td>計算・入力</td></tr><tr><td><code>合計金額</code></td><td>数値</td><td>集計結果</td></tr><tr><td><code>処理日</code></td><td>日付</td><td>ファイル名・ログ</td></tr><tr><td><code>行番号</code> <code>カウンタ</code></td><td>数値</td><td>繰り返しの現在位置</td></tr><tr><td><code>処理結果</code></td><td>文字列</td><td>成功/失敗の記録</td></tr><tr><td><code>エラー内容</code></td><td>文字列</td><td>例外時の記録</td></tr></tbody></table></div>
+<blockquote>ヒント：ファイルパスやログイン情報のような「環境によって変わる値」は<strong>シナリオ先頭でまとめて変数に設定</strong>しておくと、別PC・別フォルダへの移設が一発でできます（保守性が大幅UP）。</blockquote>
+<hr>
+<h3>5-7. ハンズオンH2：変数で「宛名入り挨拶文」を作る</h3>
+<h4>目的</h4>
+<p>固定値を変数に置き換え、<strong>値を変えるだけで出力が変わる</strong>体験をする。変数の代入と参照を理解する。</p>
+<h4>完成イメージ</h4>
+<p>変数 <code>担当者名</code> に <code>山田</code> を入れて実行すると、メモ帳（またはメッセージ表示）に次が出る。</p>
+<pre><code>山田様
+
+いつもお世話になっております。
+本日の業務を開始いたします。
+担当：山田</code></pre>
+<p><code>担当者名</code> を <code>佐藤</code> に変えて実行すると、山田の箇所がすべて佐藤に変わる。</p>
+<h4>使用するサンプルデータ</h4>
+<p>なし（変数の値を直接設定）。慣れたら教材1付録 <code>社員一覧.csv</code> から名前を読む応用へ。</p>
+<h4>事前準備</h4>
+<ul><li>WinActorが起動できること</li><li>教材3のH1（メモ帳自動入力）が動かせること</li></ul>
+<h4>変数一覧（このシナリオで使う箱）</h4>
+<div class="tbl-wrap"><table><thead><tr><th>変数名</th><th>型</th><th>初期値</th><th>用途</th></tr></thead><tbody><tr><td><code>担当者名</code></td><td>文字列</td><td>山田</td><td>宛名・署名に差し込む</td></tr><tr><td><code>挨拶本文</code></td><td>文字列</td><td>（空）</td><td>組み立てた文章を入れる</td></tr></tbody></table></div>
+<h4>操作手順（シナリオ設計）</h4>
+<p>まず日本語で手順を書く。</p>
+<pre><code>1. 変数[担当者名]に「山田」を設定する
+2. 変数[挨拶本文]に、担当者名を差し込んだ文章を組み立てて入れる
+3. メモ帳を起動する
+4. メモ帳が開くまで待つ
+5. [挨拶本文]をメモ帳に入力する</code></pre>
+<p>WinActorで並べる（一例）。</p>
+<div class="tbl-wrap"><table><thead><tr><th>順</th><th>ノード／ライブラリ（一例）</th><th>設定内容</th></tr></thead><tbody><tr><td>1</td><td>値の設定</td><td><code>担当者名 ← 山田</code></td></tr><tr><td>2</td><td>値の設定（文字列連結）</td><td><code>挨拶本文 ← [担当者名]+&quot;様&quot; + 改行 + &quot;いつもお世話になっております。&quot; + 改行 + &quot;本日の業務を開始いたします。&quot; + 改行 + &quot;担当：&quot; + [担当者名]</code></td></tr><tr><td>3</td><td>アプリケーション実行</td><td><code>notepad.exe</code></td></tr><tr><td>4</td><td>待機ボックス</td><td>2秒</td></tr><tr><td>5</td><td>文字列送信（エミュレーション）／文字列設定</td><td>入力値：<code>[挨拶本文]</code></td></tr></tbody></table></div>
+<blockquote>文字をつなげる「連結」は、ライブラリの「文字列結合」系を使う方法と、「値の設定」で式として書く方法があります（版により異なる）。改行を入れたい場合は改行コードを差し込むか、行ごとに入力ノードを分けます。</blockquote>
+<h4>使用するノード・ライブラリ（まとめ）</h4>
+<ul><li>値の設定（代入・文字列連結）</li><li>アプリケーション実行（メモ帳起動）</li><li>待機ボックス</li><li>文字列送信／文字列設定（入力）</li></ul>
+<h4>完成後の動作確認</h4>
+<ol><li><strong>ステップ実行</strong>で、変数一覧の <code>担当者名</code> → <code>挨拶本文</code> に値が入る様子を確認</li><li>通しで実行し、メモ帳に宛名入りの文章が出ることを確認</li><li><code>担当者名</code> の初期値を <code>佐藤</code> に変えて再実行 → すべて佐藤に変われば成功（これが変数の威力）</li><li>保存（例：<code>H2_宛名入り挨拶文_v1</code>）</li></ol>
+<h4>よくあるエラーと対処</h4>
+<div class="tbl-wrap"><table><thead><tr><th>症状</th><th>原因</th><th>対処</th></tr></thead><tbody><tr><td><code>[担当者名]</code> がそのまま文字で出る</td><td>変数参照の書き方が違う</td><td>版の参照記法を確認（設定欄で変数選択できることが多い）</td></tr><tr><td>改行されず1行になる</td><td>改行の入れ方が違う</td><td>行ごとに入力ノードを分ける／改行コードを使う</td></tr><tr><td>一部だけ古い名前が残る</td><td>文章内に固定値が混在</td><td>差し込み箇所を<strong>すべて変数参照</strong>に統一</td></tr><tr><td>文字化け・入らない</td><td>送信方式の相性</td><td>文字列設定系に変更して切り分け</td></tr></tbody></table></div>
+<h4>改善ポイント</h4>
+<ul><li>文章の「変わる部分」を洗い出し、<strong>すべて変数化</strong>する（宛名・日付・件名など）。</li><li>変数はシナリオ先頭でまとめて設定 → 後から値を探しやすい。</li></ul>
+<h4>応用課題（次章への橋渡し）</h4>
+<ol><li><code>処理日</code>（日付型）を追加し、文章に「本日（2026-07-18）」のように今日の日付を差し込む。</li><li><code>社員一覧.csv</code> から名前を1つ読み込み、<code>担当者名</code> に入れて自動化する。</li><li>さらに、社員一覧の<strong>全員分</strong>を1件ずつ処理する（→ これは教材8「繰り返し」で扱う）。</li></ol>
+<blockquote>応用3の「全員分を回す」で、変数＋繰り返しの組み合わせに進みます。変数は<strong>繰り返し・条件分岐と組み合わせて真価を発揮</strong>します。</blockquote>
+<hr>
+<h3>5-8. 変数の考え方（図まとめ）</h3>
+<pre><code>        ┌───────────── シナリオ ─────────────┐
+入口 →  │ [対象ファイル] [担当者名] [出力先] を先頭で設定 │
+        │           │        │        │              │
+        │           ▼        ▼        ▼              │
+        │   各ノードが「箱の中身」を参照して動く          │
+        │           │                                 │
+出口 →  │   箱の中身を変えるだけで、全体の動きが変わる      │
+        └───────────────────────────────────┘
+   ＝ 「変わる値」を箱に外出しする ＝ 使い回せる・壊れにくい</code></pre>
+<hr>
+<h3>5-9. 確認テスト（解答・解説付き）</h3>
+<p><strong>Q1.（選択）</strong> 変数を使う一番の利点は？<br>A. 実行が速くなる B. 値を1か所変えるだけでシナリオ全体に反映でき、使い回せる C. ライセンスが安くなる D. エラーが絶対に出なくなる</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。変数＝変わる値を外出しして使い回す仕組み。速度やライセンス、エラーゼロとは無関係。</div></div>
+<p><strong>Q2.（選択）</strong> 金額を足し算したいのに <code>50</code> + <code>30</code> が <code>5030</code> になった。原因は？<br>A. WinActorの不具合 B. 変数が文字列型になっている C. メモリ不足 D. ライセンス切れ</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。文字列は連結される。<strong>数値型に変換</strong>してから計算する。</div></div>
+<p><strong>Q3.（穴埋め）</strong> 変数には（　①　）を付け、入れる値の種類である（　②　）を意識する。先頭に0が付く番号は（　③　）型で持つ。</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：①名前（変数名） ②型 ③文字列</div></div>
+<p><strong>Q4.（一問一答）</strong> <code>変数1</code> という名前が実務で良くない理由は？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：中身・用途が分からず、後で自分も他人も読めない（保守できない）から。用途が分かる名前にする。</div></div>
+<p><strong>Q5.（実務判断）</strong> 次のうち「変数にすべき」ものはどれ？（複数）<br>A. 毎回変わる顧客名 B. 出力先フォルダのパス C. 絶対に変わらない固定の会社ロゴ画像の位置（1回だけ使用） D. 処理する日付</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：A・B・D。変わる値・環境で変わる値・日付は変数化。Cのような一度きり不変の値は固定でも可。</div></div>
+<p><strong>Q6.（並べ替え）</strong> 変数を使ったシナリオ作成の流れを正しい順に。<br>（ア）変数に値を設定する （イ）変わる部分を洗い出す （ウ）変数を参照して処理を作る （エ）値を変えて再実行し使い回せるか確認</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：イ → ア → ウ → エ。まず「変わる部分」を見つけ、箱を用意し、参照して作り、差し替えて確認。</div></div>
+<hr>
+<h3>5-10. この教材のまとめ</h3>
+<ul><li>変数＝あとで使う値を入れる「名前つきの箱」。<strong>変わる値は基本すべて変数化</strong>。</li><li>固定値だと変更のたびに全書き換え。変数なら1か所変えるだけ・使い回せる・繰り返せる。</li><li>型（文字列/数値/日付/パス）を意識。計算は数値、0始まり番号は文字列。</li><li>変数名は<strong>用途が分かる名前</strong>に。チームで命名ルールを統一。</li><li>環境で変わる値（パス・ログイン情報）は<strong>先頭でまとめて変数設定</strong>すると移設が楽。</li><li>変数は<strong>繰り返し・条件分岐と組み合わせて</strong>真価を発揮する。</li></ul>
+<p><strong>次の教材</strong>：教材5「Excel操作の自動化（第6章）」——実務で最も使うExcelの読み書き・転記を学び、ハンズオンH3/E1「売上一覧を別フォーマットへ転記」を作ります。</p>
+<blockquote>リマインド：変数の参照記法・型変換の方法・「値の設定」の書き方は<strong>バージョンで異なります</strong>。実機と違う場合は公式マニュアルを正としてください。</blockquote></section>
+<section class="chapter" id="ch3" data-idx="3" hidden><h2>WinActor 教材5｜Excel操作の自動化（第6章）／ハンズオンH3・E1</h2>
+<blockquote>対象：WinActor／RPAを初めて学ぶ人・非エンジニアの業務担当者<br>前提：教材1〜4（入門・基本画面・はじめてのシナリオ・変数）を終えていること<br>共通注意：ノード名・ライブラリ名・機能はバージョンで変わります。本教材の名称は「Ver.7系の一例」。対応Excelは<strong>Excel 2021／2024</strong>（xls/xlsx/xlsm利用時、要インストール）。実機と違う場合は公式マニュアルを正としてください。</blockquote>
+<p><strong>この教材のゴール</strong>：Excelを開いてセルを読み書きし、<strong>一覧を別フォーマットへ転記・保存</strong>できるようになる。Excel自動化でつまずく定番ポイントを避けられる。</p>
+<hr>
+<h3>6-1. なぜ最初にExcelなのか</h3>
+<p>RPAの導入業務で<strong>最も多いのがExcel絡み</strong>です。「転記」「集計」「フォーマット変換」は、どの部署にもあり、効果が出やすい。Excelを扱えれば、実務の入口の大半をカバーできます。</p>
+<hr>
+<h3>6-2. WinActorのExcel操作、2つのやり方</h3>
+<p>Excelの扱いには大きく2系統あります。特徴を理解して使い分けます。</p>
+<div class="tbl-wrap"><table><thead><tr><th>方式</th><th>中身</th><th>長所</th><th>短所・注意</th></tr></thead><tbody><tr><td><strong>Excel操作ライブラリ</strong>（Excelを裏で動かす）</td><td>Excel本体を使って読み書き</td><td>書式・数式・シート操作に強い</td><td><strong>Excelのインストールが必要</strong>、開閉の管理が要る</td></tr><tr><td><strong>ファイルとして読む</strong>（CSV等）</td><td>Excelを起動せずデータだけ扱う</td><td>速い・軽い・安定</td><td>書式や数式は扱えない、CSV中心</td></tr></tbody></table></div>
+<p><strong>使い分けの目安</strong>：</p>
+<ul><li>書式・数式・複数シート・見た目が大事 → <strong>Excel操作ライブラリ</strong></li><li>大量データを速く読みたい・単純な表 → <strong>CSV（ファイル読み）</strong></li></ul>
+<blockquote>本教材はまず「Excel操作ライブラリ」を中心に、実務の王道パターンを学びます。CSVは教材で扱う <code>売上一覧.csv</code> を <code>.xlsx</code> に保存し直して使うか、CSV読み込みライブラリを使います。</blockquote>
+<hr>
+<h3>6-3. Excel自動化の基本フロー（超重要）</h3>
+<p>Excel操作は、<strong>必ずこの順番</strong>で組みます。ここを守るとトラブルが激減します。</p>
+<pre><code>① 開く      Excelファイルを開く（対象を変数[対象ファイル]で指定）
+    ▼
+② 読む/書く  セルの値を取得／セルへ値を設定（必要なだけ繰り返す）
+    ▼
+③ 保存      変更したら保存（別名保存が安全）
+    ▼
+④ 閉じる    必ず閉じる（開きっぱなしは事故のもと）★忘れやすい</code></pre>
+<p><strong>④の「閉じる」を忘れると</strong>、次の実行でファイルが開けない・固まる、といった典型トラブルになります。<strong>開いたら必ず閉じる</strong>をセットで覚えてください。</p>
+<hr>
+<h3>6-4. 基本操作を1つずつ</h3>
+<h4>Excelを開く</h4>
+<ul><li>ライブラリ「Excel操作（開く）」系で、対象ファイルのパスを指定。</li><li>パスは<strong>変数 <code>対象ファイルパス</code></strong> にしておくと、別環境でも変えやすい。</li></ul>
+<h4>セルの値を読む</h4>
+<ul><li>「Excel操作（値の取得）」で、シート名・セル位置（例：<code>A2</code>）を指定 → 結果を変数に入れる。</li><li><strong>読んだ値は文字列で入ることが多い</strong>。計算する前に数値変換。</li></ul>
+<h4>セルに値を書く</h4>
+<ul><li>「Excel操作（値の設定）」で、シート・セル・入れる値（変数可）を指定。</li></ul>
+<h4>行を追加する / 表を読み込む</h4>
+<ul><li>最終行の次に書けば「追加」。表全体はループ（繰り返し）で1行ずつ読む（教材8で詳説）。</li><li>「最終行を取得」系ライブラリで、データが何行あるかを先に知るのが定石。</li></ul>
+<h4>集計する</h4>
+<ul><li>単純な合計はループで数値を足す、またはExcelの数式セルを読む。</li><li>「担当ごとの合計」などは、読みながら変数に足し込む。</li></ul>
+<h4>別ファイルに転記する</h4>
+<ul><li>読み込み元Excelと、書き込み先Excelの<strong>2つを開いて</strong>、値を移す。</li><li>元は読むだけ（保存不要）、先は書いたら保存。</li></ul>
+<hr>
+<h3>6-5. Excel操作で失敗しやすいポイント（保存版）</h3>
+<div class="tbl-wrap"><table><thead><tr><th>つまずき</th><th>何が起きる</th><th>対策</th></tr></thead><tbody><tr><td><strong>閉じ忘れ</strong></td><td>次回開けない・固まる・プロセス残留</td><td>最後に必ず「閉じる」。エラー時も閉じる設計に</td></tr><tr><td><strong>開きっぱなしで二重起動</strong></td><td>ファイルロック・保存できない</td><td>実行前に手動で開いているExcelを閉じる</td></tr><tr><td><strong>セル位置のズレ</strong></td><td>見出し行を데ータと誤認、1行ずれる</td><td>データ開始行を確認（見出しがA1ならデータはA2から）</td></tr><tr><td><strong>シート名違い</strong></td><td>「シートが見つからない」エラー</td><td>シート名を正確に。変数化して1か所管理</td></tr><tr><td><strong>拡張子違い</strong></td><td>読めない/書けない</td><td><code>.xlsx</code>/<code>.xls</code>/<code>.csv</code>/<code>.xlsm</code>を区別。CSVはExcel形式でない</td></tr><tr><td><strong>数値が文字列</strong></td><td>合計できない・書式が変</td><td>読んだ値を数値変換してから計算</td></tr><tr><td><strong>絶対パス直書き</strong></td><td>別PCで動かない</td><td>パスを変数化。相対運用ルールを決める</td></tr><tr><td><strong>空セル/欠損</strong></td><td>想定外の空値でエラー</td><td>空チェック（空なら飛ばす/初期値を入れる）</td></tr><tr><td><strong>上書き保存で原本破壊</strong></td><td>元データが消える</td><td><strong>別名保存</strong>（出力用ファイルに書く）</td></tr></tbody></table></div>
+<hr>
+<h3>6-6. ハンズオンH3／E1：売上一覧を別フォーマットへ転記する</h3>
+<h4>目的</h4>
+<p>Excel（またはCSV）から一覧を読み、<strong>別フォーマットの表</strong>へ転記して保存する。実務で最頻出の「転記」を体験する。</p>
+<h4>完成イメージ</h4>
+<p>入力（売上一覧）:</p>
+<pre><code>日付        商品コード  商品名     数量  単価  担当
+2026-07-01  P100       ノートA    10    120   山田
+2026-07-01  P200       ペンB      50    80    佐藤
+...</code></pre>
+<p>↓ 転記・加工 ↓<br>出力（売上レポート）:</p>
+<pre><code>No  商品名     担当    金額（数量×単価）
+1   ノートA    山田    1,200
+2   ペンB      佐藤    4,000
+...
+                       合計   合計金額</code></pre>
+<ul><li>「金額」は <strong>数量 × 単価</strong> を計算して入れる（変数＝数値の練習）</li><li>最終行に<strong>合計</strong>を入れる</li></ul>
+<h4>使用するサンプルデータ</h4>
+<p>教材1付録の <code>売上一覧.csv</code>（下記）を <code>売上一覧.xlsx</code> として保存して使用（またはCSV読み込みで代用）。</p>
+<pre><code>日付,商品コード,商品名,数量,単価,担当
+2026-07-01,P100,ノートA,10,120,山田
+2026-07-01,P200,ペンB,50,80,佐藤
+2026-07-02,P100,ノートA,5,120,鈴木
+2026-07-02,P300,消しゴムC,30,50,山田
+2026-07-03,P200,ペンB,20,80,高橋</code></pre>
+<h4>事前準備</h4>
+<ul><li>Excel 2021/2024 がインストールされていること（Excel操作ライブラリ使用時）</li><li><code>売上一覧.xlsx</code> を作業フォルダに配置</li><li>出力用に空の <code>売上レポート.xlsx</code>（見出しだけ：No / 商品名 / 担当 / 金額）を用意</li></ul>
+<h4>変数一覧</h4>
+<div class="tbl-wrap"><table><thead><tr><th>変数名</th><th>型</th><th>初期値</th><th>用途</th></tr></thead><tbody><tr><td><code>入力ファイルパス</code></td><td>ファイルパス</td><td>C:\...\売上一覧.xlsx</td><td>読み込み元</td></tr><tr><td><code>出力ファイルパス</code></td><td>ファイルパス</td><td>C:\...\売上レポート.xlsx</td><td>書き込み先</td></tr><tr><td><code>最終行</code></td><td>数値</td><td>（取得）</td><td>データが何行あるか</td></tr><tr><td><code>行番号</code></td><td>数値</td><td>2</td><td>現在処理中の行（データは2行目から）</td></tr><tr><td><code>出力行番号</code></td><td>数値</td><td>2</td><td>出力先の書き込み行</td></tr><tr><td><code>商品名</code></td><td>文字列</td><td>（空）</td><td>読み取り値</td></tr><tr><td><code>担当</code></td><td>文字列</td><td>（空）</td><td>読み取り値</td></tr><tr><td><code>数量</code></td><td>数値</td><td>0</td><td>読み取り値（数値変換）</td></tr><tr><td><code>単価</code></td><td>数値</td><td>0</td><td>読み取り値（数値変換）</td></tr><tr><td><code>金額</code></td><td>数値</td><td>0</td><td>数量×単価</td></tr><tr><td><code>合計金額</code></td><td>数値</td><td>0</td><td>全行の金額合計</td></tr></tbody></table></div>
+<h4>操作手順（シナリオ設計）</h4>
+<p>日本語で手順を書く。</p>
+<pre><code>1. 入力Excelを開く
+2. データの最終行を取得して[最終行]に入れる
+3. [行番号]=2 から [最終行] まで繰り返す：
+   3-1. 商品名(C列)・担当(F列)・数量(D列)・単価(E列)を読む
+   3-2. 数量・単価を数値に変換
+   3-3. [金額] = [数量] × [単価]
+   3-4. [合計金額] に [金額] を足す
+   3-5. 出力Excelの[出力行番号]行に No/商品名/担当/金額 を書く
+   3-6. [出力行番号] を +1、[行番号] を +1
+4. 出力Excelの合計欄に[合計金額]を書く
+5. 出力Excelを保存して閉じる
+6. 入力Excelを閉じる</code></pre>
+<p>WinActorのノード構成（一例）。</p>
+<div class="tbl-wrap"><table><thead><tr><th>順</th><th>ノード／ライブラリ（一例）</th><th>設定</th></tr></thead><tbody><tr><td>1</td><td>Excel操作（開く）</td><td><code>入力ファイルパス</code></td></tr><tr><td>2</td><td>Excel操作（開く）</td><td><code>出力ファイルパス</code></td></tr><tr><td>3</td><td>Excel操作（最終行取得）</td><td>結果 → <code>最終行</code></td></tr><tr><td>4</td><td>繰り返し（前判定）</td><td><code>行番号</code> &lt;= <code>最終行</code> の間</td></tr><tr><td>5</td><td>Excel操作（値の取得）×4</td><td>C/F/D/E列 → <code>商品名</code>/<code>担当</code>/<code>数量</code>/<code>単価</code></td></tr><tr><td>6</td><td>数値変換</td><td><code>数量</code>・<code>単価</code> を数値へ</td></tr><tr><td>7</td><td>値の設定（計算）</td><td><code>金額 ← 数量 × 単価</code>、<code>合計金額 ← 合計金額 + 金額</code></td></tr><tr><td>8</td><td>Excel操作（値の設定）×4</td><td>出力の No/商品名/担当/金額</td></tr><tr><td>9</td><td>値の設定</td><td><code>出力行番号 +1</code>、<code>行番号 +1</code></td></tr><tr><td>（繰り返しの外）10</td><td>Excel操作（値の設定）</td><td>合計欄に <code>合計金額</code></td></tr><tr><td>11</td><td>Excel操作（保存）</td><td>出力ファイル</td></tr><tr><td>12</td><td>Excel操作（閉じる）×2</td><td>出力・入力の両方</td></tr></tbody></table></div>
+<blockquote>「繰り返し」と「分岐」は次の教材（第9章）で詳しく扱いますが、ここでは「上から下へ何度も回す箱」として使います。列指定（C列＝商品名など）は入力データの並びに合わせてください。</blockquote>
+<h4>使用するノード・ライブラリ（まとめ）</h4>
+<ul><li>Excel操作：開く／最終行取得／値の取得／値の設定／保存／閉じる</li><li>繰り返し（前判定ループ）</li><li>値の設定（代入・四則演算）／数値変換</li></ul>
+<h4>完成後の動作確認</h4>
+<ol><li><strong>ステップ実行</strong>で、1行目（ノートA）が読まれ、<code>金額</code>＝10×120＝1200 になるか確認</li><li>通しで実行し、<code>売上レポート.xlsx</code> に全5件＋合計が出るか確認</li><li>手計算と合計が一致するか照合（1200+4000+600+1500+1600＝8900）</li><li>保存し、シナリオも保存（例：<code>E1_売上転記_v1</code>）</li></ol>
+<h4>よくあるエラーと対処</h4>
+<div class="tbl-wrap"><table><thead><tr><th>症状</th><th>原因</th><th>対処</th></tr></thead><tbody><tr><td>「ファイルが開けない」</td><td>前回の閉じ忘れ/手動で開いている</td><td>Excelを全部閉じて再実行。閉じるノードを確実に</td></tr><tr><td>金額が計算されない/文字連結される</td><td>数量・単価が文字列のまま</td><td>数値変換を入れる</td></tr><tr><td>1行ずれる/見出しが混ざる</td><td>データ開始行の誤り</td><td>開始行を2に、最終行取得を確認</td></tr><tr><td>合計が合わない</td><td>合計の初期化漏れ/足す位置が違う</td><td><code>合計金額</code>初期値0、足し込みはループ内</td></tr><tr><td>途中で止まる</td><td>空セル・欠損行</td><td>空チェックを入れて飛ばす</td></tr><tr><td>出力が上書きで消える</td><td>入力ファイルに書いていた</td><td>出力は別ファイルへ。別名保存</td></tr></tbody></table></div>
+<h4>改善ポイント</h4>
+<ul><li>入力/出力パスを<strong>シナリオ先頭でまとめて変数設定</strong> → 別フォルダ移設が一発。</li><li>列番号を変数化（<code>商品名列</code> など）すると、様式変更に強くなる。</li><li>空行・不正データは<strong>エラー一覧に記録して飛ばす</strong>（例外設計＝教材9で）。</li></ul>
+<h4>応用課題</h4>
+<ol><li>「担当ごとの合計金額」を集計して、担当別レポートも出す。</li><li>出力ファイル名に<strong>処理日</strong>を付ける（<code>売上レポート_20260718.xlsx</code>）。</li><li>金額が一定額以上の行だけ「要確認」列に印を付ける（条件分岐＝教材7へ）。</li></ol>
+<hr>
+<h3>6-7. Excel自動化 処理フロー（図まとめ）</h3>
+<pre><code>[開始]
+  │
+  ▼ 入力Excelを開く ── 出力Excelを開く
+  │
+  ▼ 最終行を取得
+  │
+  ▼ ┌──── 繰り返し（行番号 = 2 → 最終行）────┐
+  │  │ 値を読む → 数値変換 → 金額計算 → 合計加算 │
+  │  │ 出力に書く → 行番号 +1                    │
+  │  └──────────────────────────────┘
+  ▼ 合計を書く
+  │
+  ▼ 保存 → 両方閉じる ★閉じ忘れ厳禁
+  │
+[終了]</code></pre>
+<hr>
+<h3>6-8. 確認テスト（解答・解説付き）</h3>
+<p><strong>Q1.（選択）</strong> Excel操作で最も忘れやすく、忘れると次回に開けない等の事故になるのは？<br>A. 保存 B. 閉じる C. シート選択 D. 色付け</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。開いたら必ず閉じる。エラー時も閉じる設計に。</div></div>
+<p><strong>Q2.（選択）</strong> Excelから読んだ「数量」で掛け算しようとしたら文字が連結された。原因と対策は？<br>A. Excelの故障 / 再起動 B. 値が文字列型 / 数値変換してから計算 C. ライセンス / 更新 D. パス誤り / パス修正</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。読み取り値は文字列で入りやすい。数値変換が必要。</div></div>
+<p><strong>Q3.（穴埋め）</strong> Excel自動化は「①（　　）→②読む/書く→③（　　）→④（　　）」の順で組む。特に④を忘れると事故になる。</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：①開く ③保存 ④閉じる</div></div>
+<p><strong>Q4.（一問一答）</strong> 元データを壊さず結果を残すには、どう保存する？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：別名保存（出力用の別ファイルに書く）。入力ファイルは読むだけにする。</div></div>
+<p><strong>Q5.（実務判断）</strong> 「書式・数式・複数シートを保ったまま処理したい」。どちらの方式が適切？<br>A. CSVとしてファイル読み込み B. Excel操作ライブラリ（Excel本体を使う）</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。書式・数式・シートを扱うにはExcel操作ライブラリ（Excelインストールが前提）。CSVは書式を持てない。</div></div>
+<p><strong>Q6.（並べ替え）</strong> 売上転記シナリオの正しい流れに並べ替え。<br>（ア）保存して閉じる （イ）入力・出力Excelを開く （ウ）最終行取得 （エ）行ごとに読む→計算→書く（繰り返し） （オ）合計を書く</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：イ → ウ → エ → オ → ア。</div></div>
+<hr>
+<h3>6-9. この教材のまとめ</h3>
+<ul><li>Excelは実務RPAの入口。転記・集計・変換は効果が出やすい。</li><li>方式は「Excel操作ライブラリ（書式・数式に強い／要Excel）」と「CSVファイル読み（速い・軽い）」を使い分け。</li><li>基本フローは<strong>開く→読む/書く→保存→閉じる</strong>。<strong>閉じ忘れ厳禁</strong>。</li><li>つまずき定番：閉じ忘れ・セルズレ・シート名・数値/文字列・絶対パス・上書き破壊。</li><li>入出力パスは先頭で変数化、元データは壊さず別名保存。</li></ul>
+<p><strong>次の教材</strong>：教材6「Web操作の自動化（第7章）」——ブラウザのログイン・フォーム入力・要素が見つからない時の対処を学び、ハンズオンH4/E4「Webに顧客情報を入力」を作ります。</p>
+<blockquote>リマインド：Excel操作ライブラリの名称・引数、CSV読み込み、数値変換の方法は<strong>バージョンで異なります</strong>。対応Excelは2021/2024。実機と違う場合は公式マニュアルを正としてください。</blockquote></section>
+<section class="chapter" id="ch4" data-idx="4" hidden><h2>WinActor 教材6｜Web操作の自動化（第7章）／ハンズオンH4・E4</h2>
+<blockquote>対象：WinActor／RPAを初めて学ぶ人・非エンジニアの業務担当者<br>前提：教材1〜5（入門・基本画面・シナリオ作成・変数・Excel）を終えていること<br>共通注意：ノード名・ライブラリ名・ブラウザ拡張の名称はバージョンで変わります。対応ブラウザは<strong>Chrome（100以降）／Firefox（96以降）／Edge Chromium版（100以降）</strong>（自動記録・自動操作対応・要確認）。実機と違う場合は公式マニュアルを正としてください。</blockquote>
+<p><strong>この教材のゴール</strong>：ブラウザを開いてログインし、フォームに入力・クリック・結果取得ができる。<strong>「要素が見つからない」定番トラブルの原因を切り分け</strong>られる。</p>
+<hr>
+<h3>7-1. Web操作の考え方（Excelとの違い）</h3>
+<p>Excelは「決まったセル位置」を読み書きしましたが、Webは<strong>「画面の中のどの部品（要素）を操作するか」</strong>を指定します。ボタン・入力欄・リンクなど1つ1つが「要素」です。</p>
+<pre><code>Excel：       セルA2 の値を読む（位置が固定）
+Web ：        「ユーザー名」の入力欄に文字を入れる（要素を指定）
+              「ログイン」ボタンをクリックする（要素を指定）</code></pre>
+<p>Webが不安定になりやすいのは、<strong>画面が変わる・表示に時間がかかる</strong>からです。だからWeb操作は「<strong>待つ</strong>」ことがとても重要になります。</p>
+<hr>
+<h3>7-2. 事前準備：ブラウザ拡張・対応ブラウザ</h3>
+<p>WinActorでブラウザを自動操作するには、<strong>対応ブラウザ＋専用の拡張機能</strong>の準備が必要な場合があります（版・ブラウザによる）。</p>
+<ul><li>対応ブラウザ：Chrome / Firefox / Edge（いずれも一定バージョン以上・要確認）</li><li>ブラウザ拡張（アドオン）の導入：公式手順に従う</li><li>会社PCでは拡張導入に<strong>管理者権限や情報システム部門の許可</strong>が要ることがある → 先に確認</li></ul>
+<blockquote>つまずき第一号が「拡張が入っていなくてブラウザ操作が動かない」です。ハンズオン前に必ず準備を済ませてください。</blockquote>
+<hr>
+<h3>7-3. Web自動化の基本フロー</h3>
+<pre><code>① ブラウザでページを開く（URLを指定）
+    ▼
+② 表示されるまで待つ（★重要：要素が出る前に操作しない）
+    ▼
+③ 入力欄に文字を入れる（ID/パスワード/検索語 など）
+    ▼
+④ ボタン・リンクをクリックする
+    ▼
+⑤ 画面遷移を待つ（次のページが出るまで）
+    ▼
+⑥ 必要な値を取得する（検索結果・メッセージ など）
+    ▼
+⑦ 繰り返す/次へ、最後にブラウザを閉じる</code></pre>
+<p><strong>②と⑤の「待つ」を省くと失敗します。</strong>「画面が出た＝すぐ操作できる」ではありません。</p>
+<hr>
+<h3>7-4. 要素の指定方法（クリック・入力の当て先）</h3>
+<p>WinActorでは、操作したい要素を次のような方法で指定します（版により呼び名が異なる）。</p>
+<div class="tbl-wrap"><table><thead><tr><th>指定方法</th><th>内容</th><th>強さ</th></tr></thead><tbody><tr><td>要素の属性（name/id など）</td><td>部品の「名札」で指定</td><td>安定（推奨）</td></tr><tr><td>画面上の位置・見出しラベル</td><td>「ユーザー名」の隣の欄 など</td><td>中</td></tr><tr><td>画像認識</td><td>見た目の画像で探す</td><td>画面変更に弱い</td></tr><tr><td>座標（xy）</td><td>画面の座標で押す</td><td><strong>最も弱い</strong>（解像度で崩れる）</td></tr></tbody></table></div>
+<p><strong>実務の原則</strong>：できるだけ<strong>属性（id/name）で指定</strong>する。座標依存は避ける（PCや解像度が変わると全部ずれる）。</p>
+<hr>
+<h3>7-5. 「要素が見つからない」時の切り分け（最重要スキル）</h3>
+<p>Web自動化のトラブルの8割は「要素が見つからない／操作できない」です。次の順で切り分けます。</p>
+<pre><code>1. まだ表示されていない？   → 待機を足す／「要素が出るまで待つ」を使う
+2. 別の画面/タブにいる？    → 対象ウィンドウ・タブが正しいか確認
+3. 要素の指定が古い？       → 画面変更で名札が変わった。指定を取り直す
+4. フレーム内にある？       → iframe（画面内画面）の中は別途指定が必要
+5. ポップアップ/別窓？      → 新しいウィンドウに切り替えているか
+6. 読み込みが遅い？         → 通信・サーバ都合。待機を長めに/リトライ</code></pre>
+<p><strong>最初にやるのは「待機を足す」</strong>。これで直ることが非常に多いです。それでもダメなら要素指定を疑います。</p>
+<hr>
+<h3>7-6. ログイン処理の作り方（型）</h3>
+<pre><code>1. ログインページを開く
+2. ページ表示を待つ
+3. [ユーザー名]欄に ID を入力
+4. [パスワード]欄に PW を入力
+5. [ログイン]ボタンをクリック
+6. ログイン後の画面が出るまで待つ
+7. ログイン成功を確認（特定の文字/要素が出たか）</code></pre>
+<p><strong>セキュリティ注意（実務必須）</strong>：</p>
+<ul><li>IDやパスワードを<strong>シナリオに直書きしない</strong>。設定ファイル・環境変数・WinActorの資格情報管理など、<strong>外出し</strong>にする（版の機能を確認）。</li><li>シナリオファイルを共有・引き継ぐ時に<strong>認証情報が漏れない</strong>運用にする。</li><li>ログイン失敗が続くと<strong>アカウントロック</strong>の恐れ。リトライ回数を決める。</li></ul>
+<hr>
+<h3>7-7. ハンズオンH4／E4：Webシステムに顧客情報を入力する</h3>
+<h4>目的</h4>
+<p>ブラウザを開いてログインし、フォームに顧客情報を入力・送信する。要素指定と「待つ」を体験する。</p>
+<h4>完成イメージ</h4>
+<ul><li>テスト用のWebフォームを開く</li><li>ID/PWでログイン（練習用サイトの場合）</li><li>「氏名」「会社名」「メール」「電話」欄に、Excel/CSVの顧客1件分を入力</li><li>「登録」ボタンをクリック → 完了メッセージを確認</li></ul>
+<h4>使用するサンプルデータ</h4>
+<p>教材1付録 <code>顧客一覧.csv</code>（下記）。まずは<strong>1件（C001 山田太郎）</strong>だけ入力する。</p>
+<pre><code>顧客ID,氏名,会社名,メール,電話
+C001,山田太郎,あおぞら商事,taro@example.com,03-1111-0001
+C002,佐藤花子,みどり物産,hanako@example.com,03-1111-0002
+...</code></pre>
+<h4>事前準備</h4>
+<ul><li>対応ブラウザ＋WinActorのブラウザ拡張が導入済み</li><li><strong>練習用のWebフォーム</strong>を用意（次のいずれか）</li><li>社内のテスト環境（本番は使わない）</li><li>自作の簡単なHTMLフォーム（氏名/会社/メール/電話/登録ボタン）※ローカルファイルでOK</li><li>公開の練習用フォーム（利用規約を確認）</li><li><code>顧客一覧.csv</code> を作業フォルダに配置</li></ul>
+<blockquote><strong>重要</strong>：練習は必ず<strong>テスト環境・ダミーデータ</strong>で。本番システムや他人の個人情報では絶対に行わない。</blockquote>
+<h4>変数一覧</h4>
+<div class="tbl-wrap"><table><thead><tr><th>変数名</th><th>型</th><th>用途</th></tr></thead><tbody><tr><td><code>対象URL</code></td><td>文字列</td><td>フォームのURL/ファイルパス</td></tr><tr><td><code>ユーザーID</code></td><td>文字列</td><td>ログインID（外出し推奨）</td></tr><tr><td><code>パスワード</code></td><td>文字列</td><td>ログインPW（外出し推奨）</td></tr><tr><td><code>顧客ID</code></td><td>文字列</td><td>読み取り</td></tr><tr><td><code>氏名</code></td><td>文字列</td><td>入力値</td></tr><tr><td><code>会社名</code></td><td>文字列</td><td>入力値</td></tr><tr><td><code>メール</code></td><td>文字列</td><td>入力値</td></tr><tr><td><code>電話</code></td><td>文字列</td><td>入力値</td></tr></tbody></table></div>
+<h4>操作手順（シナリオ設計）</h4>
+<p>日本語で手順を書く。</p>
+<pre><code>1. CSVから1件分（氏名/会社/メール/電話）を読み、変数に入れる
+2. ブラウザで[対象URL]を開く
+3. ページ表示を待つ
+4. （ログインが必要なら）ID/PWを入力→ログイン→待つ
+5. 「氏名」欄に[氏名]を入力
+6. 「会社名」欄に[会社名]を入力
+7. 「メール」欄に[メール]を入力
+8. 「電話」欄に[電話]を入力
+9. 「登録」ボタンをクリック
+10. 完了メッセージが出るまで待つ→成功を確認
+11. ブラウザを閉じる</code></pre>
+<p>WinActorのノード構成（一例）。</p>
+<div class="tbl-wrap"><table><thead><tr><th>順</th><th>ノード／ライブラリ（一例）</th><th>設定</th></tr></thead><tbody><tr><td>1</td><td>CSV読み込み／Excel値取得</td><td>1行分 → <code>氏名</code>ほか</td></tr><tr><td>2</td><td>ブラウザ操作（開く/ページ移動）</td><td><code>対象URL</code></td></tr><tr><td>3</td><td>待機（要素が出るまで待つ）</td><td>ページ表示待ち</td></tr><tr><td>4</td><td>ブラウザ操作（入力）×4</td><td>各欄に <code>氏名</code>/<code>会社名</code>/<code>メール</code>/<code>電話</code></td></tr><tr><td>5</td><td>ブラウザ操作（クリック）</td><td>「登録」ボタン</td></tr><tr><td>6</td><td>待機（要素が出るまで待つ）</td><td>完了メッセージ待ち</td></tr><tr><td>7</td><td>ブラウザ操作（値の取得）</td><td>完了メッセージ → 確認</td></tr><tr><td>8</td><td>ブラウザ操作（閉じる）</td><td>ブラウザを閉じる</td></tr></tbody></table></div>
+<blockquote>各入力欄・ボタンは、実際の画面で<strong>要素を取得（キャプチャ）</strong>して指定します。取得方法は版により異なります（記録機能で拾う／要素選択ツールを使う 等）。</blockquote>
+<h4>使用するノード・ライブラリ（まとめ）</h4>
+<ul><li>ブラウザ操作：開く／入力／クリック／値の取得／閉じる</li><li>待機（要素が出るまで待つ）</li><li>CSV読み込み／Excel値取得</li></ul>
+<h4>完成後の動作確認</h4>
+<ol><li><strong>ステップ実行</strong>で、各欄に正しい値が入るか1つずつ確認</li><li>通しで実行し、1件が登録され完了メッセージが出るか確認</li><li>値がズレる欄がないか（氏名欄に会社名が入る等）を確認</li><li>保存（例：<code>E4_Web顧客入力_v1</code>）</li></ol>
+<h4>よくあるエラーと対処</h4>
+<div class="tbl-wrap"><table><thead><tr><th>症状</th><th>原因</th><th>対処</th></tr></thead><tbody><tr><td>「要素が見つからない」</td><td>表示前に操作/指定が古い</td><td><strong>待機を足す</strong>→要素指定を取り直す</td></tr><tr><td>別の欄に入る/ズレる</td><td>要素指定が隣とかぶった</td><td>属性（id/name）で厳密に指定</td></tr><tr><td>ブラウザ操作が全く動かない</td><td>拡張未導入/非対応バージョン</td><td>対応ブラウザ＋拡張を公式手順で確認</td></tr><tr><td>ログインできない</td><td>ID/PW誤り/ロック</td><td>認証情報を確認。リトライ回数を制限</td></tr><tr><td>フレーム内で押せない</td><td>iframeの中にある</td><td>フレーム指定をしてから操作</td></tr><tr><td>途中で止まる</td><td>通信遅延で表示待ちが不足</td><td>待機を長めに/リトライを入れる</td></tr></tbody></table></div>
+<h4>改善ポイント</h4>
+<ul><li>認証情報は<strong>直書きしない</strong>（外部設定・資格情報管理へ）。</li><li>待機は「固定◯秒」より「<strong>要素が出るまで待つ</strong>」を優先（速く・安定）。</li><li>要素は座標でなく<strong>属性で指定</strong>して画面変更に強くする。</li></ul>
+<h4>応用課題（次章への橋渡し）</h4>
+<ol><li><code>顧客一覧.csv</code> の<strong>全件</strong>を1件ずつ入力する（繰り返し＝教材8）。</li><li>メール欄が空の行は<strong>スキップ</strong>して、エラー一覧に記録する（条件分岐・例外＝教材7/9）。</li><li>登録結果（成功/失敗）を<strong>処理ログ</strong>に書き出す（教材で扱うログ設計）。</li></ol>
+<hr>
+<h3>7-8. Web自動化 処理フロー（図まとめ）</h3>
+<pre><code>[開始]
+  │
+  ▼ データを1件読む（CSV/Excel）
+  │
+  ▼ ブラウザでページを開く
+  │
+  ▼ 【待つ】表示されるまで ★
+  │
+  ▼ （必要なら）ログイン → 【待つ】
+  │
+  ▼ 各欄に入力（属性で指定）
+  │
+  ▼ 登録ボタンをクリック
+  │
+  ▼ 【待つ】完了メッセージ ★ → 成功確認
+  │
+  ▼ ブラウザを閉じる
+  │
+[終了]     ※「要素が見つからない」時はまず【待つ】を疑う</code></pre>
+<hr>
+<h3>7-9. 確認テスト（解答・解説付き）</h3>
+<p><strong>Q1.（選択）</strong> Web自動化がExcelより不安定になりやすい主な理由は？<br>A. 文字数が多いから B. 画面が変わる・表示に時間がかかるから C. 色が多いから D. マウスが壊れるから</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。だから「待つ」が重要。</div></div>
+<p><strong>Q2.（選択）</strong> 「要素が見つからない」時、最初に試すべきは？<br>A. PCを買い替える B. 待機を足す（表示を待つ） C. ライセンスを更新する D. Excelを閉じる</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。表示前に操作している場合が最多。まず待つ。</div></div>
+<p><strong>Q3.（穴埋め）</strong> 要素の指定は、解像度で崩れやすい（　①　）指定を避け、部品の名札である（　②　）（id/name等）で指定するのが安定。</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：①座標 ②属性</div></div>
+<p><strong>Q4.（一問一答）</strong> ログインID・パスワードをシナリオに直書きしてはいけない理由は？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：シナリオ共有・引き継ぎ時に認証情報が漏れるから。外部設定・資格情報管理へ外出しする。</div></div>
+<p><strong>Q5.（実務判断）</strong> Web入力の練習をする環境として正しいのは？<br>A. 本番の顧客管理システムに実データで B. テスト環境・自作フォームにダミーデータで C. 他社の公開システムに勝手に大量登録 D. 同僚のアカウントで本番に</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。必ずテスト環境・ダミーデータで。本番/実個人情報/無許可の他システムはNG。</div></div>
+<p><strong>Q6.（並べ替え）</strong> Webログイン→入力の正しい流れに並べ替え。<br>（ア）各欄に入力 （イ）ページを開く （ウ）表示を待つ （エ）登録ボタンをクリック （オ）完了を待って確認</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：イ → ウ → ア → エ → オ。</div></div>
+<hr>
+<h3>7-10. この教材のまとめ</h3>
+<ul><li>Webは「要素（部品）」を指定して操作。画面が変わる・遅い前提で<strong>「待つ」が命</strong>。</li><li>事前に<strong>対応ブラウザ＋拡張</strong>を準備（会社は許可確認）。</li><li>要素指定は<strong>属性（id/name）優先</strong>、座標は避ける。</li><li>「要素が見つからない」は、①待つ ②対象ウィンドウ ③指定が古い ④フレーム ⑤別窓 ⑥遅延、の順で切り分け。</li><li>認証情報は<strong>直書き禁止</strong>・外出し。ロック対策にリトライ制限。</li><li>練習は<strong>必ずテスト環境・ダミーデータ</strong>で。</li></ul>
+<p><strong>次の教材</strong>：教材7「ファイル・フォルダ操作（第8章）」——一覧取得・移動・リネームを学び、ハンズオンH5/E2「請求書ファイルを月別フォルダに振り分け」を作ります。</p>
+<blockquote>リマインド：ブラウザ拡張の要否・要素取得の方法・資格情報管理機能は<strong>バージョンで異なります</strong>。対応ブラウザのバージョン条件も含め、実機の公式情報を正としてください。</blockquote></section>
+<section class="chapter" id="ch5" data-idx="5" hidden><h2>WinActor 教材7｜ファイル・フォルダ操作（第8章）／ハンズオンH5・E2</h2>
+<blockquote>対象：WinActor／RPAを初めて学ぶ人・非エンジニアの業務担当者<br>前提：教材1〜6（入門・基本画面・シナリオ作成・変数・Excel・Web）を終えていること<br>共通注意：ライブラリ名・引数はバージョンで変わります。本教材の名称は「Ver.7系の一例」。実機と違う場合は公式マニュアルを正としてください。</blockquote>
+<p><strong>この教材のゴール</strong>：フォルダ内のファイル一覧取得・移動・コピー・リネーム・存在確認ができ、<strong>ルールに沿ってファイルを自動で振り分け</strong>られる。</p>
+<hr>
+<h3>8-1. ファイル操作が実務で効く理由</h3>
+<p>「毎月、届いた請求書PDFを取引先別・月別フォルダに手で振り分ける」「ファイル名を規則どおりに直す」——こうした<strong>地味だが件数の多い整理作業</strong>は、ミスも起きやすく時間を食います。ファイル操作の自動化は効果が見えやすい定番です。</p>
+<p>WebやExcelのように画面を操作しないので、<strong>比較的安定して動く</strong>のも利点です（画面変更の影響を受けにくい）。</p>
+<hr>
+<h3>8-2. パス（場所の住所）を理解する</h3>
+<p>ファイル操作の土台は<strong>パス</strong>＝ファイル/フォルダの「住所」です。</p>
+<div class="tbl-wrap"><table><thead><tr><th>用語</th><th>意味</th><th>例</th></tr></thead><tbody><tr><td>フォルダパス</td><td>フォルダの場所</td><td><code>C:\data\請求書</code></td></tr><tr><td>ファイルパス</td><td>ファイルの場所（名前まで）</td><td><code>C:\data\請求書\INV-001.pdf</code></td></tr><tr><td>ファイル名</td><td>名前部分</td><td><code>INV-001.pdf</code></td></tr><tr><td>拡張子</td><td>種類を表す末尾</td><td><code>.pdf</code> <code>.xlsx</code> <code>.csv</code></td></tr><tr><td>絶対パス</td><td>ドライブから完全指定</td><td><code>C:\data\...</code></td></tr><tr><td>相対パス</td><td>ある基準からの位置</td><td><code>.\請求書\INV-001.pdf</code></td></tr></tbody></table></div>
+<p><strong>実務原則</strong>：フォルダパスは<strong>変数化</strong>して先頭でまとめて設定する。別PC・別フォルダへ移す時に1か所直すだけで済む。</p>
+<hr>
+<h3>8-3. 基本操作を1つずつ</h3>
+<h4>存在確認</h4>
+<ul><li>「ファイルが存在するか」「フォルダが存在するか」を先に確認するのが安全。</li><li>無いのに開こうとするとエラー。<strong>処理前に存在チェック</strong>が鉄則。</li></ul>
+<h4>フォルダ内のファイル一覧取得</h4>
+<ul><li>指定フォルダのファイル名（またはフルパス）を一覧として取得。</li><li>「<code>.pdf</code> だけ」「<code>請求書*</code> で始まるものだけ」のように<strong>条件で絞る</strong>こともできる（版による）。</li><li>取得した一覧を<strong>繰り返しで1件ずつ処理</strong>するのが定番（教材8＝繰り返しと相性抜群）。</li></ul>
+<h4>ファイル名変更（リネーム）</h4>
+<ul><li>元の名前 → 新しい名前へ。日付や連番を付ける加工が多い。</li></ul>
+<h4>ファイル移動 / コピー</h4>
+<ul><li>移動＝元の場所から消えて先へ。コピー＝元を残して複製。</li><li><strong>移動前に「移動先フォルダがあるか」を確認</strong>（無ければ作る）。</li></ul>
+<h4>ファイル削除</h4>
+<ul><li>消すと基本戻せない。<strong>削除は特に慎重に</strong>（後述の注意）。</li></ul>
+<h4>フォルダ作成</h4>
+<ul><li>「2026-07」のような月別フォルダを<strong>無ければ作る</strong>。振り分けの前準備。</li></ul>
+<h4>日付付きファイル名の作成</h4>
+<ul><li>今日の日付を取得し、<code>請求書_20260718.pdf</code> のように名前を組み立てる。</li><li>日付の書式（<code>yyyymmdd</code> など）を統一するとファイルが自然に並ぶ。</li></ul>
+<hr>
+<h3>8-4. ファイル操作の危険ポイント（安全第一）</h3>
+<p>ファイル操作は<strong>取り返しがつかない事故</strong>が起きやすい領域です。次を必ず守ります。</p>
+<div class="tbl-wrap"><table><thead><tr><th>危険</th><th>何が起きる</th><th>予防策</th></tr></thead><tbody><tr><td><strong>誤削除</strong></td><td>大事なファイルが消え、戻せない</td><td>削除は最小限。まず「移動」で退避。削除前に人の確認</td></tr><tr><td><strong>上書き</strong></td><td>同名ファイルを潰す</td><td>移動/コピー前に同名の有無を確認。名前に日付・連番</td></tr><tr><td><strong>移動先が無い</strong></td><td>エラー/中途半端な状態</td><td>事前にフォルダ存在確認＆作成</td></tr><tr><td><strong>対象を取り違え</strong></td><td>別フォルダを操作</td><td>パスを変数化・ログ出力で対象を記録</td></tr><tr><td><strong>処理中ファイル</strong></td><td>開いている/使用中で失敗</td><td>使用中チェック、リトライ、閉じてから</td></tr><tr><td><strong>大量処理の暴走</strong></td><td>想定外の全件を移動</td><td>件数を先に確認、テストフォルダで試す</td></tr></tbody></table></div>
+<p><strong>鉄則</strong>：本番フォルダでいきなり試さない。<strong>必ずコピーしたテストフォルダ</strong>で動作確認してから本番へ。削除より<strong>移動（退避）</strong>を優先。</p>
+<hr>
+<h3>8-5. ハンズオンH5／E2：請求書ファイルを月別フォルダに振り分ける</h3>
+<h4>目的</h4>
+<p>フォルダ内のファイル一覧を取得し、ファイル名（または対応表）のルールに従って<strong>月別フォルダへ自動で振り分ける</strong>。存在確認・フォルダ作成・移動を体験する。</p>
+<h4>完成イメージ</h4>
+<p>処理前:</p>
+<pre><code>C:\請求書\受信\
+    INV-2026-001.pdf
+    INV-2026-002.pdf
+    INV-2026-003.pdf
+    INV-2026-004.pdf</code></pre>
+<p>↓ <code>請求書一覧.csv</code> の「請求日」に従って振り分け ↓<br>処理後:</p>
+<pre><code>C:\請求書\整理済\
+    2026-06\  INV-2026-003.pdf
+    2026-07\  INV-2026-001.pdf, INV-2026-002.pdf, INV-2026-004.pdf</code></pre>
+<h4>使用するサンプルデータ</h4>
+<p>教材1付録 <code>請求書一覧.csv</code>（請求書番号と請求日の対応表）＋ダミーPDF。</p>
+<pre><code>請求書番号,取引先,金額,請求日
+INV-2026-001,あおぞら商事,120000,2026-07-05
+INV-2026-002,みどり物産,84000,2026-07-06
+INV-2026-003,つばさ工業,256000,2026-06-28
+INV-2026-004,ひかり食品,45000,2026-07-10</code></pre>
+<blockquote>ダミーPDFは、メモ帳で空ファイルを作り拡張子を <code>.pdf</code> にする等で用意（中身は問わない・練習用）。ファイル名は請求書番号に合わせる。</blockquote>
+<h4>事前準備</h4>
+<ul><li><code>C:\請求書\受信\</code> にダミーPDF4件を配置</li><li><code>C:\請求書\整理済\</code> を用意（空でよい）</li><li><code>請求書一覧.csv</code> を作業フォルダに配置</li><li><strong>必ずコピーしたテスト用フォルダで実施</strong>（本番の請求書では行わない）</li></ul>
+<h4>変数一覧</h4>
+<div class="tbl-wrap"><table><thead><tr><th>変数名</th><th>型</th><th>用途</th></tr></thead><tbody><tr><td><code>受信フォルダ</code></td><td>ファイルパス</td><td><code>C:\請求書\受信</code></td></tr><tr><td><code>整理先ルート</code></td><td>ファイルパス</td><td><code>C:\請求書\整理済</code></td></tr><tr><td><code>対応表パス</code></td><td>ファイルパス</td><td><code>請求書一覧.csv</code></td></tr><tr><td><code>ファイル一覧</code></td><td>（配列/リスト）</td><td>受信フォルダのファイル群</td></tr><tr><td><code>ファイル名</code></td><td>文字列</td><td>処理中のファイル名</td></tr><tr><td><code>請求書番号</code></td><td>文字列</td><td>ファイル名から取り出す</td></tr><tr><td><code>請求日</code></td><td>文字列/日付</td><td>対応表から引く</td></tr><tr><td><code>年月</code></td><td>文字列</td><td><code>2026-07</code> など振り分け先名</td></tr><tr><td><code>移動先フォルダ</code></td><td>ファイルパス</td><td><code>整理先ルート\年月</code></td></tr></tbody></table></div>
+<h4>操作手順（シナリオ設計）</h4>
+<p>日本語で手順を書く。</p>
+<pre><code>1. 受信フォルダのファイル一覧（*.pdf）を取得
+2. 一覧を1件ずつ繰り返す：
+   2-1. ファイル名から請求書番号を取り出す
+   2-2. 対応表(CSV)から、その番号の請求日を引く
+   2-3. 請求日から「年月」(例:2026-07)を作る
+   2-4. 移動先フォルダ(整理先ルート\年月)が無ければ作る
+   2-5. ファイルを移動先へ移動する（同名があれば要注意）
+   2-6. 処理内容をログに記録
+3. 完了件数を表示</code></pre>
+<p>WinActorのノード構成（一例）。</p>
+<div class="tbl-wrap"><table><thead><tr><th>順</th><th>ノード／ライブラリ（一例）</th><th>設定</th></tr></thead><tbody><tr><td>1</td><td>ファイル一覧取得</td><td><code>受信フォルダ</code> の <code>*.pdf</code> → <code>ファイル一覧</code></td></tr><tr><td>2</td><td>繰り返し（一覧の件数だけ）</td><td>1件ずつ <code>ファイル名</code></td></tr><tr><td>3</td><td>文字列操作</td><td>ファイル名から <code>請求書番号</code> を抽出</td></tr><tr><td>4</td><td>CSV検索／表引き</td><td><code>請求書番号</code> で <code>請求日</code> を取得</td></tr><tr><td>5</td><td>日付/文字列操作</td><td><code>請求日</code> → <code>年月</code>（yyyy-mm）</td></tr><tr><td>6</td><td>フォルダ存在確認＋作成</td><td><code>移動先フォルダ</code> 無ければ作成</td></tr><tr><td>7</td><td>分岐（同名チェック）</td><td>同名あれば退避/連番（安全策）</td></tr><tr><td>8</td><td>ファイル移動</td><td><code>ファイル名</code> を <code>移動先フォルダ</code> へ</td></tr><tr><td>9</td><td>ログ書き込み</td><td>処理結果を追記</td></tr></tbody></table></div>
+<blockquote>「繰り返し」「分岐」は次章で詳説。ここでは一覧を回す・条件で分けるという流れをつかめばOK。</blockquote>
+<h4>使用するノード・ライブラリ（まとめ）</h4>
+<ul><li>ファイル一覧取得／存在確認／フォルダ作成／ファイル移動（必要ならコピー）</li><li>文字列操作（番号抽出）／CSV読み込み・表引き／日付操作</li><li>繰り返し／分岐／ログ書き込み</li></ul>
+<h4>完成後の動作確認</h4>
+<ol><li><strong>ステップ実行</strong>で1件目（INV-2026-003）の <code>年月</code> が <code>2026-06</code> になるか確認</li><li>通しで実行し、<code>整理済\2026-06\</code> に1件、<code>2026-07\</code> に3件入るか確認</li><li>受信フォルダが空（＝全部移動済み）になっているか確認</li><li>ログに4件の処理記録が残っているか確認</li><li>保存（例：<code>E2_請求書振り分け_v1</code>）</li></ol>
+<h4>よくあるエラーと対処</h4>
+<div class="tbl-wrap"><table><thead><tr><th>症状</th><th>原因</th><th>対処</th></tr></thead><tbody><tr><td>「ファイルが見つからない」</td><td>パス誤り/既に移動済み</td><td>パスを変数で確認、存在チェックを先に</td></tr><tr><td>移動でエラー</td><td>移動先フォルダが無い</td><td>フォルダ作成を移動の前に</td></tr><tr><td>同名で上書き/失敗</td><td>移動先に同名あり</td><td>同名チェック→連番付与 or 退避</td></tr><tr><td>全部同じ月に入る</td><td>年月の作り方が誤り</td><td>請求日の書式・抽出を確認</td></tr><tr><td>使用中で移動不可</td><td>ファイルが開いている</td><td>閉じてから/リトライ</td></tr><tr><td>想定外の件数を処理</td><td>絞り込み条件が広すぎ</td><td><code>*.pdf</code>など条件を厳密に、件数を先に表示</td></tr></tbody></table></div>
+<h4>改善ポイント</h4>
+<ul><li>フォルダパスは<strong>先頭でまとめて変数設定</strong>。移設が一発。</li><li><strong>削除ではなく移動</strong>で運用（元を消さず整理済へ）。</li><li>処理前に<strong>件数を表示して確認</strong>（暴走防止）。</li><li>同名衝突は<strong>連番 or サブフォルダ</strong>で回避するルールを決める。</li></ul>
+<h4>応用課題（次章への橋渡し）</h4>
+<ol><li>取引先別のサブフォルダも作る（<code>整理済\2026-07\あおぞら商事\</code>）。</li><li>金額が10万円以上の請求書だけ「要確認」フォルダにコピーも残す（条件分岐＝教材8）。</li><li>処理できなかったファイル（対応表に無い等）は<strong>エラー一覧に記録して残す</strong>（例外設計＝教材9）。</li></ol>
+<hr>
+<h3>8-6. ファイル振り分け 処理フロー（図まとめ）</h3>
+<pre><code>[開始]
+  │
+  ▼ 受信フォルダの一覧取得（*.pdf）
+  │
+  ▼ ┌──── 繰り返し（1件ずつ）────────────────┐
+  │  │ 番号抽出 → 対応表で請求日 → 年月を作る       │
+  │  │ 移動先フォルダ【無ければ作る】               │
+  │  │ 【同名チェック】→ 移動 → ログ記録            │
+  │  └──────────────────────────────┘
+  ▼ 完了件数を表示
+  │
+[終了]   ※削除より移動。まずテストフォルダで</code></pre>
+<hr>
+<h3>8-7. 確認テスト（解答・解説付き）</h3>
+<p><strong>Q1.（選択）</strong> ファイル操作がWeb操作より安定して動きやすい主な理由は？<br>A. 速いから B. 画面を操作しないので画面変更の影響を受けにくいから C. 無料だから D. 拡張が不要だから</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。画面変更に左右されにくい。</div></div>
+<p><strong>Q2.（選択）</strong> ファイルを移動する前に必ず確認すべきことは？<br>A. インターネット接続 B. 移動先フォルダが存在するか（無ければ作る） C. ブラウザの種類 D. ライセンス残数</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。移動先が無いとエラー。存在確認＆作成を先に。</div></div>
+<p><strong>Q3.（穴埋め）</strong> ファイル操作は事故が起きやすいので、（　①　）より（　②　）を優先し、本番前に必ず（　③　）フォルダで試す。</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：①削除 ②移動（退避） ③テスト（コピーした）</div></div>
+<p><strong>Q4.（一問一答）</strong> 同名ファイルが移動先にある時の安全な対処は？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：上書きせず、連番を付ける／別名にする／退避フォルダへ逃がす（上書きで潰さない）。</div></div>
+<p><strong>Q5.（実務判断）</strong> 「毎月200件の請求書PDFを取引先・月別に手で振り分けている」。自動化すべき？<br>A. すべき（件数多い・ルール明確・毎月＝定型） B. すべきでない（判断が必要）</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：A。件数が多くルール化できる定型作業＝ファイル操作自動化の典型。ただし対応表に無い例外は人が確認。</div></div>
+<p><strong>Q6.（並べ替え）</strong> ファイル振り分けの正しい流れに並べ替え。<br>（ア）ファイルを移動 （イ）一覧を取得 （ウ）移動先フォルダを無ければ作る （エ）1件ずつ振り分け先（年月）を決める （オ）ログに記録</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：イ → エ → ウ → ア → オ。</div></div>
+<hr>
+<h3>8-8. この教材のまとめ</h3>
+<ul><li>ファイル整理の自動化は<strong>件数が多く効果が見えやすい</strong>定番。画面操作より安定。</li><li>土台は<strong>パス（住所）</strong>。フォルダパスは変数化して先頭でまとめて設定。</li><li>基本操作：存在確認・一覧取得・リネーム・移動/コピー・削除・フォルダ作成・日付付き名。</li><li><strong>安全第一</strong>：削除より移動、上書き回避（同名チェック）、移動先は事前作成、必ずテストフォルダで検証、件数確認で暴走防止。</li><li>一覧取得＋繰り返し＋分岐で「振り分け」が作れる（次章で繰り返し・分岐を本格化）。</li></ul>
+<p><strong>次の教材</strong>：教材8「条件分岐と繰り返し（第9章）」——RPAの頭脳である「判断」と「反復」を学び、ハンズオンH6/E3「Excel複数行を1件ずつ処理」「CSVから条件抽出」を作ります。</p>
+<blockquote>リマインド：ファイル一覧取得の絞り込み方法・文字列/日付操作・CSV表引きの手順は<strong>バージョンで異なります</strong>。実機と違う場合は公式マニュアルを正としてください。</blockquote></section>
+<section class="chapter" id="ch6" data-idx="6" hidden><h2>WinActor 教材8｜条件分岐と繰り返し（第9章）／ハンズオンH6・E3</h2>
+<blockquote>対象：WinActor／RPAを初めて学ぶ人・非エンジニアの業務担当者<br>前提：教材1〜7（入門〜ファイル操作）を終えていること<br>共通注意：ノード名（分岐/繰り返し）や条件式の書き方はバージョンで変わります。本教材の名称は「Ver.7系の一例」。実機と違う場合は公式マニュアルを正としてください。</blockquote>
+<p><strong>この教材のゴール</strong>：条件分岐（判断）と繰り返し（反復）を使い、<strong>一覧を1件ずつ・条件で分けて</strong>処理できるようになる。RPAが「単純作業ロボ」から「判断できるロボ」に進化する回です。</p>
+<hr>
+<h3>9-1. ここが「単機能」と「実務」の分かれ目</h3>
+<p>教材5〜7では1件を処理しました。しかし実務は「100件を1件ずつ」「金額で処理を変える」「エラー行だけ飛ばす」——<strong>大量＋判断</strong>が普通です。それを可能にするのが<strong>繰り返し</strong>と<strong>条件分岐</strong>。この2つで、シナリオは一気に実務レベルになります。</p>
+<pre><code>単機能（今まで）        実務（これから）
+1件を処理             100件を1件ずつ処理（繰り返し）
+決まった動き           金額や状態で動きを変える（条件分岐）
+順番に流すだけ         エラー行は飛ばす・記録する（分岐＋例外）</code></pre>
+<hr>
+<h3>9-2. 条件分岐とは何か</h3>
+<p><strong>1. 一言で</strong>：条件分岐とは、「<strong>もし〇〇なら A、そうでなければ B</strong>」と処理を分ける仕組みです。</p>
+<p><strong>2. 言い換え</strong>：分かれ道。信号が青なら進む、赤なら止まる。</p>
+<p><strong>3. 身近な例</strong>：「金額が1万円以上なら上司承認へ、未満ならそのまま処理」。</p>
+<p><strong>4. WinActorでどう使うか</strong>：「分岐」ノードに<strong>条件</strong>を設定し、条件を満たす時（Yes）と満たさない時（No）で別の処理へ流す。</p>
+<p><strong>5. 実務注意点</strong>：条件は<strong>あいまいにしない</strong>。「大きい」ではなく「10000以上」のように<strong>数値・基準を明確に</strong>。判定に使う値の<strong>型</strong>（数値か文字列か）にも注意。</p>
+<h4>条件分岐の形</h4>
+<pre><code>        （条件：金額 &gt;= 10000 ？）
+          │Yes            │No
+          ▼               ▼
+    上司承認フローへ    そのまま登録
+          │               │
+          └──────┬──────┘
+                 ▼
+               次の処理</code></pre>
+<h4>よく使う条件の例</h4>
+<div class="tbl-wrap"><table><thead><tr><th>条件</th><th>意味</th><th>業務例</th></tr></thead><tbody><tr><td><code>金額 &gt;= 10000</code></td><td>1万円以上か</td><td>高額は承認へ</td></tr><tr><td><code>ステータス == &quot;承認待ち&quot;</code></td><td>文字が一致するか</td><td>承認待ちだけ処理</td></tr><tr><td><code>メール が 空</code></td><td>値が無いか</td><td>空欄はスキップ</td></tr><tr><td><code>在庫 &lt; 10</code></td><td>しきい値未満か</td><td>発注アラート</td></tr><tr><td><code>日付 が 今日</code></td><td>当日か</td><td>当日分だけ処理</td></tr></tbody></table></div>
+<blockquote><code>==</code>（等しい）、<code>&gt;=</code>（以上）、<code>&lt;</code>（未満）などの比較は、版により書き方・選び方が異なります（多くはメニューから選択）。</blockquote>
+<hr>
+<h3>9-3. 繰り返しとは何か</h3>
+<p><strong>1. 一言で</strong>：繰り返しとは、<strong>同じ処理を何度も自動で回す</strong>仕組みです。</p>
+<p><strong>2. 言い換え</strong>：スタンプを押し続けるように、同じ動作を件数分くり返す。</p>
+<p><strong>3. 身近な例</strong>：名簿の上から順に、1人ずつ同じ作業（メール送信など）を行う。</p>
+<p><strong>4. WinActorでどう使うか</strong>：「繰り返し」ノードの中に処理を入れ、<strong>回数</strong>や<strong>条件</strong>で回す。一覧（Excelの行・ファイル群）を1件ずつ処理するのが最頻出。</p>
+<p><strong>5. 実務注意点</strong>：<strong>終わる条件を必ず決める</strong>（無限ループ防止）。回すたびに<strong>現在位置（行番号など）を1つ進める</strong>のを忘れない。</p>
+<h4>繰り返しの主な種類</h4>
+<div class="tbl-wrap"><table><thead><tr><th>種類</th><th>いつ使う</th><th>例</th></tr></thead><tbody><tr><td>回数指定</td><td>何回やるか決まっている</td><td>10回押す</td></tr><tr><td>前判定（条件が真の間）</td><td>続ける条件で回す</td><td>行番号 &lt;= 最終行 の間</td></tr><tr><td>後判定</td><td>最低1回はやってから判定</td><td>まず処理→続けるか判断</td></tr><tr><td>一覧（コレクション）を回す</td><td>リストを1件ずつ</td><td>ファイル一覧を全件</td></tr></tbody></table></div>
+<h4>繰り返しの形（一覧を回す）</h4>
+<pre><code>[行番号 = 2]
+   ▼
+┌── 繰り返し（行番号 &lt;= 最終行 の間）──┐
+│  その行を読む                         │
+│  処理する                             │
+│  行番号 = 行番号 + 1  ← ★進める       │
+└──────────────────────────┘
+   ▼
+[繰り返し終了]</code></pre>
+<p><strong>★「行番号を進める」を忘れると同じ行を永遠に処理＝無限ループ</strong>。最頻出のミスです。</p>
+<hr>
+<h3>9-4. 条件分岐 × 繰り返し（組み合わせが本番）</h3>
+<p>実務では2つを<strong>組み合わせ</strong>ます。「一覧を回しながら、条件に合う行だけ処理する」が黄金パターン。</p>
+<pre><code>┌── 繰り返し（全行）──────────────────┐
+│  行を読む                                 │
+│  （条件：ステータス == &quot;承認待ち&quot; ？）       │
+│     │Yes → 処理する（Webに入力 等）         │
+│     │No  → 何もしない（スキップ）            │
+│  行番号 +1                                │
+└────────────────────────────────┘</code></pre>
+<h4>エラー行をスキップする（例外の第一歩）</h4>
+<pre><code>┌── 繰り返し（全行）────────────────────┐
+│  （条件：必須項目が空 ？）                    │
+│     │Yes → エラー一覧に記録して次へ（スキップ）  │
+│     │No  → 通常処理                          │
+│  行番号 +1                                  │
+└──────────────────────────────────┘</code></pre>
+<p><strong>1件のエラーで全体を止めない</strong>——これが実務で信頼される作り方（詳細は教材9）。</p>
+<hr>
+<h3>9-5. ハンズオンH6：Excelの複数行を1件ずつ処理する</h3>
+<h4>目的</h4>
+<p>一覧を繰り返しで回し、条件分岐で処理を分ける、実務の中核を体験する。</p>
+<h4>完成イメージ</h4>
+<p><code>顧客一覧.csv</code> の全5件を1件ずつ読み、</p>
+<ul><li>メールが入っている行 → 「登録対象」として処理（今回はメモ帳/ログに出力で代用）</li><li>メールが空の行 → スキップして「要確認」に記録</li></ul>
+<p>最後に「登録◯件／スキップ◯件」を表示。</p>
+<h4>使用するサンプルデータ</h4>
+<p>教材1付録 <code>顧客一覧.csv</code>。練習用に、あえて1件だけメールを空にして試す。</p>
+<pre><code>顧客ID,氏名,会社名,メール,電話
+C001,山田太郎,あおぞら商事,taro@example.com,03-1111-0001
+C002,佐藤花子,みどり物産,,03-1111-0002        ← メール空（スキップ確認用）
+C003,鈴木一郎,つばさ工業,ichiro@example.com,03-1111-0003
+C004,高橋美咲,ひかり食品,misaki@example.com,03-1111-0004
+C005,田中健二,さくら電機,kenji@example.com,03-1111-0005</code></pre>
+<h4>変数一覧</h4>
+<div class="tbl-wrap"><table><thead><tr><th>変数名</th><th>型</th><th>初期値</th><th>用途</th></tr></thead><tbody><tr><td><code>最終行</code></td><td>数値</td><td>（取得）</td><td>データ件数</td></tr><tr><td><code>行番号</code></td><td>数値</td><td>2</td><td>現在の行</td></tr><tr><td><code>氏名</code> <code>会社名</code> <code>メール</code></td><td>文字列</td><td>（空）</td><td>読み取り値</td></tr><tr><td><code>登録件数</code></td><td>数値</td><td>0</td><td>処理できた数</td></tr><tr><td><code>スキップ件数</code></td><td>数値</td><td>0</td><td>飛ばした数</td></tr></tbody></table></div>
+<h4>操作手順（シナリオ設計）</h4>
+<pre><code>1. 最終行を取得
+2. [行番号]=2 から [最終行] まで繰り返す：
+   2-1. 氏名・会社名・メールを読む
+   2-2. もし[メール]が空なら：
+        → 「要確認」としてログ/エラー一覧に記録、[スキップ件数]+1
+        そうでなければ：
+        → 登録処理（今回はログ出力で代用）、[登録件数]+1
+   2-3. [行番号]+1
+3. 「登録◯件／スキップ◯件」を表示</code></pre>
+<p>WinActorノード構成（一例）。</p>
+<div class="tbl-wrap"><table><thead><tr><th>順</th><th>ノード（一例）</th><th>設定</th></tr></thead><tbody><tr><td>1</td><td>Excel/CSV：最終行取得</td><td>→ <code>最終行</code></td></tr><tr><td>2</td><td>繰り返し（前判定）</td><td><code>行番号</code> &lt;= <code>最終行</code></td></tr><tr><td>3</td><td>値の取得×3</td><td><code>氏名</code>/<code>会社名</code>/<code>メール</code></td></tr><tr><td>4</td><td>分岐</td><td><code>メール</code> が 空 ？</td></tr><tr><td>5a</td><td>（Yes）ログ記録＋加算</td><td>スキップ記録、<code>スキップ件数</code>+1</td></tr><tr><td>5b</td><td>（No）ログ記録＋加算</td><td>登録記録、<code>登録件数</code>+1</td></tr><tr><td>6</td><td>値の設定</td><td><code>行番号</code>+1</td></tr><tr><td>7</td><td>（ループ外）メッセージ</td><td>「登録◯件／スキップ◯件」</td></tr></tbody></table></div>
+<h4>完成後の動作確認</h4>
+<ol><li><strong>ステップ実行</strong>で、C002の行に来た時に「空 → スキップ側」へ流れるか確認</li><li>通しで実行し、<strong>登録4件／スキップ1件</strong>になるか確認</li><li><code>行番号</code> が毎回+1され、無限ループしないことを確認</li><li>保存（例：<code>H6_複数行処理_v1</code>）</li></ol>
+<h4>よくあるエラーと対処</h4>
+<div class="tbl-wrap"><table><thead><tr><th>症状</th><th>原因</th><th>対処</th></tr></thead><tbody><tr><td>同じ行を延々処理（止まらない）</td><td>行番号を進めていない</td><td>ループ内で必ず <code>行番号+1</code></td></tr><tr><td>全部スキップ/全部登録</td><td>条件の判定ミス（空の判定・型）</td><td>「空か」の条件・型を確認</td></tr><tr><td>件数が合わない</td><td>加算位置がループ外/初期化漏れ</td><td>加算はループ内、初期値0</td></tr><tr><td>最終行まで処理されない</td><td>条件が <code>&lt;</code> になっている等</td><td><code>&lt;=</code> かどうか確認</td></tr><tr><td>1行目（見出し）を処理</td><td>開始行が1</td><td>開始を2に</td></tr></tbody></table></div>
+<h4>改善ポイント</h4>
+<ul><li>「空チェック」以外の条件（電話も必須 等）も<strong>AND/OR</strong>で組める。</li><li>スキップ理由を<strong>具体的に記録</strong>（「メール空」「重複」等）すると後で直しやすい。</li></ul>
+<hr>
+<h3>9-6. ハンズオンE3：CSVから条件に合うデータだけ抽出する</h3>
+<h4>目的</h4>
+<p>繰り返し＋条件分岐で、一覧から<strong>条件に合う行だけ</strong>を別ファイルに抜き出す。</p>
+<h4>完成イメージ</h4>
+<p><code>申請一覧.csv</code> から、<strong>ステータスが「承認待ち」の行だけ</strong>を <code>承認待ち一覧.csv</code> に出力。</p>
+<h4>使用するサンプルデータ</h4>
+<p>教材1付録 <code>申請一覧.csv</code>。</p>
+<pre><code>申請ID,申請者,種別,申請日,ステータス
+A001,山田太郎,経費,2026-07-01,承認待ち
+A002,佐藤花子,休暇,2026-07-02,承認済
+A003,鈴木一郎,経費,2026-07-03,却下
+A004,高橋美咲,出張,2026-07-04,承認待ち</code></pre>
+<p>→ 出力は A001 と A004 の2件。</p>
+<h4>変数一覧</h4>
+<div class="tbl-wrap"><table><thead><tr><th>変数名</th><th>型</th><th>用途</th></tr></thead><tbody><tr><td><code>最終行</code> <code>行番号</code></td><td>数値</td><td>ループ制御</td></tr><tr><td><code>申請ID</code> <code>申請者</code> <code>種別</code> <code>申請日</code> <code>ステータス</code></td><td>文字列</td><td>読み取り</td></tr><tr><td><code>出力行番号</code></td><td>数値</td><td>出力先の書き込み位置</td></tr><tr><td><code>抽出件数</code></td><td>数値</td><td>抜き出した数</td></tr></tbody></table></div>
+<h4>操作手順（シナリオ設計）</h4>
+<pre><code>1. 入力CSVの最終行を取得、出力ファイルに見出し行を用意
+2. 全行を繰り返す：
+   2-1. 各列を読む
+   2-2. もし[ステータス]==&quot;承認待ち&quot; なら：
+        → その行を出力ファイルに書く、[出力行番号]+1、[抽出件数]+1
+   2-3. [行番号]+1
+3. 「抽出◯件」を表示</code></pre>
+<h4>完成後の動作確認</h4>
+<ol><li>ステップ実行で、A002(承認済)・A003(却下)が<strong>書かれずに飛ばされる</strong>か確認</li><li>通しで実行し、出力に <strong>A001・A004 の2件</strong>が入るか確認</li><li>保存（例：<code>E3_条件抽出_v1</code>）</li></ol>
+<h4>よくあるエラーと対処</h4>
+<div class="tbl-wrap"><table><thead><tr><th>症状</th><th>原因</th><th>対処</th></tr></thead><tbody><tr><td>一致しないのに全部出る/全く出ない</td><td>文字比較のズレ（空白・全半角）</td><td>値を<code>==</code>で厳密に、前後の空白除去</td></tr><tr><td>出力が上書きで1件だけ</td><td>出力行番号を進めていない</td><td>書くたびに<code>出力行番号+1</code></td></tr><tr><td>見出しが無い/データだけ</td><td>見出し行の用意漏れ</td><td>先に見出しを書く</td></tr></tbody></table></div>
+<h4>改善ポイント</h4>
+<ul><li>抽出条件を<strong>変数化</strong>（<code>対象ステータス=&quot;承認待ち&quot;</code>）すると、他の条件にすぐ切替可能。</li><li>複数条件（承認待ち <strong>かつ</strong> 経費）は AND で組む。</li></ul>
+<hr>
+<h3>9-7. 図まとめ：繰り返し＋条件分岐</h3>
+<pre><code>[最終行取得]
+   ▼
+┌── 繰り返し（行番号=2 → 最終行）──────────┐
+│  行を読む                                    │
+│  ┌ 分岐（条件を満たす？）┐                     │
+│  │Yes→ 処理する/出力する  │                     │
+│  │No → スキップ/記録      │                     │
+│  └───────────────┘                     │
+│  行番号 +1  ← ★忘れると無限ループ              │
+└────────────────────────────────┘
+   ▼
+[件数を表示]</code></pre>
+<hr>
+<h3>9-8. 確認テスト（解答・解説付き）</h3>
+<p><strong>Q1.（選択）</strong> 「もし金額が1万円以上なら承認へ、そうでなければ登録」を実現するのは？<br>A. 繰り返し B. 条件分岐 C. 変数 D. 待機</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。処理を条件で分けるのが条件分岐。</div></div>
+<p><strong>Q2.（選択）</strong> 一覧を1件ずつ処理するのに使うのは？<br>A. 条件分岐 B. 繰り返し C. 保存 D. 待機</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。同じ処理を件数分回す。</div></div>
+<p><strong>Q3.（選択）</strong> 繰り返しで同じ行を永遠に処理してしまう最大の原因は？<br>A. ライセンス切れ B. 行番号（現在位置）を進めていない C. Excel未インストール D. 画面が暗い</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。ループ内で必ず現在位置を+1する。</div></div>
+<p><strong>Q4.（穴埋め）</strong> 条件はあいまいにせず「大きい」ではなく「（　①　）以上」のように基準を明確にし、比較する値の（　②　）（数値/文字列）にも注意する。</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：①具体的な数値（例:10000） ②型</div></div>
+<p><strong>Q5.（一問一答）</strong> 実務で「1件のエラーで全体を止めない」ために、エラー行はどうする？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：スキップして、エラー一覧に記録し、処理を続行する。</div></div>
+<p><strong>Q6.（実務判断）</strong> 100件の申請から「承認待ち」だけをWebに登録したい。使う組み合わせは？<br>A. 繰り返しだけ B. 条件分岐だけ C. 繰り返し＋条件分岐 D. 変数だけ</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：C。全件を回し（繰り返し）、承認待ちの行だけ処理する（条件分岐）。</div></div>
+<p><strong>Q7.（並べ替え）</strong> 一覧を条件抽出する流れを正しい順に。<br>（ア）行番号+1 （イ）最終行取得 （ウ）行を読む （エ）条件に合えば出力 （オ）繰り返し開始</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：イ → オ → ウ → エ → ア（オ〜アがループ内で回る）。</div></div>
+<hr>
+<h3>9-9. この教材のまとめ</h3>
+<ul><li>条件分岐＝判断（もし〜なら）、繰り返し＝反復（件数分回す）。この2つで実務レベルへ。</li><li>条件は<strong>基準を明確に・型に注意</strong>。繰り返しは<strong>終了条件と現在位置の前進</strong>が命（無限ループ防止）。</li><li>黄金パターンは「<strong>全件を回しながら、条件に合う行だけ処理</strong>」。</li><li>エラー行は<strong>止めずにスキップ＆記録</strong>（信頼される作り方）。</li><li>抽出条件は変数化すると使い回せる。</li></ul>
+<p><strong>次の教材</strong>：教材9「エラー対応とデバッグ（第10章）」——止まらないシナリオの作り方（例外処理）、ログの読み方、原因特定を学び、ハンズオンH7/E6「エラー時に止めず一覧に記録」を作ります。</p>
+<blockquote>リマインド：分岐・繰り返しノードの種類、条件式の記法、文字比較（空白/全半角）の扱いは<strong>バージョンで異なります</strong>。実機と違う場合は公式マニュアルを正としてください。</blockquote></section>
+<section class="chapter" id="ch7" data-idx="7" hidden><h2>WinActor 教材9｜エラー対応とデバッグ（第10章）／ハンズオンH7・E6</h2>
+<blockquote>対象：WinActor／RPAを初めて学ぶ人・非エンジニアの業務担当者<br>前提：教材1〜8（入門〜条件分岐・繰り返し）を終えていること<br>共通注意：例外処理ノード名・ログ画面・設定はバージョンで変わります。本教材の名称は「Ver.7系の一例」。実機と違う場合は公式マニュアルを正としてください。</blockquote>
+<p><strong>この教材のゴール</strong>：エラーの原因を<strong>ログとステップ実行で切り分け</strong>られ、<strong>止まらない（例外処理を入れた）シナリオ</strong>を作れる。実務で信頼される作り方を身につける。</p>
+<hr>
+<h3>10-1. 「エラーは必ず起きる」を前提にする</h3>
+<p>RPAは、通信の遅れ・画面変更・想定外のデータなどで<strong>必ずいつか止まります</strong>。大事なのは「エラーを0にする」ことではなく、<strong>エラーが起きた時にどう振る舞うかを設計しておく</strong>ことです。</p>
+<pre><code>初心者の作り方              実務の作り方
+エラー＝止まって終わり       エラー＝想定内。止める/飛ばす/知らせるを設計
+原因が分からず放置           ログとステップ実行で原因を特定
+1件のミスで全部止まる        1件は記録して飛ばし、残りは処理を続行</code></pre>
+<hr>
+<h3>10-2. よくあるエラーと原因（早見表）</h3>
+<div class="tbl-wrap"><table><thead><tr><th>エラーの症状</th><th>よくある原因</th><th>まず試すこと</th></tr></thead><tbody><tr><td>画面（要素）が見つからない</td><td>表示前に操作／画面変更</td><td>待機を足す→要素指定を確認</td></tr><tr><td>クリックできない</td><td>座標依存／位置ずれ</td><td>属性指定に変更、最大化を固定</td></tr><tr><td>入力できない/途中で切れる</td><td>フォーカス外れ／速すぎ</td><td>対象ウィンドウ明示、ウェイト挿入</td></tr><tr><td>待機時間が足りない</td><td>通信・描画が遅い</td><td>待機を長めに／「出るまで待つ」に</td></tr><tr><td>ファイルが見つからない</td><td>パス誤り／移動済み</td><td>存在確認を先に、パスを変数で確認</td></tr><tr><td>Excelが開けない/固まる</td><td>前回の閉じ忘れ</td><td>全部閉じて再実行、閉じるを確実に</td></tr><tr><td>変数の値が想定と違う</td><td>型違い／初期化漏れ／上書き</td><td>変数一覧＋ステップ実行で追跡</td></tr><tr><td>途中で異常終了</td><td>例外未処理</td><td>例外処理でスキップ＆記録に</td></tr></tbody></table></div>
+<hr>
+<h3>10-3. 原因特定の基本：ログとステップ実行</h3>
+<h4>ログの見方</h4>
+<ul><li>ログには「いつ・どのノードを・成功/失敗したか」が記録される。</li><li><strong>エラー時は一番下（最後の行）から読む</strong>。「どのノードで」「何が」起きたかが手がかり。</li><li>直前に成功したノードと、失敗したノードの<strong>境目</strong>が原因の場所。</li></ul>
+<h4>ステップ実行（デバッグの主役）</h4>
+<ul><li><strong>1ノードずつコマ送り</strong>で実行し、各段階で変数の値・画面の状態を確認。</li><li>「どこまで正しく、どこから想定と違うか」を切り分ける。</li></ul>
+<h4>原因特定の手順（保存版）</h4>
+<pre><code>1. ログの最後を読む → どのノードで止まったか特定
+2. その少し手前からステップ実行 → 変数の値・画面を確認
+3. 想定と違う所を見つける（値？画面？待ち？）
+4. 仮説を1つ立てて直す → 再度ステップ実行で検証
+5. 直ったら通しで再実行</code></pre>
+<blockquote>ポイント：<strong>あてずっぽうで直さない</strong>。「ログで場所→ステップで値→仮説→検証」の順で、原因を1つに絞ってから直す。</blockquote>
+<hr>
+<h3>10-4. 例外処理：止める・飛ばす・知らせる</h3>
+<p>エラー時の振る舞いは、業務の性質で決めます。3つの型を使い分けます。</p>
+<div class="tbl-wrap"><table><thead><tr><th>型</th><th>振る舞い</th><th>いつ使う</th><th>例</th></tr></thead><tbody><tr><td><strong>止める（停止）</strong></td><td>エラーで処理を中断</td><td>間違えると影響大／続けると危険</td><td>金額不一致、送金・削除系</td></tr><tr><td><strong>飛ばす（スキップ）</strong></td><td>その1件を記録して次へ</td><td>1件の失敗で全体を止めたくない</td><td>100件中1件が空欄</td></tr><tr><td><strong>知らせる（通知）</strong></td><td>担当者にメール等で連絡</td><td>人の対応が必要</td><td>エラー多発、想定外の停止</td></tr></tbody></table></div>
+<p><strong>実務の基本形</strong>：「<strong>1件はスキップして記録、件数が多ければ通知、危険な処理は止める</strong>」を組み合わせる。</p>
+<h4>例外処理の作り方（考え方）</h4>
+<ul><li>「失敗するかもしれない処理」を<strong>例外処理（トライ/例外）ブロック</strong>で囲む（版により名称が異なる）。</li><li>失敗したら → エラー内容を変数に受け取り、<strong>エラー一覧に記録</strong>して次へ。</li><li>リトライ（数回やり直す）を入れると、通信の一時的な失敗に強くなる。</li></ul>
+<pre><code>┌── 例外処理ブロック ──────────────┐
+│  【本来やりたい処理】                 │
+│    Webに入力する 等                   │
+│  ─── もし失敗したら（例外）───         │
+│    エラー内容を記録                   │
+│    エラー一覧に1行追加                 │
+│    （必要ならリトライ／通知）           │
+└──────────────────────────┘
+  → 成功でも失敗でも、次の件へ進む</code></pre>
+<hr>
+<h3>10-5. ハンズオンH7／E6：エラーが出ても止めず、エラー一覧に記録する</h3>
+<h4>目的</h4>
+<p>わざとエラーを起こし、原因を特定→例外処理で「止めずに記録して続行」する実務の型を体験する。</p>
+<h4>完成イメージ</h4>
+<p><code>顧客一覧.csv</code> の全件を処理。途中の<strong>不正データ（メール空・電話が異常）でも止まらず</strong>、</p>
+<ul><li>正常な行 → 登録（ログ出力で代用）</li><li>異常な行 → <strong>エラー一覧.csvに記録</strong>して次へ</li></ul>
+<p>最後に「成功◯件／エラー◯件」を表示。</p>
+<h4>使用するサンプルデータ</h4>
+<p>教材1付録 <code>顧客一覧.csv</code> を加工（わざと不正行を混ぜる）。</p>
+<pre><code>顧客ID,氏名,会社名,メール,電話
+C001,山田太郎,あおぞら商事,taro@example.com,03-1111-0001
+C002,佐藤花子,みどり物産,,03-1111-0002              ← メール空（異常）
+C003,鈴木一郎,つばさ工業,ichiro@example.com,000       ← 電話が異常
+C004,高橋美咲,ひかり食品,misaki@example.com,03-1111-0004
+C005,田中健二,さくら電機,kenji@example.com,03-1111-0005</code></pre>
+<p>出力（<code>エラー一覧.csv</code> 見出し）：</p>
+<pre><code>発生日時,シナリオ名,対象行,エラー内容,対応状況</code></pre>
+<h4>変数一覧</h4>
+<div class="tbl-wrap"><table><thead><tr><th>変数名</th><th>型</th><th>用途</th></tr></thead><tbody><tr><td><code>最終行</code> <code>行番号</code></td><td>数値</td><td>ループ制御</td></tr><tr><td><code>顧客ID</code> <code>氏名</code> <code>メール</code> <code>電話</code></td><td>文字列</td><td>読み取り</td></tr><tr><td><code>成功件数</code> <code>エラー件数</code></td><td>数値</td><td>集計</td></tr><tr><td><code>エラー内容</code></td><td>文字列</td><td>記録用メッセージ</td></tr></tbody></table></div>
+<h4>操作手順（シナリオ設計）</h4>
+<pre><code>1. 最終行を取得、エラー一覧.csvに見出しを用意
+2. 全行を繰り返す：
+   2-1. 各列を読む
+   2-2. 入力チェック（例外の前段の「守り」）：
+        - メールが空 → エラー内容=&quot;メール空&quot; として記録側へ
+        - 電話が規定形式でない → エラー内容=&quot;電話形式不正&quot; として記録側へ
+   2-3. 問題なければ登録処理（ログ出力で代用）→ [成功件数]+1
+        問題があれば → エラー一覧に1行追記（日時/シナリオ名/顧客ID/エラー内容/未対応）→ [エラー件数]+1
+   2-4. [行番号]+1
+3. 「成功◯件／エラー◯件」を表示</code></pre>
+<p>WinActorノード構成（一例）。</p>
+<div class="tbl-wrap"><table><thead><tr><th>順</th><th>ノード（一例）</th><th>設定</th></tr></thead><tbody><tr><td>1</td><td>Excel/CSV：最終行取得</td><td>→ <code>最終行</code></td></tr><tr><td>2</td><td>ファイル書込：見出し</td><td>エラー一覧.csv</td></tr><tr><td>3</td><td>繰り返し（前判定）</td><td><code>行番号</code> &lt;= <code>最終行</code></td></tr><tr><td>4</td><td>値の取得×4</td><td>各列</td></tr><tr><td>5</td><td>分岐（メール空？）</td><td>Yes→<code>エラー内容=&quot;メール空&quot;</code></td></tr><tr><td>6</td><td>分岐（電話形式NG？）</td><td>Yes→<code>エラー内容=&quot;電話形式不正&quot;</code></td></tr><tr><td>7</td><td>分岐（エラーあり？）</td><td>No→登録＋<code>成功件数</code>+1／Yes→エラー一覧追記＋<code>エラー件数</code>+1</td></tr><tr><td>8</td><td>値の設定</td><td><code>行番号</code>+1</td></tr><tr><td>9</td><td>（ループ外）メッセージ</td><td>「成功◯件／エラー◯件」</td></tr></tbody></table></div>
+<blockquote>より本格的には、登録処理そのものを<strong>例外処理ブロック</strong>で囲み、「想定外の失敗（通信断など）」もキャッチしてエラー一覧に落とす。今回は入力チェック＋分岐で「止めずに記録」の型をまず体得する。</blockquote>
+<h4>完成後の動作確認</h4>
+<ol><li><strong>ステップ実行</strong>で、C002(メール空)・C003(電話異常)がエラー側へ流れるか確認</li><li>通しで実行し、<strong>成功3件／エラー2件</strong>、<code>エラー一覧.csv</code>に2行記録されるか確認</li><li><strong>途中で全体が止まらず最後まで走り切る</strong>ことを確認（これが今回の主眼）</li><li>保存（例：<code>E6_エラー記録_v1</code>）</li></ol>
+<h4>よくあるエラーと対処</h4>
+<div class="tbl-wrap"><table><thead><tr><th>症状</th><th>原因</th><th>対処</th></tr></thead><tbody><tr><td>1件目のエラーで全部止まる</td><td>例外/分岐で受けていない</td><td>チェック＋分岐 or 例外処理で受ける</td></tr><tr><td>エラー一覧が上書きで1行</td><td>追記位置を進めていない</td><td>追記のたびに行を進める（追記モード）</td></tr><tr><td>正常行までエラー記録</td><td>判定条件が広すぎ</td><td>条件を厳密に、型を確認</td></tr><tr><td>日時が記録されない</td><td>現在日時の取得漏れ</td><td>日時取得を追記前に</td></tr><tr><td>件数が合わない</td><td>加算位置/初期化</td><td>加算はそれぞれの分岐内、初期0</td></tr></tbody></table></div>
+<h4>改善ポイント</h4>
+<ul><li>エラー内容は<strong>具体的に</strong>（「エラー」ではなく「メール空」「電話形式不正」）。後で直しやすい。</li><li>エラーが一定数を超えたら<strong>通知（メール）</strong>を出す（応用・教材13/14）。</li><li>一時的な失敗（通信）に備え、登録処理に<strong>リトライ（2〜3回）</strong>を入れる。</li></ul>
+<hr>
+<h3>10-6. エラー対応フロー（図まとめ）</h3>
+<pre><code>                （処理を実行）
+                     │
+        ┌── 成功？ ──┴── 失敗？ ──┐
+        │Yes                    │No
+        ▼                       ▼
+   次の件へ進む          エラー内容を記録
+                              │
+                    ┌── 危険な処理？ ──┐
+                    │Yes            │No
+                    ▼               ▼
+                  止める        エラー一覧に記録
+                    │           （必要ならリトライ）
+                    ▼               │
+                 担当へ通知      次の件へ進む</code></pre>
+<p><strong>設計の合言葉</strong>：「止める・飛ばす・知らせる」を、業務の重要度で選ぶ。</p>
+<hr>
+<h3>10-7. 実務でのエラー対応設計（現場の型）</h3>
+<ul><li><strong>入力チェックを前段に置く</strong>（空・形式・範囲）。＝そもそも異常を早期に捕まえる「守り」。</li><li><strong>危険な操作は必ず人の確認を残す</strong>（金額・送信・削除）。自動で突っ走らせない。</li><li><strong>エラー一覧を必ず残す</strong>（日時・対象・内容・対応状況）。運用の生命線。</li><li><strong>通知ルールを決める</strong>（誰に・どうなったら連絡するか）。</li><li><strong>リトライ回数を決める</strong>（無限リトライは禁止。ロック・多重実行の危険）。</li><li><strong>エラー時もExcel/ブラウザを閉じる</strong>（後始末を例外側にも入れる）。</li></ul>
+<hr>
+<h3>10-8. 確認テスト（解答・解説付き）</h3>
+<p><strong>Q1.（選択）</strong> RPAのエラー対応で最も正しい考え方は？<br>A. エラーは0にできる B. エラーは必ず起きる前提で、起きた時の振る舞いを設計する C. エラーは無視してよい D. エラーが出たら作り直す</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。0にはできない。止める/飛ばす/知らせるを設計する。</div></div>
+<p><strong>Q2.（選択）</strong> エラーの原因を調べる時、最初に見るべきは？<br>A. 変数名 B. ログの最後（どのノードで止まったか） C. ライセンス D. 画面の色</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。ログの最後で場所を特定→ステップ実行で値を確認。</div></div>
+<p><strong>Q3.（穴埋め）</strong> エラー時の振る舞いは「（　①　）・（　②　）・（　③　）」の3つを業務の重要度で使い分ける。</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：①止める ②飛ばす（スキップ） ③知らせる（通知）（順不同）</div></div>
+<p><strong>Q4.（一問一答）</strong> 100件中1件が異常データ。全体を止めないための振る舞いは？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：その1件をスキップし、エラー一覧に記録して処理を続行する。</div></div>
+<p><strong>Q5.（実務判断）</strong> 「送金額がExcelと画面で一致しない」エラー。適切な振る舞いは？<br>A. スキップして次へ B. 止めて人が確認 C. 無視して続行 D. 自動で修正して送金</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。金額・送金など危険な処理は止めて人が確認。勝手に進めない。</div></div>
+<p><strong>Q6.（実務判断）</strong> 通信の一時的な遅延で時々失敗するWeb登録。有効な対策は？<br>A. リトライ（数回やり直す）を入れる B. 待機を全部消す C. ログを消す D. 変数を減らす</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：A。一時的失敗にはリトライが有効。ただし回数は制限する。</div></div>
+<p><strong>Q7.（並べ替え）</strong> 原因特定の正しい手順に並べ替え。<br>（ア）仮説を立てて直す （イ）ログの最後で止まった場所を特定 （ウ）通しで再実行して確認 （エ）手前からステップ実行で値を確認</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：イ → エ → ア → ウ。</div></div>
+<hr>
+<h3>10-9. この教材のまとめ</h3>
+<ul><li>エラーは必ず起きる。<strong>起きた時の振る舞いを設計</strong>するのが実務。</li><li>原因特定は「<strong>ログで場所 → ステップで値 → 仮説 → 検証</strong>」。あてずっぽうで直さない。</li><li>例外処理は「<strong>止める・飛ばす・知らせる</strong>」を重要度で使い分け。基本は「1件スキップ＋記録、多発は通知、危険は停止」。</li><li><strong>入力チェックを前段に</strong>、<strong>危険な操作は人の確認</strong>、<strong>エラー一覧を必ず残す</strong>、<strong>リトライは回数制限</strong>。</li><li>エラー時も後始末（Excel/ブラウザを閉じる）を忘れない。</li></ul>
+<p><strong>次の教材</strong>：教材10「実務で使えるシナリオ設計（第11章）」——いきなり作らず業務フローを整理し、入力/処理/出力に分け、例外・人の確認点まで含めた“壊れない設計”を学びます。</p>
+<blockquote>リマインド：例外処理ブロック・リトライ・現在日時取得・ファイル追記の方法は<strong>バージョンで異なります</strong>。実機と違う場合は公式マニュアルを正としてください。</blockquote></section>
+<section class="chapter" id="ch8" data-idx="8" hidden><h2>WinActor 教材10｜実務で使えるシナリオ設計（第11章）／設計ワーク</h2>
+<blockquote>対象：WinActor／RPAを初めて学ぶ人・非エンジニアの業務担当者<br>前提：教材1〜9（技術要素）を終えていること<br>共通注意：本教材は「作り方（技術）」ではなく「業務をどう設計するか（考え方）」が中心です。ツールのバージョンにほぼ依存しません。</blockquote>
+<p><strong>この教材のゴール</strong>：いきなり作らず、業務フローを整理して<strong>入力／処理／出力</strong>に分け、例外・人の確認点まで含めた<strong>壊れにくい設計書</strong>を1業務分作れるようになる。</p>
+<hr>
+<h3>11-1. なぜ「いきなり作る」と失敗するのか</h3>
+<p>技術（Excel/Web/分岐/繰り返し）を覚えると、つい<strong>画面を開いてノードを並べたくなります</strong>。しかし実務でうまくいかない最大の原因は、技術力ではなく<strong>設計の甘さ</strong>です。</p>
+<pre><code>失敗パターン                    うまくいくパターン
+いきなりノードを並べ始める        まず業務を紙に整理する
+現場の手順を聞かずに作る          実際にやっている人に手順を確認
+例外を後回し（動いてから考える）  最初に例外を洗い出す
+全部自動化しようとする            人が確認すべき所を残す
+作った本人しか直せない            誰でも直せる作り（保守性）</code></pre>
+<p><strong>設計に時間をかけるほど、作成・修正・運用がラクになります。</strong></p>
+<hr>
+<h3>11-2. 設計の全体像（5ステップ）</h3>
+<pre><code>STEP1 業務を選ぶ・整理する   どの業務を、どこまで自動化するか
+STEP2 フローを分解する       入力→処理→出力に分ける
+STEP3 例外を洗い出す         想定外に何が起きるか
+STEP4 人の確認点を決める     どこを人が見るか
+STEP5 設計書にまとめる       誰が見ても分かる形に
+        ↓
+     ここまで終えてから、はじめて作成に入る</code></pre>
+<hr>
+<h3>11-3. STEP1：業務を整理する（現場ヒアリング）</h3>
+<p>自動化する前に、<strong>実際にその作業をしている人</strong>から手順を正確に聞きます。ここを飛ばすと、現実と違うシナリオができます。</p>
+<h4>聞くべきこと（ヒアリング項目）</h4>
+<div class="tbl-wrap"><table><thead><tr><th>項目</th><th>質問例</th></tr></thead><tbody><tr><td>目的</td><td>この作業は何のため？ 最終的に何が出来上がる？</td></tr><tr><td>頻度・件数</td><td>毎日？ 何件くらい？ 時間はどれくらい？</td></tr><tr><td>手順</td><td>具体的にどのアプリを、どの順で操作している？</td></tr><tr><td>入力元</td><td>データはどこから来る？（メール添付/共有フォルダ/システム）</td></tr><tr><td>出力先</td><td>結果はどこへ？（システム/Excel/報告）</td></tr><tr><td>判断</td><td>途中で「人が考える」箇所はある？ その基準は？</td></tr><tr><td>例外</td><td>例外・イレギュラーはどんな時に起きる？ どう対応している？</td></tr><tr><td>ルール</td><td>やってはいけないこと・注意点は？</td></tr></tbody></table></div>
+<blockquote>コツ：「たいてい」「基本は」という言葉が出たら要注意。<strong>例外が隠れています</strong>。「たいてい、じゃない時は？」と必ず掘り下げる。</blockquote>
+<hr>
+<h3>11-4. STEP2：入力・処理・出力に分ける</h3>
+<p>どんな業務も、<strong>入力 → 処理 → 出力</strong>の3つに分解できます。これで頭が整理され、シナリオも部品化できます。</p>
+<pre><code>┌─ 入力 ─┐   ┌──── 処理 ────┐   ┌─ 出力 ─┐
+データを     読む・判断する・      結果を
+取り込む  →  加工する・変換する  →  書き出す/
+（元）        （変換ルール）         登録する（先）</code></pre>
+<h4>例：請求データの入力業務</h4>
+<div class="tbl-wrap"><table><thead><tr><th>区分</th><th>内容</th></tr></thead><tbody><tr><td>入力</td><td>共有フォルダの当日CSVを取得</td></tr><tr><td>処理</td><td>内容チェック→金額計算→承認待ちだけ抽出</td></tr><tr><td>出力</td><td>基幹システムへ入力＋処理ログ＋エラー一覧</td></tr></tbody></table></div>
+<p><strong>部品化のメリット</strong>：入力だけ・処理だけ・出力だけで作れば、テストしやすく、片方が変わっても全部を作り直さずに済む。</p>
+<hr>
+<h3>11-5. STEP3：例外パターンを洗い出す（最重要）</h3>
+<p>実務シナリオの品質は、<strong>どれだけ例外を想定したか</strong>で決まります。「正常に動く」だけなら誰でも作れます。プロは<strong>異常時にどうするか</strong>まで作ります。</p>
+<h4>例外の洗い出しチェックリスト</h4>
+<div class="tbl-wrap"><table><thead><tr><th>観点</th><th>想定する例外</th><th>例</th></tr></thead><tbody><tr><td>データが無い</td><td>入力ファイルが来ない/空</td><td>CSVが未着 → 止めて通知</td></tr><tr><td>データが不正</td><td>必須項目が空/形式違い</td><td>メール空 → スキップ＆記録</td></tr><tr><td>重複</td><td>同じデータが2回来る</td><td>既登録 → 飛ばす</td></tr><tr><td>想定外の値</td><td>桁数/範囲外/文字化け</td><td>金額が異常 → 止めて確認</td></tr><tr><td>画面・システム</td><td>遅い/変わった/落ちている</td><td>表示待ち超過 → リトライ→通知</td></tr><tr><td>ファイル</td><td>使用中/権限なし/同名</td><td>開けない → リトライ→記録</td></tr><tr><td>件数</td><td>想定より極端に多い/少ない</td><td>0件 or 1万件 → 止めて確認</td></tr></tbody></table></div>
+<p><strong>原則</strong>：洗い出した例外ごとに「<strong>止める／飛ばす／知らせる</strong>」を決めておく（教材9の型）。</p>
+<hr>
+<h3>11-6. STEP4：人が確認すべきポイントを残す</h3>
+<p><strong>全部を自動化しない勇気</strong>が実務では重要です。間違うと影響が大きい操作は、<strong>あえて人の確認を挟む</strong>（＝半自動）。</p>
+<h4>人の確認を残すべき操作</h4>
+<div class="tbl-wrap"><table><thead><tr><th>危険度</th><th>操作</th><th>対応</th></tr></thead><tbody><tr><td>高</td><td>送金・請求・発注の確定</td><td>実行前に人が最終承認</td></tr><tr><td>高</td><td>データ削除・上書き</td><td>削除は避け移動、削除前に確認</td></tr><tr><td>高</td><td>外部への送信（メール/システム）</td><td>送信前に内容確認 or 下書き止め</td></tr><tr><td>中</td><td>大量処理の実行</td><td>件数を表示して開始確認</td></tr><tr><td>中</td><td>金額・数量の入力</td><td>合計を人が突合</td></tr></tbody></table></div>
+<blockquote>「人の確認点」は弱点ではなく<strong>設計上の安全装置</strong>です。監査・事故防止の観点でも、確認ログを残すと安心。</blockquote>
+<hr>
+<h3>11-7. STEP5：保守しやすい設計にする（属人化を防ぐ）</h3>
+<p>作った本人しか直せないシナリオは、その人が異動したら<strong>誰も触れない不良資産</strong>になります。最初から「他人が読める・直せる」を意識します。</p>
+<h4>保守しやすさのポイント</h4>
+<div class="tbl-wrap"><table><thead><tr><th>ポイント</th><th>具体策</th></tr></thead><tbody><tr><td>分かりやすい命名</td><td>シナリオ名・変数名・ノード表示名を意味のある名前に</td></tr><tr><td>設定の外出し</td><td>パス・ログイン情報・しきい値を先頭で変数設定</td></tr><tr><td>部品化</td><td>入力/処理/出力、共通処理を分ける</td></tr><tr><td>コメント/注釈</td><td>「なぜこうしたか」をメモとして残す</td></tr><tr><td>ログ出力</td><td>何を処理したか記録（後追いできる）</td></tr><tr><td>バージョン管理</td><td><code>_v1 _v2</code>・変更履歴を残す</td></tr><tr><td>手順書</td><td>実行手順・前提・注意を文書化</td></tr></tbody></table></div>
+<h4>命名ルールの例</h4>
+<pre><code>シナリオ名： 請求データ取込_日次_v3
+変数名：     対象ファイルパス / 請求金額 / 承認しきい値
+ノード表示名：①入力：CSV取得  ②処理：金額計算  ③出力：システム入力
+ファイル名： 請求レポート_20260719.xlsx</code></pre>
+<hr>
+<h3>11-8. 処理ログと運用ルール</h3>
+<h4>処理ログに残すこと</h4>
+<div class="tbl-wrap"><table><thead><tr><th>項目</th><th>例</th></tr></thead><tbody><tr><td>実行日時</td><td>2026-07-19 09:00</td></tr><tr><td>シナリオ名</td><td>請求データ取込_日次</td></tr><tr><td>対象</td><td>当日CSV（45件）</td></tr><tr><td>結果</td><td>成功43 / エラー2</td></tr><tr><td>メモ</td><td>エラーは一覧参照</td></tr></tbody></table></div>
+<h4>運用ルールで決めること</h4>
+<ul><li><strong>いつ実行するか</strong>（手動/スケジュール、時間帯）</li><li><strong>誰が実行・監視するか</strong>（担当・代理）</li><li><strong>エラー時の連絡先・手順</strong>（誰に・どう伝える）</li><li><strong>止めていい／いけない条件</strong>（緊急停止の判断）</li><li><strong>見直しの頻度</strong>（月次点検など）</li></ul>
+<hr>
+<h3>11-9. 引き継ぎ資料の作り方</h3>
+<p>担当変更に備え、次の1枚（数枚）を用意します。</p>
+<h4>引き継ぎ資料テンプレート</h4>
+<pre><code>■ シナリオ名：請求データ取込_日次
+■ 目的：共有フォルダの当日請求CSVを基幹システムへ登録する
+■ 実行タイミング：毎営業日 9:00（手動/スケジュール）
+■ 入力：\\共有\請求\当日\*.csv
+■ 出力：基幹システム／処理ログ／エラー一覧
+■ 事前準備：VPN接続、対象システムにログイン可能なこと
+■ 人の確認点：金額合計の突合、エラー一覧の目視確認
+■ 例外時の対応：
+   - CSV未着 → 実行しない、送信元へ確認
+   - エラー多発（5件超）→ 中止し、〇〇へ連絡
+■ よくあるトラブルと対処：（一覧）
+■ 変更履歴：v3 2026-07-19 承認しきい値を1万→3万に変更
+■ 連絡先：作成者/管理者/システム担当</code></pre>
+<hr>
+<h3>11-10. 設計ワーク（演習）：自分の業務を設計する</h3>
+<h4>ワークの進め方</h4>
+<p>自分（または身近な人）の定型業務を1つ選び、以下を<strong>紙またはExcelで埋める</strong>。コードは書かない。設計だけ。</p>
+<h4>ワークシート</h4>
+<pre><code>【1. 業務の目的】
+　この作業で最終的に何ができる？
+
+【2. 頻度・件数・所要時間】
+　例：毎日 / 約50件 / 約60分
+
+【3. 入力・処理・出力】
+　入力：
+　処理：
+　出力：
+
+【4. 手順（現状）】
+　1.
+　2.
+　3. …
+
+【5. 判断が入る箇所とその基準】
+　例：金額3万円以上は承認へ
+
+【6. 例外の洗い出し（止/飛/報）】
+　- 例外：　　　　　→ 対応：止める/飛ばす/知らせる
+　- 例外：　　　　　→ 対応：
+　- 例外：　　　　　→ 対応：
+
+【7. 人が確認すべきポイント】
+　-
+
+【8. 自動化範囲（どこまで自動・どこから人）】
+　自動：
+　人：
+
+【9. 使う技術（Excel/Web/ファイル/分岐/繰り返し）】
+　
+【10. 変数（設定の外出し候補）】
+　対象パス / しきい値 / ログイン情報 など</code></pre>
+<h4>記入例（メール添付Excelの転記業務）</h4>
+<pre><code>【1】届いた受注Excelを基幹システムに登録する
+【2】毎営業日 / 約30件 / 約40分
+【3】入力：メール添付の受注Excel／処理：内容確認・金額計算／出力：基幹システム＋ログ
+【5】金額10万円以上は上長承認が必要（自動化せず承認へ回す）
+【6】- 添付なし→止めて送信元へ確認 / - 必須項目空→スキップ＆記録 / - 重複→飛ばす
+【7】金額合計の突合、10万円以上案件
+【8】自動：ダウンロード・入力・ログ／人：金額突合・高額承認</code></pre>
+<hr>
+<h3>11-11. 設計フロー（図まとめ）</h3>
+<pre><code>[業務を選ぶ]
+   ▼
+[現場ヒアリング] ← 「たいてい」に隠れた例外を掘る
+   ▼
+[入力・処理・出力に分解]
+   ▼
+[例外を洗い出す] → 各例外に 止/飛/報 を割り当て
+   ▼
+[人の確認点を決める] ← 危険な操作は半自動
+   ▼
+[保守しやすい設計にまとめる] → 命名・外出し・部品化・ログ
+   ▼
+[設計書・引き継ぎ資料を作る]
+   ▼
+=== ここでやっと作成に着手 ===</code></pre>
+<hr>
+<h3>11-12. 確認テスト（解答・解説付き）</h3>
+<p><strong>Q1.（選択）</strong> 実務シナリオが失敗する最大の原因は？<br>A. 技術力不足 B. 設計の甘さ（整理・例外・確認点の不足） C. PCの性能 D. ライセンス</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。技術より設計。整理・例外・人の確認を先に固める。</div></div>
+<p><strong>Q2.（選択）</strong> どんな業務も、まず何に分解する？<br>A. 上・中・下 B. 入力・処理・出力 C. 朝・昼・夜 D. 大・小</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。入力→処理→出力に分けると整理でき、部品化できる。</div></div>
+<p><strong>Q3.（穴埋め）</strong> 実務シナリオの品質は、どれだけ（　①　）を洗い出したかで決まる。各（　①　）には「止める・飛ばす・（　②　）」のどれかを割り当てる。</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：①例外 ②知らせる（通知）</div></div>
+<p><strong>Q4.（一問一答）</strong> ヒアリングで「たいていはこうです」と言われたら、次に何を聞く？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：「たいてい、じゃない時は？」＝隠れた例外を掘り下げる。</div></div>
+<p><strong>Q5.（実務判断）</strong> 送金の確定処理を含む業務。設計として正しいのは？<br>A. 全部自動化してノーチェックで送金 B. 送金確定の前に人の最終承認を残す C. エラーは全部無視 D. ログは残さない</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。危険な操作は人の確認を残す（半自動）。ログも残す。</div></div>
+<p><strong>Q6.（実務判断）</strong> 作った本人が異動しても運用が続くために必要なのは？<br>A. 本人しか分からない書き方 B. 分かりやすい命名・設定外出し・手順書・引き継ぎ資料 C. パスワード直書き D. コメントを一切書かない</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。属人化を防ぐ＝保守しやすい設計と資料。</div></div>
+<p><strong>Q7.（並べ替え）</strong> 実務シナリオ設計の正しい順に並べ替え。<br>（ア）例外を洗い出す （イ）現場をヒアリングして整理 （ウ）設計書にまとめる （エ）入力・処理・出力に分解 （オ）人の確認点を決める</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：イ → エ → ア → オ → ウ。（作成着手はこの後）</div></div>
+<hr>
+<h3>11-13. この教材のまとめ</h3>
+<ul><li>失敗の主因は技術ではなく<strong>設計の甘さ</strong>。設計に時間をかけるほど後がラク。</li><li>設計は5ステップ：<strong>選ぶ→整理（ヒアリング）→入力/処理/出力に分解→例外洗い出し→人の確認点→設計書化</strong>。</li><li>例外ごとに「<strong>止める・飛ばす・知らせる</strong>」を割り当てる。</li><li><strong>全部自動化しない勇気</strong>。危険な操作は人の確認を残す（半自動）。</li><li><strong>属人化を防ぐ</strong>：命名・設定の外出し・部品化・ログ・手順書・引き継ぎ資料。</li><li>ここまで固めてから、はじめて作成に着手する。</li></ul>
+<p><strong>次の教材</strong>：教材11「実務総合ハンズオン（第12章）」——ここまでの技術と設計を統合し、演習E5「処理ログ出力」・E7「日次業務の一連シナリオ」を、設計から作成まで通しで作ります。</p>
+<blockquote>リマインド：本教材は考え方が中心でバージョン依存は少なめですが、命名規則・ログ様式・運用ルールは<strong>組織の標準</strong>に合わせてください。</blockquote></section>
+<section class="chapter" id="ch9" data-idx="9" hidden><h2>WinActor 教材11｜実務総合ハンズオン（第12章）／演習E5・E7</h2>
+<blockquote>対象：WinActor／RPAを初めて学ぶ人・非エンジニアの業務担当者<br>前提：教材1〜10（技術要素＋設計）を終えていること<br>共通注意：ノード名・ライブラリ・現在日時取得・ファイル追記の方法はバージョンで変わります。実機と違う場合は公式マニュアルを正としてください。</blockquote>
+<p><strong>この教材のゴール</strong>：ここまでの技術（Excel/Web/ファイル/分岐/繰り返し/例外）と設計（入力/処理/出力・例外・人の確認点）を<strong>統合</strong>し、実務相当のシナリオを設計から作成まで通しで作り切る。</p>
+<p>第12章の演習は全7本（E1〜E7）。E1〜E4/E6は各技術教材（5〜9）で扱ったため、本教材では<strong>総まとめのE5（ログ出力）とE7（日次業務の一連シナリオ）</strong>を詳説し、E1〜E4/E6は要点だけ再掲します。</p>
+<hr>
+<h3>12-0. 演習全体像</h3>
+<div class="tbl-wrap"><table><thead><tr><th>演習</th><th>課題</th><th>対応教材</th><th>本教材での扱い</th></tr></thead><tbody><tr><td>E1</td><td>Excel一覧を別フォーマットへ転記</td><td>教材5</td><td>要点再掲</td></tr><tr><td>E2</td><td>フォルダ内ファイル名をルール変更</td><td>教材7</td><td>要点再掲</td></tr><tr><td>E3</td><td>CSVから条件抽出</td><td>教材8</td><td>要点再掲</td></tr><tr><td>E4</td><td>Webにログインし1件ずつ入力</td><td>教材6+8</td><td>要点再掲</td></tr><tr><td>E5</td><td>処理結果をログファイル出力</td><td>本教材</td><td><strong>詳説</strong></td></tr><tr><td>E6</td><td>エラー時に止めず記録</td><td>教材9</td><td>要点再掲</td></tr><tr><td>E7</td><td>日次業務の一連シナリオ</td><td>本教材</td><td><strong>詳説（統合）</strong></td></tr></tbody></table></div>
+<hr>
+<h3>12-1. E1〜E4・E6 要点再掲（総復習）</h3>
+<ul><li><strong>E1 転記</strong>：入力/出力Excelを開く→最終行取得→繰り返しで読む・計算・書く→合計→保存→閉じる。閉じ忘れ厳禁。</li><li><strong>E2 リネーム</strong>：一覧取得→繰り返し→名前を規則で組み立て（日付/連番）→リネーム。削除より移動、同名衝突に注意。</li><li><strong>E3 条件抽出</strong>：全行を回し、条件に合う行だけ出力。抽出条件は変数化。</li><li><strong>E4 Web入力</strong>：ログイン（認証情報は外出し）→表示を待つ→属性で要素指定→入力→クリック→完了待ち。テスト環境・ダミーデータで。</li><li><strong>E6 例外記録</strong>：入力チェック＋例外処理で「1件はスキップ＆記録、続行」。危険操作は止める。</li></ul>
+<hr>
+<h3>12-2. 演習E5：処理結果をログファイルに出力する</h3>
+<h4>目的</h4>
+<p>処理の記録（ログ）を残す“運用の生命線”を作る。いつ・何を・どうしたかを追える状態にする。</p>
+<h4>完成イメージ</h4>
+<p>どんなシナリオでも使える「ログ書き込み部品」を作り、実行のたびに <code>処理ログ.csv</code> に1行追記する。</p>
+<pre><code>実行日時,シナリオ名,対象,結果,件数,メモ
+2026-07-19 09:00:12,売上転記_日次,売上一覧.csv,成功,5,合計8900
+2026-07-19 09:05:33,Web顧客入力_日次,顧客一覧.csv,一部エラー,5,成功4/エラー1</code></pre>
+<h4>使用するサンプルデータ</h4>
+<p>教材1付録 <code>処理ログ_テンプレート.csv</code>（見出し）。</p>
+<h4>変数一覧</h4>
+<div class="tbl-wrap"><table><thead><tr><th>変数名</th><th>型</th><th>用途</th></tr></thead><tbody><tr><td><code>ログファイルパス</code></td><td>ファイルパス</td><td>追記先 <code>処理ログ.csv</code></td></tr><tr><td><code>実行日時</code></td><td>文字列</td><td>現在日時（yyyy-mm-dd HH:MM:SS）</td></tr><tr><td><code>シナリオ名</code></td><td>文字列</td><td>何の処理か</td></tr><tr><td><code>対象</code></td><td>文字列</td><td>処理対象（ファイル名/件数）</td></tr><tr><td><code>結果</code></td><td>文字列</td><td>成功/一部エラー/失敗</td></tr><tr><td><code>件数</code></td><td>数値/文字列</td><td>処理件数</td></tr><tr><td><code>メモ</code></td><td>文字列</td><td>補足（合計・エラー数など）</td></tr></tbody></table></div>
+<h4>操作手順（シナリオ設計）</h4>
+<pre><code>1. ログファイルが無ければ見出し付きで作る（存在確認）
+2. 現在日時を取得して[実行日時]に入れる
+3. [実行日時],[シナリオ名],[対象],[結果],[件数],[メモ] を1行に組み立てる
+4. ログファイルに【追記】する（★上書きしない）</code></pre>
+<p>WinActorノード構成（一例）。</p>
+<div class="tbl-wrap"><table><thead><tr><th>順</th><th>ノード（一例）</th><th>設定</th></tr></thead><tbody><tr><td>1</td><td>ファイル存在確認</td><td>無ければ見出し行を作成</td></tr><tr><td>2</td><td>現在日時取得</td><td>→ <code>実行日時</code></td></tr><tr><td>3</td><td>文字列結合</td><td>カンマ区切りで1行に</td></tr><tr><td>4</td><td>ファイル書込（追記モード）</td><td><code>ログファイルパス</code> へ1行追記</td></tr></tbody></table></div>
+<blockquote>★ポイントは<strong>追記モード</strong>。上書きすると過去ログが消えます。CSVは値にカンマや改行が入ると崩れるため、メモは短く・カンマを避けるか囲み処理をする。</blockquote>
+<h4>完成後の動作確認</h4>
+<ol><li>2回実行し、ログが<strong>2行に増える</strong>（消えない）ことを確認</li><li>日時が毎回更新されるか確認</li><li>Excelでログを開き、列がずれていないか確認</li><li>保存（例：<code>E5_ログ出力_v1</code>）</li></ol>
+<h4>この部品の使い方</h4>
+<p>E1〜E7の各シナリオの<strong>最後にこのログ書き込みを差し込む</strong>。共通部品として使い回すのが実務の定石。</p>
+<h4>よくあるエラーと対処</h4>
+<div class="tbl-wrap"><table><thead><tr><th>症状</th><th>原因</th><th>対処</th></tr></thead><tbody><tr><td>ログが毎回1行に消える</td><td>上書きモード</td><td>追記モードにする</td></tr><tr><td>列がずれる</td><td>メモにカンマ/改行</td><td>メモを短く/囲む/別区切り</td></tr><tr><td>日時が空</td><td>現在日時取得漏れ</td><td>取得を組み立て前に</td></tr><tr><td>ファイルが無くて失敗</td><td>初回で見出し未作成</td><td>存在確認→無ければ作成</td></tr></tbody></table></div>
+<h4>改善ポイント</h4>
+<ul><li>ログは<strong>月別ファイル</strong>（<code>処理ログ_202607.csv</code>）に分けると管理しやすい。</li><li>「成功/失敗」に加え<strong>所要時間</strong>も記録すると、遅い処理の発見に役立つ。</li></ul>
+<hr>
+<h3>12-3. 演習E7：日次業務を想定した一連の自動化シナリオ（統合）</h3>
+<h4>目的</h4>
+<p>入力→処理→出力・例外・人の確認点・ログを<strong>すべて統合</strong>した、実務に最も近いシナリオを作り切る。</p>
+<h4>想定業務（シナリオ）</h4>
+<p>「毎営業日の朝、共有フォルダに届く当日分の受注CSVを、内容チェックして基幹システム（今回はテストWeb/ログ代用）に登録し、結果をログとエラー一覧に残す。高額案件は人の承認に回す。」</p>
+<h4>完成イメージ（全体フロー）</h4>
+<pre><code>[開始]
+  ▼ ① 入力：共有フォルダから当日CSVを取得（存在確認）
+  ▼      └ 無ければ：止めて通知（実行しない）
+  ▼ ② 処理：全行を1件ずつ
+  │      ├ 入力チェック（必須項目・形式・重複）
+  │      │    └ NG → エラー一覧に記録してスキップ
+  │      ├ 金額判定：10万円以上 → 「承認待ち」フォルダ/リストへ（人が承認）
+  │      └ OK＆少額 → 登録処理（テストWeb/ログ代用）
+  ▼ ③ 出力：処理ログに結果を追記／エラー一覧を保存
+  ▼ ④ 後処理：件数を集計、（多発時）担当へ通知
+  ▼ ⑤ 人の確認点：金額合計の突合、承認待ちリスト、エラー一覧
+[終了]</code></pre>
+<h4>使用するサンプルデータ</h4>
+<p>教材1付録の組み合わせ（<code>売上一覧.csv</code> や自作の受注CSV）。練習用に不正行・高額行を混ぜる。</p>
+<pre><code>受注ID,取引先,商品,数量,単価,担当,メール
+O001,あおぞら商事,ノートA,10,120,山田,taro@example.com
+O002,みどり物産,ペンB,50,80,佐藤,               ← メール空（エラー）
+O003,つばさ工業,高級机,5,250000,鈴木,ichiro@example.com   ← 金額125万（高額→承認）
+O004,ひかり食品,消しゴムC,30,50,高橋,misaki@example.com</code></pre>
+<h4>変数一覧（主なもの）</h4>
+<div class="tbl-wrap"><table><thead><tr><th>変数名</th><th>型</th><th>用途</th></tr></thead><tbody><tr><td><code>当日CSVパス</code></td><td>ファイルパス</td><td>入力元（日付から組み立て）</td></tr><tr><td><code>最終行</code> <code>行番号</code></td><td>数値</td><td>ループ制御</td></tr><tr><td>各列（<code>受注ID</code>〜<code>メール</code>）</td><td>文字列</td><td>読み取り</td></tr><tr><td><code>金額</code></td><td>数値</td><td>数量×単価</td></tr><tr><td><code>承認しきい値</code></td><td>数値</td><td>例：100000（外出し）</td></tr><tr><td><code>成功件数</code> <code>エラー件数</code> <code>承認件数</code></td><td>数値</td><td>集計</td></tr><tr><td><code>ログファイルパス</code> <code>エラー一覧パス</code> <code>承認待ちパス</code></td><td>ファイルパス</td><td>出力先</td></tr></tbody></table></div>
+<h4>操作手順（シナリオ設計）</h4>
+<pre><code>1. 当日CSVパスを日付から組み立て、存在確認
+   - 無ければ：ログに「未着」を記録→担当へ通知→終了
+2. 最終行取得、エラー一覧・承認待ちリストに見出しを用意
+3. 全行を繰り返す：
+   3-1. 各列を読む
+   3-2. 入力チェック：必須(取引先/商品/メール)空・数量/単価が数値でない → エラー記録＆スキップ、[エラー件数]+1
+   3-3. [金額]=数量×単価
+   3-4. もし[金額] &gt;= [承認しきい値] → 承認待ちリストに書く、[承認件数]+1（人が後で承認）
+        そうでなければ → 登録処理（テストWeb/ログ代用）、[成功件数]+1
+        （登録処理は例外処理で囲み、失敗時はエラー記録＆リトライ）
+   3-5. [行番号]+1
+4. 処理ログに「成功◯/承認◯/エラー◯」を追記
+5. エラー件数がしきい値超なら担当へ通知（応用）
+6. 完了メッセージ表示（人の確認を促す：合計突合・承認・エラー一覧）</code></pre>
+<h4>使用するノード・ライブラリ（まとめ）</h4>
+<ul><li>ファイル：存在確認/一覧/追記書込</li><li>Excel/CSV：最終行取得/値取得</li><li>分岐・繰り返し／数値変換・計算</li><li>例外処理・リトライ</li><li>現在日時取得／（応用）メール通知</li></ul>
+<h4>完成後の動作確認</h4>
+<ol><li><strong>ステップ実行</strong>で、O002がエラー側、O003が承認側、O001/O004が登録側へ正しく分岐するか確認</li><li>通しで実行し、<strong>成功2件／承認1件／エラー1件</strong>、各ファイルに記録が残るか確認</li><li>CSVを未着（削除）にして再実行し、「未着→通知→終了」で<strong>止まらず正しく終わる</strong>か確認</li><li>人の確認点（合計・承認待ち・エラー一覧）が分かるメッセージが出るか確認</li><li>保存（例：<code>E7_日次受注登録_v1</code>）</li></ol>
+<h4>よくあるエラーと対処</h4>
+<div class="tbl-wrap"><table><thead><tr><th>症状</th><th>原因</th><th>対処</th></tr></thead><tbody><tr><td>高額案件が自動登録される</td><td>しきい値判定の誤り/型</td><td>数値変換・比較を確認、しきい値を変数で</td></tr><tr><td>エラー行で全体停止</td><td>例外/分岐で受けていない</td><td>入力チェック＋例外処理</td></tr><tr><td>CSV未着で異常終了</td><td>存在確認なし</td><td>先頭で存在確認→未着ルート</td></tr><tr><td>ログ/エラーが消える</td><td>上書きモード</td><td>追記モード</td></tr><tr><td>集計が合わない</td><td>加算位置/初期化</td><td>各分岐内で加算、初期0</td></tr></tbody></table></div>
+<h4>改善ポイント</h4>
+<ul><li>しきい値・パス・通知先を<strong>先頭でまとめて変数設定</strong>（別環境・ルール変更に強い）。</li><li>承認待ち・エラー一覧は<strong>人が見やすい形</strong>（列見出し・件数サマリ）に。</li><li>所要時間・処理件数をログに残し、<strong>運用の健康診断</strong>に使う。</li></ul>
+<h4>この演習が「実務レベル」の理由</h4>
+<ul><li>入力の異常（未着）に対応 → <strong>止める/通知</strong></li><li>データの異常（空・非数値）に対応 → <strong>スキップ＆記録</strong></li><li>危険な判断（高額）を人に委ねる → <strong>半自動・人の確認点</strong></li><li>一時的失敗に対応 → <strong>例外処理・リトライ</strong></li><li>後から追える → <strong>処理ログ・エラー一覧</strong></li></ul>
+<p>これらを備えて初めて「現場で任せられるシナリオ」になります。</p>
+<hr>
+<h3>12-4. 総合ハンズオン 統合フロー（図まとめ）</h3>
+<pre><code>[入力] 当日CSV取得 ─ 未着？ ─Yes→ 通知して終了（止める）
+   │No
+[処理] ┌ 繰り返し（全行）────────────────────┐
+   │   │ 入力チェック NG→ エラー記録＆スキップ        │
+   │   │ 金額計算 → 高額？ Yes→ 承認待ちへ（人が承認） │
+   │   │            No → 登録（例外処理＋リトライ）    │
+   │   └────────────────────────────┘
+[出力] 処理ログ追記 ／ エラー一覧保存 ／ 承認待ちリスト
+   │
+[確認] 人が：合計突合・承認待ち・エラー一覧をチェック</code></pre>
+<hr>
+<h3>12-5. 確認テスト（解答・解説付き）</h3>
+<p><strong>Q1.（選択）</strong> ログファイルは書き込み時、どのモードにすべき？<br>A. 上書き B. 追記 C. 削除 D. 読み取り専用</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。追記。上書きは過去ログが消える。</div></div>
+<p><strong>Q2.（選択）</strong> E7で高額案件（10万円以上）はどうする？<br>A. 自動でそのまま登録 B. 承認待ちに回して人が承認 C. 削除 D. 無視</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。危険な判断は人の確認を残す（半自動）。</div></div>
+<p><strong>Q3.（穴埋め）</strong> 実務シナリオは（　①　）→処理→（　②　）の流れに、例外対応・人の確認点・（　③　）を組み込む。</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：①入力 ②出力 ③ログ（処理ログ/エラー一覧）</div></div>
+<p><strong>Q4.（一問一答）</strong> 入力CSVが届かなかった時、E7はどう振る舞う？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：存在確認で未着を検知し、実行せず通知して正常に終了する（異常終了しない）。</div></div>
+<p><strong>Q5.（実務判断）</strong> E5のログ部品は、他のシナリオでどう活用する？<br>A. 使い回せないので毎回作り直す B. 共通部品として各シナリオの最後に差し込む C. ログは不要 D. 手書きで記録</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。共通部品として使い回すのが定石。</div></div>
+<p><strong>Q6.（並べ替え）</strong> E7の正しい流れに並べ替え。<br>（ア）行ごとにチェック・金額判定・登録/承認 （イ）当日CSVの存在確認 （ウ）ログ・エラー一覧を出力 （エ）人が合計・承認・エラーを確認</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：イ → ア → ウ → エ。</div></div>
+<hr>
+<h3>12-6. この教材のまとめ</h3>
+<ul><li>E5：<strong>ログは追記</strong>で残す共通部品。運用の生命線。各シナリオの最後に差し込む。</li><li>E7：入力（未着対応）→処理（チェック・金額判定・登録/承認・例外）→出力（ログ/エラー/承認待ち）→人の確認、を統合。</li><li>「現場で任せられる」条件＝<strong>異常に対応し、危険は人に委ね、後から追える</strong>。</li><li>設定（しきい値・パス・通知先）は先頭で外出し。</li></ul>
+<p><strong>次の教材</strong>：教材12「運用・保守・改善（第13章）」——作った後に必要なこと（変更対応・本番前チェック・安定運用）を学びます。</p>
+<blockquote>リマインド：現在日時取得・追記書込・例外処理・メール通知の方法は<strong>バージョンで異なります</strong>。実機と違う場合は公式マニュアルを正としてください。</blockquote></section>
+<section class="chapter" id="ch10" data-idx="10" hidden><h2>WinActor 教材12｜運用・保守・改善（第13章）／運用チェックリスト</h2>
+<blockquote>対象：WinActor／RPAを初めて学ぶ人・非エンジニアの業務担当者<br>前提：教材1〜11を終えていること<br>共通注意：本教材は運用の考え方が中心でツール依存は少なめ。命名・ログ様式・承認フローは組織標準に合わせてください。</blockquote>
+<p><strong>この教材のゴール</strong>：シナリオを「作って終わり」にせず、<strong>変更に耐え・止まっても復旧でき・引き継げる</strong>安定運用に乗せられるようになる。本番前チェックリストで自分のシナリオを点検できる。</p>
+<hr>
+<h3>13-1. 「作った後」からが本番</h3>
+<p>RPAは<strong>作った瞬間が完成ではありません</strong>。業務・画面・担当は必ず変わり、シナリオはそのままだと<strong>いつか壊れます</strong>。運用・保守を前提に設計・体制を組むことで、初めて“使い続けられる”資産になります。</p>
+<pre><code>よくある失敗                     安定運用
+作って満足、放置                 定期点検・改修履歴を回す
+作った人だけが直せる             誰でも直せる（資料・命名）
+壊れて初めて気づく               監視・通知で早期発見
+止まったら業務が完全停止         手動代替手順を用意</code></pre>
+<hr>
+<h3>13-2. 変更への対応（3つの変化）</h3>
+<p>シナリオを壊す主な変化は3つ。それぞれ備えます。</p>
+<h4>① 業務変更への対応</h4>
+<ul><li>ルール変更（しきい値・様式・項目追加）に備え、<strong>しきい値や様式を変数・設定に外出し</strong>しておく。</li><li>「どのルールがどこに実装されているか」を設計書に残す。</li></ul>
+<h4>② 画面変更への対応（最頻出の故障原因）</h4>
+<ul><li>対象システム/Webの<strong>画面変更でボタンや入力欄がずれる</strong>と止まる。</li><li>対策：要素は<strong>属性で指定</strong>（座標依存を避ける）、変更を検知したら<strong>早めに要素を取り直す</strong>。</li><li>相手システムの<strong>更新予定を事前に把握</strong>する（情シス・ベンダーと連携）。</li></ul>
+<h4>③ 担当者変更への対応</h4>
+<ul><li>引き継ぎ資料・手順書・命名ルールで<strong>属人化を防ぐ</strong>（教材10参照）。</li><li>実行・監視の担当と代理を決めておく。</li></ul>
+<hr>
+<h3>13-3. エラー発生時の連絡ルール</h3>
+<p>止まった時に「誰が・何を・どうするか」が決まっていないと、業務が止まります。</p>
+<h4>決めておくこと</h4>
+<div class="tbl-wrap"><table><thead><tr><th>項目</th><th>例</th></tr></thead><tbody><tr><td>検知方法</td><td>通知メール／ログ監視／担当の目視</td></tr><tr><td>一次対応者</td><td>業務担当（まず状況確認・手動代替）</td></tr><tr><td>エスカレーション先</td><td>RPA管理者／情シス／ベンダー</td></tr><tr><td>連絡手段・時間</td><td>チャット即時／営業時間内</td></tr><tr><td>判断基準</td><td>何件以上/何分以上で連絡、止める条件</td></tr><tr><td>記録</td><td>いつ・何が・どう対応したかを残す</td></tr></tbody></table></div>
+<p><strong>手動代替手順</strong>（ロボが止まってもその日の業務を回す手順）を必ず用意しておく。</p>
+<hr>
+<h3>13-4. ログ管理と改修履歴</h3>
+<h4>ログ管理</h4>
+<ul><li>処理ログ・エラー一覧を<strong>定期的に確認</strong>（毎日/週次）。</li><li>保存期間・保存場所を決める（増え続けるので月別分割・古いものは退避）。</li><li>ログから「遅い処理」「エラー多発」を見つけて改善につなげる。</li></ul>
+<h4>改修履歴（変更管理）</h4>
+<p>変更したら必ず記録。「いつ・誰が・何を・なぜ」変えたかを残す。</p>
+<pre><code>変更履歴（例）
+v1  2026-06-01 初版
+v2  2026-06-20 メール空の行をスキップ＆記録に変更（エラー多発のため）
+v3  2026-07-19 承認しきい値 1万→3万（経理ルール改定）／作成:山田</code></pre>
+<ul><li>旧版は<strong>バックアップ</strong>を残す（<code>_v2_backup</code>）。すぐ戻せるように。</li></ul>
+<hr>
+<h3>13-5. テスト手順（変更したら必ずテスト）</h3>
+<p>修正後に「たぶん動く」で本番に出すのは事故のもと。次を必ず行う。</p>
+<h4>テストの種類</h4>
+<div class="tbl-wrap"><table><thead><tr><th>テスト</th><th>内容</th></tr></thead><tbody><tr><td>正常系</td><td>通常データで期待どおり動くか</td></tr><tr><td>異常系</td><td>空・不正・重複・0件・大量で正しく処理/記録するか</td></tr><tr><td>境界値</td><td>しきい値ちょうど（10万円/9万9999円）で分岐が正しいか</td></tr><tr><td>回帰</td><td>直した所以外が壊れていないか（既存機能の再確認）</td></tr></tbody></table></div>
+<h4>テストの進め方</h4>
+<pre><code>1. テスト用データ・テスト環境を用意（本番に触れない）
+2. ステップ実行で1つずつ確認
+3. 正常系→異常系→境界値の順に実行
+4. 期待結果と実際を照合（件数・出力・ログ）
+5. 記録を残す（テスト日・内容・結果）</code></pre>
+<hr>
+<h3>13-6. 本番実行前チェックリスト（保存版）</h3>
+<p>本番に出す前、これを1つずつ確認する。</p>
+<pre><code>【対象・設計】
+□ 対象業務の入力/処理/出力が文書化されている
+□ 例外パターンを洗い出し、止/飛/報を決めた
+□ 人が確認すべきポイントを残した（金額・送信・削除）
+
+【安全】
+□ 認証情報・パスは直書きせず外出しした
+□ 削除は避け移動にした／上書き対策をした
+□ 危険な操作の前に確認を入れた
+□ リトライ回数を制限した（無限リトライ禁止）
+
+【データ・環境】
+□ テスト環境・ダミーデータで正常系/異常系/境界値を確認した
+□ ファイルパス・対象が正しい（本番の場所を指している）
+□ 実行前の前提（VPN・ログイン・Excel閉）を満たしている
+
+【記録・運用】
+□ 処理ログ・エラー一覧が出力される
+□ 命名（シナリオ/変数/ノード）が第三者に分かる
+□ 実行手順書・引き継ぎ資料がある
+□ エラー時の連絡ルール・手動代替手順がある
+□ 改修履歴・バックアップを残した</code></pre>
+<hr>
+<h3>13-7. 安定運用のコツ</h3>
+<ul><li><strong>小さく始めて育てる</strong>：最初から完璧を狙わず、動かしながら改善。</li><li><strong>監視を自動化</strong>：エラー通知・件数チェックを入れ、人が張り付かなくてよい形に。</li><li><strong>定期点検</strong>：月次で「エラー傾向・処理時間・業務変更の有無」を見る。</li><li><strong>相手システムの変更を先読み</strong>：情シス・ベンダーと連携し、更新前に備える。</li><li><strong>属人化させない</strong>：資料・命名・レビューでチームの資産にする。</li><li><strong>やめる判断も持つ</strong>：業務自体が変わったら、無理に維持せず作り直す/廃止する。</li></ul>
+<hr>
+<h3>13-8. 運用ワーク：自分のシナリオの運用ルールを作る</h3>
+<p>以下を埋めて、1シナリオ分の運用ルールを作る。</p>
+<pre><code>■ シナリオ名：
+■ 実行タイミング／担当（実行・監視・代理）：
+■ 前提条件（実行前に満たすこと）：
+■ 監視方法（何を見て正常/異常を判断）：
+■ エラー時の連絡先・手順・エスカレーション：
+■ 手動代替手順（止まった時その日をどう回すか）：
+■ 点検頻度（月次など）と点検項目：
+■ ログ・バックアップの保存場所と期間：
+■ 変更時のテスト手順：</code></pre>
+<hr>
+<h3>13-9. 確認テスト（解答・解説付き）</h3>
+<p><strong>Q1.（選択）</strong> RPAシナリオの「完成」はいつ？<br>A. 作った瞬間 B. 一度動いた時 C. 完成はなく、運用・保守で使い続ける前提 D. 納品書を出した時</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：C。作った後からが本番。変化に合わせ保守し続ける。</div></div>
+<p><strong>Q2.（選択）</strong> シナリオが止まる最頻出の原因の一つは？<br>A. 対象システム/Webの画面変更 B. 変数名が日本語 C. ログが多い D. PCの色設定</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：A。画面変更で要素がずれる。属性指定・変更先読みで備える。</div></div>
+<p><strong>Q3.（穴埋め）</strong> 変更したら必ず（　①　）環境で（　②　）系・（　③　）系・境界値を確認してから本番に出す。</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：①テスト ②正常 ③異常（順不同で正常/異常）</div></div>
+<p><strong>Q4.（一問一答）</strong> ロボが止まった日でも業務を回すために用意しておくものは？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：手動代替手順（人が代わりにやる手順）。</div></div>
+<p><strong>Q5.（実務判断）</strong> 経理ルールが変わり承認しきい値を1万→3万に変更した。正しい対応は？<br>A. こっそり直して本番へ B. 変更履歴を残し、境界値テストをしてから本番へ、旧版はバックアップ C. 何もしない D. シナリオを消す</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。履歴・テスト・バックアップをセットで。</div></div>
+<p><strong>Q6.（並べ替え）</strong> 変更対応の正しい流れに並べ替え。<br>（ア）本番反映 （イ）変更内容を設計書・履歴に記録 （ウ）テスト（正常/異常/境界/回帰） （エ）旧版をバックアップ （オ）修正</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：エ → オ → イ → ウ → ア。（先にバックアップ、最後にテストして本番）</div></div>
+<hr>
+<h3>13-10. この教材のまとめ</h3>
+<ul><li>RPAは<strong>作った後からが本番</strong>。業務・画面・担当の変化に備える。</li><li>画面変更が最頻出の故障原因 → <strong>属性指定・変更先読み</strong>。</li><li><strong>連絡ルールと手動代替手順</strong>を必ず用意（止まっても業務を止めない）。</li><li>変更は「<strong>バックアップ→修正→履歴→テスト→本番</strong>」。テストは正常/異常/境界/回帰。</li><li>本番前チェックリストで点検してから出す。</li><li>監視自動化・定期点検・属人化防止で安定運用。必要ならやめる判断も。</li></ul>
+<p><strong>次の教材</strong>：教材13「応用編（第14章）」——複数アプリ連携・Excel×Web・メール通知・OCR・生成AI連携・WinActor Manager on Cloud・スケジュール実行・社内展開を概観します。</p>
+<blockquote>リマインド：運用の具体手段（通知・スケジュール・監視）はツール機能や組織体制で変わります。ツールのバージョン依存機能は公式情報で確認してください。</blockquote></section>
+<section class="chapter" id="ch11" data-idx="11" hidden><h2>WinActor 教材13｜応用編（第14章）</h2>
+<blockquote>対象：WinActor／RPAを一通り学んだ人・社内導入や展開を担当する人<br>前提：教材1〜12を終えていること<br>共通注意：応用機能（生成AI連携・Manager on Cloud・スケジュール実行等）は<strong>バージョン・ライセンス・契約で提供可否が変わります</strong>。本教材の記述は「2026年7月時点の公式情報の一例」。導入時は必ず最新の公式情報・見積・社内ポリシーで確認してください。</blockquote>
+<p><strong>この教材のゴール</strong>：単体シナリオの先にある「連携・自動化の拡張・組織展開」の選択肢を理解し、<strong>次に何を学ぶ／導入を検討すべきか</strong>を判断できる。</p>
+<hr>
+<h3>14-1. 応用の全体像</h3>
+<pre><code>【つなげる】複数アプリ連携（Excel×Web×メール など）
+【賢くする】OCR連携・生成AI連携（非定型・読み取り）
+【回す仕組み】スケジュール実行・複数ロボ管理（Manager on Cloud）
+【広げる】社内展開・内製化・ガバナンス</code></pre>
+<p>単体で作れるようになったら、これらを組み合わせて<strong>業務まるごと</strong>を自動化していきます。</p>
+<hr>
+<h3>14-2. 複数アプリをまたぐ自動化</h3>
+<p>実務の多くは「1つのアプリ」で完結しません。<strong>Excelで読み→Webに入れ→メールで報告</strong>のように複数をまたぎます。</p>
+<h4>設計のコツ</h4>
+<ul><li><strong>アプリごとに区間を分ける</strong>（入力＝Excel区間、処理＝Web区間、出力＝メール区間）。区間ごとにテストできる。</li><li><strong>区間の受け渡しは変数</strong>で行う（Excelで読んだ値を変数に入れ、Web区間で使う）。</li><li>各アプリの<strong>待機・後始末</strong>（閉じる）を区間内で完結させる。</li></ul>
+<h4>例：Excel×Web連携</h4>
+<pre><code>[Excel区間] 顧客一覧を読む → 変数に格納 → Excelを閉じる
+     ▼
+[Web区間]  ブラウザを開く → 変数の値を入力 → 登録 → 閉じる
+     ▼
+[出力区間] 結果をログ→ メール通知</code></pre>
+<hr>
+<h3>14-3. メール通知</h3>
+<p>処理の完了・エラーを<strong>メールで自動連絡</strong>すると、人が張り付かずに済みます。</p>
+<ul><li>使いどころ：日次処理の完了報告、エラー多発時のアラート、承認依頼。</li><li>送る内容：件名（シナリオ名・日付）＋本文（成功/エラー件数、対象、次アクション）＋必要なら添付（ログ）。</li><li>注意：<strong>送信は外部影響が大きい</strong>。宛先ミス・大量送信に注意。テスト時は自分宛て/下書きで確認。認証情報は外出し。</li></ul>
+<hr>
+<h3>14-4. OCRとの組み合わせ</h3>
+<p><strong>OCR</strong>＝紙・画像・PDFの文字を読み取ってデータ化する技術。RPA単体では扱えない「紙・手書き」を、OCRと組み合わせると自動化の対象にできる。</p>
+<pre><code>[紙/PDF] → OCRで文字を読み取る → データ（Excel/変数）→ RPAで転記・入力</code></pre>
+<ul><li>使いどころ：請求書・申請書・名刺などの読み取り→システム入力。</li><li>注意：OCRは<strong>100%正確ではない</strong>。読み取り精度に応じて<strong>人の確認（チェック工程）を必ず残す</strong>。フォーマットが一定な帳票ほど精度が出やすい。</li><li>WinActorと連携するAI-OCR製品が各種あります（提供・対応は要確認）。</li></ul>
+<hr>
+<h3>14-5. 生成AIとの組み合わせ</h3>
+<p>WinActorは近年、<strong>生成AI連携</strong>を強化しています（2026年7月時点の公式情報の一例）。</p>
+<ul><li>Ver.7.5以降、<strong>OpenAI／Azure OpenAI と連携</strong>し、<strong>シナリオのひな型（たたき台）を生成</strong>する機能が追加。</li><li>Ver.7.6（2025年7月公開）で生成AI連携を強化し、これまで難しかった<strong>非定型業務</strong>への対応も広げる方向。</li></ul>
+<h4>使いどころ（例）</h4>
+<ul><li>シナリオの<strong>ひな型作成</strong>（ゼロから作る手間を軽減）。</li><li>文章の要約・分類・下書き生成など、<strong>判断寄りの処理</strong>の補助。</li><li>非定型データの整形補助。</li></ul>
+<h4>注意（重要）</h4>
+<ul><li><strong>提供可否・必要なライセンス・接続先（OpenAI/Azure）・利用条件は必ず最新の公式で確認</strong>。バージョンで大きく変わる。</li><li><strong>機密情報を外部AIに送らない</strong>（社内の情報取り扱いポリシー・契約を確認）。何を送ってよいか線引きする。</li><li>生成結果は<strong>そのまま信用せず人が確認</strong>（誤りを含みうる）。特に業務判断・数値は検証必須。</li></ul>
+<hr>
+<h3>14-6. WinActor Manager on Cloud の概要</h3>
+<p>単体のWinActor（デスクトップ型）を<strong>複数台まとめて管理</strong>するためのクラウド管理サービス（2026年7月時点の公式情報の一例）。</p>
+<h4>できること（一例）</h4>
+<ul><li><strong>シナリオの一括管理</strong>（配布・バージョン管理）</li><li><strong>スケジュールを指定してシナリオを実行</strong></li><li><strong>実行結果・稼働状況の確認</strong>（どのロボが成功/失敗したか）</li><li>複数拠点・複数ロボの<strong>集中運用</strong></li></ul>
+<h4>使いどころ</h4>
+<ul><li>台数が増えてきた・部門横断で運用する・<strong>手動実行から定時自動実行に移行</strong>したい、という段階で検討。</li><li>「1台で手動」→「複数台をスケジュールで集中管理」へのステップアップ。</li></ul>
+<h4>注意</h4>
+<ul><li><strong>機能範囲・プラン・価格は提供形態で変わる</strong>。導入は公式・代理店に確認。</li><li>クラウド管理のため、<strong>セキュリティ（接続・権限・ログ）</strong>の設計が必要。</li></ul>
+<hr>
+<h3>14-7. スケジュール実行と複数ロボ管理</h3>
+<h4>スケジュール実行</h4>
+<ul><li>「毎営業日9:00に自動実行」のように<strong>時間で自動起動</strong>する。</li><li>実現手段：Manager on Cloud等の管理サービス、OSのタスクスケジューラ 等（構成による）。</li><li>注意：<strong>PCの電源・ログオン状態・多重起動</strong>に注意。前の処理が終わる前に次が走らないよう制御。</li></ul>
+<h4>複数ロボ管理</h4>
+<ul><li>台数が増えると「どのロボが何を・いつ・成功したか」を<strong>一元管理</strong>したくなる。</li><li>稼働の偏り・停止の検知・シナリオ配布を管理サービスで行う。</li></ul>
+<hr>
+<h3>14-8. 社内展開の考え方（内製化・ガバナンス）</h3>
+<p>RPAを組織に広げる時は、<strong>技術より運用ルール（ガバナンス）</strong>が成否を分けます。</p>
+<h4>展開のステップ</h4>
+<pre><code>1. スモールスタート：1〜2業務でPoC（効果検証）
+2. 型化：成功パターン・命名・テスト・運用ルールを標準化
+3. 展開：他部門へ（テンプレ・研修・サポート体制）
+4. 内製化：現場が作れる人材を育成
+5. 統制：野良ロボを防ぐ管理（棚卸し・承認・監査）</code></pre>
+<h4>ガバナンスで決めること</h4>
+<div class="tbl-wrap"><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>作成ルール</td><td>命名・設計・テスト・レビューの標準</td></tr><tr><td>承認フロー</td><td>本番稼働の承認、誰が許可するか</td></tr><tr><td>管理台帳</td><td>どのロボが何をしているか一覧化（棚卸し）</td></tr><tr><td>権限・認証</td><td>ID/PWの管理、アクセス権</td></tr><tr><td>野良ロボ対策</td><td>無許可・放置ロボを作らせない/検知</td></tr><tr><td>教育</td><td>作成者・運用者の研修、資料整備</td></tr></tbody></table></div>
+<blockquote><strong>野良ロボ問題</strong>：管理外で作られ、作った人が去って誰も分からないロボが増えると、事故・セキュリティリスクになる。<strong>台帳と承認で統制</strong>する。</blockquote>
+<hr>
+<h3>14-9. 応用の選び方（次に何を学ぶか）</h3>
+<div class="tbl-wrap"><table><thead><tr><th>今の状況</th><th>次に検討</th></tr></thead><tbody><tr><td>単体シナリオは作れる</td><td>複数アプリ連携（Excel×Web×メール）</td></tr><tr><td>手動実行が面倒</td><td>スケジュール実行</td></tr><tr><td>台数が増えた/部門展開</td><td>Manager on Cloud（集中管理）</td></tr><tr><td>紙・PDFを扱いたい</td><td>OCR連携</td></tr><tr><td>非定型・文章処理を補助したい</td><td>生成AI連携（機密・検証に注意）</td></tr><tr><td>全社に広げたい</td><td>ガバナンス整備・内製化・研修</td></tr></tbody></table></div>
+<hr>
+<h3>14-10. 確認テスト（解答・解説付き）</h3>
+<p><strong>Q1.（選択）</strong> 複数アプリをまたぐシナリオの設計のコツは？<br>A. 1本に全部詰める B. アプリごとに区間を分け、受け渡しは変数で行う C. 待機を全部消す D. 閉じない</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。区間分割＋変数受け渡しでテスト・保守しやすくする。</div></div>
+<p><strong>Q2.（選択）</strong> OCRを使う時に必ず残すべきものは？<br>A. 何もしない B. 人の確認（チェック工程） C. 削除処理 D. 座標指定</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。OCRは100%正確でないため人の確認を残す。</div></div>
+<p><strong>Q3.（穴埋め）</strong> WinActorはVer.7.5以降、（　①　）／Azure OpenAI と連携してシナリオの（　②　）を生成できる。機密情報を外部AIに（　③　）ない配慮が必要。</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：①OpenAI ②ひな型（たたき台） ③送ら</div></div>
+<p><strong>Q4.（一問一答）</strong> 複数台のWinActorを集中管理し、スケジュール実行や実行結果確認を行うサービスは？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：WinActor Manager on Cloud（機能・プランは要確認）。</div></div>
+<p><strong>Q5.（実務判断）</strong> 生成AIにシナリオのたたき台を作らせた。次に何をすべき？<br>A. そのまま本番投入 B. 内容を人が確認・検証してから使う C. 削除 D. 全社に配布</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。生成結果は誤りを含みうる。必ず人が検証。</div></div>
+<p><strong>Q6.（実務判断）</strong> 全社展開でロボが増えてきた。リスクを抑えるために重要なのは？<br>A. 自由に作らせ放置 B. 管理台帳・承認フロー・棚卸しで統制（野良ロボ防止） C. 誰が作ったか記録しない D. パスワード共有</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>答え：B。ガバナンス（台帳・承認・棚卸し）で統制する。</div></div>
+<hr>
+<h3>14-11. この教材のまとめ</h3>
+<ul><li>応用は「つなげる（複数アプリ）／賢くする（OCR・生成AI）／回す仕組み（スケジュール・Manager on Cloud）／広げる（社内展開・ガバナンス）」。</li><li>複数アプリは<strong>区間分割＋変数受け渡し</strong>。メール通知は外部影響に注意。</li><li>OCR・生成AIは強力だが<strong>人の確認が前提</strong>。生成AIは<strong>機密の取り扱い・検証</strong>に特に注意。</li><li><strong>Manager on Cloud</strong>で複数台を集中管理・スケジュール実行（機能・価格は要確認）。</li><li>社内展開は技術より<strong>ガバナンス</strong>（台帳・承認・棚卸し・研修）で野良ロボを防ぐ。</li><li>応用機能は<strong>バージョン・ライセンス・契約で変わる → 必ず公式で確認</strong>。</li></ul>
+<p><strong>次の教材</strong>：教材14「総復習（第15章）」——全体の用語・手順・チェックリストをまとめ、総合テストと卒業課題で仕上げます。</p>
+<blockquote>リマインド：生成AI連携・Manager on Cloud・OCR連携・スケジュール実行の提供可否と条件は<strong>バージョン・契約で変わります</strong>。導入前に必ず最新の公式情報・見積・社内ポリシーで確認してください。</blockquote></section>
+<section class="chapter" id="ch12" data-idx="12" hidden><h2>WinActor 教材14｜総復習（第15章）</h2>
+<blockquote>対象：WinActor／RPAを一通り学んだ人<br>前提：教材1〜13を終えていること<br>共通注意：バージョン依存の数値・名称は「2026年7月時点の一例」。実機・最新公式で確認してください。</blockquote>
+<p><strong>この教材のゴール</strong>：全体を振り返り、用語・手順・チェックリストを定着させ、<strong>総合テストと卒業課題</strong>で「実務で使えるレベル」に達したかを確認する。</p>
+<hr>
+<h3>15-1. 重要用語まとめ（総ざらい）</h3>
+<div class="tbl-wrap"><table><thead><tr><th>用語</th><th>一言</th><th>覚え方</th></tr></thead><tbody><tr><td>RPA</td><td>PC定型操作の自動化</td><td>決まった手順を代行するロボ</td></tr><tr><td>WinActor</td><td>純国産デスクトップ型RPA</td><td>日本語・プログラミング不要</td></tr><tr><td>シナリオ</td><td>作業手順書</td><td>ロボへの指示書</td></tr><tr><td>ノード</td><td>手順の部品</td><td>レゴ1ピース</td></tr><tr><td>ライブラリ</td><td>便利部品集</td><td>自動メニュー</td></tr><tr><td>変数</td><td>値を入れる箱</td><td>中身を差し替え可能</td></tr><tr><td>フローチャート</td><td>流れの図</td><td>上から下へ</td></tr><tr><td>条件分岐</td><td>もし〜なら</td><td>分かれ道</td></tr><tr><td>繰り返し</td><td>反復処理</td><td>件数分回す（終了条件・位置前進が命）</td></tr><tr><td>例外処理</td><td>想定外時の対応</td><td>止める/飛ばす/知らせる</td></tr><tr><td>ステップ実行</td><td>1つずつ実行</td><td>コマ送り＝デバッグの主役</td></tr><tr><td>ログ</td><td>実行の記録</td><td>作業日誌（追記で残す）</td></tr><tr><td>フル機能版/実行版</td><td>作成可/実行のみ</td><td>作るならフル機能版</td></tr><tr><td>ノードロック/フローティング</td><td>端末固定/同時利用管理</td><td>ライセンス方式</td></tr><tr><td>Manager on Cloud</td><td>複数台の集中管理</td><td>スケジュール実行・実行結果確認</td></tr></tbody></table></div>
+<hr>
+<h3>15-2. 操作・設計 手順まとめ</h3>
+<h4>シナリオ作成の基本手順</h4>
+<pre><code>① 日本語で手順を書く → ② ノードを並べる → ③ 設定・変数を埋める
+→ ④ ステップ実行で確認 → ⑤ 通しで実行 → ⑥ 保存</code></pre>
+<h4>Excel自動化の鉄則</h4>
+<pre><code>開く → 読む/書く → 保存 → 閉じる（★閉じ忘れ厳禁）</code></pre>
+<h4>Web自動化の鉄則</h4>
+<pre><code>開く → 【待つ】→ 入力（属性指定）→ クリック → 【待つ】→ 取得 → 閉じる
+「要素が見つからない」＝まず待つ</code></pre>
+<h4>実務設計の手順</h4>
+<pre><code>選ぶ → ヒアリング整理 → 入力/処理/出力に分解 → 例外洗い出し（止/飛/報）
+→ 人の確認点 → 設計書・引き継ぎ資料 →（ここで作成着手）</code></pre>
+<h4>エラー対応の手順</h4>
+<pre><code>ログで場所 → ステップで値 → 仮説 → 検証（あてずっぽうで直さない）</code></pre>
+<hr>
+<h3>15-3. 実務で使うチェックリスト（凝縮版）</h3>
+<h4>業務選定（向く条件）</h4>
+<pre><code>□ 手順が毎回同じ（ルール化できる）
+□ 回数が多い/定期的
+□ 画面・様式が安定
+□ データがデジタル
+□ 正確さが重要</code></pre>
+<h4>本番前チェック（凝縮）</h4>
+<pre><code>□ 入力/処理/出力を文書化
+□ 例外を洗い出し 止/飛/報 を決定
+□ 危険操作（金額/送信/削除）に人の確認
+□ 認証情報を外出し、削除は移動に
+□ テスト（正常/異常/境界/回帰）済み
+□ 処理ログ・エラー一覧が出る
+□ 命名が第三者に分かる
+□ 手順書・引き継ぎ・連絡ルール・手動代替あり
+□ バックアップ・改修履歴あり</code></pre>
+<hr>
+<h3>15-4. よくあるミス Top10（最終確認）</h3>
+<div class="tbl-wrap"><table><thead><tr><th>#</th><th>ミス</th><th>対策</th></tr></thead><tbody><tr><td>1</td><td>Excel閉じ忘れ</td><td>開いたら必ず閉じる</td></tr><tr><td>2</td><td>繰り返しで位置を進めず無限ループ</td><td>ループ内で行番号+1</td></tr><tr><td>3</td><td>Web要素が見つからない</td><td>まず待つ→属性指定</td></tr><tr><td>4</td><td>数値のつもりが文字列</td><td>計算前に数値変換</td></tr><tr><td>5</td><td>認証情報の直書き</td><td>外部設定に外出し</td></tr><tr><td>6</td><td>座標依存で画面変更に弱い</td><td>属性指定にする</td></tr><tr><td>7</td><td>ログ上書きで消える</td><td>追記モード</td></tr><tr><td>8</td><td>例外未処理で全体停止</td><td>1件スキップ＆記録</td></tr><tr><td>9</td><td>本番でいきなりテスト</td><td>テスト環境・ダミーで</td></tr><tr><td>10</td><td>全部自動化して事故</td><td>危険操作は人の確認</td></tr></tbody></table></div>
+<hr>
+<h3>15-5. 総合確認テスト（解答・解説付き）</h3>
+<h4>基礎</h4>
+<p><strong>Q1.</strong> RPAが苦手なのは？ A.定型の繰り返し B.人の判断・創造 C.転記 D.仕分け</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>B。判断・創造は苦手。</div></div>
+<p><strong>Q2.</strong> シナリオを作るのに必要なエディションは？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>フル機能版（実行版は実行のみ）。</div></div>
+<p><strong>Q3.</strong> 「あとで使う値を入れる箱」は？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>変数。</div></div>
+<h4>技術</h4>
+<p><strong>Q4.</strong> Excel自動化の基本フローを4語で。</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>開く→読む/書く→保存→閉じる。</div></div>
+<p><strong>Q5.</strong> Webで「要素が見つからない」時、最初に試すことは？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>待機を足す（表示を待つ）。</div></div>
+<p><strong>Q6.</strong> 繰り返しで無限ループを防ぐには？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>終了条件を決め、ループ内で現在位置（行番号）を進める。</div></div>
+<p><strong>Q7.</strong> <code>50</code>+<code>30</code>が<code>5030</code>になった。原因と対策は？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>文字列型のため連結。数値変換してから計算。</div></div>
+<p><strong>Q8.</strong> ファイル操作で削除より優先すべき操作は？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>移動（退避）。削除は戻せないため慎重に。</div></div>
+<h4>実務・運用</h4>
+<p><strong>Q9.</strong> エラー時の3つの振る舞いは？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>止める・飛ばす（スキップ）・知らせる（通知）。</div></div>
+<p><strong>Q10.</strong> 送金確定を含む業務、正しい設計は？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>送金前に人の最終承認を残す（半自動）。</div></div>
+<p><strong>Q11.</strong> シナリオが止まる最頻出の故障原因は？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>対象システム/Webの画面変更。属性指定・変更先読みで備える。</div></div>
+<p><strong>Q12.</strong> 変更後、本番前に必ずすることは？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>テスト環境で正常/異常/境界/回帰テスト。履歴とバックアップも。</div></div>
+<h4>応用</h4>
+<p><strong>Q13.</strong> 複数台のWinActorをスケジュール実行・集中管理するサービスは？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>WinActor Manager on Cloud（機能・価格は要確認）。</div></div>
+<p><strong>Q14.</strong> OCR・生成AIを使う時に共通して必要なことは？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>人の確認・検証（100%正確でない）。生成AIは機密の取り扱いにも注意。</div></div>
+<p><strong>Q15.</strong> 社内展開で野良ロボを防ぐには？</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>管理台帳・承認フロー・棚卸しなどのガバナンス。</div></div>
+<h4>実務判断（総合）</h4>
+<p><strong>Q16.</strong> 「毎日届く受注Excel（毎回同じ様式・80件）を基幹に入力、10万円以上は上長承認」。自動化方針として最適は？<br>A. 全件ノーチェック自動登録<br>B. 全件を繰り返しで処理、入力チェックで不正はスキップ＆記録、10万円以上は承認待ちに回し、結果をログに残す<br>C. 自動化しない<br>D. 高額も自動送信</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>B。定型・多件で自動化価値大。危険（高額）は人の確認、異常はスキップ＆記録、ログを残す＝実務の型。</div></div>
+<p><strong>Q17.（並べ替え）</strong> 実務で1業務を自動化する全体の流れを正しい順に。<br>（ア）テスト（イ）業務選定（ウ）運用・保守（エ）設計（入力/処理/出力・例外・確認点）（オ）作成（カ）本番稼働</p>
+<div class="quiz"><button class="quiz-btn" type="button"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm.9 13.5h-1.8v-1.8h1.8v1.8zm0-3.2h-1.8c0-2.9 2.6-2.6 2.6-4.3a1.7 1.7 0 00-3.4 0H8.5a3.5 3.5 0 117 0c0 2.1-2.6 2.3-2.6 4.3z"/></svg>解答・解説を表示</button><div class="quiz-ans" hidden>イ → エ → オ → ア → カ → ウ。</div></div>
+<hr>
+<h3>15-6. 卒業課題（実務課題）</h3>
+<p><strong>課題</strong>：自分（または身近な人）の実際の定型業務を1つ選び、<strong>設計から作成・テストまで</strong>を通しで行う。</p>
+<h4>提出物（チェックリスト）</h4>
+<pre><code>□ 業務の目的・頻度・件数・所要時間
+□ 入力/処理/出力の分解
+□ 例外の洗い出し（各々 止/飛/報）
+□ 人が確認すべきポイント（自動と手動の境界）
+□ 使用技術（Excel/Web/ファイル/分岐/繰り返し/例外）
+□ 変数一覧（設定の外出し）
+□ 完成シナリオ（動作すること）
+□ テスト結果（正常/異常/境界）
+□ 処理ログ・エラー一覧の出力
+□ 実行手順書・引き継ぎ資料
+□ 本番前チェックリストの点検結果</code></pre>
+<h4>合格の目安</h4>
+<ul><li>正常系だけでなく<strong>異常系でも止まらず記録</strong>できる</li><li><strong>危険な操作に人の確認</strong>が入っている</li><li><strong>他人が読んで運用・修正できる</strong>（命名・資料・ログ）</li></ul>
+<p>これらを満たせば「実務で使えるレベル」に到達しています。</p>
+<hr>
+<h3>15-7. 次に学ぶべきこと</h3>
+<div class="tbl-wrap"><table><thead><tr><th>方向</th><th>内容</th></tr></thead><tbody><tr><td>深める</td><td>対象業務の複雑な例外処理、パフォーマンス改善</td></tr><tr><td>つなげる</td><td>複数アプリ連携、メール通知、OCR・生成AI連携</td></tr><tr><td>回す</td><td>スケジュール実行、Manager on Cloudでの集中管理</td></tr><tr><td>広げる</td><td>社内展開・内製化・ガバナンス（台帳・承認・研修）</td></tr><tr><td>資格・体系</td><td>WinActorの公式研修・学習プログラム、関連資格（提供内容は公式で確認）</td></tr><tr><td>最新追従</td><td>公式のバージョンアップ情報・新機能（生成AI連携等）を定期チェック</td></tr></tbody></table></div>
+<hr>
+<h3>15-8. 学習の総まとめ（1枚）</h3>
+<pre><code>【考え方】
+・RPAは「決まった手順の繰り返し」を代行。判断・創造は苦手。
+・向く業務＝ルール化できる×回数多い。危険な操作は人が確認。
+
+【作り方】
+・日本語で手順→並べる→ステップ実行→通し→保存。
+・Excel＝開く/読み書き/保存/閉じる。Web＝待つが命・属性指定。
+・繰り返し＝終了条件と位置前進。分岐＝基準を明確に。
+・エラーは前提。止める/飛ばす/知らせる。ログで場所→ステップで値。
+
+【設計・運用】
+・いきなり作らず、入力/処理/出力＋例外＋人の確認点を設計。
+・作った後が本番。テスト・履歴・バックアップ・引き継ぎ・監視。
+・属人化を防ぎ、チームの資産にする。
+
+【最新確認】
+・バージョン・ライセンス・価格・生成AI・クラウドは変わる。
+・必ず公式情報・見積・社内ポリシーで確認する。</code></pre>
+<p>お疲れさまでした。ここまでの14教材で、<strong>RPAの基礎からWinActorの操作、実務設計、運用・保守、応用</strong>までを体系的に学びました。あとは実際の業務で小さく作り、動かし、改善していくことで、スキルは確実に定着します。</p>
+<blockquote>リマインド：本教材シリーズのバージョン依存記述（Ver.7.6.1・対応OS・ブラウザ・Excel・ライセンス・生成AI・Manager on Cloud等）は2026年7月時点の一例です。導入・運用時は必ず最新の公式情報で確認してください。</blockquote></section>
+      <div class="pager">
+        <button id="prevBtn"><span class="pg-dir">← 前の章</span><span class="pg-ttl" id="prevTtl"></span></button>
+        <button id="nextBtn" class="next"><span class="pg-dir">次の章 →</span><span class="pg-ttl" id="nextTtl"></span></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<script>
+const TOTAL = 13;
+const TITLES = ["はじめに・設計書＋入門", "基本画面とはじめてのシナリオ", "変数マスター", "Excel操作の自動化", "Web操作の自動化", "ファイル・フォルダ操作", "条件分岐と繰り返し", "エラー対応とデバッグ", "実務シナリオ設計", "実務総合ハンズオン", "運用・保守・改善", "応用編", "総復習"];
+const read = new Set(JSON.parse(localStorage.getItem('wa_read')||'[]'));
+let cur = 0;
+
+const nav = document.getElementById('nav');
+const sections = [...document.querySelectorAll('.chapter')];
+const navItems = [...document.querySelectorAll('.nav-item')];
+const side = document.getElementById('side');
+const scrim = document.getElementById('scrim');
+
+function saveRead(){localStorage.setItem('wa_read',JSON.stringify([...read]))}
+function updateProgress(){
+  document.getElementById('pgbar').style.width = (read.size/TOTAL*100)+'%';
+  document.getElementById('pgtxt').textContent = read.size+' / '+TOTAL;
+  navItems.forEach((it,i)=>it.classList.toggle('read', read.has(i)));
+}
+function go(idx, push){
+  cur = idx;
+  sections.forEach((s,i)=>{s.hidden = i!==idx; s.classList.toggle('active',i===idx)});
+  navItems.forEach((it,i)=>it.classList.toggle('active',i===idx));
+  document.getElementById('tTitle').textContent = TITLES[idx];
+  // pager
+  const prev=document.getElementById('prevBtn'), next=document.getElementById('nextBtn');
+  prev.disabled = idx===0; next.disabled = idx===TOTAL-1;
+  document.getElementById('prevTtl').textContent = idx>0?TITLES[idx-1]:'';
+  document.getElementById('nextTtl').textContent = idx<TOTAL-1?TITLES[idx+1]:'';
+  read.add(idx); saveRead(); updateProgress();
+  window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});
+  side.classList.remove('open'); scrim.classList.remove('show');
+  if(push!==false) history.replaceState(null,'','#ch'+idx);
+}
+navItems.forEach(it=>it.addEventListener('click',()=>go(+it.dataset.idx)));
+document.getElementById('prevBtn').addEventListener('click',()=>go(Math.max(0,cur-1)));
+document.getElementById('nextBtn').addEventListener('click',()=>go(Math.min(TOTAL-1,cur+1)));
+document.getElementById('menuBtn').addEventListener('click',()=>{side.classList.add('open');scrim.classList.add('show')});
+scrim.addEventListener('click',()=>{side.classList.remove('open');scrim.classList.remove('show')});
+
+// クイズ開閉
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.quiz-btn'); if(!b)return;
+  const ans=b.nextElementSibling; const open=ans.hidden;
+  ans.hidden=!open; b.classList.toggle('open',open);
+  b.lastChild.textContent = open ? '解答を隠す' : '解答・解説を表示';
+});
+
+// 初期表示（ハッシュ対応）
+const h=(location.hash.match(/^#ch(\d+)$/)||[])[1];
+go(h?Math.min(TOTAL-1,+h):0, false);
+updateProgress();
+</script>
+</body>
+</html>
