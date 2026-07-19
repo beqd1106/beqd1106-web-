@@ -134,6 +134,10 @@ body{margin:0;background:var(--paper);color:var(--ink);
 
 hr{border:0;border-top:1px dashed var(--line);margin:2.4em 0}
 
+.fig{margin:1.4em 0;padding:16px;background:var(--paper2);border:1px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow);overflow-x:auto}
+.fig-svg{display:block;width:100%;height:auto;max-width:100%}
+
 /* クイズ */
 .quiz{margin:.7em 0 1.4em}
 .quiz-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);
@@ -344,13 +348,7 @@ hr{border:0;border-top:1px dashed var(--line);margin:2.4em 0}
 <p><strong>4. WinActorでどう使うか</strong>：あなたは「クリックする」「文字を入れる」「ファイルを開く」といった動作を、部品を並べて手順書（シナリオ）にします。実行ボタンを押すと、ロボットがその手順どおりにマウスとキーボードを自動で動かします。</p>
 <p><strong>5. 実務での注意点</strong>：RPAは「考えて判断する」ことは苦手です。手順が毎回変わる仕事や、その場の判断が必要な仕事には向きません。<strong>「決まった手順の繰り返し」だけをまかせる</strong>のが鉄則です。</p>
 <h4>RPAの仕組み（図）</h4>
-<pre><code>  人がやっていた作業            RPA導入後
-  ┌─────────────┐            ┌─────────────┐
-  │ Excelを開く      │            │ 人：手順を1回だけ教える │
-  │ 数字を読む       │   ──▶      │           ↓            │
-  │ システムに入力   │            │ ロボット：毎回自動で実行 │
-  │ 保存する         │            │ （早い・ミスしない・24h）│
-  └─────────────┘            └─────────────┘</code></pre>
+<figure class="fig"><svg viewBox="0 0 720 250" class="fig-svg" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans JP',system-ui,sans-serif"><defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#b0854a"/></marker></defs><rect x="20" y="30" width="310" height="190" rx="14" fill="#f0ebdf" stroke="#d9d2c4"/><text x="175" y="60" font-size="15" font-weight="700" fill="#2a4d69" text-anchor="middle">人が「1回だけ」手順を教える</text><text x="52" y="88" font-size="13.5" fill="#43423b">・Excelを開く</text><text x="52" y="118" font-size="13.5" fill="#43423b">・数字を読む</text><text x="52" y="148" font-size="13.5" fill="#43423b">・システムに入力</text><text x="52" y="178" font-size="13.5" fill="#43423b">・保存する</text><path d="M338 125 L382 125" stroke="#b0854a" stroke-width="3" marker-end="url(#arr)"/><rect x="390" y="30" width="310" height="190" rx="14" fill="#23261f"/><text x="545" y="60" font-size="15" font-weight="700" fill="#e8c98f" text-anchor="middle">ロボットが「毎回」自動で実行</text><circle cx="416" cy="88" r="3.5" fill="#b0854a"/><text x="430" y="92" font-size="13.5" fill="#e9e5da">早い（人手の数倍）</text><circle cx="416" cy="120" r="3.5" fill="#b0854a"/><text x="430" y="124" font-size="13.5" fill="#e9e5da">ミスをしない</text><circle cx="416" cy="152" r="3.5" fill="#b0854a"/><text x="430" y="156" font-size="13.5" fill="#e9e5da">24時間・何度でも</text><circle cx="416" cy="184" r="3.5" fill="#b0854a"/><text x="430" y="188" font-size="13.5" fill="#e9e5da">人は確認だけ</text></svg></figure>
 <hr>
 <h3>2. RPAでできること・できないこと</h3>
 <h4>できること（得意）</h4>
@@ -390,17 +388,7 @@ hr{border:0;border-top:1px dashed var(--line);margin:2.4em 0}
 <hr>
 <h3>6. 自動化に向く業務・向かない業務</h3>
 <p>「やりたいから」ではなく、<strong>効果が出るか</strong>で選びます。判断は次の2軸（マトリクス）が便利です。</p>
-<pre><code>        回数・頻度が多い
-              ▲
-   （B）      │      （A） ★最優先
-  作れるが    │   ルール化でき、
-  効果は中    │   回数も多い＝一番おいしい
-──────────┼──────────▶ ルール化しやすい
-   （D）      │      （C）
-  自動化      │   ルール化できるが
-  向かない    │   回数が少なく効果小
-              │
-        回数・頻度が少ない</code></pre>
+<figure class="fig"><svg viewBox="0 0 560 430" class="fig-svg" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans JP',system-ui,sans-serif"><defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#b0854a"/></marker></defs><rect x="290.0" y="40" width="200.0" height="200.0" fill="#e9f0ea"/><rect x="90" y="40" width="200.0" height="200.0" fill="#fbf6ea"/><rect x="90" y="240.0" width="200.0" height="200.0" fill="#f3eee4"/><rect x="290.0" y="240.0" width="200.0" height="200.0" fill="#f6ecec"/><line x1="90" y1="240.0" x2="490" y2="240.0" stroke="#c9c1b1" stroke-width="1.5"/><line x1="290.0" y1="40" x2="290.0" y2="440" stroke="#c9c1b1" stroke-width="1.5"/><rect x="90" y="40" width="400" height="400" fill="none" stroke="#b7ae9d" stroke-width="1.5"/><text x="390.0" y="136.0" font-size="15" font-weight="700" fill="#2a7d52" text-anchor="middle">最優先で自動化</text><text x="390.0" y="156.0" font-size="11" fill="#6a685d" text-anchor="middle">ルール化でき・回数も多い</text><text x="190.0" y="136.0" font-size="15" font-weight="700" fill="#8a6b1f" text-anchor="middle">効果は中</text><text x="190.0" y="156.0" font-size="11" fill="#6a685d" text-anchor="middle"> 回数は多いがルール化しにくい</text><text x="390.0" y="336.0" font-size="15" font-weight="700" fill="#7a6a52" text-anchor="middle">効果は小</text><text x="390.0" y="356.0" font-size="11" fill="#6a685d" text-anchor="middle">ルール化できるが回数少</text><text x="190.0" y="336.0" font-size="15" font-weight="700" fill="#a3503a" text-anchor="middle">向かない</text><text x="190.0" y="356.0" font-size="11" fill="#6a685d" text-anchor="middle">非定型で回数も少ない</text><text x="290.0" y="470" font-size="13" font-weight="700" fill="#43423b" text-anchor="middle">ルール化しやすい →</text><text x="28" y="240.0" font-size="13" font-weight="700" fill="#43423b" text-anchor="middle" transform="rotate(-90 28 240.0)">回数・頻度が多い →</text></svg></figure>
 <h4>向く業務の条件</h4>
 <ul><li>手順が<strong>毎回同じ</strong>（ルール化できる）</li><li><strong>回数が多い／定期的</strong>（毎日・毎週）</li><li>画面・様式が<strong>安定</strong>している</li><li>情報が<strong>デジタル</strong>（Excel/CSV/システム）</li><li>ミスが許されず、<strong>正確さが重要</strong></li></ul>
 <h4>向かない業務の条件</h4>
@@ -785,15 +773,7 @@ P400,ファイルD,200,事務用品</code></pre>
 <blockquote>応用3の「全員分を回す」で、変数＋繰り返しの組み合わせに進みます。変数は<strong>繰り返し・条件分岐と組み合わせて真価を発揮</strong>します。</blockquote>
 <hr>
 <h3>5-8. 変数の考え方（図まとめ）</h3>
-<pre><code>        ┌───────────── シナリオ ─────────────┐
-入口 →  │ [対象ファイル] [担当者名] [出力先] を先頭で設定 │
-        │           │        │        │              │
-        │           ▼        ▼        ▼              │
-        │   各ノードが「箱の中身」を参照して動く          │
-        │           │                                 │
-出口 →  │   箱の中身を変えるだけで、全体の動きが変わる      │
-        └───────────────────────────────────┘
-   ＝ 「変わる値」を箱に外出しする ＝ 使い回せる・壊れにくい</code></pre>
+<figure class="fig"><svg viewBox="0 0 720 250" class="fig-svg" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans JP',system-ui,sans-serif"><defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#b0854a"/></marker></defs><text x="360" y="28" font-size="14.5" font-weight="700" fill="#2a4d69" text-anchor="middle">「変わる値」を箱に入れて、何度も使い回す</text><rect x="270" y="55" width="180" height="70" rx="12" fill="#23261f"/><text x="360" y="85" font-size="13" fill="#a7a291" text-anchor="middle">変数（箱）</text><text x="360" y="108" font-size="17" font-weight="700" fill="#e8c98f" text-anchor="middle">担当者名 = 山田</text><text x="90" y="95" font-size="13.5" fill="#43423b" text-anchor="middle">先頭で1回</text><text x="90" y="114" font-size="13.5" fill="#43423b" text-anchor="middle">値を設定</text><path d="M150 95 L262 92" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><text x="470" y="165" font-size="13" fill="#43423b">宛名に差し込む</text><path d="M360 128 C360 150 430 150 462 161" stroke="#c9a15a" stroke-width="1.8" fill="none" marker-end="url(#arr)"/><text x="470" y="189" font-size="13" fill="#43423b">署名に差し込む</text><path d="M360 128 C360 150 430 150 462 185" stroke="#c9a15a" stroke-width="1.8" fill="none" marker-end="url(#arr)"/><text x="470" y="213" font-size="13" fill="#43423b">ログに記録</text><path d="M360 128 C360 150 430 150 462 209" stroke="#c9a15a" stroke-width="1.8" fill="none" marker-end="url(#arr)"/><text x="360" y="235" font-size="12.5" fill="#6a685d" text-anchor="middle">箱の中身を「佐藤」に変えるだけで、参照先すべてが変わる</text></svg></figure>
 <hr>
 <h3>5-9. 確認テスト（解答・解説付き）</h3>
 <p><strong>Q1.（選択）</strong> 変数を使う一番の利点は？<br>A. 実行が速くなる B. 値を1か所変えるだけでシナリオ全体に反映でき、使い回せる C. ライセンスが安くなる D. エラーが絶対に出なくなる</p>
@@ -912,21 +892,7 @@ P400,ファイルD,200,事務用品</code></pre>
 <ol><li>「担当ごとの合計金額」を集計して、担当別レポートも出す。</li><li>出力ファイル名に<strong>処理日</strong>を付ける（<code>売上レポート_20260718.xlsx</code>）。</li><li>金額が一定額以上の行だけ「要確認」列に印を付ける（条件分岐＝教材7へ）。</li></ol>
 <hr>
 <h3>6-7. Excel自動化 処理フロー（図まとめ）</h3>
-<pre><code>[開始]
-  │
-  ▼ 入力Excelを開く ── 出力Excelを開く
-  │
-  ▼ 最終行を取得
-  │
-  ▼ ┌──── 繰り返し（行番号 = 2 → 最終行）────┐
-  │  │ 値を読む → 数値変換 → 金額計算 → 合計加算 │
-  │  │ 出力に書く → 行番号 +1                    │
-  │  └──────────────────────────────┘
-  ▼ 合計を書く
-  │
-  ▼ 保存 → 両方閉じる ★閉じ忘れ厳禁
-  │
-[終了]</code></pre>
+<figure class="fig"><svg viewBox="0 0 720 352" class="fig-svg" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans JP',system-ui,sans-serif"><defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#b0854a"/></marker></defs><rect x="46" y="8" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="38.0" r="16" fill="#b0854a"/><text x="46" y="43.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">1</text><text x="80" y="33" font-size="16.5" font-weight="700" fill="#23261f">Excelファイルを開く</text><text x="80" y="54" font-size="12.5" fill="#6a685d">対象は変数[対象ファイル]で指定</text><path d="M376.0 68 L376.0 97" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="100" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="130.0" r="16" fill="#b0854a"/><text x="46" y="135.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">2</text><text x="80" y="125" font-size="16.5" font-weight="700" fill="#23261f">セルを読む／書く</text><text x="80" y="146" font-size="12.5" fill="#6a685d">値の取得・設定（必要なだけ繰り返す）</text><path d="M376.0 160 L376.0 189" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="192" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="222.0" r="16" fill="#b0854a"/><text x="46" y="227.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">3</text><text x="80" y="217" font-size="16.5" font-weight="700" fill="#23261f">保存する</text><text x="80" y="238" font-size="12.5" fill="#6a685d">元を壊さないよう別名保存が安全</text><path d="M376.0 252 L376.0 281" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="284" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="314.0" r="16" fill="#b0854a"/><text x="46" y="319.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">4</text><text x="80" y="309" font-size="16.5" font-weight="700" fill="#23261f">必ず閉じる</text><text x="80" y="330" font-size="12.5" fill="#6a685d">閉じ忘れると次回に開けない・固まる</text></svg></figure>
 <hr>
 <h3>6-8. 確認テスト（解答・解説付き）</h3>
 <p><strong>Q1.（選択）</strong> Excel操作で最も忘れやすく、忘れると次回に開けない等の事故になるのは？<br>A. 保存 B. 閉じる C. シート選択 D. 色付け</p>
@@ -1048,25 +1014,7 @@ C002,佐藤花子,みどり物産,hanako@example.com,03-1111-0002
 <ol><li><code>顧客一覧.csv</code> の<strong>全件</strong>を1件ずつ入力する（繰り返し＝教材8）。</li><li>メール欄が空の行は<strong>スキップ</strong>して、エラー一覧に記録する（条件分岐・例外＝教材7/9）。</li><li>登録結果（成功/失敗）を<strong>処理ログ</strong>に書き出す（教材で扱うログ設計）。</li></ol>
 <hr>
 <h3>7-8. Web自動化 処理フロー（図まとめ）</h3>
-<pre><code>[開始]
-  │
-  ▼ データを1件読む（CSV/Excel）
-  │
-  ▼ ブラウザでページを開く
-  │
-  ▼ 【待つ】表示されるまで ★
-  │
-  ▼ （必要なら）ログイン → 【待つ】
-  │
-  ▼ 各欄に入力（属性で指定）
-  │
-  ▼ 登録ボタンをクリック
-  │
-  ▼ 【待つ】完了メッセージ ★ → 成功確認
-  │
-  ▼ ブラウザを閉じる
-  │
-[終了]     ※「要素が見つからない」時はまず【待つ】を疑う</code></pre>
+<figure class="fig"><svg viewBox="0 0 720 536" class="fig-svg" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans JP',system-ui,sans-serif"><defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#b0854a"/></marker></defs><rect x="46" y="8" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="38.0" r="16" fill="#b0854a"/><text x="46" y="43.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">1</text><text x="80" y="33" font-size="16.5" font-weight="700" fill="#23261f">ページを開く</text><text x="80" y="54" font-size="12.5" fill="#6a685d">URLを指定</text><path d="M376.0 68 L376.0 97" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="100" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="130.0" r="16" fill="#b0854a"/><text x="46" y="135.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">2</text><text x="80" y="125" font-size="16.5" font-weight="700" fill="#23261f">表示を待つ</text><text x="80" y="146" font-size="12.5" fill="#6a685d">要素が出る前に操作しない（最重要）</text><path d="M376.0 160 L376.0 189" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="192" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="222.0" r="16" fill="#b0854a"/><text x="46" y="227.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">3</text><text x="80" y="217" font-size="16.5" font-weight="700" fill="#23261f">入力する</text><text x="80" y="238" font-size="12.5" fill="#6a685d">id/name など属性で要素を指定</text><path d="M376.0 252 L376.0 281" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="284" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="314.0" r="16" fill="#b0854a"/><text x="46" y="319.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">4</text><text x="80" y="309" font-size="16.5" font-weight="700" fill="#23261f">ボタンをクリック</text><text x="80" y="330" font-size="12.5" fill="#6a685d">登録・検索など</text><path d="M376.0 344 L376.0 373" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="376" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="406.0" r="16" fill="#b0854a"/><text x="46" y="411.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">5</text><text x="80" y="401" font-size="16.5" font-weight="700" fill="#23261f">画面遷移を待つ</text><text x="80" y="422" font-size="12.5" fill="#6a685d">完了メッセージが出るまで</text><path d="M376.0 436 L376.0 465" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="468" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="498.0" r="16" fill="#b0854a"/><text x="46" y="503.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">6</text><text x="80" y="493" font-size="16.5" font-weight="700" fill="#23261f">値を取得／閉じる</text><text x="80" y="514" font-size="12.5" fill="#6a685d">結果を確認してブラウザを閉じる</text></svg></figure>
 <hr>
 <h3>7-9. 確認テスト（解答・解説付き）</h3>
 <p><strong>Q1.（選択）</strong> Web自動化がExcelより不安定になりやすい主な理由は？<br>A. 文字数が多いから B. 画面が変わる・表示に時間がかかるから C. 色が多いから D. マウスが壊れるから</p>
@@ -1455,20 +1403,7 @@ C005,田中健二,さくら電機,kenji@example.com,03-1111-0005</code></pre>
 <ul><li>エラー内容は<strong>具体的に</strong>（「エラー」ではなく「メール空」「電話形式不正」）。後で直しやすい。</li><li>エラーが一定数を超えたら<strong>通知（メール）</strong>を出す（応用・教材13/14）。</li><li>一時的な失敗（通信）に備え、登録処理に<strong>リトライ（2〜3回）</strong>を入れる。</li></ul>
 <hr>
 <h3>10-6. エラー対応フロー（図まとめ）</h3>
-<pre><code>                （処理を実行）
-                     │
-        ┌── 成功？ ──┴── 失敗？ ──┐
-        │Yes                    │No
-        ▼                       ▼
-   次の件へ進む          エラー内容を記録
-                              │
-                    ┌── 危険な処理？ ──┐
-                    │Yes            │No
-                    ▼               ▼
-                  止める        エラー一覧に記録
-                    │           （必要ならリトライ）
-                    ▼               │
-                 担当へ通知      次の件へ進む</code></pre>
+<figure class="fig"><svg viewBox="0 0 720 444" class="fig-svg" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans JP',system-ui,sans-serif"><defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#b0854a"/></marker></defs><rect x="46" y="8" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="38.0" r="16" fill="#b0854a"/><text x="46" y="43.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">1</text><text x="80" y="33" font-size="16.5" font-weight="700" fill="#23261f">処理を実行する</text><text x="80" y="54" font-size="12.5" fill="#6a685d">失敗する前提で組む</text><path d="M376.0 68 L376.0 97" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="100" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="130.0" r="16" fill="#b0854a"/><text x="46" y="135.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">2</text><text x="80" y="125" font-size="16.5" font-weight="700" fill="#23261f">成功？ 失敗？を判定</text><text x="80" y="146" font-size="12.5" fill="#6a685d">ログで場所→ステップで値を確認</text><path d="M376.0 160 L376.0 189" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="192" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="222.0" r="16" fill="#b0854a"/><text x="46" y="227.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">3</text><text x="80" y="217" font-size="16.5" font-weight="700" fill="#23261f">止める / 飛ばす / 知らせる</text><text x="80" y="238" font-size="12.5" fill="#6a685d">危険は停止・1件はスキップ・多発は通知</text><path d="M376.0 252 L376.0 281" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="284" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="314.0" r="16" fill="#b0854a"/><text x="46" y="319.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">4</text><text x="80" y="309" font-size="16.5" font-weight="700" fill="#23261f">エラー一覧に記録</text><text x="80" y="330" font-size="12.5" fill="#6a685d">日時・対象・内容・対応状況を残す</text><path d="M376.0 344 L376.0 373" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="376" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="406.0" r="16" fill="#b0854a"/><text x="46" y="411.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">5</text><text x="80" y="401" font-size="16.5" font-weight="700" fill="#23261f">次の件へ進む／復旧</text><text x="80" y="422" font-size="12.5" fill="#6a685d">1件のエラーで全体を止めない</text></svg></figure>
 <p><strong>設計の合言葉</strong>：「止める・飛ばす・知らせる」を、業務の重要度で選ぶ。</p>
 <hr>
 <h3>10-7. 実務でのエラー対応設計（現場の型）</h3>
@@ -2178,9 +2113,14 @@ document.addEventListener('click',e=>{
   b.lastChild.textContent = open ? '解答を隠す' : '解答・解説を表示';
 });
 
+// ハッシュ変更（共有リンク・戻る/進む）に追従
+window.addEventListener('hashchange',()=>{
+  const m=(location.hash.match(/^#ch(\d+)$/)||[])[1];
+  if(m!==undefined && +m!==cur) go(Math.min(TOTAL-1,+m), false);
+});
 // 初期表示（ハッシュ対応）
 const h=(location.hash.match(/^#ch(\d+)$/)||[])[1];
-go(h?Math.min(TOTAL-1,+h):0, false);
+go(h!==undefined?Math.min(TOTAL-1,+h):0, false);
 updateProgress();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
 </script>
