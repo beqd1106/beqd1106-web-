@@ -1120,18 +1120,7 @@ INV-2026-004,ひかり食品,45000,2026-07-10</code></pre>
 <ol><li>取引先別のサブフォルダも作る（<code>整理済\2026-07\あおぞら商事\</code>）。</li><li>金額が10万円以上の請求書だけ「要確認」フォルダにコピーも残す（条件分岐＝教材8）。</li><li>処理できなかったファイル（対応表に無い等）は<strong>エラー一覧に記録して残す</strong>（例外設計＝教材9）。</li></ol>
 <hr>
 <h3>8-6. ファイル振り分け 処理フロー（図まとめ）</h3>
-<pre><code>[開始]
-  │
-  ▼ 受信フォルダの一覧取得（*.pdf）
-  │
-  ▼ ┌──── 繰り返し（1件ずつ）────────────────┐
-  │  │ 番号抽出 → 対応表で請求日 → 年月を作る       │
-  │  │ 移動先フォルダ【無ければ作る】               │
-  │  │ 【同名チェック】→ 移動 → ログ記録            │
-  │  └──────────────────────────────┘
-  ▼ 完了件数を表示
-  │
-[終了]   ※削除より移動。まずテストフォルダで</code></pre>
+<figure class="fig"><svg viewBox="0 0 720 536" class="fig-svg" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans JP',system-ui,sans-serif"><defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#b0854a"/></marker></defs><rect x="46" y="8" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="38.0" r="16" fill="#b0854a"/><text x="46" y="43.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">1</text><text x="80" y="33" font-size="16.5" font-weight="700" fill="#23261f">受信フォルダの一覧を取得</text><text x="80" y="54" font-size="12.5" fill="#6a685d">対象を *.pdf などで絞る</text><path d="M376.0 68 L376.0 97" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="100" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="130.0" r="16" fill="#b0854a"/><text x="46" y="135.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">2</text><text x="80" y="125" font-size="16.5" font-weight="700" fill="#23261f">1件ずつ繰り返す</text><text x="80" y="146" font-size="12.5" fill="#6a685d">ファイル名を順に処理</text><path d="M376.0 160 L376.0 189" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="192" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="222.0" r="16" fill="#b0854a"/><text x="46" y="227.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">3</text><text x="80" y="217" font-size="16.5" font-weight="700" fill="#23261f">振り分け先を決める</text><text x="80" y="238" font-size="12.5" fill="#6a685d">番号→対応表→請求日→年月(2026-07)</text><path d="M376.0 252 L376.0 281" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="284" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="314.0" r="16" fill="#b0854a"/><text x="46" y="319.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">4</text><text x="80" y="309" font-size="16.5" font-weight="700" fill="#23261f">移動先フォルダを用意</text><text x="80" y="330" font-size="12.5" fill="#6a685d">無ければ作る／同名は連番で回避</text><path d="M376.0 344 L376.0 373" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="376" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="406.0" r="16" fill="#b0854a"/><text x="46" y="411.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">5</text><text x="80" y="401" font-size="16.5" font-weight="700" fill="#23261f">ファイルを移動＋記録</text><text x="80" y="422" font-size="12.5" fill="#6a685d">削除より移動。処理をログに残す</text><path d="M376.0 436 L376.0 465" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="468" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="498.0" r="16" fill="#b0854a"/><text x="46" y="503.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">6</text><text x="80" y="493" font-size="16.5" font-weight="700" fill="#23261f">完了件数を表示</text><text x="80" y="514" font-size="12.5" fill="#6a685d">まずテストフォルダで検証</text></svg></figure>
 <hr>
 <h3>8-7. 確認テスト（解答・解説付き）</h3>
 <p><strong>Q1.（選択）</strong> ファイル操作がWeb操作より安定して動きやすい主な理由は？<br>A. 速いから B. 画面を操作しないので画面変更の影響を受けにくいから C. 無料だから D. 拡張が不要だから</p>
@@ -1562,21 +1551,7 @@ STEP5 設計書にまとめる       誰が見ても分かる形に
 【8】自動：ダウンロード・入力・ログ／人：金額突合・高額承認</code></pre>
 <hr>
 <h3>11-11. 設計フロー（図まとめ）</h3>
-<pre><code>[業務を選ぶ]
-   ▼
-[現場ヒアリング] ← 「たいてい」に隠れた例外を掘る
-   ▼
-[入力・処理・出力に分解]
-   ▼
-[例外を洗い出す] → 各例外に 止/飛/報 を割り当て
-   ▼
-[人の確認点を決める] ← 危険な操作は半自動
-   ▼
-[保守しやすい設計にまとめる] → 命名・外出し・部品化・ログ
-   ▼
-[設計書・引き継ぎ資料を作る]
-   ▼
-=== ここでやっと作成に着手 ===</code></pre>
+<figure class="fig"><svg viewBox="0 0 720 536" class="fig-svg" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans JP',system-ui,sans-serif"><defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#b0854a"/></marker></defs><rect x="46" y="8" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="38.0" r="16" fill="#b0854a"/><text x="46" y="43.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">1</text><text x="80" y="33" font-size="16.5" font-weight="700" fill="#23261f">自動化する業務を選ぶ</text><text x="80" y="54" font-size="12.5" fill="#6a685d">ルール化でき・回数が多いものを</text><path d="M376.0 68 L376.0 97" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="100" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="130.0" r="16" fill="#b0854a"/><text x="46" y="135.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">2</text><text x="80" y="125" font-size="16.5" font-weight="700" fill="#23261f">現場をヒアリングして整理</text><text x="80" y="146" font-size="12.5" fill="#6a685d">「たいてい」の裏に隠れた例外を掘る</text><path d="M376.0 160 L376.0 189" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="192" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="222.0" r="16" fill="#b0854a"/><text x="46" y="227.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">3</text><text x="80" y="217" font-size="16.5" font-weight="700" fill="#23261f">入力・処理・出力に分解</text><text x="80" y="238" font-size="12.5" fill="#6a685d">部品化してテストしやすくする</text><path d="M376.0 252 L376.0 281" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="284" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="314.0" r="16" fill="#b0854a"/><text x="46" y="319.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">4</text><text x="80" y="309" font-size="16.5" font-weight="700" fill="#23261f">例外を洗い出す</text><text x="80" y="330" font-size="12.5" fill="#6a685d">各例外に 止める/飛ばす/知らせる を割当</text><path d="M376.0 344 L376.0 373" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="376" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="406.0" r="16" fill="#b0854a"/><text x="46" y="411.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">5</text><text x="80" y="401" font-size="16.5" font-weight="700" fill="#23261f">人の確認点を決める</text><text x="80" y="422" font-size="12.5" fill="#6a685d">金額・送信・削除は半自動で残す</text><path d="M376.0 436 L376.0 465" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="468" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="498.0" r="16" fill="#b0854a"/><text x="46" y="503.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">6</text><text x="80" y="493" font-size="16.5" font-weight="700" fill="#23261f">設計書・引き継ぎにまとめる</text><text x="80" y="514" font-size="12.5" fill="#6a685d">ここまで固めてから作成に着手</text></svg></figure>
 <hr>
 <h3>11-12. 確認テスト（解答・解説付き）</h3>
 <p><strong>Q1.（選択）</strong> 実務シナリオが失敗する最大の原因は？<br>A. 技術力不足 B. 設計の甘さ（整理・例外・確認点の不足） C. PCの性能 D. ライセンス</p>
@@ -1693,16 +1668,7 @@ O004,ひかり食品,消しゴムC,30,50,高橋,misaki@example.com</code></pre>
 <p>これらを備えて初めて「現場で任せられるシナリオ」になります。</p>
 <hr>
 <h3>12-4. 総合ハンズオン 統合フロー（図まとめ）</h3>
-<pre><code>[入力] 当日CSV取得 ─ 未着？ ─Yes→ 通知して終了（止める）
-   │No
-[処理] ┌ 繰り返し（全行）────────────────────┐
-   │   │ 入力チェック NG→ エラー記録＆スキップ        │
-   │   │ 金額計算 → 高額？ Yes→ 承認待ちへ（人が承認） │
-   │   │            No → 登録（例外処理＋リトライ）    │
-   │   └────────────────────────────┘
-[出力] 処理ログ追記 ／ エラー一覧保存 ／ 承認待ちリスト
-   │
-[確認] 人が：合計突合・承認待ち・エラー一覧をチェック</code></pre>
+<figure class="fig"><svg viewBox="0 0 720 444" class="fig-svg" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans JP',system-ui,sans-serif"><defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#b0854a"/></marker></defs><rect x="46" y="8" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="38.0" r="16" fill="#b0854a"/><text x="46" y="43.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">1</text><text x="80" y="33" font-size="16.5" font-weight="700" fill="#23261f">入力：当日CSVを取得</text><text x="80" y="54" font-size="12.5" fill="#6a685d">未着なら通知して終了（止める）</text><path d="M376.0 68 L376.0 97" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="100" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="130.0" r="16" fill="#b0854a"/><text x="46" y="135.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">2</text><text x="80" y="125" font-size="16.5" font-weight="700" fill="#23261f">処理：1件ずつ判定</text><text x="80" y="146" font-size="12.5" fill="#6a685d">チェック→金額判定→登録 or 承認待ち</text><path d="M376.0 160 L376.0 189" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="192" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="222.0" r="16" fill="#b0854a"/><text x="46" y="227.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">3</text><text x="80" y="217" font-size="16.5" font-weight="700" fill="#23261f">例外：異常は記録して続行</text><text x="80" y="238" font-size="12.5" fill="#6a685d">高額は承認へ／失敗はリトライ＆記録</text><path d="M376.0 252 L376.0 281" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="284" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="314.0" r="16" fill="#b0854a"/><text x="46" y="319.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">4</text><text x="80" y="309" font-size="16.5" font-weight="700" fill="#23261f">出力：ログ・エラー・承認待ち</text><text x="80" y="330" font-size="12.5" fill="#6a685d">後から追える形で残す</text><path d="M376.0 344 L376.0 373" stroke="#b0854a" stroke-width="2.4" marker-end="url(#arr)"/><rect x="46" y="376" width="660" height="60" rx="12" fill="#fffdf9" stroke="#d9d2c4"/><circle cx="46" cy="406.0" r="16" fill="#b0854a"/><text x="46" y="411.0" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">5</text><text x="80" y="401" font-size="16.5" font-weight="700" fill="#23261f">確認：人がチェック</text><text x="80" y="422" font-size="12.5" fill="#6a685d">合計突合・承認待ち・エラー一覧</text></svg></figure>
 <hr>
 <h3>12-5. 確認テスト（解答・解説付き）</h3>
 <p><strong>Q1.（選択）</strong> ログファイルは書き込み時、どのモードにすべき？<br>A. 上書き B. 追記 C. 削除 D. 読み取り専用</p>
