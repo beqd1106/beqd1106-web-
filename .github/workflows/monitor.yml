@@ -1,9 +1,10 @@
 name: 官公庁サイト更新監視 & 自動デプロイ
 
 on:
-  schedule:
-    # 毎日 00:00 UTC = 09:00 JST
-    - cron: '0 0 * * *'
+  # 定期実行は停止（2026-08-19）。必要なときは Actions タブから手動実行する。
+  # schedule:
+  #   # 毎日 00:00 UTC = 09:00 JST
+  #   - cron: '0 0 * * *'
   workflow_dispatch:
     # GitHub の Actions タブから手動実行も可能
 
