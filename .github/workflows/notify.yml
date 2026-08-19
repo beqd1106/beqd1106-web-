@@ -1,9 +1,10 @@
 name: 締切・期限通知メール
 
 on:
-  schedule:
-    # 毎朝 9:00 JST（00:00 UTC）
-    - cron: '0 0 * * *'
+  # 定期実行は停止（2026-08-19）。必要なときは Actions タブから手動実行する。
+  # schedule:
+  #   # 毎朝 9:00 JST（00:00 UTC）
+  #   - cron: '0 0 * * *'
   workflow_dispatch:
     # GitHub Actions タブから手動送信も可能
 

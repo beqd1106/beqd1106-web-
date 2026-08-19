@@ -1,8 +1,9 @@
 name: 歯科情報更新チェック
 
 on:
-  schedule:
-    - cron: '0 22 * * *'  # 毎日 7:00 JST（22:00 UTC）
+  # 定期実行は停止（2026-08-19）。必要なときは Actions タブから手動実行する。
+  # schedule:
+  #   - cron: '0 22 * * *'  # 毎日 7:00 JST（22:00 UTC）
   workflow_dispatch:       # 手動実行も可能
 
 permissions:
