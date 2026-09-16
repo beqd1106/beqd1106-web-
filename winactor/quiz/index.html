@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>WinActor 検定ドリル</title>
+<meta name="description" content="RPA技術者検定アソシエイト対策。WinActor Ver.7.6 操作マニュアル準拠の問題集。本番同型50問模試・分野別ドリル・弱点復習。">
+<meta name="theme-color" content="#2a4d69">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f7f4ee; --paper2:#fffdf9; --ink:#20211d; --ink2:#54544d; --ink3:#87867d;
+  --line:#e3ddd1; --line2:#efe9dd;
+  --accent:#2a4d69; --accent-d:#1d3a51; --accent2:#b0854a; --brass:#a9822f;
+  --ok:#3a7d52; --ok-bg:#eef5f0; --warn:#b4592a; --warn-bg:#fbf0ea;
+  --shadow:0 1px 3px rgba(30,25,15,.06),0 6px 24px rgba(30,25,15,.06);
+  --shadow-lg:0 2px 6px rgba(30,25,15,.08),0 18px 44px rgba(30,25,15,.10);
+  --r:14px; --r-sm:10px;
+  --bar-h:calc(72px + env(safe-area-inset-bottom));
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Noto Sans JP",system-ui,sans-serif;line-height:1.8;
+  font-size:clamp(15px,1.5vw,16px);-webkit-font-smoothing:antialiased;
+  overflow-wrap:break-word;word-break:normal;line-break:strict}
+h1,h2,h3{font-family:"Noto Serif JP",serif;font-weight:700;line-height:1.45;margin:0}
+button{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+/* ---------- shell ---------- */
+.top{position:sticky;top:0;z-index:40;background:rgba(247,244,238,.92);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top-in{max-width:760px;margin:0 auto;padding:11px 16px;
+  display:flex;align-items:center;gap:12px;min-height:56px}
+.brand{font-family:"Noto Serif JP",serif;font-weight:700;font-size:1.02rem;
+  letter-spacing:.02em;display:flex;align-items:center;gap:9px;flex:1;min-width:0}
+.brand b{color:var(--accent2)}
+.brand .mk{width:22px;height:22px;flex:none;fill:var(--accent)}
+.iconbtn{background:none;border:1px solid var(--line);border-radius:var(--r-sm);
+  width:38px;height:38px;flex:none;display:grid;place-items:center;cursor:pointer;
+  transition:background .18s,border-color .18s}
+.iconbtn svg{width:19px;height:19px;fill:var(--ink2)}
+.iconbtn:hover{background:var(--paper2);border-color:var(--accent2)}
+.iconbtn:active{transform:translateY(1px)}
+main{max-width:760px;margin:0 auto;padding:22px 16px calc(var(--bar-h) + 28px)}
+.view[hidden]{display:none}
+
+/* ---------- home ---------- */
+.hero{margin:6px 0 24px}
+.hero h1{font-size:clamp(1.42rem,4.6vw,1.9rem);letter-spacing:.01em}
+.hero p{color:var(--ink2);font-size:.9rem;margin:.6em 0 0}
+.hero .src{display:inline-block;margin-top:12px;font-size:.76rem;color:var(--ink3);
+  border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:var(--paper2)}
+
+.gauge{background:var(--paper2);border:1px solid var(--line);border-radius:var(--r);
+  padding:18px 20px;box-shadow:var(--shadow);margin-bottom:22px}
+.gauge-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.gauge-lb{font-size:.78rem;color:var(--ink2);font-weight:500;letter-spacing:.04em}
+.gauge-val{font-family:"Noto Serif JP",serif;font-weight:700;font-size:1.85rem;line-height:1}
+.gauge-val small{font-size:.9rem;color:var(--ink3);font-weight:400;margin-left:2px}
+.track{position:relative;height:9px;border-radius:99px;background:var(--line2);margin-top:14px;overflow:hidden}
+.track i{position:absolute;inset:0 auto 0 0;width:0;border-radius:99px;
+  background:linear-gradient(90deg,var(--accent2),var(--brass));transition:width .7s cubic-bezier(.22,1,.36,1)}
+.track .goal{position:absolute;top:-4px;bottom:-4px;left:70%;width:2px;background:var(--accent);opacity:.55}
+.gauge-note{display:flex;justify-content:space-between;gap:10px;margin-top:9px;
+  font-size:.74rem;color:var(--ink3)}
+
+.sec-h{display:flex;align-items:center;gap:11px;margin:26px 0 13px}
+.sec-h h2{font-size:.88rem;letter-spacing:.09em;color:var(--ink2);font-weight:600}
+.sec-h .ln{flex:1;height:1px;background:var(--line)}
+
+.menu{display:grid;gap:11px}
+.card{display:flex;align-items:center;gap:15px;width:100%;text-align:left;
+  background:var(--paper2);border:1px solid var(--line);border-radius:var(--r);
+  padding:16px 17px;cursor:pointer;box-shadow:var(--shadow);
+  transition:transform .18s cubic-bezier(.22,1,.36,1),box-shadow .18s,border-color .18s}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--accent2)}
+.card:active{transform:translateY(0)}
+.card:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:var(--shadow);border-color:var(--line)}
+.card .ic{width:42px;height:42px;flex:none;border-radius:11px;display:grid;place-items:center;
+  background:#eef1f4;border:1px solid #dde4ea}
+.card .ic svg{width:21px;height:21px;fill:var(--accent)}
+.card.primary .ic{background:var(--accent);border-color:var(--accent-d)}
+.card.primary .ic svg{fill:#fff}
+.card .tx{flex:1;min-width:0}
+.card .tt{display:block;font-weight:700;font-size:.99rem;letter-spacing:.01em}
+.card .ds{display:block;font-size:.79rem;color:var(--ink2);margin-top:3px;line-height:1.65}
+.card .go{width:17px;height:17px;flex:none;fill:var(--ink3)}
+.card .cnt{font-family:"Noto Serif JP",serif;font-weight:700;font-size:.82rem;
+  color:var(--accent2);flex:none;white-space:nowrap;align-self:center}
+
+/* ---------- domain rows ---------- */
+.dom{display:grid;gap:9px}
+.dom-row{display:grid;grid-template-columns:1fr auto;gap:5px 13px;align-items:center;
+  background:var(--paper2);border:1px solid var(--line);border-radius:var(--r-sm);
+  padding:13px 15px;cursor:pointer;text-align:left;width:100%;
+  transition:border-color .18s,background .18s}
+.dom-row:hover{border-color:var(--accent2);background:#fffefb}
+.dom-row .nm{font-weight:700;font-size:.92rem}
+.dom-row .rt{font-size:.78rem;color:var(--ink2);font-variant-numeric:tabular-nums}
+.dom-row .pbar{grid-column:1/-1;height:6px;border-radius:99px;background:var(--line2);overflow:hidden}
+.dom-row .pbar i{display:block;height:100%;width:0;border-radius:99px;
+  background:var(--accent);transition:width .7s cubic-bezier(.22,1,.36,1)}
+.dom-row .pbar i.low{background:var(--warn)}
+.dom-row .pbar i.hi{background:var(--ok)}
+
+/* ---------- quiz ---------- */
+.qtop{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-bottom:15px;font-size:.78rem;color:var(--ink2)}
+.qtop .idx{font-family:"Noto Serif JP",serif;font-weight:700;font-size:.92rem;color:var(--ink)}
+.qtop .idx b{color:var(--accent2)}
+.chip{border:1px solid var(--line);border-radius:999px;padding:3px 11px;
+  background:var(--paper2);font-size:.72rem;letter-spacing:.03em;white-space:nowrap}
+.chip.t{color:var(--accent);border-color:#cfdbe4;background:#f2f6f9}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink)}
+.timer.warn{color:var(--warn)}
+
+.qcard{background:var(--paper2);border:1px solid var(--line);border-radius:var(--r);
+  padding:21px 20px;box-shadow:var(--shadow);animation:rise .32s cubic-bezier(.22,1,.36,1)}
+@keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.qtext{font-size:1.04rem;font-weight:500;line-height:1.85;letter-spacing:.01em}
+.opts{display:grid;gap:9px;margin-top:19px}
+.opt{display:flex;gap:13px;align-items:flex-start;width:100%;text-align:left;
+  background:var(--paper2);border:1.5px solid var(--line);border-radius:var(--r-sm);
+  padding:13px 15px;cursor:pointer;line-height:1.7;
+  transition:border-color .16s,background .16s,transform .16s}
+.opt:hover:not(:disabled){border-color:var(--accent);background:#f6f9fb}
+.opt:active:not(:disabled){transform:scale(.995)}
+.opt:disabled{cursor:default}
+.opt .no{width:25px;height:25px;flex:none;border-radius:50%;display:grid;place-items:center;
+  border:1.5px solid var(--line);font-size:.76rem;font-weight:700;color:var(--ink2);
+  font-family:"Noto Serif JP",serif;margin-top:1px;transition:.16s}
+.opt:hover:not(:disabled) .no{border-color:var(--accent);color:var(--accent)}
+.opt .lb{flex:1;min-width:0;font-size:.95rem}
+.opt.correct{border-color:var(--ok);background:var(--ok-bg)}
+.opt.correct .no{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--warn);background:var(--warn-bg)}
+.opt.wrong .no{background:var(--warn);border-color:var(--warn);color:#fff}
+.opt.dim{opacity:.55}
+
+.verdict{display:flex;align-items:center;gap:10px;margin-top:19px;padding:12px 15px;
+  border-radius:var(--r-sm);font-weight:700;font-size:.92rem;
+  animation:rise .28s cubic-bezier(.22,1,.36,1)}
+.verdict svg{width:19px;height:19px;flex:none}
+.verdict.o{background:var(--ok-bg);color:var(--ok);border:1px solid #cfe2d6}
+.verdict.o svg{fill:var(--ok)}
+.verdict.x{background:var(--warn-bg);color:var(--warn);border:1px solid #f0d8c9}
+.verdict.x svg{fill:var(--warn)}
+
+.expl{margin-top:13px;border-top:1px solid var(--line2);padding-top:15px;
+  animation:rise .34s cubic-bezier(.22,1,.36,1)}
+.expl h3{font-size:.78rem;letter-spacing:.09em;color:var(--ink2);font-weight:600;
+  font-family:"Noto Sans JP",sans-serif;margin-bottom:7px}
+.expl p{margin:0 0 14px;font-size:.9rem;line-height:1.85;color:var(--ink)}
+.wlist{display:grid;gap:7px;margin:0 0 14px}
+.wlist div{font-size:.84rem;color:var(--ink2);line-height:1.75;
+  padding-left:15px;border-left:2px solid var(--line);}
+.wlist div b{color:var(--warn);font-weight:700}
+.note{background:#f4f6f3;border:1px solid #e2e7dd;border-radius:var(--r-sm);
+  padding:11px 14px;font-size:.84rem;color:var(--ink2);line-height:1.75;margin-bottom:13px}
+.note b{color:var(--ok);font-weight:700;display:block;font-size:.73rem;
+  letter-spacing:.08em;margin-bottom:3px}
+.src-l{font-size:.74rem;color:var(--ink3);display:flex;align-items:center;gap:6px}
+.src-l svg{width:13px;height:13px;fill:var(--ink3);flex:none}
+
+/* ---------- bottom bar ---------- */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:50;
+  background:rgba(247,244,238,.94);backdrop-filter:blur(10px);
+  border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+.bar-in{max-width:760px;margin:0 auto;display:flex;gap:10px;align-items:center}
+.btn{border:none;border-radius:var(--r-sm);padding:13px 22px;font-weight:700;
+  cursor:pointer;letter-spacing:.03em;font-size:.95rem;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  transition:background .18s,transform .16s,box-shadow .18s}
+.btn svg{width:17px;height:17px;fill:currentColor}
+.btn-p{background:var(--accent);color:#fff;flex:1;box-shadow:0 2px 10px rgba(42,77,105,.22)}
+.btn-p:hover:not(:disabled){background:var(--accent-d);box-shadow:0 4px 16px rgba(42,77,105,.3)}
+.btn-p:active:not(:disabled){transform:translateY(1px)}
+.btn-p:disabled{background:#c9c6bd;box-shadow:none;cursor:not-allowed;color:#fff}
+.btn-s{background:var(--paper2);color:var(--ink2);border:1px solid var(--line)}
+.btn-s:hover{border-color:var(--accent2);color:var(--ink)}
+.btn-g{background:none;color:var(--ink2);padding:13px 15px}
+.btn-g:hover{color:var(--ink)}
+
+/* ---------- result ---------- */
+.score{text-align:center;background:var(--paper2);border:1px solid var(--line);
+  border-radius:var(--r);padding:30px 22px;box-shadow:var(--shadow);margin-bottom:20px}
+.score .vd{font-family:"Noto Serif JP",serif;font-weight:700;font-size:1.5rem;letter-spacing:.06em}
+.score .vd.pass{color:var(--ok)} .score .vd.fail{color:var(--warn)}
+.score .pc{font-family:"Noto Serif JP",serif;font-weight:700;
+  font-size:clamp(3.1rem,14vw,4.1rem);line-height:1.05;margin:6px 0 2px;letter-spacing:-.02em}
+.score .pc small{font-size:.3em;color:var(--ink3);margin-left:4px}
+.score .sub{font-size:.85rem;color:var(--ink2)}
+.score .ring{margin:0 auto 4px;display:block}
+.rv-list{display:grid;gap:9px}
+.rv{background:var(--paper2);border:1px solid var(--line);border-left:3px solid var(--warn);
+  border-radius:var(--r-sm);padding:13px 15px;cursor:pointer;text-align:left;width:100%;
+  transition:border-color .18s,background .18s}
+.rv:hover{background:#fffefb;border-color:var(--accent2);border-left-color:var(--warn)}
+.rv .q{font-size:.88rem;font-weight:500;line-height:1.7;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rv .m{font-size:.73rem;color:var(--ink3);margin-top:5px}
+
+/* ---------- stats ---------- */
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.kpi{background:var(--paper2);border:1px solid var(--line);border-radius:var(--r-sm);
+  padding:14px 12px;text-align:center;box-shadow:var(--shadow)}
+.kpi .v{font-family:"Noto Serif JP",serif;font-weight:700;font-size:1.5rem;line-height:1.15}
+.kpi .k{font-size:.7rem;color:var(--ink2);margin-top:3px;letter-spacing:.04em}
+.tlist{display:grid;gap:7px}
+.trow{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;
+  background:var(--paper2);border:1px solid var(--line);border-radius:var(--r-sm);
+  padding:11px 14px;text-align:left;width:100%;cursor:pointer;
+  transition:border-color .18s,background .18s}
+.trow:hover{border-color:var(--accent2);background:#fffefb}
+.trow .nm{font-size:.87rem;font-weight:500}
+.trow .rt{font-size:.77rem;color:var(--ink2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.trow .pbar{grid-column:1/-1;height:5px;border-radius:99px;background:var(--line2);overflow:hidden}
+.trow .pbar i{display:block;height:100%;border-radius:99px;background:var(--warn)}
+.trow .pbar i.mid{background:var(--accent2)} .trow .pbar i.hi{background:var(--ok)}
+
+/* ---------- misc states ---------- */
+.empty{text-align:center;padding:52px 22px;color:var(--ink2)}
+.empty svg{width:42px;height:42px;fill:var(--line);margin-bottom:13px}
+.empty h3{font-size:1.02rem;margin-bottom:7px;color:var(--ink)}
+.empty p{font-size:.86rem;margin:0}
+.load{text-align:center;padding:64px 22px;color:var(--ink3);font-size:.87rem}
+.spin{width:27px;height:27px;border:2.5px solid var(--line);border-top-color:var(--accent);
+  border-radius:50%;margin:0 auto 15px;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.err{background:var(--warn-bg);border:1px solid #f0d8c9;border-radius:var(--r);
+  padding:19px;color:var(--warn);font-size:.88rem;line-height:1.8}
+.err b{display:block;margin-bottom:5px;font-size:.95rem}
+dialog{border:none;border-radius:var(--r);padding:0;max-width:440px;width:calc(100% - 36px);
+  box-shadow:var(--shadow-lg);background:var(--paper2);color:var(--ink)}
+dialog::backdrop{background:rgba(30,28,22,.44);backdrop-filter:blur(2px)}
+.dlg{padding:24px 22px}
+.dlg h3{font-size:1.06rem;margin-bottom:9px}
+.dlg p{font-size:.88rem;color:var(--ink2);margin:0 0 19px;line-height:1.8}
+.dlg-btns{display:flex;gap:9px;justify-content:flex-end}
+@media(max-width:400px){
+  .kpis{grid-template-columns:repeat(3,1fr);gap:7px}
+  .kpi{padding:12px 6px}.kpi .v{font-size:1.25rem}.kpi .k{font-size:.65rem}
+  .card{padding:14px 14px;gap:12px}.card .ic{width:38px;height:38px}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <button class="iconbtn" id="back" hidden aria-label="戻る">
+      <svg viewBox="0 0 24 24"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4-4.6-4.6z"/></svg>
+    </button>
+    <div class="brand">
+      <svg class="mk" viewBox="0 0 24 24"><path d="M4 4h7v7H4zm9 0h7v7h-7zM4 13h7v7H4zm9 0h7v7h-7z" opacity=".35"/><path d="M4 4h7v7H4z"/></svg>
+      <span>WinActor <b>検定ドリル</b></span>
+    </div>
+    <button class="iconbtn" id="toStats" aria-label="成績">
+      <svg viewBox="0 0 24 24"><path d="M4 20h3v-8H4zm6.5 0h3V4h-3zM17 20h3v-12h-3z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <div id="loading" class="load"><div class="spin"></div>問題を読み込んでいます</div>
+  <div id="fatal" class="err" hidden></div>
+
+  <!-- ===== HOME ===== -->
+  <section class="view" id="v-home" hidden>
+    <div class="hero">
+      <h1>RPA技術者検定<br>アソシエイト 対策ドリル</h1>
+      <p>本番は50問／60分、正答率7割で合格。概要10問・機能20問・シナリオ20問。</p>
+      <span class="src" id="srcChip">出典：WinActor Ver.7.6 操作マニュアル</span>
+    </div>
+
+    <div class="gauge">
+      <div class="gauge-top">
+        <span class="gauge-lb">直近50問の正答率</span>
+        <span class="gauge-val" id="gVal">—<small>%</small></span>
+      </div>
+      <div class="track"><i id="gBar"></i><span class="goal"></span></div>
+      <div class="gauge-note"><span id="gNote">まだ解答がありません</span><span>合格ライン 70%</span></div>
+    </div>
+
+    <div class="sec-h"><h2>演習メニュー</h2><div class="ln"></div></div>
+    <div class="menu">
+      <button class="card primary" data-go="mock">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5zm-1 14-4-4 1.4-1.4L11 13.2l4.6-4.6L17 10z"/></svg></span>
+        <span class="tx"><span class="tt">本番同型 模試</span><span class="ds">50問／60分・分野配分も本番どおり。合否判定つき</span></span>
+        <svg class="go" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6z"/></svg>
+      </button>
+      <button class="card" data-go="weak" id="weakBtn">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 2 1 21h22zm0 5 7.5 12.9h-15zM11 10h2v5h-2zm0 6.5h2v2h-2z"/></svg></span>
+        <span class="tx"><span class="tt">弱点復習</span><span class="ds" id="weakDs">間違えた問題を忘却曲線の順に再出題</span></span>
+        <span class="cnt" id="weakCnt"></span>
+      </button>
+      <button class="card" data-go="all">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M5 3h10l4 4v14H5zm9 1.5V8h3.5zM7 11h10v1.6H7zm0 3.4h10V16H7zm0 3.4h6.5v1.6H7z"/></svg></span>
+        <span class="tx"><span class="tt">全問演習</span><span class="ds">未挑戦の問題から順に出題</span></span>
+        <span class="cnt" id="allCnt"></span>
+      </button>
+    </div>
+
+    <div class="sec-h"><h2>分野別ドリル</h2><div class="ln"></div></div>
+    <div class="dom" id="domList"></div>
+
+    <div class="sec-h"><h2>テーマ別ドリル</h2><div class="ln"></div></div>
+    <div class="tlist" id="topicList"></div>
+  </section>
+
+  <!-- ===== QUIZ ===== -->
+  <section class="view" id="v-quiz" hidden>
+    <div class="qtop">
+      <span class="idx"><b id="qNo">1</b> / <span id="qTot">50</span></span>
+      <span style="display:flex;gap:8px;align-items:center">
+        <span class="chip t" id="qDom"></span>
+        <span class="timer" id="qTimer" hidden>60:00</span>
+      </span>
+    </div>
+    <div class="track" style="margin-bottom:16px"><i id="qBar"></i></div>
+    <div class="qcard">
+      <div class="qtext" id="qText"></div>
+      <div class="opts" id="qOpts"></div>
+      <div id="qFeed"></div>
+    </div>
+  </section>
+
+  <!-- ===== RESULT ===== -->
+  <section class="view" id="v-result" hidden>
+    <div class="score">
+      <div class="vd" id="rVd"></div>
+      <div class="pc" id="rPc">0<small>%</small></div>
+      <div class="sub" id="rSub"></div>
+    </div>
+    <div class="sec-h"><h2>分野別の正答率</h2><div class="ln"></div></div>
+    <div class="dom" id="rDom" style="margin-bottom:8px"></div>
+    <div id="rWrongWrap">
+      <div class="sec-h"><h2>間違えた問題</h2><div class="ln"></div></div>
+      <div class="rv-list" id="rWrong"></div>
+    </div>
+  </section>
+
+  <!-- ===== STATS ===== -->
+  <section class="view" id="v-stats" hidden>
+    <div class="hero" style="margin-bottom:18px"><h1>学習の記録</h1></div>
+    <div class="kpis">
+      <div class="kpi"><div class="v" id="kSolved">0</div><div class="k">解答した問題</div></div>
+      <div class="kpi"><div class="v" id="kRate">—</div><div class="k">累計正答率</div></div>
+      <div class="kpi"><div class="v" id="kWeak">0</div><div class="k">要復習</div></div>
+    </div>
+    <div class="sec-h"><h2>模試の履歴</h2><div class="ln"></div></div>
+    <div id="mockHist"></div>
+    <div class="sec-h"><h2>テーマ別の到達度（低い順）</h2><div class="ln"></div></div>
+    <div class="tlist" id="sTopics"></div>
+    <div style="margin-top:28px;text-align:center">
+      <button class="btn btn-s" id="resetBtn">学習データを消去</button>
+    </div>
+  </section>
+</main>
+
+<div class="bar" id="bar" hidden><div class="bar-in" id="barIn"></div></div>
+
+<dialog id="dlg"><div class="dlg">
+  <h3 id="dlgT"></h3><p id="dlgP"></p>
+  <div class="dlg-btns">
+    <button class="btn btn-s" id="dlgNo">キャンセル</button>
+    <button class="btn btn-p" id="dlgYes" style="flex:none">実行</button>
+  </div>
+</div></dialog>
+
+<script>
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+const el=(t,c,x)=>{const n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n};
+const DOM_LABEL={overview:"概要",features:"機能",scenario:"シナリオ"};
+const MOCK_MIX={overview:10,features:20,scenario:20};
+const PASS=0.7, MOCK_SEC=60*60, KEY="winactor_quiz_v1";
+
+let QS=[], BY_ID={}, S=null, sess=null, tick=null;
+
+/* ---------- storage ---------- */
+const blank=()=>({rec:{},mocks:[],seen:0});
+function load(){
+  try{const r=localStorage.getItem(KEY);if(r){const p=JSON.parse(r);
+    return {rec:p.rec||{},mocks:p.mocks||[],seen:p.seen||0}}}catch(e){}
+  return blank();
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+/* 忘却曲線：正解で間隔を伸ばし、誤答で即日に戻す */
+const STEPS=[0,1,3,7,16,35];
+function grade(id,ok){
+  const r=S.rec[id]||(S.rec[id]={n:0,ok:0,lv:0,due:0,last:0});
+  r.n++; if(ok)r.ok++;
+  r.lv = ok ? Math.min(r.lv+1,STEPS.length-1) : 0;
+  r.last=Date.now();
+  r.due=Date.now()+STEPS[r.lv]*864e5;
+  S.seen++; save();
+}
+const isWeak=r=>r&&r.n>0&&(r.lv===0||r.ok/r.n<0.7);
+const dueList=()=>QS.filter(q=>{const r=S.rec[q.id];return isWeak(r)&&(r.due||0)<=Date.now()})
+  .sort((a,b)=>(S.rec[a.id].due||0)-(S.rec[b.id].due||0));
+const weakAll=()=>QS.filter(q=>isWeak(S.rec[q.id]));
+
+/* ---------- views ---------- */
+function show(v){
+  ["home","quiz","result","stats"].forEach(k=>$("v-"+k).hidden=(k!==v));
+  $("back").hidden=(v==="home");
+  $("toStats").hidden=(v!=="home");
+  window.scrollTo({top:0,behavior:"instant"});
+}
+function setBar(items){
+  const b=$("barIn"); b.innerHTML="";
+  if(!items||!items.length){$("bar").hidden=true;return}
+  $("bar").hidden=false;
+  items.forEach(it=>{
+    const n=el("button",it.cls||"btn btn-p",it.label);
+    if(it.id)n.id=it.id; if(it.dis)n.disabled=true;
+    n.addEventListener("click",it.on); b.appendChild(n);
+  });
+}
+
+/* ---------- home ---------- */
+function pct(a,b){return b?Math.round(a/b*100):null}
+function recent(n){
+  const all=Object.values(S.rec).filter(r=>r.n>0).sort((a,b)=>b.last-a.last).slice(0,n);
+  let o=0,t=0; all.forEach(r=>{o+=r.ok;t+=r.n});
+  return t?Math.round(o/t*100):null;
+}
+function renderHome(){
+  const r=recent(50);
+  $("gVal").innerHTML = r==null ? '—<small>%</small>' : r+'<small>%</small>';
+  $("gBar").style.width=(r||0)+"%";
+  $("gNote").textContent = r==null ? "まだ解答がありません"
+    : (r>=70?"合格ラインに乗っています":"あと"+(70-r)+"ポイント");
+
+  const w=weakAll().length, due=dueList().length;
+  $("weakCnt").textContent = w?String(w):"";
+  $("weakDs").textContent = w ? (due?due+"問が今日の復習対象（要復習 "+w+"問）":"要復習 "+w+"問。復習日が来るまで待機中")
+    : "間違えた問題を忘却曲線の順に再出題";
+  $("weakBtn").disabled = w===0;
+  $("allCnt").textContent=QS.length+"問";
+
+  const dl=$("domList"); dl.innerHTML="";
+  ["overview","features","scenario"].forEach(d=>{
+    const set=QS.filter(q=>q.domain===d);
+    let o=0,t=0; set.forEach(q=>{const x=S.rec[q.id];if(x){o+=x.ok;t+=x.n}});
+    const p=pct(o,t);
+    const b=el("button","dom-row");
+    const nm=el("span","nm",DOM_LABEL[d]+"（本番"+MOCK_MIX[d]+"問）");
+    const rt=el("span","rt",(p==null?"未着手":p+"%")+" ・ "+set.length+"問");
+    const bar=el("span","pbar"); const i=el("i");
+    i.className=p==null?"":(p>=70?"hi":(p<50?"low":""));
+    bar.appendChild(i);
+    b.append(nm,rt,bar);
+    b.addEventListener("click",()=>startDrill(set,DOM_LABEL[d]));
+    dl.appendChild(b);
+    requestAnimationFrame(()=>{i.style.width=(p||0)+"%"});
+  });
+  renderTopics($("topicList"),8);
+}
+function topicStats(){
+  const m={};
+  QS.forEach(q=>{const k=q.service||"その他";
+    (m[k]||(m[k]={n:0,ok:0,t:0,qs:[]}));
+    m[k].qs.push(q); const x=S.rec[q.id]; if(x){m[k].t+=x.n;m[k].ok+=x.ok}});
+  return Object.entries(m).map(([k,v])=>({name:k,total:v.qs.length,qs:v.qs,
+    rate:v.t?Math.round(v.ok/v.t*100):null})).filter(x=>x.total>=3);
+}
+function renderTopics(host,limit){
+  const list=topicStats().sort((a,b)=>{
+    const A=a.rate==null?999:a.rate, B=b.rate==null?999:b.rate;
+    return A-B || b.total-a.total;
+  }).slice(0,limit||999);
+  host.innerHTML="";
+  if(!list.length){host.appendChild(emptyBox("データがありません","問題を解くとテーマ別の到達度が出ます"));return}
+  list.forEach(t=>{
+    const b=el("button","trow");
+    b.append(el("span","nm",t.name),
+             el("span","rt",(t.rate==null?"未着手":t.rate+"%")+" ・ "+t.total+"問"));
+    const bar=el("span","pbar"),i=el("i");
+    i.className=t.rate==null?"":(t.rate>=70?"hi":(t.rate>=50?"mid":""));
+    bar.appendChild(i); b.appendChild(bar);
+    b.addEventListener("click",()=>startDrill(t.qs,t.name));
+    host.appendChild(b);
+    requestAnimationFrame(()=>{i.style.width=(t.rate==null?0:t.rate)+"%"});
+  });
+}
+function emptyBox(t,p){
+  const d=el("div","empty");
+  d.innerHTML='<svg viewBox="0 0 24 24"><path d="M5 3h10l4 4v14H5zm9 1.5V8h3.5z"/></svg>';
+  d.append(el("h3",null,t),el("p",null,p)); return d;
+}
+
+/* ---------- session ---------- */
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function startDrill(pool,label){
+  if(!pool.length)return;
+  const unseen=pool.filter(q=>!S.rec[q.id]);
+  const order=shuffle(unseen).concat(shuffle(pool.filter(q=>S.rec[q.id])));
+  begin({list:order.slice(0,50),mode:"drill",label:label});
+}
+function startMock(){
+  const list=[];
+  Object.entries(MOCK_MIX).forEach(([d,n])=>{
+    const set=shuffle(QS.filter(q=>q.domain===d));
+    list.push(...set.slice(0,n));
+  });
+  begin({list:shuffle(list),mode:"mock",label:"本番同型 模試",left:MOCK_SEC});
+}
+function startWeak(){
+  let l=dueList(); if(!l.length)l=weakAll();
+  begin({list:l.slice(0,50),mode:"drill",label:"弱点復習"});
+}
+function startAll(){startDrill(QS,"全問演習")}
+
+function begin(cfg){
+  sess={...cfg,i:0,ans:[],ok:0};
+  if(cfg.mode==="mock"){
+    $("qTimer").hidden=false; runTimer();
+  }else{$("qTimer").hidden=true}
+  show("quiz"); renderQ();
+}
+function runTimer(){
+  clearInterval(tick);
+  tick=setInterval(()=>{
+    if(!sess){clearInterval(tick);return}
+    sess.left--;
+    const m=Math.max(0,sess.left);
+    $("qTimer").textContent=String(m/60|0).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
+    $("qTimer").classList.toggle("warn",m<300);
+    if(sess.left<=0){clearInterval(tick);finish()}
+  },1000);
+}
+
+function renderQ(){
+  const q=sess.list[sess.i];
+  $("qNo").textContent=sess.i+1;
+  $("qTot").textContent=sess.list.length;
+  $("qBar").style.width=(sess.i/sess.list.length*100)+"%";
+  $("qDom").textContent=DOM_LABEL[q.domain]||"";
+  $("qText").textContent=q.question;
+  $("qFeed").innerHTML="";
+  const box=$("qOpts"); box.innerHTML="";
+  q.choices.forEach((c,i)=>{
+    const b=el("button","opt");
+    b.append(el("span","no","①②③④"[i]||String(i+1)), el("span","lb",c));
+    b.addEventListener("click",()=>answer(i));
+    box.appendChild(b);
+  });
+  setBar([{label:"解答を選んでください",cls:"btn btn-p",dis:true,on:()=>{}}]);
+}
+
+function answer(pick){
+  const q=sess.list[sess.i];
+  const correct=q.correctAnswers[0];
+  const ok=pick===correct;
+  sess.ans.push({id:q.id,pick,ok}); if(ok)sess.ok++;
+  grade(q.id,ok);
+
+  [...$("qOpts").children].forEach((b,i)=>{
+    b.disabled=true;
+    if(i===correct)b.classList.add("correct");
+    else if(i===pick)b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+
+  const f=$("qFeed");
+  const v=el("div","verdict "+(ok?"o":"x"));
+  v.innerHTML = ok
+    ? '<svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>正解'
+    : '<svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg>不正解 — 正解は '+("①②③④"[correct]||correct+1);
+  f.appendChild(v);
+
+  const ex=el("div","expl");
+  ex.appendChild(el("h3",null,"解説"));
+  ex.appendChild(el("p",null,q.explanation||""));
+  const we=q.wrongChoiceExplanations||{};
+  const keys=Object.keys(we).filter(k=>we[k]);
+  if(keys.length){
+    ex.appendChild(el("h3",null,"ほかの選択肢"));
+    const wl=el("div","wlist");
+    keys.sort().forEach(k=>{
+      const d=el("div"); const b=el("b",null,("①②③④"[+k]||("選択肢"+(+k+1)))+"：");
+      d.append(b,document.createTextNode(we[k])); wl.appendChild(d);
+    });
+    ex.appendChild(wl);
+  }
+  if(q.beginnerNote){
+    const n=el("div","note"); n.append(el("b",null,"かみくだくと"),document.createTextNode(q.beginnerNote));
+    ex.appendChild(n);
+  }
+  if(q.source){
+    const s=el("div","src-l");
+    s.innerHTML='<svg viewBox="0 0 24 24"><path d="M5 3h10l4 4v14H5zm9 1.5V8h3.5z"/></svg>';
+    s.append(document.createTextNode(q.source)); ex.appendChild(s);
+  }
+  f.appendChild(ex);
+
+  const last=sess.i>=sess.list.length-1;
+  setBar([{label:last?"結果を見る":"次の問題へ",on:next}]);
+  $("bar").querySelector(".btn").focus({preventScroll:true});
+}
+function next(){
+  if(sess.i>=sess.list.length-1)return finish();
+  sess.i++; renderQ();
+}
+
+function finish(){
+  clearInterval(tick);
+  const total=sess.ans.length||sess.list.length;
+  const p=Math.round(sess.ok/total*100);
+  const pass=p>=PASS*100;
+  $("rVd").textContent=sess.mode==="mock"?(pass?"合格ライン到達":"合格ライン未達"):"演習おつかれさま";
+  $("rVd").className="vd "+(sess.mode==="mock"?(pass?"pass":"fail"):"");
+  $("rPc").innerHTML=p+'<small>%</small>';
+  $("rSub").textContent=sess.label+"　"+sess.ok+" / "+total+"問正解"
+    +(sess.mode==="mock"?"（合格ラインは70%）":"");
+
+  const dh=$("rDom"); dh.innerHTML="";
+  ["overview","features","scenario"].forEach(d=>{
+    const ids=sess.list.filter(q=>q.domain===d).map(q=>q.id);
+    const a=sess.ans.filter(x=>ids.includes(x.id));
+    if(!a.length)return;
+    const ok=a.filter(x=>x.ok).length, pp=Math.round(ok/a.length*100);
+    const row=el("div","dom-row"); row.style.cursor="default";
+    row.append(el("span","nm",DOM_LABEL[d]),el("span","rt",ok+" / "+a.length+"問　"+pp+"%"));
+    const bar=el("span","pbar"),i=el("i");
+    i.className=pp>=70?"hi":(pp<50?"low":""); bar.appendChild(i); row.appendChild(bar);
+    dh.appendChild(row);
+    requestAnimationFrame(()=>{i.style.width=pp+"%"});
+  });
+
+  const wrong=sess.ans.filter(x=>!x.ok);
+  $("rWrongWrap").hidden=!wrong.length;
+  const wh=$("rWrong"); wh.innerHTML="";
+  wrong.forEach(x=>{
+    const q=BY_ID[x.id]; if(!q)return;
+    const b=el("button","rv");
+    b.append(el("div","q",q.question),
+             el("div","m",(q.service||"")+"　"+(q.source||"")));
+    b.addEventListener("click",()=>begin({list:[q],mode:"drill",label:"見直し"}));
+    wh.appendChild(b);
+  });
+
+  if(sess.mode==="mock"){
+    S.mocks.unshift({t:Date.now(),p,ok:sess.ok,n:total}); S.mocks=S.mocks.slice(0,20); save();
+  }
+  const again=wrong.length
+    ? [{label:"間違えた"+wrong.length+"問をやり直す",cls:"btn btn-p",
+        on:()=>begin({list:wrong.map(x=>BY_ID[x.id]).filter(Boolean),mode:"drill",label:"やり直し"})},
+       {label:"ホーム",cls:"btn btn-s",on:goHome}]
+    : [{label:"ホームに戻る",on:goHome}];
+  setBar(again);
+  show("result");
+}
+function goHome(){clearInterval(tick);sess=null;renderHome();setBar(null);show("home")}
+
+/* ---------- stats ---------- */
+function renderStats(){
+  const rs=Object.values(S.rec).filter(r=>r.n>0);
+  let o=0,t=0; rs.forEach(r=>{o+=r.ok;t+=r.n});
+  $("kSolved").textContent=rs.length;
+  $("kRate").textContent=t?Math.round(o/t*100)+"%":"—";
+  $("kWeak").textContent=weakAll().length;
+  const mh=$("mockHist"); mh.innerHTML="";
+  if(!S.mocks.length)mh.appendChild(emptyBox("模試の記録はまだありません","本番同型50問に挑戦すると記録されます"));
+  else S.mocks.forEach(m=>{
+    const row=el("div","dom-row"); row.style.cursor="default";
+    const d=new Date(m.t);
+    row.append(el("span","nm",`${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`),
+               el("span","rt",m.ok+" / "+m.n+"問　"+m.p+"%"+(m.p>=70?"　合格ライン到達":"")));
+    const bar=el("span","pbar"),i=el("i");
+    i.className=m.p>=70?"hi":(m.p<50?"low":""); bar.appendChild(i); row.appendChild(bar);
+    mh.appendChild(row); requestAnimationFrame(()=>{i.style.width=m.p+"%"});
+  });
+  renderTopics($("sTopics"));
+  setBar(null); show("stats");
+}
+
+/* ---------- dialog ---------- */
+function confirmDlg(title,body,onYes){
+  $("dlgT").textContent=title; $("dlgP").textContent=body;
+  const d=$("dlg"); d.showModal();
+  const yes=()=>{cleanup();d.close();onYes()}, no=()=>{cleanup();d.close()};
+  function cleanup(){$("dlgYes").removeEventListener("click",yes);$("dlgNo").removeEventListener("click",no)}
+  $("dlgYes").addEventListener("click",yes); $("dlgNo").addEventListener("click",no);
+}
+
+/* ---------- wiring ---------- */
+$("back").addEventListener("click",()=>{
+  if(sess && !$("v-quiz").hidden){
+    confirmDlg("演習を中断しますか","ここまでの解答は記録されています。ホームに戻ります。",goHome);
+  } else goHome();
+});
+$("toStats").addEventListener("click",renderStats);
+$("resetBtn").addEventListener("click",()=>{
+  confirmDlg("学習データを消去しますか","正誤履歴・復習予定・模試の記録がすべて消えます。取り消せません。",
+    ()=>{S=blank();save();renderHome();setBar(null);show("home")});
+});
+document.querySelectorAll("[data-go]").forEach(b=>{
+  b.addEventListener("click",()=>({mock:startMock,weak:startWeak,all:startAll})[b.dataset.go]());
+});
+document.addEventListener("keydown",e=>{
+  if($("v-quiz").hidden)return;
+  if(["1","2","3","4"].includes(e.key)){
+    const o=$("qOpts").children[+e.key-1]; if(o&&!o.disabled)o.click();
+  } else if(e.key==="Enter"){
+    const b=$("barIn").querySelector(".btn-p"); if(b&&!b.disabled)b.click();
+  }
+});
+
+/* ---------- boot ---------- */
+fetch("questions.json",{cache:"no-cache"})
+  .then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return r.json()})
+  .then(data=>{
+    QS=(Array.isArray(data)?data:data.questions||[])
+      .filter(q=>q&&q.question&&Array.isArray(q.choices)&&q.choices.length===4
+        &&Array.isArray(q.correctAnswers)&&q.correctAnswers.length===1);
+    if(!QS.length)throw new Error("問題が0件です");
+    QS.forEach(q=>BY_ID[q.id]=q);
+    S=load();
+    $("loading").hidden=true;
+    const src=QS.find(q=>q.source);
+    if(src)$("srcChip").textContent="出典：WinActor Ver.7.6 操作マニュアル（全"+QS.length+"問）";
+    renderHome(); show("home");
+  })
+  .catch(e=>{
+    $("loading").hidden=true;
+    const f=$("fatal"); f.hidden=false;
+    f.innerHTML="<b>問題を読み込めませんでした</b>questions.json の取得に失敗しました（"
+      +String(e.message||e)+"）。ページを再読み込みしても直らない場合は、通信状況を確認してください。";
+  });
+
+if("serviceWorker" in navigator){
+  window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+}
+})();
+</script>
+</body>
+</html>
