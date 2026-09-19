@@ -391,8 +391,16 @@ let QS=[], BY_ID={}, S=null, sess=null, tick=null;
 const blank=()=>({rec:{},mocks:[],seen:0});
 function load(){
   try{const r=localStorage.getItem(KEY);if(r){const p=JSON.parse(r);
-    return {rec:p.rec||{},mocks:p.mocks||[],seen:p.seen||0}}}catch(e){}
+    return prune({rec:p.rec||{},mocks:p.mocks||[],seen:p.seen||0})}}catch(e){}
   return blank();
+}
+/* 問題が入れ替わったあと、もう存在しない問題の記録が残っていると
+   正答率の集計がずれるので、読み込み時に取り除く */
+function prune(s){
+  let dropped=0;
+  for(const id of Object.keys(s.rec)){ if(!BY_ID[id]){ delete s.rec[id]; dropped++ } }
+  if(dropped)try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}
+  return s;
 }
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
