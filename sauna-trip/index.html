@@ -510,6 +510,9 @@ footer a{color:var(--ink-2)}
 @media (max-width:900px){.hut .hut-ig{order:-1}}
 .hc.tix{text-decoration:none;color:#fff}
 @media (max-width:600px){.food-ig{grid-template-columns:1fr}.hc.tix{aspect-ratio:auto;min-height:168px;padding:16px 14px;gap:14px}.tix h3{font-size:17px}.tix .icon.big{width:32px;height:32px}}
+.bcard.shared{grid-column:1/-1}
+.bcard.shared .facts li{grid-template-columns:7em 1fr}
+#sauna .reasons{margin-bottom:0}
 </style>
 
 </head>
@@ -573,26 +576,13 @@ footer a{color:var(--ink-2)}
   </dl>
 </div>
 
-<!-- HIGHLIGHTS -->
-<section class="hl-sec" aria-labelledby="hl-title">
-  <div class="wrap">
-    <div class="hl-head rv"><h2 id="hl-title">予定のハイライト</h2><span>本物の写真はこの下から</span></div>
-    <div class="hl-grid">
-      <a class="hc tix t-hot rv" href="#sauna"><svg class="icon big" aria-hidden="true"><use href="#i-flame"/></svg><div class="cap"><div class="when">DAY 1 · 夕方</div><h3>5人だけの<br>サウナ3時間</h3><small>3号棟コルメを貸切</small></div></a>
-      <a class="hc tix t-ice rv" href="#real"><svg class="icon big" aria-hidden="true"><use href="#i-snow"/></svg><div class="cap"><div class="when">2日間とも</div><h3>雪に<br>ダイブする</h3><small>雪が積もっていれば</small></div></a>
-      <a class="hc tix t-red rv" href="#food"><svg class="icon big" aria-hidden="true"><use href="#i-bowl"/></svg><div class="cap"><div class="when">DAY 2 · 夜</div><h3>食べるサウナ、<br>ラム火鍋</h3><small>〆はラーメン</small></div></a>
-      <a class="hc tix t-ink rv" href="#stay"><svg class="icon big" aria-hidden="true"><use href="#i-dice"/></svg><div class="cap"><div class="when">毎晩</div><h3>薪ストーブ前で<br>ラブレター</h3><small>負けたら運転係</small></div></a>
-    </div>
-  </div>
-</section>
-
 <!-- SAUNA (main) -->
 <section class="dark" id="sauna">
   <div class="wrap">
     <div class="sec-head pitch-head rv">
       <div class="sec-num">01 — THE SAUNA</div>
       <h2>この旅の主役は、<br><span class="accent">The Sauna</span>。</h2>
-      <p>長野と新潟の県境、野尻湖のほとりにある「LAMP野尻湖」のアウトドアサウナ。サウナ好きのあいだで「聖地」と呼ばれる場所です。薪ストーブのサウナ小屋が5棟あって、冬は敷地ごと雪に埋まる。熱々の小屋から出たら、3℃の水風呂か、真っ白な雪の中へ。</p>
+      <p>野尻湖のほとり「LAMP野尻湖」のアウトドアサウナ。サウナ好きに「聖地」と呼ばれる場所で、冬は敷地ごと雪に埋まる。1日目はコルメを5人で3時間貸切、2日目は2階建てのカクシ。</p>
     </div>
 
     <div class="ig rv" id="real">
@@ -608,7 +598,7 @@ footer a{color:var(--ink-2)}
       <p class="ig-note">写真は The Sauna 公式Instagram（<a href="https://www.instagram.com/the_sauna_nojiriko/" target="_blank" rel="noopener">@the_sauna_nojiriko</a>）の投稿を、Instagramの埋め込み機能で表示しています。</p>
     </div>
 
-    <h3 class="sub-h rv">ここがすごい、3つのポイント</h3>
+    <h3 class="sub-h rv">ここがたまらん、3つのポイント</h3>
     <div class="reasons">
       <article class="reason rv">
         <div class="r-ico"><svg class="icon"><use href="#i-flame"/></svg></div>
@@ -616,7 +606,7 @@ footer a{color:var(--ink-2)}
       </article>
       <article class="reason rv">
         <div class="r-ico ice"><svg class="icon"><use href="#i-snow"/></svg></div>
-        <div class="body"><div class="num">POINT 02</div><h4>水風呂は3℃、そして雪ダイブ。</h4><p>冬の樽の水風呂は1〜3月で3℃くらい。貸切の小屋は、飲めるほどきれいな地下水をくんだ専用の水風呂つき。雪が積もっていれば、そのまま雪に飛びこめます。</p></div>
+        <div class="body"><div class="num">POINT 02</div><h4>水風呂は天然の地下水、そして雪ダイブ。</h4><p>貸切のコルメは、飲めるほどきれいな地下水をくんだ専用の水風呂つき。冬は1〜3月で3℃くらい。雪が積もっていれば、そのまま雪に飛びこめる。</p></div>
       </article>
       <article class="reason rv">
         <div class="r-ico air"><svg class="icon"><use href="#i-leaf"/></svg></div>
@@ -624,71 +614,6 @@ footer a{color:var(--ink-2)}
       </article>
     </div>
 
-    <h3 class="sub-h rv">温まる、冷やす、休む。</h3>
-    <p class="sub-p rv">やることはこれだけ。あとは自分のペースでくり返す。3時間の貸切なら、急ぐ理由がない。</p>
-    <div class="flow rv">
-      <div class="step hot"><div class="k">STEP 1</div><b>温まる</b><p>薪の熱で、じっくり汗をかく。下の段から。ロウリュは声をかけ合って。</p></div>
-      <div class="step cold"><div class="k">STEP 2</div><b>冷やす</b><p>水風呂か、雪の中へ。冬は3℃前後なので、短くてOK。無理なら水をかぶるだけでも。</p></div>
-      <div class="step air"><div class="k">STEP 3</div><b>休む</b><p>ポンチョを着て、外のイスで寝ころぶ。ここが一番気持ちいい。</p></div>
-      <div class="repeat">くり返す<small>自分のペースで</small></div>
-    </div>
-    <p class="flow-note rv">体調が一番。気分が悪くなったらすぐ出る。お酒を飲んだあとは入らない。合間に水をしっかり飲む。</p>
-
-    <h3 class="sub-h rv">今回入るのは、この2棟</h3>
-    <p class="sub-p rv">1日目は5人だけの貸切、2日目はほかのお客さんと一緒に入るサウナ。</p>
-    <div class="huts">
-      <article class="hut rv">
-        <div class="hut-ig ig-lazy"><blockquote class="ig-q" data-instgrm-permalink="https://www.instagram.com/p/CYybeHKlmL4/" data-instgrm-version="14"><a href="https://www.instagram.com/p/CYybeHKlmL4/" target="_blank" rel="noopener">雪の中のコルメ（The Sauna 公式Instagram）を見る</a></blockquote></div>
-        <div class="body">
-          <span class="when">DAY 1 · 17:00〜</span>
-          <h4>3号棟 コルメ</h4><div class="en">KOLME — 3時間 完全貸切</div>
-          <ul>
-            <li>「あと1時間あったら、もっと深くととのえるのでは」という発想で作られた、3時間貸切だけのサウナ</li>
-            <li>専用の水風呂は、飲み水にもなる地下水</li>
-            <li>6人まで入れるので、5人なら気兼ねなし</li>
-          </ul>
-        </div>
-      </article>
-      <article class="hut ice rv">
-        <div class="hut-ig ig-lazy"><blockquote class="ig-q" data-instgrm-permalink="https://www.instagram.com/p/COSUfH8DBVH/" data-instgrm-version="14"><a href="https://www.instagram.com/p/COSUfH8DBVH/" target="_blank" rel="noopener">カクシの図解（2階建ての中）（The Sauna 公式Instagram）を見る</a></blockquote></div>
-        <div class="body">
-          <span class="when">DAY 2 · 17:00〜</span>
-          <h4>2号棟 カクシ</h4><div class="en">KAKSI — 2時間 みんなで入るサウナ</div>
-          <ul>
-            <li>スタッフが自分たちで建てた、めずらしい2階建てのサウナ小屋</li>
-            <li>屋根裏に仲間で集まるようなワクワク感。大きな窓から外が見える</li>
-            <li>1組4人までなので、3人と2人に分けて予約する</li>
-          </ul>
-        </div>
-      </article>
-    </div>
-    <p class="others rv"><b>ほかの小屋：</b>1号棟ユクシ（はじまりのサウナ。存在感のある薪ストーブ）／4号棟ネリャ（コルメの双子。寝ころべる大きな座面）／5号棟ヴィーシ（12月から3時間制のみんなで入るサウナに。深い水風呂と浅い水風呂）／6号棟クーシ（この冬オープン予定。時期は公式の発表待ち）</p>
-
-    <h3 class="sub-h rv">サウナ代は1人いくら？</h3>
-    <div class="cost">
-      <div class="cost-box rv">
-        <h4>1人あたりのサウナ代（2026年12月からの新料金・休日）</h4>
-        <div class="big"><span class="dyn" data-n="13800" data-k="1" data-f="yen">13,800</span>円<small> / 人</small></div>
-        <table class="ctable">
-          <tr><td>1日目　コルメ 貸切3時間<small>39,000円 ÷ 5人（土曜＝休日料金）</small></td><td>7,800円</td></tr>
-          <tr><td><span class="d2-name">2日目　カクシ 2時間</span><small class="d2-note">1人5,000円（日曜＝休日料金。平日なら4,000円）</small></td><td><span class="dyn" data-n="5000" data-k="1" data-f="yen">5,000</span>円</td></tr>
-          <tr><td>ポンチョ 2回分<small>1個500円。冬の外気浴には必須。水着・タオル・サンダルは無料</small></td><td>1,000円</td></tr>
-          <tr class="sum"><td>合計（5人で <span class="dyn" data-n="69000" data-k="5" data-f="yen">69,000</span>円）</td><td><span class="dyn" data-n="13800" data-k="1" data-f="yen">13,800</span>円</td></tr>
-        </table>
-      </div>
-      <div class="option rv" id="opt">
-        <h4>2日目も貸切にする案</h4>
-        <p>2日目を4号棟ネリャの貸切（39,000円 / 3時間）に変えると、5人一緒に入れて、時間も1時間長くなる。</p>
-        <div class="plus">＋2,800円<small> / 人（5人で＋14,000円）</small></div>
-        <label class="toggle"><input type="checkbox" id="kashi2"><span class="sw" aria-hidden="true"></span><span class="lbl">この案で計算してみる</span></label>
-        <p class="est">比較用の試算です。オンにすると、このページのサウナ代と予算の合計が変わります（7,800円 − 5,000円 ＝ 1人＋2,800円、休日料金）。</p>
-      </div>
-    </div>
-    <div class="tip rv"><svg class="icon"><use href="#i-alert"/></svg><div>キャンセル料は、貸切が7日前から、みんなで入るサウナは前日からかかります。サウナは宿とは別に予約します。開始時刻の区切りは予約ページで確かめてください。</div></div>
-    <div class="go-board rv">
-      <p>この3時間を、5人で押さえたい。<small>まずは1月9日（土）の宿とコルメの空きを確認。</small></p>
-      <a class="btn btn-primary" href="#board"><svg class="icon"><use href="#i-check"/></svg>予約ボードを見る</a>
-    </div>
   </div>
 </section>
 
@@ -767,7 +692,7 @@ footer a{color:var(--ink-2)}
           <li class="ice peak"><time>9:00</time><i class="dot"></i><div><div class="what">黒姫高原スノーパークでスキー・スノボ<span class="badge">雪山</span></div><div class="desc">LAMPのおすすめプランにも入っているスキー場。道具とウェアは借りられる。滑らない人は宿でのんびりでもOK。</div></div></li>
           <li><time>12:00</time><i class="dot"></i><div><div class="what">ゲレンデで昼ごはん</div></div></li>
           <li><time>14:30</time><i class="dot"></i><div><div class="what">宿に戻って昼寝</div></div></li>
-          <li class="hl peak"><time>17:00</time><i class="dot"></i><div><div class="what">サウナ2本目（2号棟カクシ・2時間）<span class="badge">2階建て</span></div><div class="desc">2階建てのサウナ小屋。ほかのお客さんと一緒に入るタイプで、1組4人までなので<em>3人と2人に分けて予約</em>する（5人一緒がよければ貸切に変える案もあり。上のサウナの節を参照）。</div></div></li>
+          <li class="hl peak"><time>17:00</time><i class="dot"></i><div><div class="what">サウナ2本目（2号棟カクシ・2時間）<span class="badge">2階建て</span></div><div class="desc">2階建てのサウナ小屋。ほかのお客さんと一緒に入るタイプで、1組4人までなので<em>3人と2人に分けて予約</em>する（5人一緒がよければ4号棟ネリャの貸切に変える手も。1人＋2,800円）。</div></div></li>
           <li class="hl peak"><time>19:30</time><i class="dot"></i><div><div class="what">ラム火鍋コース（LAMPのレストラン）<span class="badge">食べるサウナ</span></div><div class="desc">「食べるサウナ」と呼ばれる、薬膳の鶏白湯と麻辣の2色鍋。ラムもも肉と長野の豚肩ロース、〆はラーメン、デザートはりんごのシャーベット。<em>1人4,800円・前もって予約が必要</em>。</div></div></li>
           <li class="ice peak"><time>21:00</time><i class="dot"></i><div><div class="what">ボドゲ会 本番<span class="badge">決戦</span></div><div class="desc">まずは<em>ラブレター</em>で肩慣らし。負けた人は3日目の運転担当、みたいな賭けで盛り上がる。</div></div></li>
         </ol>
@@ -806,7 +731,7 @@ footer a{color:var(--ink-2)}
     <div class="sec-head rv">
       <div class="sec-num">04 — STAY &amp; GAMES</div>
       <h2>風呂上がり、<br>ラブレター開幕。</h2>
-      <p>サウナのあとは、薪ストーブの一軒家で2晩ボドゲ会。最初の1戦はカードゲーム「ラブレター」で決まり。泊まるのは本館から少し離れた一棟貸しの「BESSOU 404-2」。ほかのお客さんと建物が別なので、5人でわいわいしやすい。</p>
+      <p>サウナのあとは、薪ストーブの一軒家で2晩ボドゲ会。最初の1戦はカードゲーム「ラブレター」で決まり。宿は一棟貸しの「BESSOU 404-2」。</p>
     </div>
     <div class="two">
       <div class="panel rv">
@@ -824,7 +749,7 @@ footer a{color:var(--ink-2)}
         <h3><svg class="icon"><use href="#i-dice"/></svg>持っていくボドゲ（5人向け）</h3>
         <figure class="photo games-photo"><img src="img/loveletter.jpg" alt="ボードゲーム「ラブレター」のカードと赤い得点コマ" loading="lazy"><figcaption>ラブレター</figcaption></figure>
         <ul class="games">
-          <li class="main"><b>ラブレター</b><span>16枚のカードで、お姫様にラブレターを届け合う心理戦。1回5分で何回でも遊べる。新しい版なら6人まで遊べる（古い版は4人まで。持ってる版を確認）</span></li>
+          <li class="main"><b>ラブレター</b><span>16枚のカードで、お姫様にラブレターを届け合う心理戦。1回5分。第2版（2022年〜）は5人まで遊べる（古い版は4人まで）</span></li>
           <li><b>犯人は踊る</b><span>カードで犯人を当てる。ルールがすぐわかる</span></li>
           <li><b>ito</b><span>数字を言葉でたとえて並べる。23時以降の静かタイムにも</span></li>
           <li><b>コードネーム</b><span>2チームで言葉当て。5人なら2対3で</span></li>
@@ -834,18 +759,6 @@ footer a{color:var(--ink-2)}
       </div>
     </div>
 
-    <div class="food-wrap rv" id="food">
-      <h3><svg class="icon"><use href="#i-bowl"/></svg>食べるもの・飲むもの</h3>
-      <p>サウナのあとは、とにかく食べて飲む。火鍋とビールは LAMP 公式Instagramの投稿です。</p>
-      <div class="food-ig ig-lazy">
-        <div class="ig-item"><blockquote class="ig-q" data-instgrm-permalink="https://www.instagram.com/p/DBiwiUWB5Hg/" data-instgrm-version="14"><a href="https://www.instagram.com/p/DBiwiUWB5Hg/" target="_blank" rel="noopener">ラム火鍋コース（LAMP 公式Instagram）を見る</a></blockquote></div>
-        <div class="ig-item"><blockquote class="ig-q" data-instgrm-permalink="https://www.instagram.com/p/DZl_dcvvI4K/" data-instgrm-version="14"><a href="https://www.instagram.com/p/DZl_dcvvI4K/" target="_blank" rel="noopener">信濃町のクラフトビール（LAMP 公式Instagram）を見る</a></blockquote></div>
-      </div>
-      <div class="food food-2">
-        <figure class="photo"><img src="img/soba.jpg" alt="信州そばの天ざる" loading="lazy"><figcaption>信州そば（1日目の昼）</figcaption></figure>
-        <figure class="photo"><img src="img/oyaki.jpg" alt="長野名物のおやき" loading="lazy"><figcaption>おやき（3日目）</figcaption></figure>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -855,57 +768,31 @@ footer a{color:var(--ink-2)}
     <div class="sec-head rv">
       <div class="sec-num">05 — BUDGET</div>
       <h2>1人あたりの予算</h2>
-      <p>公式の料金をもとに1円単位で計算した概算です。宿・サウナ・レンタカーは5人で割った金額。大阪組と関東組の違いは新幹線代だけ。幅があるのは宿の値段（3連休は高いほうになりやすい）。</p>
-    </div>
-    <div class="bsum rv">
-      <div class="box"><b>入っているもの</b>新幹線往復・宿2泊・宿泊税・サウナ2回・レンタカー（免責補償とガソリン込み）・スキー・食事と飲み物</div>
-      <div class="box tmp"><b>まだ仮の数字</b>レンタカーの免責補償（6,600円で仮置き）とガソリン（2,000円で仮置き）。予約画面で確かめたら直す。お土産と、家から駅までの交通費は入っていない。</div>
+      <p>公式の料金で計算した概算。違いは新幹線代だけ。レンタカーの免責補償とガソリンはまだ仮の数字。</p>
     </div>
     <div class="budget">
       <div class="bcard rv">
         <h4>大阪組（敦賀経由）</h4>
         <div class="total">約<span class="dyn" data-n="110711" data-k="1" data-f="man">11.1</span>〜<span class="dyn" data-n="117711" data-k="1" data-f="man">11.8</span>万円<small> / 人</small></div>
         <div class="brow"><span>新幹線 往復</span><div class="bar"><i data-w="100"></i></div><span>32,580円</span></div>
-        <div class="brow"><span>宿 2泊</span><div class="bar"><i data-w="93"></i></div><span>23,400〜30,400円</span></div>
-        <div class="brow"><span>サウナ 2回</span><div class="bar"><i data-w="42"></i></div><span><span class="dyn" data-n="13800" data-k="1" data-f="yen">13,800</span>円</span></div>
-        <div class="brow"><span>食事・飲み物</span><div class="bar"><i data-w="50"></i></div><span>約16,300円</span></div>
-        <div class="brow"><span>レンタカー</span><div class="bar"><i data-w="39"></i></div><span>約12,700円</span></div>
-        <div class="brow"><span>スキー</span><div class="bar"><i data-w="35"></i></div><span>11,500円</span></div>
-        <div class="brow"><span>宿泊税</span><div class="bar"><i data-w="2"></i></div><span>400円</span></div>
-        <p class="small">スキーをしない人は 11,500円 引き。</p>
       </div>
       <div class="bcard kanto rv">
         <h4>関東組（東京から）</h4>
         <div class="total">約<span class="dyn" data-n="95431" data-k="1" data-f="man">9.5</span>〜<span class="dyn" data-n="102431" data-k="1" data-f="man">10.2</span>万円<small> / 人</small></div>
         <div class="brow"><span>新幹線 往復</span><div class="bar"><i data-w="53"></i></div><span>17,300円</span></div>
-        <div class="brow"><span>宿 2泊</span><div class="bar"><i data-w="93"></i></div><span>23,400〜30,400円</span></div>
-        <div class="brow"><span>サウナ 2回</span><div class="bar"><i data-w="42"></i></div><span><span class="dyn" data-n="13800" data-k="1" data-f="yen">13,800</span>円</span></div>
-        <div class="brow"><span>食事・飲み物</span><div class="bar"><i data-w="50"></i></div><span>約16,300円</span></div>
-        <div class="brow"><span>レンタカー</span><div class="bar"><i data-w="39"></i></div><span>約12,700円</span></div>
-        <div class="brow"><span>スキー</span><div class="bar"><i data-w="35"></i></div><span>11,500円</span></div>
-        <div class="brow"><span>宿泊税</span><div class="bar"><i data-w="2"></i></div><span>400円</span></div>
-        <p class="small">スキーをしない人は 11,500円 引き。</p>
+      </div>
+          <div class="bcard shared rv">
+        <h4>2人とも同じ（1人あたり）</h4>
+        <ul class="facts">
+          <li><span>宿 2泊</span><b>23,400〜30,400円</b></li>
+          <li><span>サウナ 2回</span><b>13,800円</b></li>
+          <li><span>食事・飲み物</span><b>約16,300円</b></li>
+          <li><span>レンタカー</span><b>約12,700円</b></li>
+          <li><span>スキー</span><b>11,500円（滑らない人は0円）</b></li>
+          <li><span>宿泊税</span><b>400円</b></li>
+        </ul>
       </div>
     </div>
-
-    <details class="calc rv">
-      <summary>1円単位の表を見る</summary>
-    <div class="table-scroll" style="margin-bottom:16px">
-      <table class="btable">
-        <thead><tr><th>1人あたり</th><th>大阪組</th><th>関東組</th></tr></thead>
-        <tbody>
-          <tr><td>新幹線 往復<small>指定席</small></td><td>32,580</td><td>17,300</td></tr>
-          <tr><td>宿 2泊<small>1棟の料金 ÷ 5人</small></td><td>23,400〜<wbr>30,400</td><td>23,400〜<wbr>30,400</td></tr>
-          <tr><td>宿泊税<small>長野県・1泊200円 × 2泊</small></td><td>400</td><td>400</td></tr>
-          <tr><td>サウナ<small>貸切 7,800 ＋ カクシ 5,000 ＋ ポンチョ 1,000</small></td><td><span class="dyn" data-n="13800" data-k="1" data-f="yen">13,800</span></td><td><span class="dyn" data-n="13800" data-k="1" data-f="yen">13,800</span></td></tr>
-          <tr><td>レンタカー<small>63,655円 ÷ 5人</small></td><td>12,731</td><td>12,731</td></tr>
-          <tr><td>スキー<small>リフト券＋道具とウェア</small></td><td>11,500</td><td>11,500</td></tr>
-          <tr><td>食事・飲み物<small>内訳は下</small></td><td>16,300</td><td>16,300</td></tr>
-        </tbody>
-        <tfoot><tr><td>合計（円）</td><td><span class="dyn" data-n="110711" data-k="1" data-f="yen">110,711</span>〜<wbr><span class="dyn" data-n="117711" data-k="1" data-f="yen">117,711</span></td><td><span class="dyn" data-n="95431" data-k="1" data-f="yen">95,431</span>〜<wbr><span class="dyn" data-n="102431" data-k="1" data-f="yen">102,431</span></td></tr></tfoot>
-      </table>
-    </div>
-    </details>
 
     <details class="calc rv">
       <summary>計算の中身（根拠）を見る</summary>
@@ -961,10 +848,8 @@ footer a{color:var(--ink-2)}
     <div class="caution rv">
       <h3><svg class="icon"><use href="#i-alert"/></svg>出発前に確かめること</h3>
       <ul>
-        <li>雪道の運転は、4WDとスタッドレスタイヤが必須（LAMPの公式の案内）。運転に自信がなければ、電車で黒姫駅まで行ってタクシーか、冬に出る送迎バス（予約制）を使う手もある。</li>
-        <li>RAV4・ハリアーは5人乗り。5人とスーツケース5個は積めないので、荷物は小さめに。</li>
-        <li>黒姫高原スノーパークの今シーズンの料金と営業日は、11月に発表される予定。</li>
-        <li>お酒を飲んだあとのサウナはやめる。水分はこまめにとる。</li>
+        <li>雪道は4WDとスタッドレスタイヤが必須。運転に自信がなければ、電車で黒姫駅まで行ってタクシーでも行ける。</li>
+        <li>お酒を飲んだあとのサウナはやめる。水はこまめに。キャンセル料は、貸切サウナが7日前から。</li>
       </ul>
     </div>
   </div>
@@ -986,7 +871,7 @@ footer a{color:var(--ink-2)}
           <label class="opt"><input type="radio" name="go" value="たぶん行ける"><span>たぶん</span></label>
           <label class="opt"><input type="radio" name="go" value="その日はむり（2月ならいける）"><span>むり（2月なら）</span></label>
         </div></fieldset>
-        <fieldset class="q"><legend><span>03</span>2日目のサウナは？<small>上のスイッチと連動</small></legend><div class="opts">
+        <fieldset class="q"><legend><span>03</span>2日目のサウナは？</legend><div class="opts">
           <label class="opt"><input type="radio" name="d2" value="貸切派（＋2,800円）"><span>貸切派（＋2,800円）</span></label>
           <label class="opt"><input type="radio" name="d2" value="カクシでOK"><span>カクシでOK</span></label>
           <label class="opt"><input type="radio" name="d2" value="どっちでもいい"><span>どっちでも</span></label>
@@ -1042,7 +927,7 @@ footer a{color:var(--ink-2)}
       <li>長野駅：Christophe95 / CC BY-SA 4.0</li>
       <li>信州そば：hirotomo / CC BY-SA 2.0</li>
       <li>ゲレンデからの眺め：Takkitakitaki / パブリックドメイン</li>
-      <li>サウナ・雪ダイブ・小屋の写真：The Sauna 公式Instagram（@the_sauna_nojiriko）、火鍋・ビール：LAMP野尻湖 公式Instagram（@lamp_nojiriko）。どちらもInstagramの埋め込み機能で表示</li>
+      <li>サウナ・雪ダイブ・小屋の写真：The Sauna 公式Instagram（@the_sauna_nojiriko）。Instagramの埋め込み機能で表示</li>
       <li>ラブレター：Urci dream / CC BY-SA 4.0</li>
       <li>おやき：Ocdp / CC0</li>
     </ul>
@@ -1086,23 +971,6 @@ footer a{color:var(--ink-2)}
   var cdt=cdText();
   document.querySelectorAll('.cd-text').forEach(function(e){e.innerHTML=cdt});
 
-  /* ---- day-2 private toggle: recalculates prices ---- */
-  var DELTA=2800, tg=document.getElementById('kashi2'), opt=document.getElementById('opt');
-  function fmt(n,f){return f==='man'?(n/10000).toFixed(1):n.toLocaleString('ja-JP')}
-  function applyPrice(on){
-    document.querySelectorAll('.dyn').forEach(function(e){
-      var n=+e.dataset.n + (on?DELTA*(+e.dataset.k):0);
-      e.textContent=fmt(n,e.dataset.f);
-    });
-    document.querySelectorAll('.d2-name').forEach(function(e){e.textContent=on?'2日目　ネリャ 貸切3時間':'2日目　カクシ 2時間'});
-    document.querySelectorAll('.d2-note').forEach(function(e){e.textContent=on?'39,000円 ÷ 5人（日曜＝休日料金）※比較用の試算':'1人5,000円（日曜＝休日料金。平日なら4,000円）'});
-    opt.classList.toggle('on',on);
-  }
-  /* d2 row: base 5000 -> 7800 */
-  document.querySelectorAll('.d2-name').forEach(function(e){var td=e.closest('tr').lastElementChild.querySelector('.dyn');if(td)td.dataset.k='1'});
-  function setD2Radio(on){var r=document.querySelector('input[name=d2][value^="'+(on?'貸切派':'カクシ')+'"]');if(r){r.checked=true}}
-  tg.addEventListener('change',function(){applyPrice(tg.checked);setD2Radio(tg.checked);store.set('kashi2',tg.checked?'1':'0');build()});
-
   /* ---- LINE reply builder ---- */
   var URL='https://beqd1106.com/sauna-trip/', out=document.getElementById('r-out'), lineBtn=document.getElementById('r-line'), msg=document.getElementById('r-msg'), nameIn=document.getElementById('r-name');
   var edited=false;
@@ -1127,7 +995,6 @@ footer a{color:var(--ink-2)}
   document.querySelectorAll('#reply input').forEach(function(e){
     e.addEventListener(e.type==='text'?'input':'change',function(){
       edited=false;
-      if(e.name==='d2'){var on=e.value.indexOf('貸切派')===0; if(tg.checked!==on){tg.checked=on;applyPrice(on);store.set('kashi2',on?'1':'0')}}
       build();
     });
   });
@@ -1137,7 +1004,6 @@ footer a{color:var(--ink-2)}
     if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(out.value).then(ok,ng)}
     else{out.select();try{document.execCommand('copy')?ok():ng()}catch(e){ng()}}
   });
-  var saved=store.get('kashi2')==='1'; tg.checked=saved; applyPrice(saved); if(saved)setD2Radio(true);
   build();
 
   /* ---- bottom dock (mobile) ---- */
