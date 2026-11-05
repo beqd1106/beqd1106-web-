@@ -482,6 +482,34 @@ footer a{color:var(--ink-2)}
 .ig-note{font-size:12px;color:#9AA3B3;margin-top:4px}
 .ig-note a{color:#C4CAD6}
 @media (max-width:600px){.ig-rail{grid-auto-columns:86%}}
+
+/* ===== real-photo pass ===== */
+.ig-item blockquote.ig-q{display:grid;place-items:center;min-height:420px;padding:16px;text-align:center;font-size:14px;background:#fff;border-radius:14px;margin:0}
+.ig-item blockquote.ig-q a,.hut-ig blockquote.ig-q a{color:var(--ice);font-weight:700}
+.hut{grid-template-columns:1fr}
+.hut-ig{background:#fff}
+.hut-ig blockquote.ig-q{display:grid;place-items:center;min-height:360px;padding:16px;text-align:center;font-size:14px;margin:0}
+.hut-ig .instagram-media,.hut-ig iframe,.food-ig .instagram-media,.food-ig iframe{margin:0!important;min-width:0!important;max-width:100%!important;width:100%!important;border-radius:0!important;border:0!important;box-shadow:none!important}
+.food-ig{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;align-items:start}
+.food-ig iframe,.food-ig .instagram-media{border-radius:var(--r-m)!important;border:1px solid var(--line)!important}
+.food-2{grid-template-columns:repeat(2,1fr);max-width:560px}
+.food-2 .photo{aspect-ratio:4/3}
+.tix{display:flex;flex-direction:column;justify-content:space-between;padding:18px;background:var(--ink)}
+.tix::after{display:none}
+.tix .cap{position:static;padding:0}
+.tix .icon.big{width:40px;height:40px;stroke-width:1.5;opacity:.95}
+.tix::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(120% 80% at 100% 0%,rgba(255,255,255,.14),transparent 60%)}
+.t-hot{background:linear-gradient(160deg,#F07A3E 0%,#C2441B 55%,#6E2412 100%)}
+.t-ice{background:linear-gradient(160deg,#7FB3DA 0%,#2F6E9E 55%,#173A57 100%)}
+.t-red{background:linear-gradient(160deg,#D9493A 0%,#8E1F1A 60%,#3E0E0C 100%)}
+.t-ink{background:linear-gradient(160deg,#3A4560 0%,#1A2130 70%)}
+.tix .when{color:rgba(255,255,255,.85)}
+.tix h3{font-size:clamp(18px,2vw,24px)}
+.tix:hover{transform:translateY(-2px)}
+.hc.tix{transition:transform .2s ease}
+@media (max-width:900px){.hut .hut-ig{order:-1}}
+.hc.tix{text-decoration:none;color:#fff}
+@media (max-width:600px){.food-ig{grid-template-columns:1fr}.hc.tix{aspect-ratio:auto;min-height:168px;padding:16px 14px;gap:14px}.tix h3{font-size:17px}.tix .icon.big{width:32px;height:32px}}
 </style>
 
 </head>
@@ -548,12 +576,12 @@ footer a{color:var(--ink-2)}
 <!-- HIGHLIGHTS -->
 <section class="hl-sec" aria-labelledby="hl-title">
   <div class="wrap">
-    <div class="hl-head rv"><h2 id="hl-title">予定のハイライト</h2><span>写真はイメージ</span></div>
+    <div class="hl-head rv"><h2 id="hl-title">予定のハイライト</h2><span>本物の写真はこの下から</span></div>
     <div class="hl-grid">
-      <a class="hc rv" href="#day1"><img src="img/sauna.jpg" alt="雪をかぶった丸太のサウナ小屋（イメージ）" loading="lazy"><div class="cap"><div class="when">DAY 1 · 夕方</div><h3>5人だけの<br>サウナ3時間</h3><small>3号棟コルメを貸切</small></div></a>
-      <a class="hc rv" href="#day2"><img src="img/powder.jpg" alt="新雪をスノーボードで滑る人（イメージ）" loading="lazy" style="object-position:60% 40%"><div class="cap"><div class="when">DAY 2 · 朝</div><h3>雪山で<br>ひと暴れ</h3><small>雪の状態しだい</small></div></a>
-      <a class="hc rv" href="#day2"><img src="img/hotpot.jpg" alt="白と赤の2色火鍋（イメージ）" loading="lazy"><div class="cap"><div class="when">DAY 2 · 夜</div><h3>食べるサウナ、<br>ラム火鍋</h3><small>〆はラーメン</small></div></a>
-      <a class="hc rv" href="#stay"><img src="img/loveletter.jpg" alt="ラブレターのカードと赤いコマ" loading="lazy"><div class="cap"><div class="when">毎晩</div><h3>薪ストーブ前で<br>ラブレター</h3><small>負けたら運転係</small></div></a>
+      <a class="hc tix t-hot rv" href="#sauna"><svg class="icon big" aria-hidden="true"><use href="#i-flame"/></svg><div class="cap"><div class="when">DAY 1 · 夕方</div><h3>5人だけの<br>サウナ3時間</h3><small>3号棟コルメを貸切</small></div></a>
+      <a class="hc tix t-ice rv" href="#real"><svg class="icon big" aria-hidden="true"><use href="#i-snow"/></svg><div class="cap"><div class="when">2日間とも</div><h3>雪に<br>ダイブする</h3><small>雪が積もっていれば</small></div></a>
+      <a class="hc tix t-red rv" href="#food"><svg class="icon big" aria-hidden="true"><use href="#i-bowl"/></svg><div class="cap"><div class="when">DAY 2 · 夜</div><h3>食べるサウナ、<br>ラム火鍋</h3><small>〆はラーメン</small></div></a>
+      <a class="hc tix t-ink rv" href="#stay"><svg class="icon big" aria-hidden="true"><use href="#i-dice"/></svg><div class="cap"><div class="when">毎晩</div><h3>薪ストーブ前で<br>ラブレター</h3><small>負けたら運転係</small></div></a>
     </div>
   </div>
 </section>
@@ -569,12 +597,13 @@ footer a{color:var(--ink-2)}
 
     <div class="ig rv" id="real">
       <div class="ig-head"><b>本物の冬の The Sauna</b><span class="ig-swipe">横にスワイプ<svg class="icon"><use href="#i-arrow"/></svg></span></div>
-      <div class="ig-rail" id="ig-rail">
-      <div class="ig-item"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/De_bDfvSCeL/" data-instgrm-version="14"><a href="https://www.instagram.com/p/De_bDfvSCeL/" target="_blank" rel="noopener">雪に埋もれたサウナ小屋（The Sauna 公式Instagram）を見る</a></blockquote></div>
-      <div class="ig-item"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/De_azLFyXXw/" data-instgrm-version="14"><a href="https://www.instagram.com/p/De_azLFyXXw/" target="_blank" rel="noopener">雪の森の中の小屋（The Sauna 公式Instagram）を見る</a></blockquote></div>
-      <div class="ig-item"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/De_bGV6ShzP/" data-instgrm-version="14"><a href="https://www.instagram.com/p/De_bGV6ShzP/" target="_blank" rel="noopener">つららの下がる丸太小屋（The Sauna 公式Instagram）を見る</a></blockquote></div>
-      <div class="ig-item"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/De_bBFdySgG/" data-instgrm-version="14"><a href="https://www.instagram.com/p/De_bBFdySgG/" target="_blank" rel="noopener">外気浴のイスから見る雪景色（The Sauna 公式Instagram）を見る</a></blockquote></div>
-      <div class="ig-item"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/De_a_hkSDuU/" data-instgrm-version="14"><a href="https://www.instagram.com/p/De_a_hkSDuU/" target="_blank" rel="noopener">薪ストーブのサウナストーン（The Sauna 公式Instagram）を見る</a></blockquote></div>
+      <div class="ig-rail ig-lazy" id="ig-rail">
+      <div class="ig-item"><blockquote class="ig-q" data-instgrm-permalink="https://www.instagram.com/p/DEfDeBQzGuH/" data-instgrm-version="14"><a href="https://www.instagram.com/p/DEfDeBQzGuH/" target="_blank" rel="noopener">サウナのあとに雪ダイブ（The Sauna 公式Instagram）を見る</a></blockquote></div>
+      <div class="ig-item"><blockquote class="ig-q" data-instgrm-permalink="https://www.instagram.com/p/De_bDfvSCeL/" data-instgrm-version="14"><a href="https://www.instagram.com/p/De_bDfvSCeL/" target="_blank" rel="noopener">雪に埋もれたサウナ小屋（The Sauna 公式Instagram）を見る</a></blockquote></div>
+      <div class="ig-item"><blockquote class="ig-q" data-instgrm-permalink="https://www.instagram.com/p/De_azLFyXXw/" data-instgrm-version="14"><a href="https://www.instagram.com/p/De_azLFyXXw/" target="_blank" rel="noopener">雪の森の中の小屋（The Sauna 公式Instagram）を見る</a></blockquote></div>
+      <div class="ig-item"><blockquote class="ig-q" data-instgrm-permalink="https://www.instagram.com/p/De_bGV6ShzP/" data-instgrm-version="14"><a href="https://www.instagram.com/p/De_bGV6ShzP/" target="_blank" rel="noopener">つららの下がる丸太小屋（The Sauna 公式Instagram）を見る</a></blockquote></div>
+      <div class="ig-item"><blockquote class="ig-q" data-instgrm-permalink="https://www.instagram.com/p/De_bBFdySgG/" data-instgrm-version="14"><a href="https://www.instagram.com/p/De_bBFdySgG/" target="_blank" rel="noopener">外気浴のイスから見る雪景色（The Sauna 公式Instagram）を見る</a></blockquote></div>
+      <div class="ig-item"><blockquote class="ig-q" data-instgrm-permalink="https://www.instagram.com/p/De_a_hkSDuU/" data-instgrm-version="14"><a href="https://www.instagram.com/p/De_a_hkSDuU/" target="_blank" rel="noopener">薪ストーブのサウナストーン（The Sauna 公式Instagram）を見る</a></blockquote></div>
       </div>
       <p class="ig-note">写真は The Sauna 公式Instagram（<a href="https://www.instagram.com/the_sauna_nojiriko/" target="_blank" rel="noopener">@the_sauna_nojiriko</a>）の投稿を、Instagramの埋め込み機能で表示しています。</p>
     </div>
@@ -609,7 +638,7 @@ footer a{color:var(--ink-2)}
     <p class="sub-p rv">1日目は5人だけの貸切、2日目はほかのお客さんと一緒に入るサウナ。</p>
     <div class="huts">
       <article class="hut rv">
-        <figure class="photo"><img src="img/sauna.jpg" alt="雪の丸太サウナ小屋（イメージ）" loading="lazy"></figure>
+        <div class="hut-ig ig-lazy"><blockquote class="ig-q" data-instgrm-permalink="https://www.instagram.com/p/CYybeHKlmL4/" data-instgrm-version="14"><a href="https://www.instagram.com/p/CYybeHKlmL4/" target="_blank" rel="noopener">雪の中のコルメ（The Sauna 公式Instagram）を見る</a></blockquote></div>
         <div class="body">
           <span class="when">DAY 1 · 17:00〜</span>
           <h4>3号棟 コルメ</h4><div class="en">KOLME — 3時間 完全貸切</div>
@@ -621,7 +650,7 @@ footer a{color:var(--ink-2)}
         </div>
       </article>
       <article class="hut ice rv">
-        <figure class="photo"><img src="img/bench.jpg" alt="木のベンチのサウナ室（イメージ）" loading="lazy"></figure>
+        <div class="hut-ig ig-lazy"><blockquote class="ig-q" data-instgrm-permalink="https://www.instagram.com/p/COSUfH8DBVH/" data-instgrm-version="14"><a href="https://www.instagram.com/p/COSUfH8DBVH/" target="_blank" rel="noopener">カクシの図解（2階建ての中）（The Sauna 公式Instagram）を見る</a></blockquote></div>
         <div class="body">
           <span class="when">DAY 2 · 17:00〜</span>
           <h4>2号棟 カクシ</h4><div class="en">KAKSI — 2時間 みんなで入るサウナ</div>
@@ -697,10 +726,10 @@ footer a{color:var(--ink-2)}
     <!-- Day 1 -->
     <article class="day" id="day1">
       <div class="day-visual rv">
-        <figure class="photo"><img src="img/sauna.jpg" alt="雪をかぶった丸太のサウナ小屋（イメージ）" loading="lazy"><figcaption>夕方は5人だけの貸切サウナ（イメージ）</figcaption></figure>
+        <figure class="photo"><img src="img/zenkoji.jpg" alt="雪の善光寺の山門" loading="lazy"><figcaption>雪の善光寺</figcaption></figure>
         <div class="photo-row">
-          <figure class="photo"><img src="img/zenkoji.jpg" alt="雪の善光寺の山門" loading="lazy"><figcaption>雪の善光寺</figcaption></figure>
-          <figure class="photo"><img src="img/soba.jpg" alt="信州そばの天ざる" loading="lazy"><figcaption>信州そば</figcaption></figure>
+          <figure class="photo"><img src="img/soba.jpg" alt="信州そばの天ざる" loading="lazy"><figcaption>門前で信州そば</figcaption></figure>
+          <figure class="photo"><img src="img/loveletter.jpg" alt="ボードゲーム「ラブレター」のカードと赤い得点コマ" loading="lazy"><figcaption>夜はラブレター</figcaption></figure>
         </div>
       </div>
       <div class="rv">
@@ -727,11 +756,7 @@ footer a{color:var(--ink-2)}
     <!-- Day 2 -->
     <article class="day" id="day2">
       <div class="day-visual rv">
-        <figure class="photo"><img src="img/powder.jpg" alt="深い新雪をスノーボードで滑る人（イメージ）" loading="lazy" style="object-position:60% 40%"><figcaption>朝はパウダーの雪山へ（イメージ）</figcaption></figure>
-        <div class="photo-row">
-          <figure class="photo"><img src="img/hotpot.jpg" alt="白いスープと赤い麻辣スープの2色火鍋（イメージ）" loading="lazy"><figcaption>ラム火鍋（イメージ）</figcaption></figure>
-          <figure class="photo"><img src="img/loveletter.jpg" alt="ボードゲーム「ラブレター」のカードと赤い得点コマ" loading="lazy"><figcaption>ラブレター</figcaption></figure>
-        </div>
+        <figure class="photo"><img src="img/kurohime.jpg" alt="黒姫のゲレンデから見下ろす雪の山並み" loading="lazy"><figcaption>黒姫のゲレンデからの眺め</figcaption></figure>
       </div>
       <div class="rv">
         <div class="day-tag"><b>02</b><span>1.10 SUN</span></div>
@@ -809,12 +834,14 @@ footer a{color:var(--ink-2)}
       </div>
     </div>
 
-    <div class="food-wrap rv">
+    <div class="food-wrap rv" id="food">
       <h3><svg class="icon"><use href="#i-bowl"/></svg>食べるもの・飲むもの</h3>
-      <p>サウナのあとは、とにかく食べて飲む。写真の火鍋とビールはイメージです。</p>
-      <div class="food">
-        <figure class="photo"><img src="img/hotpot.jpg" alt="白いスープと赤い麻辣スープの2色火鍋（イメージ）" loading="lazy"><figcaption>ラム火鍋（2日目の夜）</figcaption></figure>
-        <figure class="photo"><img src="img/beer.jpg" alt="4杯並んだクラフトビール（イメージ）" loading="lazy"><figcaption>長野のクラフトビール</figcaption></figure>
+      <p>サウナのあとは、とにかく食べて飲む。火鍋とビールは LAMP 公式Instagramの投稿です。</p>
+      <div class="food-ig ig-lazy">
+        <div class="ig-item"><blockquote class="ig-q" data-instgrm-permalink="https://www.instagram.com/p/DBiwiUWB5Hg/" data-instgrm-version="14"><a href="https://www.instagram.com/p/DBiwiUWB5Hg/" target="_blank" rel="noopener">ラム火鍋コース（LAMP 公式Instagram）を見る</a></blockquote></div>
+        <div class="ig-item"><blockquote class="ig-q" data-instgrm-permalink="https://www.instagram.com/p/DZl_dcvvI4K/" data-instgrm-version="14"><a href="https://www.instagram.com/p/DZl_dcvvI4K/" target="_blank" rel="noopener">信濃町のクラフトビール（LAMP 公式Instagram）を見る</a></blockquote></div>
+      </div>
+      <div class="food food-2">
         <figure class="photo"><img src="img/soba.jpg" alt="信州そばの天ざる" loading="lazy"><figcaption>信州そば（1日目の昼）</figcaption></figure>
         <figure class="photo"><img src="img/oyaki.jpg" alt="長野名物のおやき" loading="lazy"><figcaption>おやき（3日目）</figcaption></figure>
       </div>
@@ -1014,12 +1041,8 @@ footer a{color:var(--ink-2)}
       <li>黒姫駅：Nesnad / CC BY 4.0</li>
       <li>長野駅：Christophe95 / CC BY-SA 4.0</li>
       <li>信州そば：hirotomo / CC BY-SA 2.0</li>
-      <li>サウナ（イメージ）：Timo Newton-Syms / CC BY-SA 2.0</li>
-      <li>The Sauna の本物の写真：The Sauna 公式Instagram（@the_sauna_nojiriko）の投稿をInstagramの埋め込み機能で表示</li>
-      <li>サウナ室（イメージ）：Arto J / CC BY-SA 3.0</li>
-      <li>パウダーの雪山（イメージ）：Sawa-love / CC BY-SA 4.0</li>
-      <li>火鍋（イメージ）：Jpatokal / CC BY-SA 4.0</li>
-      <li>クラフトビール（イメージ）：Wanderstheworld / CC BY-SA 4.0</li>
+      <li>ゲレンデからの眺め：Takkitakitaki / パブリックドメイン</li>
+      <li>サウナ・雪ダイブ・小屋の写真：The Sauna 公式Instagram（@the_sauna_nojiriko）、火鍋・ビール：LAMP野尻湖 公式Instagram（@lamp_nojiriko）。どちらもInstagramの埋め込み機能で表示</li>
       <li>ラブレター：Urci dream / CC BY-SA 4.0</li>
       <li>おやき：Ocdp / CC0</li>
     </ul>
@@ -1127,11 +1150,15 @@ footer a{color:var(--ink-2)}
     },{threshold:0});
     dio.observe(hero);dio.observe(foot);dio.observe(reply);
   }
-  /* ---- instagram embeds: load when near ---- */
+  /* ---- instagram embeds: activate each block when near ---- */
   (function(){
-    var rail=document.getElementById('ig-rail'); if(!rail)return; var done=false;
-    function load(){if(done)return;done=true;var sc=document.createElement('script');sc.async=true;sc.src='https://www.instagram.com/embed.js';sc.onload=function(){if(window.instgrm)window.instgrm.Embeds.process()};document.body.appendChild(sc)}
-    if('IntersectionObserver' in window){var o=new IntersectionObserver(function(es){if(es[0].isIntersecting){load();o.disconnect()}},{rootMargin:'800px 0px'});o.observe(rail)}else load();
+    var boxes=document.querySelectorAll('.ig-lazy'); if(!boxes.length)return; var loading=false, queue=[];
+    function activate(box){box.querySelectorAll('blockquote.ig-q').forEach(function(q){q.className='instagram-media'})}
+    function run(){if(window.instgrm){window.instgrm.Embeds.process();return}
+      if(loading)return;loading=true;var sc=document.createElement('script');sc.async=true;sc.src='https://www.instagram.com/embed.js';sc.onload=function(){if(window.instgrm)window.instgrm.Embeds.process()};document.body.appendChild(sc)}
+    if(!('IntersectionObserver' in window)){boxes.forEach(activate);run();return}
+    var o=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;activate(e.target);o.unobserve(e.target);run()})},{rootMargin:'700px 0px'});
+    boxes.forEach(function(b){o.observe(b)});
   })();
 })();
 </script>
