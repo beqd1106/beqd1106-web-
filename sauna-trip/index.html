@@ -467,6 +467,21 @@ footer a{color:var(--ink-2)}
   .dock .cd{font-size:10px}
 }
 @media (prefers-reduced-motion:reduce){.dock,.btn,.opt span,.toggle .sw,.toggle .sw::after{transition:none}}
+
+/* ===== instagram rail ===== */
+.ig{margin-bottom:clamp(40px,6vw,64px)}
+.ig-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
+.ig-head b{font-family:var(--serif);font-size:clamp(18px,2.2vw,22px);color:#fff}
+.ig-swipe{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#B8BFCC}
+.ig-swipe .icon{width:14px;height:14px}
+.ig-rail{display:grid;align-items:start;grid-auto-flow:column;grid-auto-columns:340px;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 12px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.3) transparent}
+.ig-item{scroll-snap-align:start;min-width:0}
+.ig-item .instagram-media,.ig-item iframe{margin:0!important;min-width:0!important;max-width:100%!important;width:100%!important;border-radius:14px!important;border:0!important;box-shadow:none!important;background:#fff}
+.ig-item blockquote.instagram-media{display:grid;place-items:center;min-height:420px;padding:16px;text-align:center;font-size:14px}
+.ig-item blockquote.instagram-media a{color:var(--ice);font-weight:700}
+.ig-note{font-size:12px;color:#9AA3B3;margin-top:4px}
+.ig-note a{color:#C4CAD6}
+@media (max-width:600px){.ig-rail{grid-auto-columns:86%}}
 </style>
 
 </head>
@@ -552,14 +567,17 @@ footer a{color:var(--ink-2)}
       <p>長野と新潟の県境、野尻湖のほとりにある「LAMP野尻湖」のアウトドアサウナ。サウナ好きのあいだで「聖地」と呼ばれる場所です。薪ストーブのサウナ小屋が5棟あって、冬は敷地ごと雪に埋まる。熱々の小屋から出たら、3℃の水風呂か、真っ白な雪の中へ。</p>
     </div>
 
-    <div class="mosaic rv">
-      <figure class="photo m1"><img src="img/avanto.jpg" alt="雪に囲まれた湖の水風呂とベンチ（イメージ）" loading="lazy"><figcaption>雪と水風呂（イメージ）</figcaption></figure>
-      <figure class="photo m2"><img src="img/sauna2.jpg" alt="雪原に建つ木のサウナ小屋（イメージ）" loading="lazy" style="object-position:50% 70%"><figcaption>雪の中のサウナ小屋（イメージ）</figcaption></figure>
-      <figure class="photo m3"><img src="img/stove.jpg" alt="薪と石を積んだサウナストーブ（イメージ）" loading="lazy"><figcaption>薪のストーブ（イメージ）</figcaption></figure>
-      <figure class="photo m4"><img src="img/beer.jpg" alt="4杯並んだクラフトビール（イメージ）" loading="lazy"><figcaption>サウナ上がりの1杯（イメージ）</figcaption></figure>
-      <figure class="photo m5"><img src="img/kurohime.jpg" alt="雪山から見下ろす湖と山並み" loading="lazy"><figcaption>まわりは雪山と湖</figcaption></figure>
+    <div class="ig rv" id="real">
+      <div class="ig-head"><b>本物の冬の The Sauna</b><span class="ig-swipe">横にスワイプ<svg class="icon"><use href="#i-arrow"/></svg></span></div>
+      <div class="ig-rail" id="ig-rail">
+      <div class="ig-item"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/De_bDfvSCeL/" data-instgrm-version="14"><a href="https://www.instagram.com/p/De_bDfvSCeL/" target="_blank" rel="noopener">雪に埋もれたサウナ小屋（The Sauna 公式Instagram）を見る</a></blockquote></div>
+      <div class="ig-item"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/De_azLFyXXw/" data-instgrm-version="14"><a href="https://www.instagram.com/p/De_azLFyXXw/" target="_blank" rel="noopener">雪の森の中の小屋（The Sauna 公式Instagram）を見る</a></blockquote></div>
+      <div class="ig-item"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/De_bGV6ShzP/" data-instgrm-version="14"><a href="https://www.instagram.com/p/De_bGV6ShzP/" target="_blank" rel="noopener">つららの下がる丸太小屋（The Sauna 公式Instagram）を見る</a></blockquote></div>
+      <div class="ig-item"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/De_bBFdySgG/" data-instgrm-version="14"><a href="https://www.instagram.com/p/De_bBFdySgG/" target="_blank" rel="noopener">外気浴のイスから見る雪景色（The Sauna 公式Instagram）を見る</a></blockquote></div>
+      <div class="ig-item"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/De_a_hkSDuU/" data-instgrm-version="14"><a href="https://www.instagram.com/p/De_a_hkSDuU/" target="_blank" rel="noopener">薪ストーブのサウナストーン（The Sauna 公式Instagram）を見る</a></blockquote></div>
+      </div>
+      <p class="ig-note">写真は The Sauna 公式Instagram（<a href="https://www.instagram.com/the_sauna_nojiriko/" target="_blank" rel="noopener">@the_sauna_nojiriko</a>）の投稿を、Instagramの埋め込み機能で表示しています。</p>
     </div>
-    <div class="real rv"><span>ここまでの写真はイメージ。本物の小屋と雪ダイブは公式で。</span><a class="ext" href="https://lampinc.co.jp/nojiriko/sauna/" target="_blank" rel="noopener">本物の写真を見る<svg class="icon" style="width:16px;height:16px"><use href="#i-ext"/></svg></a></div>
 
     <h3 class="sub-h rv">ここがすごい、3つのポイント</h3>
     <div class="reasons">
@@ -993,13 +1011,11 @@ footer a{color:var(--ink-2)}
     <ul>
       <li>雪の黒姫山：Naganojmmmm / CC BY-SA 4.0</li>
       <li>雪の善光寺：Mti / CC BY-SA 3.0</li>
-      <li>ゲレンデからの眺め：Takkitakitaki / パブリックドメイン</li>
       <li>黒姫駅：Nesnad / CC BY 4.0</li>
       <li>長野駅：Christophe95 / CC BY-SA 4.0</li>
       <li>信州そば：hirotomo / CC BY-SA 2.0</li>
-      <li>サウナ（イメージ）：Timo Newton-Syms / CC BY-SA 2.0、Tiago Fioreze / CC BY-SA 3.0</li>
-      <li>湖の水風呂（イメージ）：Tiia Monto / CC BY-SA 4.0</li>
-      <li>薪のストーブ（イメージ）：MattiPaavola / CC BY-SA 3.0</li>
+      <li>サウナ（イメージ）：Timo Newton-Syms / CC BY-SA 2.0</li>
+      <li>The Sauna の本物の写真：The Sauna 公式Instagram（@the_sauna_nojiriko）の投稿をInstagramの埋め込み機能で表示</li>
       <li>サウナ室（イメージ）：Arto J / CC BY-SA 3.0</li>
       <li>パウダーの雪山（イメージ）：Sawa-love / CC BY-SA 4.0</li>
       <li>火鍋（イメージ）：Jpatokal / CC BY-SA 4.0</li>
@@ -1111,6 +1127,12 @@ footer a{color:var(--ink-2)}
     },{threshold:0});
     dio.observe(hero);dio.observe(foot);dio.observe(reply);
   }
+  /* ---- instagram embeds: load when near ---- */
+  (function(){
+    var rail=document.getElementById('ig-rail'); if(!rail)return; var done=false;
+    function load(){if(done)return;done=true;var sc=document.createElement('script');sc.async=true;sc.src='https://www.instagram.com/embed.js';sc.onload=function(){if(window.instgrm)window.instgrm.Embeds.process()};document.body.appendChild(sc)}
+    if('IntersectionObserver' in window){var o=new IntersectionObserver(function(es){if(es[0].isIntersecting){load();o.disconnect()}},{rootMargin:'800px 0px'});o.observe(rail)}else load();
+  })();
 })();
 </script>
 </body>
