@@ -44,7 +44,7 @@ const I = {
 /* ---------- 保存 ---------- */
 // 形: { v:1, exam, onboarded, ex:{ [key]: { r:{qid:[lastOk,tries,oks,lv,due,unsure]}, fav:[], lessons:[], sess } }, days:{ "YYYY-MM-DD": {exam:n, _l:n} }, set:{goal,rate,readEx,autoNext,pause} }
 let S = load();
-function blank() { return { v: 1, exam: null, onboarded: false, ex: {}, days: {}, set: { goal: 10, rate: 1.0, readEx: true, autoNext: true, pause: 3 } }; }
+function blank() { return { v: 1, exam: null, onboarded: false, ex: {}, days: {}, set: { goal: 10, rate: 1.05, readEx: true, autoNext: true, pause: 3 } }; }
 function load() {
   try { const s = JSON.parse(localStorage.getItem(STORE_KEY)); if (s && s.v === 1) return Object.assign(blank(), s, { set: Object.assign(blank().set, s.set) }); } catch {}
   return blank();
@@ -560,7 +560,12 @@ function progress() { const p = $("#lp"); if (p) p.style.width = `${((L.i + 1) /
 function toSlide(i) { if (!L) return; if (i < 0 || i >= L.qs.length) { if (i >= L.qs.length) chapterDone(); return; } $("#reel").scrollTo({ top: i * $("#reel").clientHeight, behavior: "smooth" }); }
 function stopSpeak() { if (L) L.token++; try { speechSynthesis.cancel(); } catch {} }
 function pauseL() { L.playing = false; stopSpeak(); }
-function jaVoice() { const vs = speechSynthesis.getVoices().filter((v) => v.lang?.startsWith("ja")); return vs.find((v) => /Google|Kyoko|O-ren|Nanami|Enhanced|Premium/i.test(v.name)) || vs[0]; }
+function jaVoice() {
+  // 自然に聞こえる声を優先（端末の高品質音声 → Google/Microsoftのニューラル音声 → 既定）
+  const vs = speechSynthesis.getVoices().filter((v) => v.lang?.replace("_", "-").startsWith("ja"));
+  const rank = (v) => /Premium|Enhanced|拡張|プレミアム/i.test(v.name) ? 0 : /Nanami|Keita|Natural|Online/i.test(v.name) ? 1 : /Google/i.test(v.name) ? 2 : /Kyoko|Otoya|O-ren/i.test(v.name) ? 3 : 4;
+  return vs.sort((a, b) => rank(a) - rank(b))[0];
+}
 function say(text, token) {
   return new Promise((res) => {
     if (!L || token !== L.token) return res(false);
@@ -572,21 +577,31 @@ function say(text, token) {
   });
 }
 const wait = (ms, token) => new Promise((r) => setTimeout(() => r(token === L?.token), ms));
+const ORD = ["1つ目", "2つ目", "3つ目", "4つ目", "5つ目"];
+// 読み上げ用に整える：記号や括弧の読み方を自然に
+function spoken(s) {
+  return String(s).replace(/[「」『』]/g, "").replace(/（/g, "、").replace(/）/g, "、").replace(/\s+/g, " ").replace(/、+/g, "、").replace(/、。/g, "。");
+}
 async function speakCurrent(skipToAnswer = false) {
   stopSpeak(); const token = L.token; const i = L.i; const q = L.qs[i];
   const ph = (t) => { const el = $("#ph" + i); if (el) el.textContent = t; };
-  const clean = (s) => s.replace(/[（(][^）)]{0,30}[)）]/g, (m) => m).replace(/\s+/g, " ");
   if (!skipToAnswer) {
-    ph("問題"); if (!(await say("問題。" + clean(q.question), token))) return;
-    for (let j = 0; j < q.choices.length; j++) { if (!(await say(`${j + 1}。${clean(q.choices[j])}`, token))) return; }
-    ph("考える時間"); if (!(await wait(S.set.pause * 1000, token))) return;
+    ph("問題");
+    if (!(await say(`${i === 0 ? "では、" : ""}第${i + 1}問。${spoken(q.question)}`, token))) return;
+    if (!(await wait(450, token))) return;
+    for (let j = 0; j < q.choices.length; j++) {
+      if (!(await say(`${ORD[j] || j + 1 + "つ目"}、${spoken(q.choices[j])}`, token))) return;
+      if (!(await wait(250, token))) return;
+    }
+    if (S.set.pause > 0) { ph("考える時間"); if (!(await wait(S.set.pause * 1000, token))) return; }
   }
   ph("答え");
   q.correctAnswers.forEach((j) => $(`.c${i}-${j}`)?.classList.add("ans"));
-  if (!(await say(`正解は、${q.correctAnswers.map((j) => `${j + 1}番、${clean(q.choices[j])}`).join("、")}。`, token))) return;
-  if (S.set.readEx) { ph("解説"); $("#ex" + i).hidden = false; if (!(await say(clean(q.explanation), token))) return; }
+  const ans = q.correctAnswers.map((j) => `${j + 1}番の、${spoken(q.choices[j])}`).join("と、");
+  if (!(await say(`正解は、${ans}、です。`, token))) return;
+  if (S.set.readEx) { ph("解説"); $("#ex" + i).hidden = false; if (!(await wait(350, token))) return; if (!(await say(spoken(q.explanation), token))) return; }
   // 聞き流しは回答記録とは分ける（演習の正答率・復習には入れない）
-  if (!(await wait(900, token))) return;
+  if (!(await wait(1100, token))) return;
   if (S.set.autoNext) { if (i + 1 < L.qs.length) toSlide(i + 1); else chapterDone(); }
   else { L.playing = false; playBtn(); }
 }
@@ -603,7 +618,7 @@ function listenSheet() {
   const wrap = $(".listen-wrap"); $(".listen-sheet")?.remove();
   const s = document.createElement("div"); s.className = "listen-sheet";
   s.innerHTML = `<div class="row" style="justify-content:space-between"><b>読み上げの設定</b><button class="icon-btn" id="sx" aria-label="閉じる">${I.x}</button></div>
-    <div class="setting"><label for="rate">速さ</label><select id="rate">${[0.8, 1, 1.2, 1.4, 1.6].map((r) => `<option value="${r}" ${S.set.rate === r ? "selected" : ""}>${r}倍</option>`).join("")}</select></div>
+    <div class="setting"><label for="rate">速さ</label><select id="rate">${[0.9, 1, 1.05, 1.2, 1.4, 1.6].map((r) => `<option value="${r}" ${S.set.rate === r ? "selected" : ""}>${r}倍</option>`).join("")}</select></div>
     <div class="setting"><label for="pause">考える時間</label><select id="pause">${[0, 2, 3, 5, 8].map((r) => `<option value="${r}" ${S.set.pause === r ? "selected" : ""}>${r}秒</option>`).join("")}</select></div>
     <div class="setting"><label for="rex">解説も読む</label><input type="checkbox" class="switch" id="rex" ${S.set.readEx ? "checked" : ""}></div>
     <div class="setting"><label for="auto">次の問題へ自動で進む</label><input type="checkbox" class="switch" id="auto" ${S.set.autoNext ? "checked" : ""}></div>`;
