@@ -177,6 +177,8 @@ a.card{display:block;text-decoration:none;color:inherit}
 .done{text-align:center;padding:var(--s5) var(--s4)}
 .done .big{font-size:44px;font-weight:800;color:var(--navy);line-height:1.1}
 .done-ic{width:72px;height:72px;margin:0 auto var(--s3);border-radius:50%;display:grid;place-items:center;background:var(--green-soft);color:var(--green);animation:pop .35s var(--ease)}
+.done-img{display:block;margin:0 auto 8px;width:150px;height:auto;animation:pop .4s var(--ease)}
+@media (prefers-reduced-motion:reduce){.done-img{animation:none}}
 @keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
 
 /* 聞き流し */

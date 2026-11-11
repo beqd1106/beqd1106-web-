@@ -395,7 +395,7 @@ function drawDone() {
   exState().sess = null; save();
   render(`
     <section class="card done">
-      <div class="done-ic">${I.checkBig}</div>
+      <img class="done-img" src="done.png" srcset="done.png 1x, done@2x.png 2x" width="150" height="155" alt="">
       <p class="cap" style="margin:0;font-weight:800;letter-spacing:.06em">1区切り完了</p>
       <div class="big num" style="margin:6px 0">${okN}<span style="font-size:22px;color:var(--sub)"> / ${n} 問正解</span></div>
       <p class="muted" style="margin:0">${okN === n ? "全問正解。この調子です。" : missed.length ? `間違えた${missed.length}問は復習に入れました。明日またどうぞ。` : "おつかれさまでした。"}</p>
