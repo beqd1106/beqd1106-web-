@@ -234,6 +234,8 @@ a.card{display:block;text-decoration:none;color:inherit}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .empty{text-align:center;padding:var(--s6) var(--s4);color:var(--sub)}
 .empty svg{color:var(--line);margin-bottom:var(--s2)}
+.empty-art{display:block;width:150px;height:auto;margin:0 auto var(--s3)}
+.empty .cap{max-width:30em;margin-inline:auto}
 .foot{margin-top:var(--s6);font-size:12px;color:var(--sub);line-height:1.8}
 .foot a{color:var(--sub)}
 details.card summary{cursor:pointer;font-weight:800;color:var(--navy);min-height:28px}

@@ -297,7 +297,10 @@ async function viewQuiz(mode, arg) {
   ids = (ids || []).filter((id) => D.byId.has(id));
   topbar("back", "#/home", title); tabbar("practice");
   if (!ids.length) {
-    render(`<div class="empty">${I.inbox}<p style="font-weight:700;color:var(--navy)">${mode === "review" ? "今日の復習はありません" : "出せる問題がありません"}</p><p class="cap">${mode === "review" ? "間違えた問題や「自信なし」にした問題が、ここに出てきます。" : "ほかのメニューから始めてみましょう。"}</p><a class="btn btn-primary" href="#/quiz/mix" style="margin-top:12px">ミックス5問を始める</a></div>`);
+    const ec = mode === "review" ? ["いま復習する問題はありません", "間違えた問題や「自信なし」にした問題が、日をおいてここに出てきます。今日は新しい問題に進みましょう。"]
+      : mode === "fav" ? ["お気に入りはまだありません", "問題の画面で「お気に入り」を押すと、あとで見返したい問題がここに集まります。"]
+      : ["出せる問題がありません", "ほかのメニューから始めてみましょう。"];
+    render(`<div class="empty"><img class="empty-art" src="empty.png" srcset="empty.png 1x, empty@2x.png 2x" width="150" height="136" alt=""><p style="font-weight:700;color:var(--navy)">${ec[0]}</p><p class="cap">${ec[1]}</p><a class="btn btn-primary" href="#/quiz/mix" style="margin-top:12px">ミックス5問を始める</a></div>`);
     return;
   }
   const resume = mode === "resume" && st.sess;
