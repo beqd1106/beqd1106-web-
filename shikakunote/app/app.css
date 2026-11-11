@@ -110,6 +110,7 @@ a.card{display:block;text-decoration:none;color:inherit}
 .strip div{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--sub)}
 .dot{width:24px;height:24px;border-radius:50%;background:var(--line);display:grid;place-items:center}
 .dot.on{background:var(--orange);color:#fff}
+.dot.rest{background:var(--blue-soft);color:var(--blue);font-size:11px;font-weight:800}
 .dot.today{box-shadow:0 0 0 2px var(--navy) inset}
 
 /* クイックアクション */

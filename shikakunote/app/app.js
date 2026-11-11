@@ -109,15 +109,37 @@ function pickMix(D, n, domain) {
   return [...new Map(out.map((q) => [q.id, q])).values()].slice(0, n);
 }
 function studyDays() { return new Set(Object.entries(S.days).filter(([, v]) => Object.keys(v).length).map(([k]) => k)); }
-function streak() {
-  const days = studyDays(); let n = 0; const d = new Date();
+// 休息日：7日に1日までは、学習しなかった日があっても連続が切れない（iOS版 StudyStreak と同じ規則）
+const REST_SPACING = 7;
+function walkStreak() {
+  const days = studyDays(); if (!days.size) return { n: 0, rests: [] };
+  const d = new Date(); d.setHours(0, 0, 0, 0);
   if (!days.has(dayKey(d))) d.setDate(d.getDate() - 1);
-  while (days.has(dayKey(d))) { n++; d.setDate(d.getDate() - 1); }
-  return n;
+  let n = 0; const rests = [];
+  for (;;) {
+    if (days.has(dayKey(d))) n++;
+    else {
+      const before = new Date(d); before.setDate(before.getDate() - 1);
+      const spaced = !rests.length || (dayNum(rests[rests.length - 1]) - dayNum(d)) >= REST_SPACING;
+      if (!days.has(dayKey(before)) || !spaced) break;
+      rests.push(new Date(d));
+    }
+    d.setDate(d.getDate() - 1);
+  }
+  return { n, rests: rests.map((x) => dayKey(x)) };
 }
+function streak() { return walkStreak().n; }
 function longest() {
   const nums = [...studyDays()].map((k) => { const [y, m, dd] = k.split("-").map(Number); return dayNum(new Date(y, m - 1, dd)); }).sort((a, b) => a - b);
-  let best = 0, cur = 0, prev = null; for (const x of nums) { cur = prev !== null && x === prev + 1 ? cur + 1 : 1; best = Math.max(best, cur); prev = x; } return best;
+  let best = 0, cur = 0, prev = null, lastRest = null;
+  for (const x of nums) {
+    if (prev === null) cur = 1;
+    else if (x === prev + 1) cur++;
+    else if (x === prev + 2 && (lastRest === null || x - lastRest > REST_SPACING)) { cur++; lastRest = x - 1; }
+    else { cur = 1; lastRest = null; }
+    best = Math.max(best, cur); prev = x;
+  }
+  return Math.max(best, walkStreak().n); // 休息日の選び方で今の連続のほうが長くなる場合に合わせる
 }
 const todayCount = (k) => { const d = S.days[dayKey()] || {}; return k ? d[k] || 0 : Object.entries(d).filter(([x]) => x !== "_l").reduce((a, [, v]) => a + v, 0); };
 
@@ -190,7 +212,7 @@ async function viewHome() {
   else if (nextLesson && Object.keys(st.r).length >= 10) na = { eyebrow: "次のレッスン", title: nextLesson.title, sub: `約${nextLesson.estimatedMinutes || 5}分で読める解説＋確認問題`, href: `#/lesson/${nextLesson.id}`, go: "レッスンを読む" };
   else na = { eyebrow: "今日の1区切り", title: `ミックス${SET_SIZE}問`, sub: "まだ解いていない問題を中心に。約3分", href: "#/quiz/mix", go: `${SET_SIZE}問を始める` };
   const tc = todayCount(), goal = S.set.goal, p = Math.min(100, Math.round((tc / goal) * 100));
-  const days = studyDays(); const strip = [...Array(7)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() - 6 + i); return d; });
+  const days = studyDays(); const rests = new Set(walkStreak().rests); const strip = [...Array(7)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() - 6 + i); return d; });
   const wk = "日月火水木金土";
   const answered = Object.keys(st.r).length;
   render(`
@@ -206,8 +228,8 @@ async function viewHome() {
     <section class="card today" style="margin-top:16px" aria-label="今日の学習">
       <div class="ring" style="--p:${p}"><div><b class="num">${tc}</b><span class="cap">/${goal}問</span></div></div>
       <div>
-        <div class="row" style="justify-content:space-between;align-items:baseline"><b style="color:var(--navy)">今日の目標</b><span class="cap num" style="white-space:nowrap">連続 <b style="color:var(--orange);font-size:17px">${streak()}</b> 日</span></div><div class="cap" style="margin-top:-2px">全資格の合計</div>
-        <div class="strip">${strip.map((d) => `<div><span class="dot ${days.has(dayKey(d)) ? "on" : ""} ${dayKey(d) === dayKey() ? "today" : ""}">${days.has(dayKey(d)) ? I.check.replace('width="20" height="20"', 'width="14" height="14"') : ""}</span>${wk[d.getDay()]}</div>`).join("")}</div>
+        <div class="row" style="justify-content:space-between;align-items:baseline"><b style="color:var(--navy)">今日の目標</b><span class="cap num" style="white-space:nowrap">連続 <b style="color:var(--orange);font-size:17px">${streak()}</b> 日</span></div><div class="cap" style="margin-top:-2px">全資格の合計・週1日までは休んでも連続が切れません</div>
+        <div class="strip">${strip.map((d) => `<div><span class="dot ${days.has(dayKey(d)) ? "on" : rests.has(dayKey(d)) ? "rest" : ""} ${dayKey(d) === dayKey() ? "today" : ""}" ${rests.has(dayKey(d)) ? 'title="休息日"' : ""}>${days.has(dayKey(d)) ? I.check.replace('width="20" height="20"', 'width="14" height="14"') : rests.has(dayKey(d)) ? "休" : ""}</span>${wk[d.getDay()]}</div>`).join("")}</div>
       </div>
     </section>
 
