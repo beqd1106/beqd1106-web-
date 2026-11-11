@@ -165,7 +165,7 @@ function topbar(mode = "exam", backHref = "#/home", title = "") {
     mode === "back"
       ? `<a class="back" href="${backHref}">${I.back}<span>戻る</span></a><b style="flex:1;text-align:center;font-size:15px;margin-right:56px">${esc(title)}</b>`
       : `<a class="brand" href="#/home"><img src="icon-96.png" alt="" width="28" height="28">資格note</a>
-         ${e ? `<button class="exam-switch press" id="sw" aria-label="資格を切り替える（今は${esc(e.examShortName)}）"><span>${esc(e.examShortName)}</span>${I.down}</button>` : ""}`
+         ${e ? `<button class="exam-switch press" id="sw" aria-label="資格を切り替える（今は${esc(e.examShortName)}）"><img src="exams/${e.key}.png" alt="" width="26" height="26"><span>${esc(e.examShortName)}</span>${I.down}</button>` : ""}`
   }</div>`;
   $("#sw")?.addEventListener("click", () => go("#/pick"));
 }

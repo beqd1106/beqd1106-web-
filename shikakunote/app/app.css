@@ -45,6 +45,7 @@ a{color:var(--blue)}
   border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow);font-weight:700;font-size:14px;cursor:pointer;max-width:62vw}
 .exam-switch span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .exam-switch svg{flex:none;color:var(--sub)}
+.exam-switch img{flex:none;width:26px;height:26px;margin:-4px 0 -4px -6px}
 .back{display:inline-flex;align-items:center;gap:4px;min-height:40px;padding:6px 10px 6px 4px;border:none;background:none;cursor:pointer;font-weight:700;color:var(--navy);text-decoration:none}
 
 /* タブバー */
