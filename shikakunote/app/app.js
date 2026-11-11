@@ -488,6 +488,8 @@ function viewSettings() {
     <section class="card">
       <div class="setting"><label for="goal">1日の目標（問）</label><select id="goal" style="font:inherit;padding:6px 10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink)">${[5, 10, 15, 20, 30].map((n) => `<option ${S.set.goal === n ? "selected" : ""}>${n}</option>`).join("")}</select></div>
     </section>
+    <h2 class="h-sec">ホーム画面に追加</h2>
+    <section class="card"><p class="cap" style="margin:0">iPhoneはSafariの共有ボタン→「ホーム画面に追加」、Androidはメニュー→「ホーム画面に追加」で、アプリのように開けます。記録が消えにくくなり、一度開いた資格は電波がなくても使えます。</p></section>
     <h2 class="h-sec">記録の書き出し・読み込み</h2>
     <section class="card stack">
       <p class="cap" style="margin:0">記録はこのブラウザにだけ保存されています。別の端末やブラウザに移すときは、書き出したファイルを読み込んでください（読み込むと今の記録は置きかわります）。</p>
@@ -745,6 +747,8 @@ document.addEventListener("keydown", (e) => {
 });
 window.addEventListener("hashchange", route);
 document.addEventListener("visibilitychange", () => { if (document.hidden && L?.playing) { pauseL(); playBtn(); } });
+
+if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {})); }
 
 (async function init() {
   try { EXAMS = await getJSON("exams"); }
