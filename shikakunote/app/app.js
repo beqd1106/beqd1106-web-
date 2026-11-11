@@ -610,6 +610,18 @@ const ORD = ["1つ目", "2つ目", "3つ目", "4つ目", "5つ目"];
 function spoken(s) {
   return String(s).replace(/[「」『』]/g, "").replace(/（/g, "、").replace(/）/g, "、").replace(/\s+/g, " ").replace(/、+/g, "、").replace(/、。/g, "。");
 }
+// 身につき具合：weak＝最後に間違えた／自信なし、solid＝最後に自力で正解、new＝まだ解いていない（iOS版と同じ考え方）
+function mastery(qid) {
+  const r = exState().r[qid]; if (!r) return "new";
+  return !r[0] || r[5] ? "weak" : "solid";
+}
+// 答えの前に考える間（秒）。苦手は長め・身についた問題は短め。0（聞くだけ）は変えない
+function thinkPause(base, m) {
+  if (!(base > 0)) return 0;
+  if (m === "weak") return Math.min(base * 1.5, base + 3);
+  if (m === "solid") return Math.max(1, base * 0.5);
+  return base;
+}
 async function speakCurrent(skipToAnswer = false) {
   stopSpeak(); const token = L.token; const i = L.i; const q = L.qs[i];
   const ph = (t) => { const el = $("#ph" + i); if (el) el.textContent = t; };
@@ -621,7 +633,8 @@ async function speakCurrent(skipToAnswer = false) {
       if (!(await say(`${ORD[j] || j + 1 + "つ目"}、${spoken(q.choices[j])}`, token))) return;
       if (!(await wait(250, token))) return;
     }
-    if (S.set.pause > 0) { ph("考える時間"); if (!(await wait(S.set.pause * 1000, token))) return; }
+    const tp = thinkPause(S.set.pause, mastery(q.id));
+    if (tp > 0) { ph("考える時間"); if (!(await wait(tp * 1000, token))) return; }
   }
   ph("答え");
   q.correctAnswers.forEach((j) => $(`.c${i}-${j}`)?.classList.add("ans"));
@@ -648,6 +661,7 @@ function listenSheet() {
   s.innerHTML = `<div class="row" style="justify-content:space-between"><b>読み上げの設定</b><button class="icon-btn" id="sx" aria-label="閉じる">${I.x}</button></div>
     <div class="setting"><label for="rate">速さ</label><select id="rate">${[0.9, 1, 1.05, 1.2, 1.4, 1.6].map((r) => `<option value="${r}" ${S.set.rate === r ? "selected" : ""}>${r}倍</option>`).join("")}</select></div>
     <div class="setting"><label for="pause">考える時間</label><select id="pause">${[0, 2, 3, 5, 8].map((r) => `<option value="${r}" ${S.set.pause === r ? "selected" : ""}>${r}秒</option>`).join("")}</select></div>
+    <p class="cap" style="margin:-4px 0 8px">間違えたことのある問題は長め、正解した問題は短めに自動で調整します。</p>
     <div class="setting"><label for="rex">解説も読む</label><input type="checkbox" class="switch" id="rex" ${S.set.readEx ? "checked" : ""}></div>
     <div class="setting"><label for="auto">次の問題へ自動で進む</label><input type="checkbox" class="switch" id="auto" ${S.set.autoNext ? "checked" : ""}></div>`;
   wrap.appendChild(s);
