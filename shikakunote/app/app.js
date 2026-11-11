@@ -530,6 +530,8 @@ async function viewListen() {
   chapters.push({ id: "mix3", title: "ミックス 3分", sub: "全分野から5問", ic: "ic-orange" });
   chapters.push({ id: "mix10", title: "ミックス 10分", sub: "全分野から15問", ic: "ic-orange" });
   if (dueIds().length) chapters.push({ id: "review", title: "復習を聞く", sub: `期限の来た問題 ${Math.min(dueIds().length, 10)}問`, ic: "ic-red" });
+  const weakN = weakIds().length;
+  if (weakN) chapters.push({ id: "weak", title: "間違えた問題", sub: `${Math.min(weakN, 30)}問`, ic: "ic-red" });
   if (st.fav.length) chapters.push({ id: "fav", title: "お気に入り", sub: `${st.fav.length}問`, ic: "ic-orange" });
   const domCh = e.domains.map((d) => { const qs = D.qs.filter((q) => q.domain === d.id && listenable(q)); return { d, n: Math.ceil(qs.length / 5) }; });
   render(`
@@ -551,6 +553,7 @@ async function viewPlay(id) {
   else if (id === "mix10") { qs = shuffle(qs).slice(0, 15); title = "ミックス 10分"; }
   else if (id === "review") { qs = dueIds().slice(0, 10).map((x) => D.byId.get(x)).filter(Boolean); title = "復習"; }
   else if (id === "fav") { qs = st.fav.map((x) => D.byId.get(x)).filter(Boolean); title = "お気に入り"; }
+  else if (id === "weak") { const w = new Set(weakIds()); qs = qs.filter((q) => w.has(q.id)).slice(0, 30); title = "間違えた問題"; }
   else if (id.startsWith("d.")) { const [, dom, ix] = id.split("."); qs = qs.filter((q) => q.domain === dom).slice(Number(ix) * 5, Number(ix) * 5 + 5); title = `${domainInfo(dom)?.shortTitle || ""} ${Number(ix) + 1}`; }
   if (!qs.length) { go("#/listen"); return toast("聞ける問題がありません"); }
   stopSpeak();
@@ -627,6 +630,8 @@ function chime() {
     });
   } catch {}
 }
+// 最後に間違えた／自信なしにした問題（復習の期限がまだ先のものも含む）
+function weakIds() { return Object.keys(exState().r).filter((id) => mastery(id) === "weak"); }
 // 身につき具合：weak＝最後に間違えた／自信なし、solid＝最後に自力で正解、new＝まだ解いていない（iOS版と同じ考え方）
 function mastery(qid) {
   const r = exState().r[qid]; if (!r) return "new";
