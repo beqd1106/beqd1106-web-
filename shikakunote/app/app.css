@@ -132,7 +132,7 @@ a.card{display:block;text-decoration:none;color:inherit}
 
 /* 資格選択 */
 .exam-card{display:flex;align-items:center;gap:var(--s3)}
-.exam-ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--blue-soft);color:var(--navy);flex:none;font-weight:800;font-size:13px}
+.exam-ic{width:52px;height:52px;flex:none;object-fit:contain;margin:-4px 0}
 .exam-card[aria-current="true"]{border-color:var(--navy);box-shadow:0 0 0 2px var(--navy) inset,var(--shadow)}
 
 /* 演習 */

@@ -188,7 +188,7 @@ function viewPick() {
     ${S.exam ? "" : `<div style="margin:8px 0 20px"><h1 class="h-title">9つの資格を、1日5問ずつ。</h1><p class="muted" style="margin:6px 0 0">登録なしで、すぐ始められます。勉強する資格をえらんでください。</p></div>`}
     ${groups.map((g) => `<h2 class="h-sec">${esc(g)}</h2><div class="stack">${EXAMS.filter((e) => e.group === g).map((e) => `
       <button class="card press exam-card" data-k="${e.key}" ${S.exam === e.key ? 'aria-current="true"' : ""} style="text-align:left;width:100%">
-        <span class="exam-ic">${esc(e.brandPrefix.slice(0, 4))}</span>
+        <img class="exam-ic" src="exams/${e.key}.png" alt="" width="52" height="52" loading="lazy">
         <span style="flex:1;min-width:0"><b style="display:block;color:var(--navy)">${esc(e.examShortName)}</b>
         <span class="cap">${e.questionCount}問・レッスン${e.lessonCount}本</span></span>
         ${S.exam === e.key ? `<span class="tag green">学習中</span>` : I.chev}
