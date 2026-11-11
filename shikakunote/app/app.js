@@ -510,6 +510,7 @@ async function viewListen() {
     <p class="cap" style="margin:0 0 12px">問題→少し考える間→答え→解説、の順に読み上げます。縦にスワイプで次の問題へ。</p>
     ${canSpeak ? "" : `<div class="hint">このブラウザは読み上げに対応していません。Chrome・Safari・Edgeの最新版でお試しください。</div>`}
     <div class="hint" style="border-color:var(--blue);background:var(--blue-soft)">Webでは、画面を消したりほかのアプリに切り替えたりすると読み上げが止まります。画面をつけたままお使いください。</div>
+    ${TERMS && TERMS[S.exam]?.length ? `<a class="card press chapter" href="#/terms" style="margin-top:12px;border-color:color-mix(in srgb,var(--orange) 45%,var(--line))"><span class="ic ic-orange">${I.head.replace('width="22" height="22"', 'width="20" height="20"')}</span><div style="flex:1"><b style="color:var(--navy)">重要用語を聞く</b><div class="cap">自然な声で${TERMS[S.exam].length}語・画面を消しても続きます</div></div>${I.chev}</a>` : ""}
     <div class="stack" style="margin-top:12px">${chapters.map((c) => `<a class="card press chapter" href="#/play/${c.id}"><span class="ic ${c.ic}">${I.play.replace('width="26" height="26"', 'width="18" height="18"')}</span><div style="flex:1"><b style="color:var(--navy)">${c.title}</b><div class="cap">${c.sub}</div></div>${I.chev}</a>`).join("")}</div>
     <h2 class="h-sec">分野ごと（5問ずつ）</h2>
     <div class="stack">${domCh.map(({ d, n }) => `<details class="card"><summary>${esc(d.title)}<span class="cap">　${n}チャプター</span></summary><div class="stack" style="margin-top:10px">${[...Array(n)].map((_, i) => `<a class="row press" style="text-decoration:none;color:inherit;min-height:44px;border-top:1px solid var(--line);padding-top:8px" href="#/play/d.${d.id}.${i}"><b style="flex:1">チャプター${i + 1}</b>${done[`d.${d.id}.${i}`] ? '<span class="done-mark">聞いた</span>' : ""}${I.chev}</a>`).join("")}</div></details>`).join("")}</div>`);
@@ -630,9 +631,57 @@ function listenSheet() {
   $("#auto").addEventListener("change", (e) => { S.set.autoNext = e.target.checked; save(); });
 }
 
+/* ---------- 重要用語を聞く（Geminiで作った音声・audio要素で再生） ---------- */
+let TERMS = null;
+async function loadTerms() { if (TERMS) return TERMS; try { const r = await fetch(`audio/terms/index.json?v=${DATA_V}`); TERMS = r.ok ? await r.json() : {}; } catch { TERMS = {}; } return TERMS; }
+let T = null;
+async function viewTerms() {
+  await loadTerms(); const list = TERMS[S.exam] || [];
+  topbar("back", "#/listen", "重要用語を聞く"); tabbar("listen");
+  if (!list.length) return render(`<div class="empty">${I.inbox}<p>この資格の音声はまだありません。</p></div>`);
+  if (T?.audio) { T.audio.pause(); }
+  const audio = new Audio(); audio.preload = "auto";
+  T = { list, i: 0, audio, playing: false };
+  render(`
+    <p class="cap" style="margin:0 0 12px">試験直前に見直したい用語を、自然な声で1語ずつ読み上げます。続けて流れるので、移動中にもどうぞ。</p>
+    <section class="card" style="position:sticky;top:64px;z-index:4">
+      <div class="cap" id="tc">1 / ${list.length}</div>
+      <b id="tt" style="display:block;font-size:19px;color:var(--navy);margin:2px 0 8px">${esc(list[0].term)}</b>
+      <div class="progress"><i id="tp" style="width:0%"></i></div>
+      <div class="row" style="justify-content:center;gap:20px;margin-top:12px">
+        <button class="icon-btn" style="background:var(--card2);color:var(--navy)" id="tprev" aria-label="前の用語">${I.prev}</button>
+        <button class="icon-btn" style="width:60px;height:60px;background:var(--navy);color:#fff" id="tplay" aria-label="再生">${I.play}</button>
+        <button class="icon-btn" style="background:var(--card2);color:var(--navy)" id="tnext" aria-label="次の用語">${I.next}</button>
+      </div>
+    </section>
+    <div class="stack" style="margin-top:12px">${list.map((t, i) => `<button class="card press" data-t="${i}" style="text-align:left;width:100%"><b style="color:var(--navy)">${esc(t.term)}</b><p class="cap" style="margin:4px 0 0;line-height:1.7">${esc(t.text)}</p></button>`).join("")}</div>
+    <p class="foot">音声はGoogleのGemini（音声合成）で作成しています。</p>`);
+  const set = (i, autoplay) => {
+    T.i = Math.max(0, Math.min(list.length - 1, i));
+    const t = list[T.i]; audio.src = `audio/terms/${t.file}?v=${DATA_V}`;
+    $("#tc").textContent = `${T.i + 1} / ${list.length}`; $("#tt").textContent = t.term;
+    $("#main").querySelectorAll("[data-t]").forEach((b) => b.style.borderColor = Number(b.dataset.t) === T.i ? "var(--orange)" : "");
+    if ("mediaSession" in navigator) { try { navigator.mediaSession.metadata = new MediaMetadata({ title: t.term, artist: "資格note " + examInfo().examShortName, album: "重要用語", artwork: [{ src: "icon.png", sizes: "192x192", type: "image/png" }] }); } catch {} }
+    if (autoplay) audio.play().catch(() => {});
+  };
+  const btn = () => { const b = $("#tplay"); if (b) { b.innerHTML = T.playing ? I.pause : I.play; b.setAttribute("aria-label", T.playing ? "一時停止" : "再生"); } };
+  audio.addEventListener("play", () => { T.playing = true; btn(); });
+  audio.addEventListener("pause", () => { T.playing = false; btn(); });
+  audio.addEventListener("timeupdate", () => { const p = $("#tp"); if (p && audio.duration) p.style.width = `${(audio.currentTime / audio.duration) * 100}%`; });
+  audio.addEventListener("ended", () => { if (T.i + 1 < list.length) setTimeout(() => set(T.i + 1, true), 700); else { T.playing = false; btn(); toast("最後まで聞きました"); } });
+  audio.addEventListener("error", () => toast("音声を読み込めませんでした"));
+  $("#tplay").addEventListener("click", () => { if (audio.paused) { if (!audio.src) set(T.i, false); audio.play().catch(() => toast("再生できませんでした")); } else audio.pause(); });
+  $("#tnext").addEventListener("click", () => set(T.i + 1, !audio.paused || T.playing));
+  $("#tprev").addEventListener("click", () => set(T.i - 1, !audio.paused || T.playing));
+  $("#main").querySelectorAll("[data-t]").forEach((b) => b.addEventListener("click", () => set(Number(b.dataset.t), true)));
+  if ("mediaSession" in navigator) { try { navigator.mediaSession.setActionHandler("play", () => audio.play()); navigator.mediaSession.setActionHandler("pause", () => audio.pause()); navigator.mediaSession.setActionHandler("nexttrack", () => set(T.i + 1, true)); navigator.mediaSession.setActionHandler("previoustrack", () => set(T.i - 1, true)); } catch {} }
+  set(0, false);
+}
+
 /* ---------- ルーター ---------- */
 async function route() {
   if (L && !location.hash.startsWith("#/play/")) { stopSpeak(); L = null; }
+  if (T && !location.hash.startsWith("#/terms")) { T.audio.pause(); T = null; }
   const h = location.hash.slice(2) || "home";
   const [path, qs] = h.split("?");
   const parts = path.split("/");
@@ -647,7 +696,8 @@ async function route() {
       }
       case "lessons": return await viewLessons();
       case "lesson": return await viewLesson(parts[1]);
-      case "listen": return await viewListen();
+      case "listen": await loadTerms(); return await viewListen();
+      case "terms": return await viewTerms();
       case "play": return await viewPlay(parts[1]);
       case "record": return viewRecord();
       case "settings": return viewSettings();
