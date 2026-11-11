@@ -610,6 +610,23 @@ const ORD = ["1つ目", "2つ目", "3つ目", "4つ目", "5つ目"];
 function spoken(s) {
   return String(s).replace(/[「」『』]/g, "").replace(/（/g, "、").replace(/）/g, "、").replace(/\s+/g, " ").replace(/、+/g, "、").replace(/、。/g, "。");
 }
+// 考える時間に入る合図音（iOS版と同じ2音のやわらかいチャイム）
+let AC = null;
+function chime() {
+  try {
+    AC ||= new (window.AudioContext || window.webkitAudioContext)();
+    if (AC.state === "suspended") AC.resume();
+    const t0 = AC.currentTime + 0.02;
+    [[880, 0, 0.8], [1318.5, 0.09, 0.7]].forEach(([f, d, g]) => {
+      const o = AC.createOscillator(), v = AC.createGain();
+      o.type = "sine"; o.frequency.value = f;
+      v.gain.setValueAtTime(0.0001, t0 + d);
+      v.gain.exponentialRampToValueAtTime(0.12 * g, t0 + d + 0.01);
+      v.gain.exponentialRampToValueAtTime(0.0001, t0 + d + 0.45);
+      o.connect(v).connect(AC.destination); o.start(t0 + d); o.stop(t0 + d + 0.5);
+    });
+  } catch {}
+}
 // 身につき具合：weak＝最後に間違えた／自信なし、solid＝最後に自力で正解、new＝まだ解いていない（iOS版と同じ考え方）
 function mastery(qid) {
   const r = exState().r[qid]; if (!r) return "new";
@@ -634,7 +651,7 @@ async function speakCurrent(skipToAnswer = false) {
       if (!(await wait(250, token))) return;
     }
     const tp = thinkPause(S.set.pause, mastery(q.id));
-    if (tp > 0) { ph("考える時間"); if (!(await wait(tp * 1000, token))) return; }
+    if (tp > 0) { ph("考える時間"); if (tp >= 1 && S.set.chime !== false) chime(); if (!(await wait(tp * 1000, token))) return; }
   }
   ph("答え");
   q.correctAnswers.forEach((j) => $(`.c${i}-${j}`)?.classList.add("ans"));
@@ -662,12 +679,14 @@ function listenSheet() {
     <div class="setting"><label for="rate">速さ</label><select id="rate">${[0.9, 1, 1.05, 1.2, 1.4, 1.6].map((r) => `<option value="${r}" ${S.set.rate === r ? "selected" : ""}>${r}倍</option>`).join("")}</select></div>
     <div class="setting"><label for="pause">考える時間</label><select id="pause">${[0, 2, 3, 5, 8].map((r) => `<option value="${r}" ${S.set.pause === r ? "selected" : ""}>${r}秒</option>`).join("")}</select></div>
     <p class="cap" style="margin:-4px 0 8px">間違えたことのある問題は長め、正解した問題は短めに自動で調整します。</p>
+    <div class="setting"><label for="chm">考える時間の合図音</label><input type="checkbox" class="switch" id="chm" ${S.set.chime !== false ? "checked" : ""}></div>
     <div class="setting"><label for="rex">解説も読む</label><input type="checkbox" class="switch" id="rex" ${S.set.readEx ? "checked" : ""}></div>
     <div class="setting"><label for="auto">次の問題へ自動で進む</label><input type="checkbox" class="switch" id="auto" ${S.set.autoNext ? "checked" : ""}></div>`;
   wrap.appendChild(s);
   $("#sx").addEventListener("click", () => s.remove());
   $("#rate").addEventListener("change", (e) => { S.set.rate = Number(e.target.value); save(); });
   $("#pause").addEventListener("change", (e) => { S.set.pause = Number(e.target.value); save(); });
+  $("#chm").addEventListener("change", (e) => { S.set.chime = e.target.checked; save(); });
   $("#rex").addEventListener("change", (e) => { S.set.readEx = e.target.checked; save(); });
   $("#auto").addEventListener("change", (e) => { S.set.autoNext = e.target.checked; save(); });
 }
