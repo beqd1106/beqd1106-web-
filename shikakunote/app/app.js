@@ -525,6 +525,7 @@ const canSpeak = "speechSynthesis" in window;
 async function viewListen() {
   topbar(); tabbar("listen");
   const e = examInfo(); const D = await examData(S.exam); const st = exState();
+  const vidx = await voiceIndex(); const voiced = S.set.voice !== false && vidx?.[S.exam]?.length;
   const done = JSON.parse(localStorage.getItem("shikakunote.listen." + S.exam) || "{}");
   const chapters = [];
   chapters.push({ id: "mix3", title: "ミックス 3分", sub: "全分野から5問", ic: "ic-orange" });
@@ -537,17 +538,25 @@ async function viewListen() {
   render(`
     <h1 class="h-title" style="margin:4px 0 6px">聞き流し</h1>
     <p class="cap" style="margin:0 0 12px">問題→少し考える間→答え→解説、の順に読み上げます。縦にスワイプで次の問題へ。</p>
-    ${canSpeak ? "" : `<div class="hint">このブラウザは読み上げに対応していません。Chrome・Safari・Edgeの最新版でお試しください。</div>`}
-    <div class="hint" style="border-color:var(--blue);background:var(--blue-soft)">Webでは、画面を消したりほかのアプリに切り替えたりすると読み上げが止まります。画面をつけたままお使いください。</div>
+    ${voiced ? `<div class="hint" style="border-color:var(--blue);background:var(--blue-soft)">自然な声で流れます（読み上げの設定で切り替えられます）。考える時間で止まることがあるので、画面はつけたままがおすすめです。</div>`
+      : `${canSpeak ? "" : `<div class="hint">このブラウザは読み上げに対応していません。Chrome・Safari・Edgeの最新版でお試しください。</div>`}
+    <div class="hint" style="border-color:var(--blue);background:var(--blue-soft)">Webでは、画面を消したりほかのアプリに切り替えたりすると読み上げが止まります。画面をつけたままお使いください。</div>`}
     ${TERMS && TERMS[S.exam]?.length ? `<a class="card press chapter" href="#/terms" style="margin-top:12px;border-color:color-mix(in srgb,var(--orange) 45%,var(--line))"><span class="ic ic-orange">${I.head.replace('width="22" height="22"', 'width="20" height="20"')}</span><div style="flex:1"><b style="color:var(--navy)">重要用語を聞く</b><div class="cap">自然な声で${TERMS[S.exam].length}語・画面を消しても続きます</div></div>${I.chev}</a>` : ""}
     <div class="stack" style="margin-top:12px">${chapters.map((c) => `<a class="card press chapter" href="#/play/${c.id}"><span class="ic ${c.ic}">${I.play.replace('width="26" height="26"', 'width="18" height="18"')}</span><div style="flex:1"><b style="color:var(--navy)">${c.title}</b><div class="cap">${c.sub}</div></div>${I.chev}</a>`).join("")}</div>
     <h2 class="h-sec">分野ごと（5問ずつ）</h2>
     <div class="stack">${domCh.map(({ d, n }) => `<details class="card"><summary>${esc(d.title)}<span class="cap">　${n}チャプター</span></summary><div class="stack" style="margin-top:10px">${[...Array(n)].map((_, i) => `<a class="row press" style="text-decoration:none;color:inherit;min-height:44px;border-top:1px solid var(--line);padding-top:8px" href="#/play/d.${d.id}.${i}"><b style="flex:1">チャプター${i + 1}</b>${done[`d.${d.id}.${i}`] ? '<span class="done-mark">聞いた</span>' : ""}${I.chev}</a>`).join("")}</div></details>`).join("")}</div>`);
 }
-function listenable(q) { return q.choices.length <= 5 && q.question.length < 260 && !/[┌│└■□]|```|\n {2,}/.test(q.question); }
+// 耳だけで意味が通る問題か。iOS の ListeningCatalog.isListenable・音声原稿（build_scripts.py）と同じ規則
+function listenable(q) {
+  const t = q.question;
+  const visual = ["図", "表", "下記", "次の画面", "グラフ"].some((w) => ["の", "に", "を"].some((p) => t.includes(w + p)));
+  const lines = t.split("\n").filter((l) => l.trim()).length;
+  return !visual && lines < 3 && t.length <= 220;
+}
 let L = null;
 async function viewPlay(id) {
   const D = await examData(S.exam); const st = exState();
+  await voiceIndex();
   let qs = D.qs.filter(listenable), title = "聞き流し";
   if (id === "mix3") { qs = shuffle(qs).slice(0, 5); title = "ミックス 3分"; }
   else if (id === "mix10") { qs = shuffle(qs).slice(0, 15); title = "ミックス 10分"; }
@@ -589,7 +598,29 @@ async function viewPlay(id) {
 function playBtn() { const b = $("#lplay"); if (b) { b.innerHTML = L.playing ? I.pause : I.play; b.setAttribute("aria-label", L.playing ? "一時停止" : "再生"); } }
 function progress() { const p = $("#lp"); if (p) p.style.width = `${((L.i + 1) / L.qs.length) * 100}%`; }
 function toSlide(i) { if (!L) return; if (i < 0 || i >= L.qs.length) { if (i >= L.qs.length) chapterDone(); return; } $("#reel").scrollTo({ top: i * $("#reel").clientHeight, behavior: "smooth" }); }
-function stopSpeak() { if (L) L.token++; try { speechSynthesis.cancel(); } catch {} }
+function stopSpeak() { if (L) L.token++; try { speechSynthesis.cancel(); } catch {} try { if (VA) { VA.pause(); VA.removeAttribute("src"); } } catch {} }
+
+/* 自然な声の音声（Gemini TTS で作った問題ごとの mp3）。無い問題・読み込めないときは端末の読み上げに戻す */
+const VOICE_BASE = "https://shikakunote-audio.beqd1106.workers.dev/";
+let VIDX = null, VA = null;
+async function voiceIndex() {
+  if (VIDX) return VIDX;
+  try { const r = await fetch(VOICE_BASE + "index.json", { cache: "no-cache" }); VIDX = r.ok ? await r.json() : {}; } catch { VIDX = {}; }
+  return VIDX;
+}
+function hasVoice(qid) { return S.set.voice !== false && !!VIDX?.[S.exam]?.includes?.(qid); }
+// 1本を最後まで流す。戻り値：true＝流し終えた／false＝止められた／"error"＝流せなかった（呼び出し側が読み上げに切り替える）
+function playClip(url, token) {
+  return new Promise((res) => {
+    if (!L || token !== L.token) return res(false);
+    VA ||= new Audio();
+    VA.preload = "auto"; VA.src = url; VA.playbackRate = S.set.rate || 1; VA.preservesPitch = true;
+    let doneF = false;
+    const fin = (r) => { if (doneF) return; doneF = true; VA.onended = VA.onerror = null; res(token === L?.token ? r : false); };
+    VA.onended = () => fin(true); VA.onerror = () => fin("error");
+    VA.play().catch((e) => fin(e?.name === "AbortError" ? false : "error"));
+  });
+}
 function pauseL() { L.playing = false; stopSpeak(); }
 function jaVoice() {
   // 自然に聞こえる声を優先（端末の高品質音声 → Google/Microsoftのニューラル音声 → 既定）
@@ -647,6 +678,34 @@ function thinkPause(base, m) {
 async function speakCurrent(skipToAnswer = false) {
   stopSpeak(); const token = L.token; const i = L.i; const q = L.qs[i];
   const ph = (t) => { const el = $("#ph" + i); if (el) el.textContent = t; };
+  // 自然な声の音声があれば、それで流す（問題＋選択肢 → 考える間 → 正解＋解説）
+  if (hasVoice(q.id)) {
+    const base = `${VOICE_BASE}${S.exam}/${encodeURIComponent(q.id)}`;
+    let fallback = false;
+    if (!skipToAnswer) {
+      ph("問題");
+      const r = await playClip(base + "_q.mp3", token);
+      if (r === "error") fallback = true; else if (!r) return;
+      if (!fallback) {
+        const tp = thinkPause(S.set.pause, mastery(q.id));
+        if (tp > 0) { ph("考える時間"); if (tp >= 1 && S.set.chime !== false) chime(); if (!(await wait(tp * 1000, token))) return; }
+      }
+    }
+    if (!fallback) {
+      ph("答え");
+      q.correctAnswers.forEach((j) => $(`.c${i}-${j}`)?.classList.add("ans"));
+      $("#ex" + i).hidden = false;
+      const r = await playClip(base + "_a.mp3", token);
+      if (r === true) {
+        if (!(await wait(1100, token))) return;
+        if (S.set.autoNext) { if (i + 1 < L.qs.length) toSlide(i + 1); else chapterDone(); }
+        else { L.playing = false; playBtn(); }
+        return;
+      }
+      if (!r) return;
+      skipToAnswer = true; // 答えの音声だけ読めなかったときは、答えから読み上げで続ける
+    }
+  }
   if (!skipToAnswer) {
     ph("問題");
     if (!(await say(`${i === 0 ? "では、" : ""}第${i + 1}問。${spoken(q.question)}`, token))) return;
@@ -685,13 +744,16 @@ function listenSheet() {
     <div class="setting"><label for="pause">考える時間</label><select id="pause">${[0, 2, 3, 5, 8].map((r) => `<option value="${r}" ${S.set.pause === r ? "selected" : ""}>${r}秒</option>`).join("")}</select></div>
     <p class="cap" style="margin:-4px 0 8px">間違えたことのある問題は長め、正解した問題は短めに自動で調整します。</p>
     <div class="setting"><label for="chm">考える時間の合図音</label><input type="checkbox" class="switch" id="chm" ${S.set.chime !== false ? "checked" : ""}></div>
-    <div class="setting"><label for="rex">解説も読む</label><input type="checkbox" class="switch" id="rex" ${S.set.readEx ? "checked" : ""}></div>
+    <div class="setting"><label for="vce">自然な声で聞く</label><input type="checkbox" class="switch" id="vce" ${S.set.voice !== false ? "checked" : ""}></div>
+    <p class="cap" style="margin:-4px 0 8px">オフにすると端末の読み上げになります。自然な声は解説も含めて流れます。</p>
+    <div class="setting"><label for="rex">解説も読む（端末の読み上げのとき）</label><input type="checkbox" class="switch" id="rex" ${S.set.readEx ? "checked" : ""}></div>
     <div class="setting"><label for="auto">次の問題へ自動で進む</label><input type="checkbox" class="switch" id="auto" ${S.set.autoNext ? "checked" : ""}></div>`;
   wrap.appendChild(s);
   $("#sx").addEventListener("click", () => s.remove());
   $("#rate").addEventListener("change", (e) => { S.set.rate = Number(e.target.value); save(); });
   $("#pause").addEventListener("change", (e) => { S.set.pause = Number(e.target.value); save(); });
   $("#chm").addEventListener("change", (e) => { S.set.chime = e.target.checked; save(); });
+  $("#vce").addEventListener("change", (e) => { S.set.voice = e.target.checked; save(); if (L?.playing) speakCurrent(); });
   $("#rex").addEventListener("change", (e) => { S.set.readEx = e.target.checked; save(); });
   $("#auto").addEventListener("change", (e) => { S.set.autoNext = e.target.checked; save(); });
 }
