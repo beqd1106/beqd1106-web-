@@ -605,8 +605,9 @@ const VOICE_BASE = "https://shikakunote-audio.beqd1106.workers.dev/";
 let VIDX = null, VA = null;
 async function voiceIndex() {
   if (VIDX) return VIDX;
-  try { const r = await fetch(VOICE_BASE + "index.json", { cache: "no-cache" }); VIDX = r.ok ? await r.json() : {}; } catch { VIDX = {}; }
-  return VIDX;
+  // 読み込めなかったときは覚えず、次に画面を開いたときにもう一度取りにいく
+  try { const r = await fetch(VOICE_BASE + "index.json", { cache: "no-cache" }); if (r.ok) VIDX = await r.json(); } catch {}
+  return VIDX || {};
 }
 function hasVoice(qid) { return S.set.voice !== false && !!VIDX?.[S.exam]?.includes?.(qid); }
 // 1本を最後まで流す。戻り値：true＝流し終えた／false＝止められた／"error"＝流せなかった（呼び出し側が読み上げに切り替える）
