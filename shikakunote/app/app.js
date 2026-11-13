@@ -1,6 +1,6 @@
 // 資格note Web — ビルドなしの1ページアプリ（hashルーティング）
 // 進捗はこのブラウザの localStorage にだけ保存する（ログイン・同期なし）。
-const DATA_V = "20261114a";
+const DATA_V = "20261114b";
 const STORE_KEY = "shikakunote.web.v1";
 const INTERVALS = [1, 3, 7, 14, 30]; // iOS版と同じ間隔反復
 const SET_SIZE = 5;
@@ -258,7 +258,7 @@ async function viewHome() {
 
     ${e.applyUrl ? `<a class="card press row apply" href="${esc(e.applyUrl)}" target="_blank" rel="noopener noreferrer" style="margin-top:16px">
       <span class="ic ic-blue" style="width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none">${I.cal}</span>
-      <div style="flex:1;min-width:0"><b style="color:var(--navy)">受験の申し込み</b><div class="cap">${esc(e.applyLabel || "公式サイトで申し込む")}（別タブで開きます）</div></div>${I.chev}</a>` : ""}
+      <div style="flex:1;min-width:0"><b style="color:var(--navy)">${esc(e.applyTitle || "受験の申し込み")}</b><div class="cap">${esc(e.applyLabel || "公式サイトで申し込む")}（別タブで開きます）</div></div>${I.chev}</a>` : ""}
 
     <section class="card" style="margin-top:16px;display:flex;gap:12px;align-items:flex-start">
       <span class="ic ic-blue" style="width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex:none">${I.dl}</span>
