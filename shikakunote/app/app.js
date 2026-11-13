@@ -466,18 +466,19 @@ async function viewLesson(id) {
 }
 
 /* ---------- 操作トレーニング（train.js を必要なときだけ読む） ---------- */
-const TRAIN_EXAMS = ["dify"];
+const TRAIN_EXAMS = ["dify", "wia"];
+const TRAIN_MOD = { dify: ["./train.js?v=3", "Dify"], wia: ["./train_wa.js?v=1", "WinActor"] };
 async function viewTrain(id) {
   const e = examInfo();
   if (!TRAIN_EXAMS.includes(e.key)) return go("#/home");
-  const m = await import("./train.js?v=3");
+  const [modPath, tool] = TRAIN_MOD[e.key]; const m = await import(modPath);
   if (!id) {
     topbar("back", "#/home", "操作トレーニング"); tabbar("practice");
     const ts = m.taskList();
     return render(`<h1 class="h-title" style="margin:4px 0 4px">操作トレーニング</h1>
-      <p class="cap" style="margin:0 0 16px">${esc(e.examShortName.replace("実力チェック", ""))}の編集画面と同じ配置・用語・手順で、ブロックを置いてつなぎ、設定して、テスト実行で自動採点します。本物の画面の画像は使っていない練習用の画面です。</p>
-      <div class="stack">${ts.map((t, i) => `<a class="card press row" href="#/train/${t.id}"><span class="ic ${t.done ? "ic-green" : "ic-blue"}" style="width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none">${t.done ? I.check : `<b>${i + 1}</b>`}</span><div style="flex:1;min-width:0"><b style="color:var(--navy)">${esc(t.title)}</b><div class="cap">${t.app === "workflow" ? "Workflow" : "Chatflow"}・${esc(t.goal)}</div></div>${I.chev}</a>`).join("")}</div>
-      <p class="cap" style="margin-top:16px">スマホでは、ブロックの右の丸をタップ → つなぎ先のブロックをタップ、でつなげます。ブロックはドラッグで動かせます。</p>`);
+      <p class="cap" style="margin:0 0 16px">${tool === "Dify" ? "Difyのワークフロー編集画面と同じ配置・用語・手順で、ブロックを置いてつなぎ、設定して、テスト実行で自動採点します。" : "WinActorのシナリオ編集と同じ考え方（開始から終了へ上から下に並べる・パレット・プロパティ・変数一覧）で組み立て、実行で自動採点します。"}本物の画面の画像は使っていない練習用の画面です。</p>
+      <div class="stack">${ts.map((t, i) => `<a class="card press row" href="#/train/${t.id}"><span class="ic ${t.done ? "ic-green" : "ic-blue"}" style="width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none">${t.done ? I.check : `<b>${i + 1}</b>`}</span><div style="flex:1;min-width:0"><b style="color:var(--navy)">${esc(t.title)}</b><div class="cap">${t.app === "workflow" ? "Workflow" : t.app === "chatflow" ? "Chatflow" : esc(t.app)}・${esc(t.goal)}</div></div>${I.chev}</a>`).join("")}</div>
+      ${tool === "Dify" ? `<p class="cap" style="margin-top:16px">スマホでは、ブロックの右の丸をタップ → つなぎ先のブロックをタップ、でつなげます。ブロックはドラッグで動かせます。</p>` : `<p class="cap" style="margin-top:16px">フローチャートの「＋」をタップして、そこに置くノードをパレットから選びます。</p>`}`);
   }
   topbar("back", "#/train", "操作トレーニング"); tabbar("practice");
   render(`<div id="trroot"></div>`);
