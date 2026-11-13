@@ -240,6 +240,10 @@ async function viewHome() {
       </div>
     </section>
 
+    ${TRAIN_EXAMS.includes(e.key) ? `<a class="card press row" href="#/train" style="margin-top:16px;border:1.5px solid var(--orange)">
+      <span class="ic ic-orange" style="width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none">${I.bolt}</span>
+      <div style="flex:1;min-width:0"><b style="color:var(--navy)">操作トレーニング</b><div class="cap">画面と同じ手順で作って、自動で採点</div></div>${I.chev}</a>` : ""}
+
     <h2 class="h-sec">ほかの学び方</h2>
     <div class="grid2 wide">
       <a class="card press qa" href="#/lessons"><span class="ic ic-green">${I.book}</span><b>レッスン一覧</b><small>${st.lessons.length}/${D.lessons.length} 本読了</small></a>
@@ -459,6 +463,25 @@ async function viewLesson(id) {
   $("#lq")?.addEventListener("click", mark);
   $("#ln")?.addEventListener("click", mark);
   $("#lm").addEventListener("click", () => { if (st.lessons.includes(l.id)) { st.lessons = st.lessons.filter((x) => x !== l.id); save(); } else mark(); viewLesson(id); toast("保存しました"); });
+}
+
+/* ---------- 操作トレーニング（train.js を必要なときだけ読む） ---------- */
+const TRAIN_EXAMS = ["dify"];
+async function viewTrain(id) {
+  const e = examInfo();
+  if (!TRAIN_EXAMS.includes(e.key)) return go("#/home");
+  const m = await import("./train.js?v=3");
+  if (!id) {
+    topbar("back", "#/home", "操作トレーニング"); tabbar("practice");
+    const ts = m.taskList();
+    return render(`<h1 class="h-title" style="margin:4px 0 4px">操作トレーニング</h1>
+      <p class="cap" style="margin:0 0 16px">${esc(e.examShortName.replace("実力チェック", ""))}の編集画面と同じ配置・用語・手順で、ブロックを置いてつなぎ、設定して、テスト実行で自動採点します。本物の画面の画像は使っていない練習用の画面です。</p>
+      <div class="stack">${ts.map((t, i) => `<a class="card press row" href="#/train/${t.id}"><span class="ic ${t.done ? "ic-green" : "ic-blue"}" style="width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none">${t.done ? I.check : `<b>${i + 1}</b>`}</span><div style="flex:1;min-width:0"><b style="color:var(--navy)">${esc(t.title)}</b><div class="cap">${t.app === "workflow" ? "Workflow" : "Chatflow"}・${esc(t.goal)}</div></div>${I.chev}</a>`).join("")}</div>
+      <p class="cap" style="margin-top:16px">スマホでは、ブロックの右の丸をタップ → つなぎ先のブロックをタップ、でつなげます。ブロックはドラッグで動かせます。</p>`);
+  }
+  topbar("back", "#/train", "操作トレーニング"); tabbar("practice");
+  render(`<div id="trroot"></div>`);
+  m.mount($("#trroot"), id);
 }
 
 /* ---------- 記録（カレンダー） ---------- */
@@ -850,6 +873,7 @@ async function route() {
       case "play": return await viewPlay(parts[1]);
       case "record": return viewRecord();
       case "settings": return viewSettings();
+      case "train": return await viewTrain(parts[1]);
       default: return await viewHome();
     }
   } catch (err) {

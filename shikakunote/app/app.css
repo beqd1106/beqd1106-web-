@@ -263,3 +263,56 @@ a.card.hero-next{display:flex;flex-direction:column;gap:4px;text-decoration:none
 .hero-next .go{display:flex;align-items:center;justify-content:space-between;margin-top:var(--s2);min-height:44px;padding:0 var(--s4);border-radius:var(--r-btn);background:var(--orange);color:#2a1a05;font-weight:800}
 .next-mark{color:var(--blue);font-size:12px;font-weight:800}
 @media (max-width:360px){.tab-ic{width:44px}.tab{font-size:10px}}
+
+/* 操作トレーニング */
+.tr-task{padding:var(--s3) var(--s4)}
+.tr-task-top{display:flex;justify-content:space-between;align-items:center}
+.tr-task-t{display:block;color:var(--navy);font-size:17px;margin-top:4px}
+.tr-steps summary{cursor:pointer;font-weight:700;color:var(--blue);font-size:14px;min-height:36px;display:flex;align-items:center}
+.tr-steps ol{margin:4px 0 0;padding-left:1.3em;font-size:14px}
+.tr-toolbar{position:sticky;top:56px;z-index:5;display:flex;align-items:center;gap:var(--s2);padding:var(--s2) 0;background:var(--bg)}
+.tr-help{flex:1;text-align:center;font-size:12px}
+.tr-linkmsg{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:700;color:var(--orange)}
+.tr-canvas{position:relative;overflow:auto;height:min(62dvh,560px);border:1px solid var(--line);border-radius:var(--r-card);
+  background-color:var(--card2);background-image:radial-gradient(var(--line) 1.2px,transparent 1.2px);background-size:18px 18px;touch-action:pan-x pan-y}
+.tr-canvas-in{position:relative}
+.tr-edges{position:absolute;inset:0;overflow:visible}
+.tr-edge{fill:none;stroke:var(--blue);stroke-width:2.2;cursor:pointer;pointer-events:stroke}
+.tr-edge:hover{stroke:var(--red)}
+.tr-node{position:absolute;background:var(--card);border:1.5px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:8px 10px;touch-action:none;user-select:none;cursor:grab}
+.tr-node.sel{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+.tr-node.linkable{border-style:dashed;border-color:var(--orange)}
+.tr-node-h{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--navy)}
+.tr-node-sub{font-size:12px;color:var(--sub);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr-ic{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;flex:none}
+.tr-in{position:absolute;left:-6px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;background:var(--card);border:2px solid var(--sub)}
+.tr-port{position:absolute;right:-13px;width:24px;height:24px;border-radius:50%;border:2px solid var(--blue);background:var(--card);padding:0;cursor:pointer}
+.tr-port::after{content:"";position:absolute;inset:5px;border-radius:50%;background:var(--blue)}
+.tr-port.on{background:var(--orange);border-color:var(--orange)}
+.tr-port-main{top:50%;margin-top:-12px}
+.tr-classes{margin-top:4px;display:grid;gap:4px}
+.tr-cls{position:relative;font-size:12px;background:var(--card2);border-radius:8px;padding:3px 8px;min-height:26px;display:flex;align-items:center}
+.tr-cls .tr-port{right:-23px;top:50%;margin-top:-12px}
+.tr-sheet,.tr-result{position:fixed;left:0;right:0;bottom:0;z-index:40;max-height:78dvh;overflow:auto;background:var(--card);
+  border-radius:20px 20px 0 0;box-shadow:0 -8px 30px rgba(27,42,74,.18);padding-bottom:env(safe-area-inset-bottom)}
+.tr-sheet[hidden],.tr-result[hidden]{display:none}
+.tr-sheet-in{max-width:680px;margin:0 auto;padding:var(--s4)}
+.tr-sheet-h{display:flex;align-items:center;gap:var(--s2);margin-bottom:var(--s3);position:sticky;top:0;background:var(--card);padding:4px 0}
+.tr-pal{display:flex;align-items:center;gap:var(--s3);width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);font:inherit;cursor:pointer;min-height:56px}
+.tr-field{display:grid;gap:6px;margin-bottom:var(--s4)}
+.tr-field>label{font-weight:800;font-size:14px;color:var(--navy)}
+.tr-input{width:100%;font:inherit;font-size:16px;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.tr-input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+.tr-row{display:grid;grid-template-columns:1fr 1fr auto;gap:6px;align-items:center}
+.tr-ro{font-size:14px;background:var(--card2);border-radius:10px;padding:8px 10px}
+.tr-cls-ed{display:grid;gap:6px;padding:10px;border:1px solid var(--line);border-radius:12px}
+.tr-vpick{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.tr-chip{font:inherit;font-size:13px;padding:4px 10px;border-radius:999px;border:1px solid var(--blue);background:var(--blue-soft);color:var(--blue);cursor:pointer;min-height:32px}
+.tr-trace{display:grid;gap:4px;font-size:13px;background:var(--card2);border-radius:12px;padding:10px 12px;margin-bottom:var(--s3)}
+.tr-trace div{display:flex;gap:8px}.tr-trace b{min-width:6.5em;color:var(--navy)}
+.tr-checks{list-style:none;margin:0 0 var(--s3);padding:0;display:grid;gap:8px}
+.tr-checks li{display:flex;gap:10px;align-items:flex-start;font-size:14px}
+.tr-mark{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;flex:none;font-weight:800;font-size:13px}
+.tr-checks .ok .tr-mark{background:var(--green-soft);color:var(--green)}
+.tr-checks .ng .tr-mark{background:var(--red-soft);color:var(--red)}
+.tr-checks .ok b{font-weight:600;color:var(--sub)}
