@@ -1,6 +1,6 @@
 // 資格note Web — ビルドなしの1ページアプリ（hashルーティング）
 // 進捗はこのブラウザの localStorage にだけ保存する（ログイン・同期なし）。
-const DATA_V = "20261114c";
+const DATA_V = "20261114d";
 const STORE_KEY = "shikakunote.web.v1";
 const INTERVALS = [1, 3, 7, 14, 30]; // iOS版と同じ間隔反復
 const SET_SIZE = 5;
