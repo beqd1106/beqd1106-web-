@@ -858,6 +858,9 @@ async function route() {
   const h = location.hash.slice(2) || "home";
   const [path, qs] = h.split("?");
   const parts = path.split("/");
+  // アプリ（iOS）から「#/train/<お題>?exam=<資格>」で開かれたときは、その資格に切り替える
+  const qExam = new URLSearchParams(qs || "").get("exam");
+  if (qExam && EXAMS.some((x) => x.key === qExam) && S.exam !== qExam) { S.exam = qExam; S.onboarded = true; save(); }
   if (!S.exam && parts[0] !== "pick") return go("#/pick");
   try {
     switch (parts[0]) {
