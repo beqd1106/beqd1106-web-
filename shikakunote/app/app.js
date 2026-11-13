@@ -171,7 +171,7 @@ function topbar(mode = "exam", backHref = "#/home", title = "") {
 }
 function tabbar(cur) {
   const t = (h, ic, label, k) => `<a class="tab" href="${h}" ${cur === k ? 'aria-current="page"' : ""}><span class="tab-ic">${ic}</span>${label}</a>`;
-  $("#tabbar").innerHTML = S.exam ? `<div class="tabbar-in">${t("#/home", I.home, "ホーム", "home")}${t("#/practice", I.pencil, "演習", "practice")}${t("#/listen", I.head, "聞き流し", "listen")}${t("#/record", I.cal, "記録", "record")}</div>` : "";
+  $("#tabbar").innerHTML = S.exam ? `<div class="tabbar-in">${t("#/home", I.home, "ホーム", "home")}${t("#/lessons", I.book, "レッスン", "lessons")}${t("#/practice", I.pencil, "演習", "practice")}${t("#/listen", I.head, "聞き流し", "listen")}${t("#/record", I.cal, "記録", "record")}</div>` : "";
   $("#tabbar").style.display = S.exam ? "" : "none";
 }
 function render(html) { const m = $("#main"); m.innerHTML = html; window.scrollTo(0, 0); }
@@ -200,16 +200,22 @@ function viewPick() {
   }));
 }
 
+/* ---------- レッスン中心の導線 ---------- */
+// まだ読んでいない最初のレッスン（分野を指定するとその分野の中で）
+function nextLessonOf(D, st, domain) { return D.lessons.find((l) => !st.lessons.includes(l.id) && (!domain || l.domain === domain)); }
+
 /* ---------- ホーム ---------- */
 async function viewHome() {
   topbar(); tabbar("home");
   const e = examInfo(); const D = await examData(S.exam); const st = exState();
   const due = dueIds().length;
-  const nextLesson = D.lessons.find((l) => !st.lessons.includes(l.id));
+  const nextLesson = nextLessonOf(D, st);
+  const readN = st.lessons.length, lessonN = D.lessons.length;
+  const inSess = !!(st.sess && st.sess.ids?.length && st.sess.i < st.sess.ids.length);
   let na;
   if (st.sess && st.sess.ids?.length && st.sess.i < st.sess.ids.length) na = { eyebrow: "つづきから", title: `${st.sess.title}の続き`, sub: `残り${st.sess.ids.length - st.sess.i}問・約${Math.max(1, Math.round((st.sess.ids.length - st.sess.i) * 0.6))}分`, href: "#/quiz/resume", go: "続きを解く" };
+  else if (nextLesson) na = { eyebrow: `次のレッスン（${readN + 1}/${lessonN}本目）`, title: nextLesson.title, sub: `約${nextLesson.estimatedMinutes || 5}分で読める解説 → 確認問題`, href: `#/lesson/${nextLesson.id}`, go: "レッスンを読む" };
   else if (due > 0) na = { eyebrow: "今日の復習", title: `復習${Math.min(due, SET_SIZE)}問`, sub: `前に間違えた問題・自信がなかった問題です（約${Math.min(due, SET_SIZE) * 0.6 | 0 || 1}分）`, href: "#/quiz/review", go: `復習${Math.min(due, SET_SIZE)}問を始める` };
-  else if (nextLesson && Object.keys(st.r).length >= 10) na = { eyebrow: "次のレッスン", title: nextLesson.title, sub: `約${nextLesson.estimatedMinutes || 5}分で読める解説＋確認問題`, href: `#/lesson/${nextLesson.id}`, go: "レッスンを読む" };
   else na = { eyebrow: "今日の1区切り", title: `ミックス${SET_SIZE}問`, sub: "まだ解いていない問題を中心に。約3分", href: "#/quiz/mix", go: `${SET_SIZE}問を始める` };
   const tc = todayCount(), goal = S.set.goal, p = Math.min(100, Math.round((tc / goal) * 100));
   const days = studyDays(); const rests = new Set(walkStreak().rests); const strip = [...Array(7)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() - 6 + i); return d; });
@@ -223,7 +229,8 @@ async function viewHome() {
       <p>${esc(na.sub)}</p>
       <a class="go press" href="${na.href}"><span>${esc(na.go)}</span>${I.chev}</a>
     </section>
-    ${todayCount(S.exam) === 0 ? `<a class="mini-link" href="#/quiz/one">${I.bolt}忙しい日は 1問だけ（約30秒）</a>` : ""}
+    ${nextLesson && !inSess ? `<div class="lesson-prog" aria-label="レッスンの進み具合"><div class="bar"><i style="width:${(readN / lessonN) * 100}%"></i></div><span class="cap num">レッスン ${readN}/${lessonN}本</span></div>` : ""}
+    ${nextLesson && due > 0 && !inSess ? `<a class="mini-link" href="#/quiz/review">${I.redo}復習が${due}問あります（先に${Math.min(due, SET_SIZE)}問だけ解く）</a>` : todayCount(S.exam) === 0 ? `<a class="mini-link" href="#/quiz/one">${I.bolt}忙しい日は 1問だけ（約30秒）</a>` : ""}
 
     <section class="card today" style="margin-top:16px" aria-label="今日の学習">
       <div class="ring" style="--p:${p}"><div><b class="num">${tc}</b><span class="cap">/${goal}問</span></div></div>
@@ -235,16 +242,18 @@ async function viewHome() {
 
     <h2 class="h-sec">ほかの学び方</h2>
     <div class="grid2 wide">
+      <a class="card press qa" href="#/lessons"><span class="ic ic-green">${I.book}</span><b>レッスン一覧</b><small>${st.lessons.length}/${D.lessons.length} 本読了</small></a>
       <a class="card press qa" href="#/quiz/review"><span class="ic ic-red">${I.redo}</span><b>復習 ${due ? `<span class="badge">${due}</span>` : ""}</b><small>${due ? "期限の来た問題" : "今日の復習はありません"}</small></a>
       <a class="card press qa" href="#/practice"><span class="ic ic-blue">${I.pencil}</span><b>分野をえらぶ</b><small>苦手な分野だけ5問</small></a>
-      <a class="card press qa" href="#/lessons"><span class="ic ic-green">${I.book}</span><b>レッスン</b><small>${st.lessons.length}/${D.lessons.length} 本読了</small></a>
       <a class="card press qa" href="#/listen"><span class="ic ic-orange">${I.head}</span><b>聞き流し</b><small>読み上げで1問ずつ</small></a>
     </div>
 
     <h2 class="h-sec">${esc(e.examShortName)}の進み具合</h2>
     <section class="card" style="padding-top:4px;padding-bottom:4px">
       ${e.domains.map((d) => { const qs = D.qs.filter((q) => q.domain === d.id); const seen = qs.filter((q) => st.r[q.id]).length; const ok = qs.filter((q) => st.r[q.id]?.[0] === 1).length;
-        return `<a class="dom press" href="#/quiz/d/${d.id}"><div><b style="font-size:15px">${esc(d.title)}</b><div class="bar"><i style="width:${qs.length ? (ok / qs.length) * 100 : 0}%"></i></div></div><span class="cap num">${seen}/${qs.length}</span>${I.chev.replace('class=""', "")}</a>`; }).join("")}
+        const dl = D.lessons.filter((l) => l.domain === d.id), dr = dl.filter((l) => st.lessons.includes(l.id)).length, nl = nextLessonOf(D, st, d.id);
+        const href = dl.length ? (nl ? `#/lesson/${nl.id}` : `#/lessons/${d.id}`) : `#/quiz/d/${d.id}`;
+        return `<a class="dom press" href="${href}"><div><b style="font-size:15px">${esc(d.title)}</b><div class="bar"><i style="width:${qs.length ? (ok / qs.length) * 100 : 0}%"></i></div></div><span class="cap num">${dl.length ? `レッスン${dr}/${dl.length}` : `${seen}/${qs.length}`}</span>${I.chev.replace('class=""', "")}</a>`; }).join("")}
     </section>
 
     <section class="card" style="margin-top:16px;display:flex;gap:12px;align-items:flex-start">
@@ -395,7 +404,8 @@ function drawDone() {
   const n = Q.ids.length, okN = Object.values(Q.results).filter(Boolean).length;
   const missed = Q.ids.filter((_, i) => Q.results[i] === false);
   const tc = todayCount(), goal = S.set.goal;
-  exState().sess = null; save();
+  const st = exState(); st.sess = null; save();
+  const nl = nextLessonOf(Q.D, st);
   render(`
     <section class="card done">
       <img class="done-img" src="done.png" srcset="done.png 1x, done@2x.png 2x" width="150" height="155" alt="">
@@ -406,23 +416,28 @@ function drawDone() {
     </section>
     <div class="stack" style="margin-top:16px">
       ${missed.length ? `<a class="btn btn-cta btn-block" href="#/quiz/ids/${missed.join(",")}">間違えた${missed.length}問をもう一度</a>` : ""}
-      <a class="btn ${missed.length ? "btn-secondary" : "btn-cta"} btn-block" href="#/quiz/${Q.mode === "d" ? "d/" + Q.D.byId.get(Q.ids[0]).domain : "mix"}?n=2" data-two>あと2問だけ（約1分）</a>
+      ${nl ? `<a class="btn ${missed.length ? "btn-secondary" : "btn-cta"} btn-block" href="#/lesson/${nl.id}">次のレッスンへ：${esc(nl.title)}</a>` : `<a class="btn ${missed.length ? "btn-secondary" : "btn-cta"} btn-block" href="#/quiz/${Q.mode === "d" ? "d/" + Q.D.byId.get(Q.ids[0]).domain : "mix"}?n=2" data-two>あと2問だけ（約1分）</a>`}
       <a class="btn btn-ghost btn-block" href="#/home">今日はここまで</a>
     </div>`);
   topbar("back", "#/home", "結果");
 }
 
 /* ---------- レッスン ---------- */
-async function viewLessons() {
-  topbar("back", "#/home", "レッスン"); tabbar("practice");
+async function viewLessons(focus) {
+  topbar("back", "#/home", "レッスン"); tabbar("lessons");
   const e = examInfo(); const D = await examData(S.exam); const st = exState();
   if (!D.lessons.length) return render(`<div class="empty">${I.inbox}<p>この資格のレッスンはまだありません。</p></div>`);
-  render(e.domains.map((d) => { const ls = D.lessons.filter((l) => l.domain === d.id); if (!ls.length) return "";
-    return `<h2 class="h-sec">${esc(d.title)}</h2><div class="stack">${ls.map((l) => `<a class="card press row" href="#/lesson/${l.id}"><div style="flex:1;min-width:0"><b style="color:var(--navy)">${esc(l.title)}</b><div class="cap">約${l.estimatedMinutes || 5}分 ${st.lessons.includes(l.id) ? '<span class="done-mark">・読了</span>' : ""}</div></div>${I.chev}</a>`).join("")}</div>`; }).join(""));
+  const nx = nextLessonOf(D, st);
+  const head = `<h1 class="h-title" style="margin:4px 0 4px">レッスン</h1><p class="cap" style="margin:0 0 12px">上から順に読むと、試験範囲をひと通り学べます。各レッスンのあとに確認問題があります。</p>
+    <div class="lesson-prog" style="margin:0 0 16px"><div class="bar"><i style="width:${D.lessons.length ? (st.lessons.length / D.lessons.length) * 100 : 0}%"></i></div><span class="cap num">${st.lessons.length}/${D.lessons.length}本 読了</span></div>
+    ${nx ? `<a class="card press hero-next" href="#/lesson/${nx.id}"><span class="eyebrow">次はここ</span><b>${esc(nx.title)}</b><span class="cap">${esc(domainInfo(nx.domain)?.shortTitle || "")}・約${nx.estimatedMinutes || 5}分</span><span class="go"><span>読む</span>${I.chev}</span></a>` : `<div class="note">全レッスンを読み終えました。あとは演習と復習で仕上げましょう。</div>`}`;
+  render(head + e.domains.map((d) => { const ls = D.lessons.filter((l) => l.domain === d.id); if (!ls.length) return "";
+    return `<h2 class="h-sec" id="dom-${d.id}">${esc(d.title)}</h2><div class="stack">${ls.map((l) => `<a class="card press row" href="#/lesson/${l.id}"><div style="flex:1;min-width:0"><b style="color:var(--navy)">${esc(l.title)}</b><div class="cap">約${l.estimatedMinutes || 5}分 ${st.lessons.includes(l.id) ? '<span class="done-mark">・読了</span>' : nx && l.id === nx.id ? '<span class="next-mark">・次はここ</span>' : ""}</div></div>${I.chev}</a>`).join("")}</div>`; }).join(""));
+  if (focus) document.getElementById(`dom-${focus}`)?.scrollIntoView({ block: "start" });
 }
 async function viewLesson(id) {
   const D = await examData(S.exam); const l = D.lessons.find((x) => x.id === id); const st = exState();
-  topbar("back", "#/lessons", "レッスン"); tabbar("practice");
+  topbar("back", "#/lessons", "レッスン"); tabbar("lessons");
   if (!l) return render(`<div class="empty"><p>レッスンが見つかりません。</p><a class="btn btn-secondary" href="#/lessons">一覧へ</a></div>`);
   const qn = (l.quizIds || []).filter((x) => D.byId.has(x)).length;
   render(`<article class="lesson">
@@ -434,9 +449,11 @@ async function viewLesson(id) {
     <div class="stack" style="margin-top:24px">
       ${qn ? `<a class="btn btn-cta btn-block" href="#/quiz/lesson/${l.id}" id="lq">読んだ内容を${Math.min(qn, SET_SIZE)}問で確かめる</a>` : ""}
       <button class="btn btn-secondary btn-block" id="lm">${st.lessons.includes(l.id) ? "読了を取り消す" : "読了にする"}</button>
+      ${(() => { const nl = D.lessons[D.lessons.indexOf(l) + 1]; return nl ? `<a class="btn btn-ghost btn-block" href="#/lesson/${nl.id}" id="ln">次のレッスン：${esc(nl.title)}</a>` : ""; })()}
     </div>`);
   const mark = () => { if (!st.lessons.includes(l.id)) { st.lessons.push(l.id); const d = (S.days[dayKey()] ||= {}); d._l = (d._l || 0) + 1; save(); } };
   $("#lq")?.addEventListener("click", mark);
+  $("#ln")?.addEventListener("click", mark);
   $("#lm").addEventListener("click", () => { if (st.lessons.includes(l.id)) { st.lessons = st.lessons.filter((x) => x !== l.id); save(); } else mark(); viewLesson(id); toast("保存しました"); });
 }
 
@@ -822,7 +839,7 @@ async function route() {
         if (qs?.includes("n=2")) return await viewQuiz("two", parts[1] === "d" ? parts[2] : "");
         return await viewQuiz(parts[1] || "mix", parts.slice(2).join("/"));
       }
-      case "lessons": return await viewLessons();
+      case "lessons": return await viewLessons(parts[1]);
       case "lesson": return await viewLesson(parts[1]);
       case "listen": await loadTerms(); return await viewListen();
       case "terms": return await viewTerms();

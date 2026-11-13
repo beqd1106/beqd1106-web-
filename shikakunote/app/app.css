@@ -51,7 +51,7 @@ a{color:var(--blue)}
 /* タブバー */
 .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:color-mix(in srgb,var(--card) 92%,transparent);
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
-.tabbar-in{max-width:680px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);height:var(--tab-h)}
+.tabbar-in{max-width:680px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);height:var(--tab-h)}
 .tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-decoration:none;color:var(--sub);font-size:11px;font-weight:700}
 .tab[aria-current="page"]{color:var(--navy)}
 .tab[aria-current="page"] .tab-ic{background:var(--blue-soft)}
@@ -72,6 +72,7 @@ h1,h2,h3{margin:0;color:var(--navy);line-height:1.35}
 @media (hover:hover){.press:hover{box-shadow:0 2px 4px rgba(27,42,74,.06),0 10px 26px rgba(27,42,74,.10)}}
 @media (prefers-reduced-motion:reduce){.press,.press:active{transition:none;transform:none}}
 a.card{display:block;text-decoration:none;color:inherit}
+a.card.row{display:flex}
 .chev{color:var(--sub);flex:none}
 .row{display:flex;align-items:center;gap:var(--s3)}
 .stack{display:flex;flex-direction:column;gap:var(--s3)}
@@ -251,3 +252,14 @@ input[type=range]{width:100%}
 .listen-sheet .setting{border-color:rgba(255,255,255,.08)}
 .listen-sheet select{font:inherit;background:#0f141b;color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:6px 10px}
 @media (min-width:720px){ body{font-size:16.5px} }
+
+/* レッスン中心の導線 */
+.lesson-prog{display:flex;align-items:center;gap:var(--s3);margin-top:var(--s3)}
+.lesson-prog .bar{flex:1;margin-top:0}
+.lesson-prog .bar i{background:var(--green)}
+a.card.hero-next{display:flex;flex-direction:column;gap:4px;text-decoration:none;border:1.5px solid var(--blue);margin-bottom:var(--s2)}
+.hero-next .eyebrow{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--blue)}
+.hero-next b{color:var(--navy);font-size:17px}
+.hero-next .go{display:flex;align-items:center;justify-content:space-between;margin-top:var(--s2);min-height:44px;padding:0 var(--s4);border-radius:var(--r-btn);background:var(--orange);color:#2a1a05;font-weight:800}
+.next-mark{color:var(--blue);font-size:12px;font-weight:800}
+@media (max-width:360px){.tab-ic{width:44px}.tab{font-size:10px}}
