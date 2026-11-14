@@ -567,3 +567,28 @@ span.dx-in{position:absolute;left:-6px;top:16px;width:8px;height:8px;border-radi
 .wa-main.narrow .wa-branch{min-width:0}
 .wa{position:relative}
 @media (max-width:760px){.wa-title>span:nth-child(2){font-size:11px}.wa-win{display:none}.wa-task{margin-left:6px}}
+
+/* 操作トレーニング：コーチ（次にやること・光らせる場所・はじめての方へ） */
+.dx-guide{width:min(360px,calc(100% - 24px))}
+.dx-step{display:grid;gap:4px}
+.dx-stepn{justify-self:start;font-size:11px;font-weight:700;color:var(--pri);background:var(--pri50);border-radius:999px;padding:1px 8px}
+.dx-step b{font-size:14px;color:var(--g900)}
+.dx-step p{margin:0;color:var(--g700)}
+.dx-learn{margin-top:4px !important;padding:8px 10px;border-radius:8px;background:#FFFAEB;color:#93370D !important;font-size:12px}
+.dx-learn span{display:block;font-weight:700;margin-bottom:2px}
+.dx-all{margin-top:10px;border-top:1px solid var(--g200);padding-top:6px}
+.dx-all summary{cursor:pointer;color:var(--g500);font-weight:600;font-size:12px}
+.dx-all p{margin:6px 0}
+.dx-hl{z-index:2;animation:dxPulse 1.4s ease-in-out infinite;outline:2px solid var(--pri) !important;outline-offset:2px;border-radius:8px}
+.dx-node.dx-hl{border-radius:16px}
+.dx-port.dx-hl,.dx-plus.dx-hl{border-radius:50%;opacity:1 !important}
+@keyframes dxPulse{0%,100%{box-shadow:0 0 0 0 rgba(21,94,239,.45)}50%{box-shadow:0 0 0 8px rgba(21,94,239,0)}}
+.dx-hlsample{padding:0 4px;border-radius:4px;outline:2px solid var(--pri);color:var(--pri);font-weight:700}
+.dx-intro{position:absolute;inset:0;z-index:9;display:grid;place-items:center;background:rgba(16,24,40,.35);padding:16px}
+.dx-intro[hidden]{display:none}
+.dx-introbox{width:min(460px,100%);max-height:100%;overflow:auto;background:#fff;border-radius:16px;padding:20px;box-shadow:0 20px 40px rgba(16,24,40,.25)}
+.dx-it{display:block;font-size:17px;margin-bottom:8px}
+.dx-introbox p{margin:0 0 10px;color:var(--g700)}
+.dx-anat{margin:0 0 12px;padding:10px 12px 10px 28px;border-radius:10px;background:var(--g50);display:grid;gap:4px;color:var(--g700)}
+@media (max-width:640px){.dx-gb{max-height:34vh}}
+.dx-hl:not(.dx-plus):not(.dx-port):not(.dx-node){position:relative}

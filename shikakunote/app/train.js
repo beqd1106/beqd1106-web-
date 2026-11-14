@@ -1,7 +1,7 @@
 // 操作トレーニング（Dify）— ワークフロー編集画面の配置・用語・操作の流れを再現した練習用エディタ。
 // 他社のロゴ・画像は使わない（配置・配色の雰囲気・用語を合わせる）。お題と採点は train_dify_tasks.js。
 // つなぐ：ノード右端の「＋」→ブロックを選ぶと、そのノードの後ろに追加されてつながる。丸どうしのクリックでもつなげる。
-import { TASKS } from "./train_dify_tasks.js?v=1";
+import { TASKS } from "./train_dify_tasks.js?v=3";
 
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const uid = () => Math.random().toString(36).slice(2, 8);
@@ -59,7 +59,7 @@ function defaultCfg(t) {
   return { llm: { model: MODELS[0], system: "", user: "", context: "", temp: 0.7 }, knowledge: { query: "", kb: "", topk: 3 }, classifier: { input: "", classes: [{ title: "クラス 1", desc: "" }, { title: "クラス 2", desc: "" }] },
     answer: { text: "" }, output: { vars: [] }, http: { method: "GET", url: "", auth: "なし", onError: "なし", fallback: "" } }[t] || {};
 }
-const persist = () => { try { localStorage.setItem(saveKey, JSON.stringify(G)); } catch {} };
+const persist = () => { try { localStorage.setItem(saveKey, JSON.stringify(G)); } catch {} queueMicrotask(updateCoach); };
 const icoTile = (t, s = 24) => `<span class="dx-ico" style="background:${TYPES[t].color};width:${s}px;height:${s}px">${svg(TYPES[t].icon, Math.round(s * 0.58))}</span>`;
 const chipVar = (v) => `<span class="dx-var"><i>{x}</i>${esc(v)}</span>`;
 
@@ -81,11 +81,11 @@ function nodeBody(n) {
 }
 function nodeHTML(n) {
   const t = TYPES[n.type], single = outsOf(n).length === 1;
-  return `<div class="dx-node ${sel === n.id ? "sel" : ""} ${linkFrom && linkFrom.id !== n.id ? "dx-target" : ""}" data-id="${n.id}" style="left:${n.x}px;top:${n.y}px;width:${NODE_W}px">
+  return `<div data-type="${n.type}" class="dx-node ${sel === n.id ? "sel" : ""} ${linkFrom && linkFrom.id !== n.id ? "dx-target" : ""}" data-id="${n.id}" style="left:${n.x}px;top:${n.y}px;width:${NODE_W}px">
     <div class="dx-nh">${icoTile(n.type)}<b>${esc(t.name)}</b></div>
     <div class="dx-nb">${nodeBody(n)}</div>
     ${n.type !== "start" ? `<span class="dx-in" aria-hidden="true"></span>` : ""}
-    ${single ? `<button class="dx-port dx-port-main ${linkFrom?.id === n.id ? "on" : ""}" data-port="out" aria-label="${esc(t.name)}の出力からつなぐ"></button><button class="dx-plus" data-plus="${n.id}" aria-label="次のブロックを追加">${svg("M12 5v14M5 12h14", 12)}</button>` : ""}
+    ${single ? `<button class="dx-port dx-port-main ${linkFrom?.id === n.id ? "on" : ""}" data-port="out" aria-label="${esc(t.name)}の出力からつなぐ"></button><button class="dx-plus" data-plus="${n.id}" data-plus-type="${n.type}" aria-label="次のブロックを追加">${svg("M12 5v14M5 12h14", 12)}</button>` : ""}
   </div>`;
 }
 function portXY(n, port) {
@@ -123,9 +123,11 @@ function render() {
     <div class="dx-body">
       <div class="dx-canvas" id="dx-cv"><div class="dx-inner"><svg class="dx-edges"></svg>${G.nodes.map(nodeHTML).join("")}</div></div>
       <div class="dx-guide ${task._fold ? "fold" : ""}">
-        <button class="dx-gh" id="dx-gfold"><b>お題 ${TASKS.indexOf(task) + 1}/${TASKS.length}</b><span class="dx-gprog">${okN}/${checks.length}</span>${svg(task._fold ? "M6 9l6 6 6-6" : "M18 15l-6-6-6 6", 14)}</button>
-        <div class="dx-gb"><p>${esc(task.goal)}</p><ol>${task.steps.map((s) => `<li>${esc(s)}</li>`).join("")}</ol></div>
+        <button class="dx-gh" id="dx-gfold"><b>お題 ${TASKS.indexOf(task) + 1}/${TASKS.length}：${esc(task.title)}</b><span class="dx-gprog" id="dx-gprog">${okN}/${checks.length}</span>${svg(task._fold ? "M6 9l6 6 6-6" : "M18 15l-6-6-6 6", 14)}</button>
+        <div class="dx-gb"><div id="dx-coach"></div>
+          <details class="dx-all"><summary>このお題でやること（全体）</summary><p>${esc(task.goal)}</p><ol>${task.steps.map((s) => `<li>${esc(s)}</li>`).join("")}</ol></details></div>
       </div>
+      <div class="dx-intro" id="dx-intro" hidden></div>
       ${linkFrom ? `<div class="dx-linkbar">つなぎ先のブロックをクリック<button class="dx-btn" id="dx-cancel">やめる</button></div>` : ""}
       <div class="dx-ctrl">
         <button id="dx-zo" aria-label="縮小">${svg("M5 12h14")}</button><span id="dx-zoom">100%</span><button id="dx-zi" aria-label="拡大">${svg("M12 5v14M5 12h14")}</button>
@@ -139,6 +141,36 @@ function render() {
   drawEdges(); bind();
   if (panel === "run") openRun(); else if (panel && sel) openSettings(sel);
   if (selector) openSelector(selector);
+  updateCoach();
+  if (!seenIntro()) showIntro();
+}
+
+/* ---------- コーチ（知識ゼロでも進められるよう、次の一手だけを示して光らせる） ---------- */
+const INTRO_KEY = "shikakunote.train.intro.dify";
+const seenIntro = () => { try { return localStorage.getItem(INTRO_KEY) === "1"; } catch { return true; } };
+function showIntro() {
+  const el = root.querySelector("#dx-intro"); el.hidden = false;
+  el.innerHTML = `<div class="dx-introbox"><b class="dx-it">はじめての方へ</b>
+    <p><b>Difyとは</b>：AIを使ったアプリを、プログラムを書かずに「ブロック（部品）」を線でつないで作れるサービスです。</p>
+    <p><b>この練習でやること</b>：本物と同じ並びの画面で、ブロックを置いて・つないで・設定して、「テスト実行」で動かします。うまくできたかは自動で採点されます。</p>
+    <ul class="dx-anat"><li><b>まん中</b>：キャンバス（ブロックを並べる場所）</li><li><b>ブロック右端の青い＋</b>：次のブロックを追加</li><li><b>ブロックをクリック</b>：右に設定が開く</li><li><b>右上「テスト実行」</b>：動かして採点</li></ul>
+    <p class="dx-sub">わからなくても大丈夫。左上の「次にやること」が1つずつ案内し、押す場所を<span class="dx-hlsample">青く光らせ</span>ます。</p>
+    <button class="dx-btn dx-primary dx-wide" id="dx-introok">はじめる</button></div>`;
+  el.querySelector("#dx-introok").onclick = () => { try { localStorage.setItem(INTRO_KEY, "1"); } catch {} el.hidden = true; updateCoach(); };
+}
+function visible(el) { return !!el && el.offsetParent !== null && el.getClientRects().length > 0; }
+function updateCoach() {
+  const box = root?.querySelector("#dx-coach"); if (!box) return;
+  const checks = task.checks(api(G)), okN = checks.filter((c) => c.ok).length, i = checks.findIndex((c) => !c.ok);
+  const prog = root.querySelector("#dx-gprog"); if (prog) prog.textContent = `${okN}/${checks.length}`;
+  let step, total = checks.length + 1, n, targets;
+  if (i >= 0) { const c = checks[i]; n = i + 1; step = { t: "目標：" + c.label, how: c.learn || c.hint, learn: "" }; targets = c.target || []; }
+  else if (!lastRun?.all) { n = total; step = { t: "テスト実行で動かしてみる", how: "右上の「テスト実行」を押し、開いたパネルの「実行を開始」を押します。", learn: "テスト実行では、入力の例を使ってワークフローを最初から最後まで動かし、うまくできたかを採点します。" }; targets = ["#dx-start", "#dx-run"]; }
+  else { n = total; step = { t: "クリア！", how: "テスト実行パネルの「次のお題へ」から続けられます。", learn: "" }; targets = ["#dx-next"]; }
+  box.innerHTML = `<div class="dx-step"><span class="dx-stepn">次にやること ${n}/${total}</span><b>${esc(step.t)}</b><p>${esc(step.how)}</p>${step.learn ? `<p class="dx-learn"><span>これは何？</span>${esc(step.learn)}</p>` : ""}</div>`;
+  root.querySelectorAll(".dx-hl").forEach((e) => e.classList.remove("dx-hl"));
+  const tgt = targets.map((q) => root.querySelector(q)).find(visible);
+  if (tgt) { tgt.classList.add("dx-hl"); if (tgt.closest(".dx-canvas")) tgt.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" }); }
 }
 
 /* ---------- 操作 ---------- */
@@ -202,6 +234,7 @@ function openSelector(st) {
   pop.querySelectorAll("[data-tab]").forEach((b) => (b.onclick = () => { st.tab = b.dataset.tab; openSelector(st); }));
   pop.querySelector("[data-x]").onclick = () => { selector = null; pop.hidden = true; };
   pop.querySelectorAll("[data-t]").forEach((b) => (b.onclick = () => addAfter(st.from, b.dataset.t)));
+  updateCoach();
 }
 
 /* ---------- 設定パネル ---------- */
@@ -275,6 +308,7 @@ function openSettings(id) {
     on("#dx-hm", "change", (el) => { c.method = el.value; }); bindPrompt("dx-hu", n, "url");
     on("#dx-ha", "change", (el) => { c.auth = el.value; }); on("#dx-he", "change", (el) => { c.onError = el.value; render(); }); on("#dx-hf", "input", (el) => { c.fallback = el.value; });
   }
+  updateCoach();
 }
 
 /* ---------- テスト実行パネル（入力 → 結果／採点／トレース） ---------- */
@@ -323,6 +357,7 @@ function openRun() {
   pn.querySelectorAll("[data-rv]").forEach((b) => (b.onclick = () => { lastRun.view = b.dataset.rv; openRun(); }));
   pn.querySelector("#dx-next")?.addEventListener("click", () => openTask(next));
   pn.querySelector("#dx-reset")?.addEventListener("click", () => { G = newGraph(); sel = null; linkFrom = null; lastRun = null; persist(); render(); });
+  updateCoach();
 }
 
 /* ---------- 小物 ---------- */
@@ -332,7 +367,7 @@ function confirmInline(m) { const now = Date.now(); if (now - pend < 2500) { pen
 function openTask(t) {
   task = t; saveKey = "shikakunote.train." + t.id; sel = null; linkFrom = null; panel = null; selector = null; lastRun = null; zoom = 1;
   try { G = JSON.parse(localStorage.getItem(saveKey)) || newGraph(); } catch { G = newGraph(); }
-  relayout(); if (root.clientWidth < 640) task._fold = true;
+  relayout();
   render(); window.scrollTo(0, 0);
 }
 export function taskList() {
