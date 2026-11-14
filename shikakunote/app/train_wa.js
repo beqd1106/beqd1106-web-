@@ -107,6 +107,29 @@ const TASKS = [
       ];
     },
   },
+  {
+    id: "w4", title: "入力した価格から税込を計算する",
+    goal: "インプットボックスで価格を入れてもらい、四則演算で税込（×1.1）を計算して、待機ボックスで知らせるシナリオを作ります。",
+    steps: [
+      "「変数一覧」で変数「価格」と「税込」を追加する",
+      "ユーザカテゴリの「インプットボックス」を置き、格納先を「価格」にする（メッセージ：価格を入力してください）",
+      "変数カテゴリの「四則演算」を置き、税込 ＝ 価格 × 1.1 にする",
+      "ユーザカテゴリの「待機ボックス」を置き、計算が終わったことを知らせる文を書く",
+      "「実行」で確かめる（1000と入力された想定で、税込が1100になれば成功）",
+    ],
+    env: () => ({ input: "1000" }),
+    checks: (S, run) => {
+      const inp = S.flow.findIndex((n) => n.type === "インプットボックス"), calc = S.flow.findIndex((n) => n.type === "四則演算"), box = S.flow.findIndex((n) => n.type === "待機ボックス");
+      const c = S.flow[calc]?.p;
+      return [
+        { ok: ["価格", "税込"].every((x) => S.vars.some((v) => v.name === x)), label: "変数一覧に「価格」と「税込」がある", hint: "変数一覧タブの「変数追加」で2つ登録します。" },
+        { ok: inp >= 0 && S.flow[inp].p.var === "価格", label: "インプットボックスの格納先が「価格」", hint: "インプットボックスのプロパティで、格納先に価格を選びます。" },
+        { ok: calc > inp && inp >= 0 && c?.var === "税込" && c.left === "価格" && c.op === "×" && c.right.trim() === "1.1", label: "その後の四則演算で 税込 ＝ 価格 × 1.1", hint: "入力を受けてから計算するので、インプットボックスの下に四則演算を置きます。" },
+        { ok: box > calc && calc >= 0 && S.flow[box].p.message.trim().length >= 4, label: "最後に待機ボックスで知らせている", hint: "四則演算の下に待機ボックスを置き、メッセージを書きます。" },
+        { ok: run.vars["税込"] === "1100", label: "1000と入力したとき 税込 が 1100", hint: "掛け算の記号（×）と、1.1 の値を確かめます。" },
+      ];
+    },
+  },
 ];
 
 /* ---------- 状態 ---------- */
@@ -130,7 +153,7 @@ function exec(env) {
       const p = n.p;
       if (n.type === "変数値設定") { if (!(p.var in vars)) { error = `変数「${p.var || "未選択"}」が変数一覧にありません`; return; } vars[p.var] = p.value; log.push(`変数値設定：${p.var} ← ${p.value}`); }
       else if (n.type === "四則演算") { if (!(p.var in vars)) { error = `変数「${p.var || "未選択"}」が変数一覧にありません`; return; }
-        const a = num(p.left), b = num(p.right); const r = p.op === "＋" ? a + b : p.op === "－" ? a - b : p.op === "×" ? a * b : b ? a / b : NaN; vars[p.var] = String(r); }
+        const a = num(p.left), b = num(p.right); const r = p.op === "＋" ? a + b : p.op === "－" ? a - b : p.op === "×" ? a * b : b ? a / b : NaN; vars[p.var] = String(Math.round(r * 1e6) / 1e6); log.push(`四則演算：${p.var} = ${p.left} ${p.op} ${p.right} → ${vars[p.var]}`); }
       else if (n.type === "分岐") { const ok = cmp(p.var, p.op, p.value); log.push(`分岐：${p.var} ${p.op} ${p.value} → ${ok ? "真" : "偽"}`); run(n.kids[ok ? 0 : 1]); }
       else if (n.type === "繰り返し") {
         let i = 0;
@@ -141,7 +164,7 @@ function exec(env) {
       else if (n.type === "例外処理") { const before = error; run(n.kids[0]); if (error && !before) { log.push(`例外処理：正常系でエラー（${error}）→ 異常系へ`); error = null; run(n.kids[1]); } }
       else if (n.type === "画像マッチング") { if (env.imageFound === false) { error = `画像「${p.image}」が見つかりません`; return; } log.push(`画像マッチング：${p.image} をクリック`); }
       else if (n.type === "待機ボックス") { shown.push(p.message); log.push(`待機ボックス：「${p.message}」を表示`); }
-      else if (n.type === "インプットボックス") { if (p.var in vars) vars[p.var] = "（入力値）"; log.push(`インプットボックス：「${p.message}」`); }
+      else if (n.type === "インプットボックス") { if (!(p.var in vars)) { error = `格納先の変数「${p.var || "未選択"}」が変数一覧にありません`; return; } vars[p.var] = env.input ?? "（入力値）"; log.push(`インプットボックス：「${p.message}」→ ${p.var} = ${vars[p.var]}`); }
       else if (n.type === "Excel操作（値の取得）") { const c = p.cell.toUpperCase(); if (!(p.var in vars)) { error = `格納先の変数「${p.var || "未選択"}」が変数一覧にありません`; return; } vars[p.var] = env.excel?.[c] ?? ""; log.push(`Excel操作（値の取得）：${p.file} ${c} → ${p.var} = ${vars[p.var]}`); }
       else if (n.type === "Excel操作（値の設定）") { const c = p.cell.toUpperCase(); if (env.excel) env.excel[c] = val(p.value); log.push(`Excel操作（値の設定）：${p.file} ${c} ← ${val(p.value)}`); }
     }
@@ -151,137 +174,149 @@ function exec(env) {
   return { vars, log, shown, error, excel: env.excel };
 }
 
-/* ---------- 描画 ---------- */
-const plusBtn = (path, i) => `<button class="wa-plus ${insertAt && insertAt.path === path && insertAt.i === i ? "on" : ""}" data-path="${path}" data-i="${i}" aria-label="ここにノードを追加"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>`;
+/* ---------- 描画（WinActorのメイン画面の配置：メニュー・ツールバー・パレット・フローチャート・プロパティ・機能編集エリア・ステータスバー） ---------- */
+const ico = (d, w = 14) => `<svg width="${w}" height="${w}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
+const NODE_ICON = { 分岐: "M12 3l9 9-9 9-9-9z", 繰り返し: "M17 2l4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 0 1-3 3H3", 例外処理: "M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z", グループ: "M3 7h18v13H3zM3 7l3-4h12l3 4",
+  画像マッチング: "M3 5h18v14H3zM8 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM21 15l-5-5L5 19", 待機ボックス: "M4 5h16v11H8l-4 4z", インプットボックス: "M4 6h16v12H4zM8 12h4", 変数値設定: "M4 7h16M4 12h10M4 17h6", 四則演算: "M12 5v14M5 12h14", "Excel操作（値の取得）": "M4 4h16v16H4zM4 10h16M10 4v16", "Excel操作（値の設定）": "M4 4h16v16H4zM4 10h16M10 4v16" };
+let ftab = "vars", narrowPane = "flow";
+const isNarrow = () => root.clientWidth < 760;
 function summary(n) {
   const p = n.p;
-  if (n.type === "分岐") return p.var ? `${p.var} ${p.op} ${p.value}` : "条件式 未設定";
-  if (n.type === "繰り返し") return p.mode === "回数" ? (p.count ? `回数：${p.count}回` : "回数 未設定") : (p.var ? `${p.var} ${p.op} ${p.value} の間` : "条件式 未設定");
-  if (n.type === "変数値設定") return p.var ? `${p.var} ← ${p.value}` : "変数 未選択";
-  if (n.type === "四則演算") return p.var ? `${p.var} ＝ ${p.left} ${p.op} ${p.right}` : "変数 未選択";
-  if (n.type === "画像マッチング") return `画像：${p.image}`;
-  if (n.type === "待機ボックス" || n.type === "インプットボックス") return p.message ? `「${p.message.slice(0, 16)}」` : "メッセージ 未入力";
-  if (n.type.startsWith("Excel")) return `${p.file} ${p.cell || "セル未設定"}${n.type.includes("取得") ? (p.var ? " → " + p.var : "") : (p.value ? " ← " + p.value : "")}`;
+  if (n.type === "分岐") return p.var ? `${p.var} ${p.op} ${p.value}` : "（条件式未設定）";
+  if (n.type === "繰り返し") return p.mode === "回数" ? (p.count ? `回数 ${p.count}` : "（回数未設定）") : (p.var ? `${p.var} ${p.op} ${p.value}` : "（条件式未設定）");
+  if (n.type === "変数値設定") return p.var ? `${p.var} ← ${p.value}` : "";
+  if (n.type === "四則演算") return p.var ? `${p.var} = ${p.left} ${p.op} ${p.right}` : "";
+  if (n.type === "画像マッチング") return p.image;
+  if (n.type === "待機ボックス" || n.type === "インプットボックス") return p.message ? p.message.slice(0, 18) : "";
+  if (n.type.startsWith("Excel")) return `${p.cell || "?"}${n.type.includes("取得") ? (p.var ? " → " + p.var : "") : (p.value ? " ← " + p.value : "")}`;
   if (n.type === "グループ") return p.name;
   return "";
 }
-function listHTML(list, path) {
-  return list.map((n, i) => plusBtn(path, i) + nodeHTML(n, `${path}`)).join("") + plusBtn(path, list.length);
-}
+const plusBtn = (path, i) => `<button class="wa-plus ${insertAt && insertAt.path === path && insertAt.i === i ? "on" : ""}" data-path="${path}" data-i="${i}" title="ここに挿入"></button>`;
+function listHTML(list, path) { return plusBtn(path, 0) + list.map((n, i) => nodeHTML(n) + plusBtn(path, i + 1)).join(""); }
 function nodeHTML(n) {
-  const c = COLOR[n.type];
-  const head = `<div class="wa-node ${sel === n.id ? "sel" : ""}" data-id="${n.id}"><span class="wa-bar" style="background:${c}"></span><div style="min-width:0"><b>${esc(n.type)}</b><div class="cap wa-sum">${esc(summary(n))}</div></div></div>`;
+  const head = `<div class="wa-node ${sel === n.id ? "sel" : ""} ${n.kids ? "wa-ctl" : ""}" data-id="${n.id}"><span class="wa-ni" style="color:${COLOR[n.type]}">${ico(NODE_ICON[n.type] || "M4 4h16v16H4z", 16)}</span><div class="wa-nt"><b>${esc(n.type)}</b><span>${esc(summary(n))}</span></div></div>`;
   if (!n.kids) return head;
-  return `<div class="wa-box">${head}<div class="wa-branches">${n.kids.map((k, bi) => `<div class="wa-branch"><span class="wa-bname">${esc(BRANCHES[n.type][bi])}</span>${listHTML(k, `${n.id}:${bi}`)}</div>`).join("")}</div></div>`;
+  return `<div class="wa-box">${head}<div class="wa-branches wa-b${n.kids.length}">${n.kids.map((k, bi) => `<div class="wa-branch"><span class="wa-bname">${esc(BRANCHES[n.type][bi])}</span>${listHTML(k, `${n.id}:${bi}`)}</div>`).join("")}</div></div>`;
+}
+function paletteHTML() {
+  const tabs = ["ノード", "ライブラリ", "サブシナリオ", "お気に入り", "検索"];
+  const groups = PAL.filter((g) => g.tab === palTab);
+  return `<div class="wa-ptabs">${tabs.map((t) => `<button data-pt="${t}" class="${palTab === t ? "on" : ""}" ${["サブシナリオ", "お気に入り", "検索"].includes(t) ? "disabled" : ""}>${t}</button>`).join("")}</div>
+    <div class="wa-tree">${groups.map((g) => `<div class="wa-cat">${ico("M6 9l6 6 6-6", 12)}<b>${esc(g.cat)}</b></div>${g.items.map((t) => `<button class="wa-item" data-t="${esc(t)}"><span style="color:${COLOR[t]}">${ico(NODE_ICON[t] || "M4 4h16v16H4z", 14)}</span>${esc(t)}</button>`).join("")}`).join("")}
+    ${palTab === "ライブラリ" ? `<p class="wa-hint">ライブラリは細かな操作をまとめた部品です。プロパティでファイル・セル・変数を設定します。</p>` : ""}</div>
+    <p class="wa-hint">${insertAt ? "選んだ「▼」の位置に挿入します" : "フローチャートの「▼」を選ぶと、その位置に挿入します（選ばなければ末尾）"}</p>`;
+}
+function varsHTML() {
+  return `<table class="wa-grid"><thead><tr><th>変数名</th><th>現在値</th><th>初期値</th><th></th></tr></thead><tbody>
+    ${S.vars.map((v, i) => `<tr><td><input data-vn="${i}" value="${esc(v.name)}" placeholder="変数名"></td><td class="wa-cur">${esc(lastRun?.vars?.[v.name] ?? "")}</td><td><input data-vi="${i}" value="${esc(v.init ?? "")}"></td><td><button class="wa-x" data-vd="${i}" title="削除">${ico("M6 6l12 12M18 6L6 18", 12)}</button></td></tr>`).join("") || `<tr><td colspan="4" class="wa-none">変数がありません。「変数追加」で登録します。</td></tr>`}
+    </tbody></table><div class="wa-gridbar"><button class="wa-tb" id="wa-vadd">${ico("M12 5v14M5 12h14", 12)}変数追加</button></div>`;
+}
+function logHTML() { return lastRun ? `<div class="wa-log">${lastRun.runs.map((r, i) => `${lastRun.multi ? `<div class="wa-logh">パターン${i + 1}（B2 = ${esc(task.multi[i])}）</div>` : ""}${r.log.map((l) => `<div class="${l.startsWith("エラー") ? "err" : ""}">${esc(l)}</div>`).join("")}`).join("")}</div>` : `<div class="wa-none">まだ実行していません。ツールバーの ▶ 実行 を押します。</div>`; }
+function resultHTML() {
+  if (!lastRun) return `<div class="wa-none">実行すると、ここに採点が出ます。</div>`;
+  const next = TASKS[TASKS.indexOf(task) + 1];
+  return `<div class="wa-res ${lastRun.all ? "ok" : "ng"}"><b>${lastRun.all ? "クリア" : `あと${lastRun.checks.length - lastRun.okN}か所`}</b><span>${lastRun.okN}/${lastRun.checks.length}</span></div>
+    <ul class="wa-checks">${lastRun.checks.map((c) => `<li class="${c.ok ? "ok" : "ng"}">${ico(c.ok ? "M5 12l5 5 9-10" : "M12 7v6M12 17h.01", 13)}<div><b>${esc(c.label)}</b>${c.ok ? "" : `<div>${esc(c.hint)}</div>`}</div></li>`).join("")}</ul>
+    ${lastRun.all && next ? `<button class="wa-tb wa-pri" id="wa-next">次のお題へ：${esc(next.title)}</button>` : lastRun.all ? `<p class="wa-hint">すべてのお題をクリアしました。</p>` : ""}`;
 }
 function render() {
-  root.innerHTML = `
-  <div class="tr-task card">
-    <div class="tr-task-top"><span class="tag">WinActor</span><span class="cap">お題 ${TASKS.indexOf(task) + 1}/${TASKS.length}</span></div>
-    <b class="tr-task-t">${esc(task.title)}</b>
-    <p class="cap" style="margin:2px 0 6px">${esc(task.goal)}</p>
-    <details class="tr-steps"><summary>手順を見る（${task.steps.length}ステップ）</summary><ol>${task.steps.map((s) => `<li>${esc(s)}</li>`).join("")}</ol></details>
-  </div>
-  <div class="tr-toolbar">
-    <div class="seg" role="tablist" aria-label="表示する画面"><button data-tab="flow" aria-pressed="${tab === "flow"}">フローチャート</button><button data-tab="vars" aria-pressed="${tab === "vars"}">変数一覧 ${S.vars.length ? `<span class="badge">${S.vars.length}</span>` : ""}</button></div>
-    <button class="btn btn-cta btn-sm" id="wa-run" style="margin-left:auto"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>実行</button>
-  </div>
-  ${tab === "flow" ? `<div class="wa-flow">
-      <div class="wa-term">開始</div>${listHTML(S.flow, "root")}<div class="wa-term">終了</div>
-      <p class="cap" style="text-align:center;margin:12px 0 0">「＋」をタップして、そこに置くノードを選びます。ノードをタップするとプロパティを開けます。</p></div>`
-    : `<div class="card wa-vars"><b style="color:var(--navy)">変数一覧</b><p class="cap" style="margin:2px 0 10px">シナリオで使う変数（値をしまう箱）を登録します。</p>
-      ${S.vars.map((v, i) => `<div class="tr-row"><input class="tr-input" data-vn="${i}" value="${esc(v.name)}" placeholder="変数名"><input class="tr-input" data-vi="${i}" value="${esc(v.init ?? "")}" placeholder="初期値（空でも可）"><button class="btn btn-ghost btn-sm" data-vd="${i}" aria-label="削除">×</button></div>`).join("") || `<p class="cap">まだ変数がありません。</p>`}
-      <button class="btn btn-secondary btn-sm" id="wa-vadd" style="margin-top:8px">＋変数</button></div>`}
-  <div class="tr-sheet" id="wa-sheet" hidden></div>
-  <div class="tr-result" id="wa-res" hidden></div>`;
+  const narrow = isNarrow();
+  const errN = lastRun ? lastRun.runs.filter((r) => r.error).length : 0;
+  root.innerHTML = `<div class="wa">
+    <div class="wa-title"><span class="wa-logo">${ico("M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z", 13)}</span><span>WinActor（練習用） - ${esc(task.title)}.ums7</span><span class="wa-win">${ico("M5 12h14", 12)}${ico("M5 5h14v14H5z", 11)}${ico("M6 6l12 12M18 6L6 18", 12)}</span></div>
+    <div class="wa-menu">${["ファイル", "編集", "表示", "ツール", "ヘルプ"].map((m) => `<span>${m}</span>`).join("")}</div>
+    <div class="wa-toolbar">
+      <span class="wa-tg">${["M14 3v5h5M5 3h9l5 5v13H5z", "M3 7h6l2 2h10v10H3z", "M5 3h11l3 3v15H5zM8 3v5h8V3M8 14h8v7H8z"].map((d) => `<button class="wa-ti" disabled>${ico(d, 16)}</button>`).join("")}</span><span class="wa-vsep"></span>
+      <span class="wa-tg"><button class="wa-ti" disabled title="記録">${ico("M12 12m-6 0a6 6 0 1 0 12 0a6 6 0 1 0-12 0", 16)}</button></span><span class="wa-vsep"></span>
+      <span class="wa-tg"><button class="wa-ti wa-run" id="wa-run" title="実行">${ico("M7 4l13 8-13 8z", 16)}<span>実行</span></button><button class="wa-ti" disabled title="一時停止">${ico("M8 5v14M16 5v14", 16)}</button><button class="wa-ti" disabled title="停止">${ico("M6 6h12v12H6z", 16)}</button></span>
+      <span class="wa-task">お題 ${TASKS.indexOf(task) + 1}/${TASKS.length}<button class="wa-tb" id="wa-howto">手順</button></span>
+    </div>
+    ${narrow ? `<div class="wa-ntabs">${[["palette", "パレット"], ["flow", "フローチャート"], ["prop", "プロパティ"], ["func", "変数一覧・結果"]].map(([k, l]) => `<button data-np="${k}" class="${narrowPane === k ? "on" : ""}">${l}</button>`).join("")}</div>` : ""}
+    <div class="wa-main ${narrow ? "narrow np-" + narrowPane : ""}">
+      <section class="wa-pane wa-pal"><div class="wa-ph">パレット</div>${paletteHTML()}</section>
+      <section class="wa-pane wa-flowpane"><div class="wa-ph">フローチャート<span>メイン</span></div><div class="wa-flow"><div class="wa-term">開始</div>${listHTML(S.flow, "root")}<div class="wa-term">終了</div></div></section>
+      <section class="wa-pane wa-prop"><div class="wa-ph">プロパティ</div><div id="wa-propbody">${sel ? "" : `<div class="wa-none">ノードを選ぶと、ここで設定できます。</div>`}</div></section>
+      <section class="wa-pane wa-func"><div class="wa-ftabs">${[["vars", "変数一覧"], ["data", "データ一覧"], ["log", "ログ出力"], ["res", "採点"]].map(([k, l]) => `<button data-ft="${k}" class="${ftab === k ? "on" : ""}" ${k === "data" ? "disabled" : ""}>${l}${k === "res" && lastRun ? `<i class="${lastRun.all ? "ok" : "ng"}"></i>` : ""}</button>`).join("")}</div>
+        <div class="wa-fbody">${ftab === "vars" ? varsHTML() : ftab === "log" ? logHTML() : resultHTML()}</div></section>
+    </div>
+    <div class="wa-status"><span>フル機能版（練習用）</span><span>${lastRun ? (errN ? "エラーで停止" : "実行完了") : "編集中"}</span><span>エラー数：${errN}</span><span>100%</span></div>
+    <div class="wa-dlg" id="wa-dlg" hidden></div>
+  </div>`;
   bind();
-  if (insertAt) openPalette(); else if (sel) openProps(sel);
+  if (sel) openProps(sel);
 }
-
-/* ---------- 操作 ---------- */
 function listByPath(path) { if (path === "root") return S.flow; const [id, bi] = path.split(":"); return locate(id).n.kids[+bi]; }
 function bind() {
-  root.querySelectorAll("[data-tab]").forEach((b) => (b.onclick = () => { tab = b.dataset.tab; sel = null; insertAt = null; render(); }));
-  root.querySelector("#wa-run").onclick = runTest;
-  root.querySelectorAll(".wa-plus").forEach((b) => (b.onclick = () => { insertAt = { path: b.dataset.path, i: +b.dataset.i }; sel = null; render(); }));
-  root.querySelectorAll(".wa-node").forEach((el) => (el.onclick = () => { sel = el.dataset.id; insertAt = null; render(); }));
-  root.querySelector("#wa-vadd")?.addEventListener("click", () => { S.vars.push({ name: "", init: "" }); persist(); render(); });
-  root.querySelectorAll("[data-vn]").forEach((el) => { el.oninput = () => { S.vars[+el.dataset.vn].name = el.value.trim(); persist(); }; });
-  root.querySelectorAll("[data-vi]").forEach((el) => { el.oninput = () => { S.vars[+el.dataset.vi].init = el.value; persist(); }; });
-  root.querySelectorAll("[data-vd]").forEach((el) => (el.onclick = () => { S.vars.splice(+el.dataset.vd, 1); persist(); render(); }));
-}
-function openPalette() {
-  const sh = root.querySelector("#wa-sheet"); sh.hidden = false;
-  const groups = PAL.filter((g) => g.tab === palTab);
-  sh.innerHTML = `<div class="tr-sheet-in"><div class="tr-sheet-h"><b style="flex:1">パレット</b><button class="btn btn-ghost btn-sm" data-x>閉じる</button></div>
-    <div class="seg" style="margin-bottom:12px"><button data-pt="ノード" aria-pressed="${palTab === "ノード"}">ノード</button><button data-pt="ライブラリ" aria-pressed="${palTab === "ライブラリ"}">ライブラリ</button></div>
-    ${groups.map((g) => `<div class="cap" style="font-weight:800;margin:8px 0 6px">${esc(g.cat)}</div><div class="wa-pal">${g.items.map((t) => `<button class="tr-pal press" data-t="${esc(t)}"><span class="wa-bar" style="background:${COLOR[t]}"></span><b>${esc(t)}</b></button>`).join("")}</div>`).join("")}</div>`;
-  sh.querySelector("[data-x]").onclick = () => { insertAt = null; render(); };
-  sh.querySelectorAll("[data-pt]").forEach((b) => (b.onclick = () => { palTab = b.dataset.pt; openPalette(); }));
-  sh.querySelectorAll("[data-t]").forEach((b) => (b.onclick = () => {
-    const n = newNode(b.dataset.t); listByPath(insertAt.path).splice(insertAt.i, 0, n);
-    insertAt = null; sel = n.id; persist(); render();
+  const q = (s) => root.querySelector(s), qa = (s) => root.querySelectorAll(s);
+  q("#wa-run").onclick = runTest;
+  q("#wa-howto").onclick = showHowto;
+  qa("[data-np]").forEach((b) => (b.onclick = () => { narrowPane = b.dataset.np; render(); }));
+  qa("[data-pt]").forEach((b) => (b.onclick = () => { palTab = b.dataset.pt; render(); }));
+  qa("[data-ft]").forEach((b) => (b.onclick = () => { ftab = b.dataset.ft; render(); }));
+  qa(".wa-plus").forEach((b) => (b.onclick = () => { insertAt = insertAt && insertAt.path === b.dataset.path && insertAt.i === +b.dataset.i ? null : { path: b.dataset.path, i: +b.dataset.i }; if (isNarrow() && insertAt) narrowPane = "palette"; render(); }));
+  qa(".wa-node").forEach((el) => (el.onclick = () => { sel = el.dataset.id; if (isNarrow()) narrowPane = "prop"; render(); }));
+  qa(".wa-item").forEach((b) => (b.onclick = () => {
+    const n = newNode(b.dataset.t), at = insertAt || { path: "root", i: S.flow.length };
+    listByPath(at.path).splice(at.i, 0, n); insertAt = null; sel = n.id; if (isNarrow()) narrowPane = "prop"; persist(); render();
   }));
+  q("#wa-vadd")?.addEventListener("click", () => { S.vars.push({ name: "", init: "" }); persist(); render(); root.querySelector(`[data-vn="${S.vars.length - 1}"]`)?.focus(); });
+  qa("[data-vn]").forEach((el) => (el.oninput = () => { S.vars[+el.dataset.vn].name = el.value.trim(); persist(); }));
+  qa("[data-vi]").forEach((el) => (el.oninput = () => { S.vars[+el.dataset.vi].init = el.value; persist(); }));
+  qa("[data-vd]").forEach((el) => (el.onclick = () => { S.vars.splice(+el.dataset.vd, 1); persist(); render(); }));
+  q("#wa-next")?.addEventListener("click", () => openTask(TASKS[TASKS.indexOf(task) + 1]));
 }
-function varOpts(cur, allowLiteral = false) {
-  return `<option value="">${allowLiteral ? "変数を選ぶ" : "変数を選ぶ"}</option>${S.vars.filter((v) => v.name).map((v) => `<option ${v.name === cur ? "selected" : ""}>${esc(v.name)}</option>`).join("")}`;
+function showHowto() {
+  const d = root.querySelector("#wa-dlg"); d.hidden = false;
+  d.innerHTML = `<div class="wa-dbox"><div class="wa-dt"><span>お題：${esc(task.title)}</span><button class="wa-x" data-x>${ico("M6 6l12 12M18 6L6 18", 12)}</button></div>
+    <div class="wa-db"><p>${esc(task.goal)}</p><ol>${task.steps.map((s) => `<li>${esc(s)}</li>`).join("")}</ol></div>
+    <div class="wa-df"><button class="wa-tb wa-pri" data-x>OK</button><button class="wa-tb" id="wa-reset">最初からやり直す</button></div></div>`;
+  d.querySelectorAll("[data-x]").forEach((b) => (b.onclick = () => (d.hidden = true)));
+  d.querySelector("#wa-reset").onclick = () => { S = { vars: [], flow: [] }; sel = null; insertAt = null; lastRun = null; persist(); render(); };
 }
+function varOpts(cur) { return `<option value="">（選択）</option>${S.vars.filter((v) => v.name).map((v) => `<option ${v.name === cur ? "selected" : ""}>${esc(v.name)}</option>`).join("")}`; }
 function openProps(id) {
   const loc = locate(id); if (!loc) return; const n = loc.n, p = n.p;
-  const sh = root.querySelector("#wa-sheet"); sh.hidden = false;
-  const noVars = !S.vars.some((v) => v.name) ? `<p class="note">変数一覧にまだ変数がありません。上の「変数一覧」タブで先に登録します。</p>` : "";
-  let body = "";
-  const field = (label, html, cap = "") => `<div class="tr-field"><label>${label}</label>${html}${cap ? `<span class="cap">${cap}</span>` : ""}</div>`;
-  if (n.type === "分岐") body = noVars + field("条件式（真になる条件）", `<div class="tr-row"><select class="tr-input" data-k="var">${varOpts(p.var)}</select><select class="tr-input" data-k="op">${OPS.map((o) => `<option ${o === p.op ? "selected" : ""}>${o}</option>`).join("")}</select><input class="tr-input" data-k="value" value="${esc(p.value)}" placeholder="値"></div>`, "偽の側は条件を書きません（真にならないときに進みます）");
-  else if (n.type === "繰り返し") body = noVars + field("判定", `<select class="tr-input" data-k="mode"><option ${p.mode === "回数" ? "selected" : ""}>回数</option><option ${p.mode === "条件式" ? "selected" : ""}>条件式</option></select>`)
-    + (p.mode === "回数" ? field("回数", `<input class="tr-input" data-k="count" inputmode="numeric" value="${esc(p.count)}" placeholder="例：10">`, "処理の前に判定する繰り返しです（後判定繰返は最低1回実行）")
-      : field("条件式（この間くり返す）", `<div class="tr-row"><select class="tr-input" data-k="var">${varOpts(p.var)}</select><select class="tr-input" data-k="op">${OPS.map((o) => `<option ${o === p.op ? "selected" : ""}>${o}</option>`).join("")}</select><input class="tr-input" data-k="value" value="${esc(p.value)}" placeholder="値"></div>`));
-  else if (n.type === "変数値設定") body = noVars + field("変数", `<select class="tr-input" data-k="var">${varOpts(p.var)}</select>`) + field("値", `<input class="tr-input" data-k="value" value="${esc(p.value)}">`);
-  else if (n.type === "四則演算") body = noVars + field("結果を入れる変数", `<select class="tr-input" data-k="var">${varOpts(p.var)}</select>`)
-    + field("計算式", `<div class="tr-row" style="grid-template-columns:1fr auto 1fr"><select class="tr-input" data-k="left"><option value="">左の値</option>${S.vars.filter((v) => v.name).map((v) => `<option ${v.name === p.left ? "selected" : ""}>${esc(v.name)}</option>`).join("")}</select><select class="tr-input" data-k="op">${["＋", "－", "×", "÷"].map((o) => `<option ${o === p.op ? "selected" : ""}>${o}</option>`).join("")}</select><input class="tr-input" data-k="right" value="${esc(p.right)}" placeholder="右の値"></div>`);
-  else if (n.type === "画像マッチング") body = field("マッチング画像", `<select class="tr-input" data-k="image">${["登録ボタン", "検索ボタン", "ログイン画面"].map((o) => `<option ${o === p.image ? "selected" : ""}>${o}</option>`).join("")}</select>`, "画面の中から登録した画像を探してクリックします");
-  else if (n.type === "待機ボックス") body = field("メッセージ", `<textarea class="tr-input" data-k="message" rows="2">${esc(p.message)}</textarea>`, "メッセージを出して、OKが押されるまで待ちます");
-  else if (n.type === "インプットボックス") body = noVars + field("メッセージ", `<input class="tr-input" data-k="message" value="${esc(p.message)}">`) + field("入力値を入れる変数", `<select class="tr-input" data-k="var">${varOpts(p.var)}</select>`);
-  else if (n.type === "グループ") body = field("グループ名", `<input class="tr-input" data-k="name" value="${esc(p.name)}">`);
-  else if (n.type.startsWith("Excel")) body = (n.type.includes("取得") ? noVars : "") + field("ファイル名", `<input class="tr-input" value="${esc(p.file)}" disabled>`) + field("シート名", `<input class="tr-input" value="${esc(p.sheet)}" disabled>`)
-    + field("セル位置", `<input class="tr-input" data-k="cell" value="${esc(p.cell)}" placeholder="例：B2" autocapitalize="characters">`)
-    + (n.type.includes("取得") ? field("格納先の変数", `<select class="tr-input" data-k="var">${varOpts(p.var)}</select>`) : field("設定する値", `<input class="tr-input" data-k="value" value="${esc(p.value)}">`));
-  sh.innerHTML = `<div class="tr-sheet-in"><div class="tr-sheet-h"><span class="wa-bar" style="background:${COLOR[n.type]}"></span><b style="flex:1">プロパティ：${esc(n.type)}</b>
-    <button class="btn btn-ghost btn-sm" id="wa-del">削除</button><button class="btn btn-secondary btn-sm" data-x>閉じる</button></div>${body}</div>`;
-  sh.querySelector("[data-x]").onclick = () => { sel = null; render(); };
-  sh.querySelector("#wa-del").onclick = () => { loc.list.splice(loc.i, 1); sel = null; persist(); render(); };
-  sh.querySelectorAll("[data-k]").forEach((el) => {
-    const upd = () => { p[el.dataset.k] = el.value; persist(); const s = root.querySelector(`.wa-node[data-id="${n.id}"] .wa-sum`); if (s) s.textContent = summary(n); };
-    el.addEventListener("input", upd);
-    el.addEventListener("change", () => { upd(); if (el.dataset.k === "mode") render(); });
+  const box = root.querySelector("#wa-propbody");
+  const row = (label, html) => `<tr><th>${label}</th><td>${html}</td></tr>`;
+  const opSel = (k) => `<select data-k="${k}">${OPS.map((o) => `<option ${o === p[k] ? "selected" : ""}>${o}</option>`).join("")}</select>`;
+  let rows = row("名前", `<input value="${esc(n.type)}" disabled>`);
+  if (n.type === "分岐") rows += row("条件式（真）", `<div class="wa-cond"><select data-k="var">${varOpts(p.var)}</select>${opSel("op")}<input data-k="value" value="${esc(p.value)}" placeholder="値"></div>`);
+  else if (n.type === "繰り返し") rows += row("判定条件", `<select data-k="mode"><option ${p.mode === "回数" ? "selected" : ""}>回数</option><option ${p.mode === "条件式" ? "selected" : ""}>条件式</option></select>`) + (p.mode === "回数" ? row("回数", `<input data-k="count" inputmode="numeric" value="${esc(p.count)}">`) : row("条件式", `<div class="wa-cond"><select data-k="var">${varOpts(p.var)}</select>${opSel("op")}<input data-k="value" value="${esc(p.value)}"></div>`));
+  else if (n.type === "変数値設定") rows += row("変数名", `<select data-k="var">${varOpts(p.var)}</select>`) + row("値", `<input data-k="value" value="${esc(p.value)}">`);
+  else if (n.type === "四則演算") rows += row("代入先", `<select data-k="var">${varOpts(p.var)}</select>`) + row("計算式", `<div class="wa-cond"><select data-k="left">${varOpts(p.left)}</select><select data-k="op">${["＋", "－", "×", "÷"].map((o) => `<option ${o === p.op ? "selected" : ""}>${o}</option>`).join("")}</select><input data-k="right" value="${esc(p.right)}"></div>`);
+  else if (n.type === "画像マッチング") rows += row("マッチング画像", `<select data-k="image">${["登録ボタン", "検索ボタン", "ログイン画面"].map((o) => `<option ${o === p.image ? "selected" : ""}>${o}</option>`).join("")}</select>`);
+  else if (n.type === "待機ボックス") rows += row("メッセージ", `<textarea data-k="message" rows="3">${esc(p.message)}</textarea>`);
+  else if (n.type === "インプットボックス") rows += row("メッセージ", `<input data-k="message" value="${esc(p.message)}">`) + row("格納先", `<select data-k="var">${varOpts(p.var)}</select>`);
+  else if (n.type === "グループ") rows += row("グループ名", `<input data-k="name" value="${esc(p.name)}">`);
+  else if (n.type.startsWith("Excel")) rows += row("ファイル名", `<input value="${esc(p.file)}" disabled>`) + row("シート名", `<input value="${esc(p.sheet)}" disabled>`) + row("セル位置", `<input data-k="cell" value="${esc(p.cell)}" placeholder="例：B2">`) + (n.type.includes("取得") ? row("格納先", `<select data-k="var">${varOpts(p.var)}</select>`) : row("設定値", `<input data-k="value" value="${esc(p.value)}">`));
+  const noVars = !S.vars.some((v) => v.name) && /var|left/.test(rows) ? `<p class="wa-warn">変数一覧に変数がありません。下の「変数一覧」で先に登録します。</p>` : "";
+  box.innerHTML = `${noVars}<table class="wa-props">${rows}</table><div class="wa-gridbar"><button class="wa-tb" id="wa-del">${ico("M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13", 12)}ノードを削除</button>${isNarrow() ? `<button class="wa-tb" id="wa-back">フローチャートへ</button>` : ""}</div>`;
+  box.querySelector("#wa-del").onclick = () => { loc.list.splice(loc.i, 1); sel = null; persist(); render(); };
+  box.querySelector("#wa-back")?.addEventListener("click", () => { narrowPane = "flow"; render(); });
+  box.querySelectorAll("[data-k]").forEach((el) => {
+    const upd = () => { p[el.dataset.k] = el.value; persist(); const s = root.querySelector(`.wa-node[data-id="${n.id}"] .wa-nt span`); if (s) s.textContent = summary(n); };
+    el.addEventListener("input", upd); el.addEventListener("change", () => { upd(); if (el.dataset.k === "mode") render(); });
   });
 }
 
 /* ---------- 実行と採点 ---------- */
+let lastRun = null;
 function runTest() {
   const runs = (task.multi || [null]).map((m) => exec(task.env(m)));
-  const run = runs[0];
-  const checks = task.checks(S, run, runs);
-  const okN = checks.filter((c) => c.ok).length, all = okN === checks.length;
-  let done = {}; try { done = JSON.parse(localStorage.getItem("shikakunote.train.done") || "{}"); } catch {}
-  if (all) { done[task.id] = Date.now(); try { localStorage.setItem("shikakunote.train.done", JSON.stringify(done)); } catch {} }
-  const next = TASKS[TASKS.indexOf(task) + 1];
-  const res = root.querySelector("#wa-res"); res.hidden = false;
-  const icon = (ok) => ok ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 6v8M12 18h.01"/></svg>';
-  res.innerHTML = `<div class="tr-sheet-in">
-    <div class="tr-sheet-h"><b style="flex:1">${all ? "クリア！" : `あと${checks.length - okN}か所`}</b><button class="btn btn-ghost btn-sm" data-x>閉じる</button></div>
-    ${runs.map((r, i) => `<div class="tr-trace">${task.multi ? `<div><b>パターン${i + 1}</b><span>B2 = ${esc(task.multi[i])}</span></div>` : ""}${r.log.slice(0, 14).map((l) => `<div><span>${esc(l)}</span></div>`).join("") || "<div><span>何も実行されませんでした</span></div>"}
-      ${Object.keys(r.vars).length ? `<div><b>変数</b><span>${esc(Object.entries(r.vars).map(([k, v]) => `${k} = ${v}`).join("、"))}</span></div>` : ""}</div>`).join("")}
-    <ul class="tr-checks">${checks.map((c) => `<li class="${c.ok ? "ok" : "ng"}"><span class="tr-mark">${icon(c.ok)}</span><div><b>${esc(c.label)}</b>${c.ok ? "" : `<div class="cap">${esc(c.hint)}</div>`}</div></li>`).join("")}</ul>
-    ${all ? (next ? `<button class="btn btn-cta btn-block" id="wa-next">次のお題へ：${esc(next.title)}</button>` : `<p class="note">3つのお題をすべてクリアしました。実際のWinActorでも同じ考え方で組み立てられます。</p>`) : ""}
-    <button class="btn btn-ghost btn-block" id="wa-reset">このお題を最初からやり直す</button></div>`;
-  res.querySelector("[data-x]").onclick = () => (res.hidden = true);
-  res.querySelector("#wa-next")?.addEventListener("click", () => openTask(next));
-  res.querySelector("#wa-reset").onclick = () => { S = { vars: [], flow: [] }; sel = null; insertAt = null; persist(); render(); };
+  const checks = task.checks(S, runs[0], runs), okN = checks.filter((c) => c.ok).length, all = okN === checks.length;
+  lastRun = { runs, checks, okN, all, multi: !!task.multi, vars: runs[0].vars };
+  if (all) { let d = {}; try { d = JSON.parse(localStorage.getItem("shikakunote.train.done") || "{}"); } catch {} d[task.id] = Date.now(); try { localStorage.setItem("shikakunote.train.done", JSON.stringify(d)); } catch {} }
+  ftab = "res"; if (isNarrow()) narrowPane = "func"; render();
+  if (runs[0].shown.length) {
+    const d = root.querySelector("#wa-dlg"); d.hidden = false;
+    d.innerHTML = `<div class="wa-dbox wa-msg"><div class="wa-dt"><span>待機ボックス</span></div><div class="wa-db">${esc(runs[0].shown[0])}</div><div class="wa-df"><button class="wa-tb wa-pri" data-x>OK</button></div></div>`;
+    d.querySelector("[data-x]").onclick = () => (d.hidden = true);
+  }
 }
 
 function openTask(t) {
-  task = t; saveKey = "shikakunote.train." + t.id; sel = null; insertAt = null; tab = "flow";
+  task = t; saveKey = "shikakunote.train." + t.id; sel = null; insertAt = null; lastRun = null; ftab = "vars"; narrowPane = "flow";
   try { S = JSON.parse(localStorage.getItem(saveKey)) || { vars: [], flow: [] }; } catch { S = { vars: [], flow: [] }; }
   render(); window.scrollTo(0, 0);
 }
@@ -289,4 +324,4 @@ export function taskList() {
   let done = {}; try { done = JSON.parse(localStorage.getItem("shikakunote.train.done") || "{}"); } catch {}
   return TASKS.map((t) => ({ id: t.id, title: t.title, app: "WinActor", goal: t.goal, done: !!done[t.id] }));
 }
-export function mount(el, taskId) { root = el; root.classList.add("tr"); openTask(TASKS.find((t) => t.id === taskId) || TASKS[0]); }
+export function mount(el, taskId) { root = el; root.classList.add("tr-full"); openTask(TASKS.find((t) => t.id === taskId) || TASKS[0]); }

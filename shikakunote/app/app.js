@@ -467,7 +467,7 @@ async function viewLesson(id) {
 
 /* ---------- 操作トレーニング（train.js を必要なときだけ読む） ---------- */
 const TRAIN_EXAMS = ["dify", "wia"];
-const TRAIN_MOD = { dify: ["./train.js?v=5", "Dify"], wia: ["./train_wa.js?v=1", "WinActor"] };
+const TRAIN_MOD = { dify: ["./train.js?v=5", "Dify"], wia: ["./train_wa.js?v=3", "WinActor"] };
 async function viewTrain(id) {
   const e = examInfo();
   if (!TRAIN_EXAMS.includes(e.key)) return go("#/home");
