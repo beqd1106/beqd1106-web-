@@ -592,3 +592,14 @@ span.dx-in{position:absolute;left:-6px;top:16px;width:8px;height:8px;border-radi
 .dx-anat{margin:0 0 12px;padding:10px 12px 10px 28px;border-radius:10px;background:var(--g50);display:grid;gap:4px;color:var(--g700)}
 @media (max-width:640px){.dx-gb{max-height:34vh}}
 .dx-hl:not(.dx-plus):not(.dx-port):not(.dx-node){position:relative}
+
+/* WinActor：コーチの帯と光らせる場所 */
+.wa-coach{flex:none;display:flex;gap:10px;align-items:flex-start;padding:7px 10px;background:#EFF6FC;border-bottom:1px solid #B4D6FA;color:var(--wt)}
+.wa-cn{flex:none;font-size:11px;font-weight:700;color:#fff;background:var(--wa);border-radius:2px;padding:1px 6px;margin-top:1px;white-space:nowrap}
+.wa-coach b{display:block;font-size:12.5px}
+.wa-coach p{margin:2px 0 0;color:#323130}
+.wa-hl{outline:2px solid #0F6CBD !important;outline-offset:1px;animation:waPulse 1.3s ease-in-out infinite}
+@keyframes waPulse{0%,100%{box-shadow:0 0 0 0 rgba(15,108,189,.5)}50%{box-shadow:0 0 0 6px rgba(15,108,189,0)}}
+.wa-plus.wa-hl{background:var(--wsel);border-radius:3px}
+.wa-db ul{margin:0 0 8px;padding-left:1.3em;display:grid;gap:2px}
+@media (max-width:760px){.wa-coach{max-height:30vh;overflow:auto}}

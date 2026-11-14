@@ -50,12 +50,12 @@ const TASKS = [
       const set0 = S.flow.findIndex((n) => n.type === "変数値設定" && n.p.var === "合計" && n.p.value.trim() === "0");
       const calc = loop && find(loop.kids[0], (n) => n.type === "四則演算");
       return [
-        { ok: S.vars.some((v) => v.name === "合計"), label: "変数一覧に「合計」がある", hint: "画面上の「変数一覧」タブで「＋変数」から「合計」を追加します。" },
-        { ok: set0 >= 0, label: "変数値設定で 合計 に 0 を入れている", hint: "変数カテゴリの「変数値設定」を置き、プロパティで変数「合計」、値「0」にします。" },
-        { ok: !!loop && set0 >= 0 && S.flow.indexOf(loop) > set0, label: "その下に繰り返しがある", hint: "0を入れてから繰り返すので、変数値設定の下に繰り返しを置きます。" },
-        { ok: loop?.p.mode === "回数" && String(loop.p.count).trim() === "10", label: "繰り返しの判定が「回数」10回", hint: "繰り返しのプロパティで判定を「回数」、回数を10にします。" },
-        { ok: !!calc && calc.p.var === "合計" && calc.p.left === "合計" && calc.p.op === "＋" && calc.p.right.trim() === "1", label: "繰り返しの中で 合計 ＝ 合計 ＋ 1", hint: "繰り返しの中の「＋」から四則演算を置き、結果の変数＝合計、合計 ＋ 1 にします。" },
-        { ok: run.vars["合計"] === "10", label: "実行後の合計が 10", hint: "上の項目がそろうと、実行後の合計が10になります。" },
+        { ok: S.vars.some((v) => v.name === "合計"), label: "変数一覧に「合計」がある", hint: "画面上の「変数一覧」タブで「＋変数」から「合計」を追加します。" , target: ["#wa-vadd", "[data-ft=\"vars\"]"], learn: "変数は、値を一時的にしまっておく「箱」です。画面下の「変数一覧」タブを開き、「変数追加」を押して変数名に 合計 と入れます。" },
+        { ok: set0 >= 0, label: "変数値設定で 合計 に 0 を入れている", hint: "変数カテゴリの「変数値設定」を置き、プロパティで変数「合計」、値「0」にします。" , target: ["PROP:変数値設定:value", ".wa-node[data-type=\"変数値設定\"]", ".wa-item[data-t=\"変数値設定\"]", "[data-pt=\"ノード\"]"], learn: "「変数値設定」は、箱（変数）に値を入れるノードです。左のパレットの「変数」の中から選ぶと、フローチャートに入ります。右のプロパティで変数名「合計」、値「0」にします。" },
+        { ok: !!loop && set0 >= 0 && S.flow.indexOf(loop) > set0, label: "その下に繰り返しがある", hint: "0を入れてから繰り返すので、変数値設定の下に繰り返しを置きます。" , target: [".wa-node[data-type=\"繰り返し\"]", ".wa-item[data-t=\"繰り返し\"]", "[data-pt=\"ノード\"]"], learn: "「繰り返し」は、中に入れた処理を何回もくり返すノードです。パレットの「フロー」から選ぶと、いちばん下に追加されます。" },
+        { ok: loop?.p.mode === "回数" && String(loop.p.count).trim() === "10", label: "繰り返しの判定が「回数」10回", hint: "繰り返しのプロパティで判定を「回数」、回数を10にします。" , target: ["PROP:繰り返し:count", ".wa-node[data-type=\"繰り返し\"]"], learn: "繰り返しをクリックして、プロパティの判定条件を「回数」、回数を 10 にします。" },
+        { ok: !!calc && calc.p.var === "合計" && calc.p.left === "合計" && calc.p.op === "＋" && calc.p.right.trim() === "1", label: "繰り返しの中で 合計 ＝ 合計 ＋ 1", hint: "繰り返しの中の「＋」から四則演算を置き、結果の変数＝合計、合計 ＋ 1 にします。" , target: ["PROP:四則演算:right", ".wa-node[data-type=\"四則演算\"]", ".wa-box:has(> .wa-node[data-type=\"繰り返し\"]) > .wa-branches > .wa-branch:nth-child(1) > .wa-plus:not(.on)", ".wa-item[data-t=\"四則演算\"]"], learn: "繰り返しの中に計算を入れます。繰り返しの枠の中の「▼」をクリックしてから、パレットの「四則演算」を選びます。プロパティで 代入先＝合計、合計 ＋ 1 にします。" },
+        { ok: run.vars["合計"] === "10", label: "実行後の合計が 10", hint: "上の項目がそろうと、実行後の合計が10になります。" , target: ["#wa-run"], learn: "ツールバーの「実行」を押すと、シナリオが上から順に動きます。合計が10になれば成功です。" },
       ];
     },
   },
@@ -76,12 +76,12 @@ const TASKS = [
       const br = S.flow.find((n) => n.type === "分岐");
       const setN = br && find(br.kids[0], (n) => n.type === "Excel操作（値の設定）");
       return [
-        { ok: S.vars.some((v) => v.name === "金額"), label: "変数一覧に「金額」がある", hint: "変数一覧タブで「金額」を追加します。" },
-        { ok: get?.p.cell.toUpperCase() === "B2" && get.p.var === "金額", label: "Excel操作（値の取得）で B2 → 金額", hint: "ライブラリタブのExcel操作（値の取得）で、セル B2、格納先の変数に金額を選びます。" },
-        { ok: !!br && S.flow.indexOf(br) > S.flow.indexOf(get), label: "取得の後に分岐がある", hint: "値を取ってから判定するので、取得の下に分岐を置きます。" },
-        { ok: br?.p.var === "金額" && br.p.op === "＞" && br.p.value.trim() === "0", label: "分岐の条件式が 金額 ＞ 0", hint: "分岐のプロパティで、変数 金額、比較 ＞、値 0 にします。分岐は「真」になる条件だけを書きます。" },
-        { ok: setN?.p.cell.toUpperCase() === "C2" && setN.p.value.trim() === "済", label: "真の側で C2 に「済」を書いている", hint: "分岐の「真」の中の「＋」から、Excel操作（値の設定）を置き、セル C2、値「済」にします。" },
-        { ok: runs[0]?.excel.C2 === "済" && runs[1]?.excel.C2 === "", label: "金額1200なら「済」、0なら空欄のまま", hint: "条件が逆だったり、偽の側に置いていると結果が合いません。" },
+        { ok: S.vars.some((v) => v.name === "金額"), label: "変数一覧に「金額」がある", hint: "変数一覧タブで「金額」を追加します。" , target: ["#wa-vadd", "[data-ft=\"vars\"]"], learn: "Excelから読んだ金額をしまう箱を作ります。「変数一覧」→「変数追加」→ 金額。" },
+        { ok: get?.p.cell.toUpperCase() === "B2" && get.p.var === "金額", label: "Excel操作（値の取得）で B2 → 金額", hint: "ライブラリタブのExcel操作（値の取得）で、セル B2、格納先の変数に金額を選びます。" , target: ["PROP:Excel操作（値の取得）:cell", ".wa-node[data-type=\"Excel操作（値の取得）\"]", ".wa-item[data-t=\"Excel操作（値の取得）\"]", "[data-pt=\"ライブラリ\"]"], learn: "「ライブラリ」は、Excelの読み書きなど細かい操作をまとめた部品です。パレットの「ライブラリ」タブ →「Excel操作（値の取得）」。プロパティでセル位置 B2、格納先 金額。" },
+        { ok: !!br && S.flow.indexOf(br) > S.flow.indexOf(get), label: "取得の後に分岐がある", hint: "値を取ってから判定するので、取得の下に分岐を置きます。" , target: [".wa-node[data-type=\"分岐\"]", ".wa-item[data-t=\"分岐\"]", "[data-pt=\"ノード\"]"], learn: "「分岐」は、条件によって進む道を2つに分けるノードです。パレットの「ノード」タブ →「フロー」の分岐を選びます。" },
+        { ok: br?.p.var === "金額" && br.p.op === "＞" && br.p.value.trim() === "0", label: "分岐の条件式が 金額 ＞ 0", hint: "分岐のプロパティで、変数 金額、比較 ＞、値 0 にします。分岐は「真」になる条件だけを書きます。" , target: ["PROP:分岐:value", ".wa-node[data-type=\"分岐\"]"], learn: "分岐のプロパティで、真（条件が成り立つ）になる条件を 金額 ＞ 0 にします。偽の側は、真にならなかったときに進みます。" },
+        { ok: setN?.p.cell.toUpperCase() === "C2" && setN.p.value.trim() === "済", label: "真の側で C2 に「済」を書いている", hint: "分岐の「真」の中の「＋」から、Excel操作（値の設定）を置き、セル C2、値「済」にします。" , target: ["PROP:Excel操作（値の設定）:value", ".wa-node[data-type=\"Excel操作（値の設定）\"]", ".wa-box:has(> .wa-node[data-type=\"分岐\"]) > .wa-branches > .wa-branch:nth-child(1) > .wa-plus:not(.on)", ".wa-item[data-t=\"Excel操作（値の設定）\"]", "[data-pt=\"ライブラリ\"]"], learn: "条件が成り立ったときだけ書き込みます。分岐の「真」の下の「▼」をクリック →「ライブラリ」タブ →「Excel操作（値の設定）」。セル位置 C2、設定値 済。" },
+        { ok: runs[0]?.excel.C2 === "済" && runs[1]?.excel.C2 === "", label: "金額1200なら「済」、0なら空欄のまま", hint: "条件が逆だったり、偽の側に置いていると結果が合いません。" , target: ["#wa-run"], learn: "「実行」を押します。金額1200と0の2通りで自動チェックします。" },
       ];
     },
   },
@@ -100,10 +100,10 @@ const TASKS = [
       const img = ex && find(ex.kids[0], (n) => n.type === "画像マッチング");
       const box = ex && find(ex.kids[1], (n) => n.type === "待機ボックス");
       return [
-        { ok: !!ex, label: "例外処理ノードがある", hint: "フローカテゴリの「例外処理」を置きます（try・catchに当たるノード）。" },
-        { ok: !!img, label: "正常系に画像マッチングがある", hint: "例外処理の「正常系」の中の「＋」から画像マッチングを置きます。" },
-        { ok: !!box && box.p.message.trim().length >= 4, label: "異常系に待機ボックスがあり、知らせる文が書いてある", hint: "「異常系」の中に待機ボックスを置き、メッセージに「登録ボタンが見つかりません」などと書きます。" },
-        { ok: run.shown.length > 0 && !run.error, label: "ボタンが見つからなくても止まらずに知らせる", hint: "画像マッチングを例外処理の外に置くと、エラーでシナリオが止まってしまいます。" },
+        { ok: !!ex, label: "例外処理ノードがある", hint: "フローカテゴリの「例外処理」を置きます（try・catchに当たるノード）。" , target: [".wa-item[data-t=\"例外処理\"]", "[data-pt=\"ノード\"]"], learn: "「例外処理」は、エラーが起きたときに別の処理へ切り替えるためのノードです（正常系でエラー → 異常系へ）。パレットの「フロー」から選びます。" },
+        { ok: !!img, label: "正常系に画像マッチングがある", hint: "例外処理の「正常系」の中の「＋」から画像マッチングを置きます。" , target: [".wa-node[data-type=\"画像マッチング\"]", ".wa-box:has(> .wa-node[data-type=\"例外処理\"]) > .wa-branches > .wa-branch:nth-child(1) > .wa-plus:not(.on)", ".wa-item[data-t=\"画像マッチング\"]"], learn: "「画像マッチング」は、画面の中から登録した画像（ボタンなど）を探してクリックするノードです。例外処理の「正常系」の「▼」→ パレットの「アクション」の画像マッチング。" },
+        { ok: !!box && box.p.message.trim().length >= 4, label: "異常系に待機ボックスがあり、知らせる文が書いてある", hint: "「異常系」の中に待機ボックスを置き、メッセージに「登録ボタンが見つかりません」などと書きます。" , target: ["PROP:待機ボックス:message", ".wa-node[data-type=\"待機ボックス\"]", ".wa-box:has(> .wa-node[data-type=\"例外処理\"]) > .wa-branches > .wa-branch:nth-child(2) > .wa-plus:not(.on)", ".wa-item[data-t=\"待機ボックス\"]"], learn: "「待機ボックス」は、メッセージを出してOKを押すまで待つノードです。「異常系」の「▼」→「ユーザ」の待機ボックス。メッセージに知らせる文を書きます。" },
+        { ok: run.shown.length > 0 && !run.error, label: "ボタンが見つからなくても止まらずに知らせる", hint: "画像マッチングを例外処理の外に置くと、エラーでシナリオが止まってしまいます。" , target: ["#wa-run"], learn: "「実行」を押します。ボタンが見つからない状況で、止まらずに知らせられれば成功です。" },
       ];
     },
   },
@@ -122,11 +122,11 @@ const TASKS = [
       const inp = S.flow.findIndex((n) => n.type === "インプットボックス"), calc = S.flow.findIndex((n) => n.type === "四則演算"), box = S.flow.findIndex((n) => n.type === "待機ボックス");
       const c = S.flow[calc]?.p;
       return [
-        { ok: ["価格", "税込"].every((x) => S.vars.some((v) => v.name === x)), label: "変数一覧に「価格」と「税込」がある", hint: "変数一覧タブの「変数追加」で2つ登録します。" },
-        { ok: inp >= 0 && S.flow[inp].p.var === "価格", label: "インプットボックスの格納先が「価格」", hint: "インプットボックスのプロパティで、格納先に価格を選びます。" },
-        { ok: calc > inp && inp >= 0 && c?.var === "税込" && c.left === "価格" && c.op === "×" && c.right.trim() === "1.1", label: "その後の四則演算で 税込 ＝ 価格 × 1.1", hint: "入力を受けてから計算するので、インプットボックスの下に四則演算を置きます。" },
-        { ok: box > calc && calc >= 0 && S.flow[box].p.message.trim().length >= 4, label: "最後に待機ボックスで知らせている", hint: "四則演算の下に待機ボックスを置き、メッセージを書きます。" },
-        { ok: run.vars["税込"] === "1100", label: "1000と入力したとき 税込 が 1100", hint: "掛け算の記号（×）と、1.1 の値を確かめます。" },
+        { ok: ["価格", "税込"].every((x) => S.vars.some((v) => v.name === x)), label: "変数一覧に「価格」と「税込」がある", hint: "変数一覧タブの「変数追加」で2つ登録します。" , target: ["#wa-vadd", "[data-ft=\"vars\"]"], learn: "入力された価格と、計算した税込をしまう箱を2つ作ります。「変数一覧」→「変数追加」で 価格 と 税込。" },
+        { ok: inp >= 0 && S.flow[inp].p.var === "価格", label: "インプットボックスの格納先が「価格」", hint: "インプットボックスのプロパティで、格納先に価格を選びます。" , target: ["PROP:インプットボックス:var", ".wa-node[data-type=\"インプットボックス\"]", ".wa-item[data-t=\"インプットボックス\"]"], learn: "「インプットボックス」は、実行中に人に値を入力してもらうノードです。パレットの「ユーザ」から選び、メッセージと格納先（価格）を設定します。" },
+        { ok: calc > inp && inp >= 0 && c?.var === "税込" && c.left === "価格" && c.op === "×" && c.right.trim() === "1.1", label: "その後の四則演算で 税込 ＝ 価格 × 1.1", hint: "入力を受けてから計算するので、インプットボックスの下に四則演算を置きます。" , target: ["PROP:四則演算:right", ".wa-node[data-type=\"四則演算\"]", ".wa-item[data-t=\"四則演算\"]"], learn: "「四則演算」は足し算・引き算・掛け算・割り算をするノードです。「変数」から選び、代入先＝税込、価格 × 1.1 にします。" },
+        { ok: box > calc && calc >= 0 && S.flow[box].p.message.trim().length >= 4, label: "最後に待機ボックスで知らせている", hint: "四則演算の下に待機ボックスを置き、メッセージを書きます。" , target: ["PROP:待機ボックス:message", ".wa-node[data-type=\"待機ボックス\"]", ".wa-item[data-t=\"待機ボックス\"]"], learn: "最後に「待機ボックス」で、計算が終わったことを知らせます。メッセージを書きます。" },
+        { ok: run.vars["税込"] === "1100", label: "1000と入力したとき 税込 が 1100", hint: "掛け算の記号（×）と、1.1 の値を確かめます。" , target: ["#wa-run"], learn: "「実行」を押します。1000と入力された想定で、税込が1100になれば成功です。" },
       ];
     },
   },
@@ -136,7 +136,7 @@ const TASKS = [
 let S, task, root, saveKey, sel = null, insertAt = null, tab = "flow", palTab = "ノード";
 function find(list, pred) { for (const n of list || []) { if (pred(n)) return n; for (const k of n.kids || []) { const r = find(k, pred); if (r) return r; } } return null; }
 function locate(id, list = S.flow) { for (let i = 0; i < list.length; i++) { const n = list[i]; if (n.id === id) return { list, i, n }; for (const k of n.kids || []) { const r = locate(id, k); if (r) return r; } } return null; }
-function persist() { try { localStorage.setItem(saveKey, JSON.stringify(S)); } catch {} }
+function persist() { try { localStorage.setItem(saveKey, JSON.stringify(S)); } catch {} queueMicrotask(() => updateCoach()); }
 
 /* ---------- 実行（シミュレーション） ---------- */
 function exec(env) {
@@ -195,7 +195,7 @@ function summary(n) {
 const plusBtn = (path, i) => `<button class="wa-plus ${insertAt && insertAt.path === path && insertAt.i === i ? "on" : ""}" data-path="${path}" data-i="${i}" title="ここに挿入"></button>`;
 function listHTML(list, path) { return plusBtn(path, 0) + list.map((n, i) => nodeHTML(n) + plusBtn(path, i + 1)).join(""); }
 function nodeHTML(n) {
-  const head = `<div class="wa-node ${sel === n.id ? "sel" : ""} ${n.kids ? "wa-ctl" : ""}" data-id="${n.id}"><span class="wa-ni" style="color:${COLOR[n.type]}">${ico(NODE_ICON[n.type] || "M4 4h16v16H4z", 16)}</span><div class="wa-nt"><b>${esc(n.type)}</b><span>${esc(summary(n))}</span></div></div>`;
+  const head = `<div data-type="${esc(n.type)}" class="wa-node ${sel === n.id ? "sel" : ""} ${n.kids ? "wa-ctl" : ""}" data-id="${n.id}"><span class="wa-ni" style="color:${COLOR[n.type]}">${ico(NODE_ICON[n.type] || "M4 4h16v16H4z", 16)}</span><div class="wa-nt"><b>${esc(n.type)}</b><span>${esc(summary(n))}</span></div></div>`;
   if (!n.kids) return head;
   return `<div class="wa-box">${head}<div class="wa-branches wa-b${n.kids.length}">${n.kids.map((k, bi) => `<div class="wa-branch"><span class="wa-bname">${esc(BRANCHES[n.type][bi])}</span>${listHTML(k, `${n.id}:${bi}`)}</div>`).join("")}</div></div>`;
 }
@@ -232,6 +232,7 @@ function render() {
       <span class="wa-tg"><button class="wa-ti wa-run" id="wa-run" title="実行">${ico("M7 4l13 8-13 8z", 16)}<span>実行</span></button><button class="wa-ti" disabled title="一時停止">${ico("M8 5v14M16 5v14", 16)}</button><button class="wa-ti" disabled title="停止">${ico("M6 6h12v12H6z", 16)}</button></span>
       <span class="wa-task">お題 ${TASKS.indexOf(task) + 1}/${TASKS.length}<button class="wa-tb" id="wa-howto">手順</button></span>
     </div>
+    <div class="wa-coach" id="wa-coach"></div>
     ${narrow ? `<div class="wa-ntabs">${[["palette", "パレット"], ["flow", "フローチャート"], ["prop", "プロパティ"], ["func", "変数一覧・結果"]].map(([k, l]) => `<button data-np="${k}" class="${narrowPane === k ? "on" : ""}">${l}</button>`).join("")}</div>` : ""}
     <div class="wa-main ${narrow ? "narrow np-" + narrowPane : ""}">
       <section class="wa-pane wa-pal"><div class="wa-ph">パレット</div>${paletteHTML()}</section>
@@ -245,6 +246,49 @@ function render() {
   </div>`;
   bind();
   if (sel) openProps(sel);
+  updateCoach();
+  if (!seenIntro()) showIntro();
+}
+
+/* ---------- コーチ（次の一手だけを示して、押す場所を光らせる） ---------- */
+const INTRO_KEY = "shikakunote.train.intro.wa";
+const seenIntro = () => { try { return localStorage.getItem(INTRO_KEY) === "1"; } catch { return true; } };
+function showIntro() {
+  const d = root.querySelector("#wa-dlg"); d.hidden = false;
+  d.innerHTML = `<div class="wa-dbox"><div class="wa-dt"><span>はじめての方へ</span></div><div class="wa-db">
+    <p><b>WinActorとは</b>：パソコンで人がしている操作（Excelへの入力、ボタンのクリックなど）を、手順書（シナリオ）にして自動で代わりにやらせるソフトです。</p>
+    <p><b>この練習でやること</b>：本物と同じ並びの画面で、ノード（部品）を上から順に並べてシナリオを作り、「実行」で動かします。うまくできたかは自動で採点されます。</p>
+    <ul><li><b>左</b>：パレット（ノードやライブラリの一覧）</li><li><b>まん中</b>：フローチャート（開始から終了まで、上から順に実行）</li><li><b>右</b>：プロパティ（選んだノードの設定）</li><li><b>下</b>：変数一覧・ログ出力・採点</li></ul>
+    <p>わからなくても大丈夫。ツールバーの下の「次にやること」が1つずつ案内し、押す場所を青く光らせます。</p></div>
+    <div class="wa-df"><button class="wa-tb wa-pri" id="wa-introok">はじめる</button></div></div>`;
+  d.querySelector("#wa-introok").onclick = () => { try { localStorage.setItem(INTRO_KEY, "1"); } catch {} d.hidden = true; updateCoach(); };
+}
+const PANE_TAB = { "wa-pal": "palette", "wa-flowpane": "flow", "wa-prop": "prop", "wa-func": "func" };
+function resolveTarget(list) {
+  const selNode = sel && locate(sel)?.n;
+  for (const q of list) {
+    let el;
+    if (q.startsWith("PROP:")) { const [, type, key] = q.split(":"); if (selNode?.type !== type) continue; el = root.querySelector(`#wa-propbody [data-k="${key}"]`); }
+    else el = root.querySelector(q);
+    if (!el) continue;
+    if (el.offsetParent !== null) return el;
+    // スマホで別のタブに隠れているときは、そのタブを光らせる
+    const pane = el.closest(".wa-pane"); const key = pane && Object.keys(PANE_TAB).find((c) => pane.classList.contains(c));
+    if (key) { const tab = root.querySelector(`[data-np="${PANE_TAB[key]}"]`); if (tab) return tab; }
+  }
+  return null;
+}
+function updateCoach() {
+  const box = root?.querySelector("#wa-coach"); if (!box) return;
+  const runs = (task.multi || [null]).map((m) => exec(task.env(m)));
+  const checks = task.checks(S, runs[0], runs), i = checks.findIndex((c) => !c.ok), total = checks.length;
+  let n, t, how, targets;
+  if (i >= 0 && !(i === total - 1 && !lastRun)) { n = i + 1; t = "目標：" + checks[i].label; how = checks[i].learn || checks[i].hint; targets = checks[i].target || []; }
+  else if (!lastRun?.all) { n = total; t = "実行して確かめる"; how = "ツールバーの「実行」を押すと、シナリオが上から順に動き、下の「採点」タブに結果が出ます。"; targets = ["#wa-run"]; }
+  else { n = total; t = "クリア！"; how = "下の「採点」タブの「次のお題へ」から続けられます。"; targets = ["#wa-next"]; }
+  box.innerHTML = `<span class="wa-cn">次にやること ${n}/${total}</span><div><b>${esc(t)}</b><p>${esc(how)}</p></div>`;
+  root.querySelectorAll(".wa-hl").forEach((e) => e.classList.remove("wa-hl"));
+  const el = resolveTarget(targets); if (el) { el.classList.add("wa-hl"); el.scrollIntoView({ block: "nearest", inline: "nearest" }); }
 }
 function listByPath(path) { if (path === "root") return S.flow; const [id, bi] = path.split(":"); return locate(id).n.kids[+bi]; }
 function bind() {
@@ -298,6 +342,7 @@ function openProps(id) {
     const upd = () => { p[el.dataset.k] = el.value; persist(); const s = root.querySelector(`.wa-node[data-id="${n.id}"] .wa-nt span`); if (s) s.textContent = summary(n); };
     el.addEventListener("input", upd); el.addEventListener("change", () => { upd(); if (el.dataset.k === "mode") render(); });
   });
+  updateCoach();
 }
 
 /* ---------- 実行と採点 ---------- */
@@ -316,7 +361,7 @@ function runTest() {
 }
 
 function openTask(t) {
-  task = t; saveKey = "shikakunote.train." + t.id; sel = null; insertAt = null; lastRun = null; ftab = "vars"; narrowPane = "flow";
+  task = t; saveKey = "shikakunote.train." + t.id; sel = null; insertAt = null; lastRun = null; ftab = "vars"; narrowPane = "flow"; palTab = "ノード";
   try { S = JSON.parse(localStorage.getItem(saveKey)) || { vars: [], flow: [] }; } catch { S = { vars: [], flow: [] }; }
   render(); window.scrollTo(0, 0);
 }
