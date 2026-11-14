@@ -1,6 +1,6 @@
 // 資格note Web — ビルドなしの1ページアプリ（hashルーティング）
 // 進捗はこのブラウザの localStorage にだけ保存する（ログイン・同期なし）。
-const DATA_V = "20261114d";
+const DATA_V = "20261114e";
 const STORE_KEY = "shikakunote.web.v1";
 const INTERVALS = [1, 3, 7, 14, 30]; // iOS版と同じ間隔反復
 const SET_SIZE = 5;
@@ -69,7 +69,70 @@ async function examData(k) {
   if (cache[k]) return cache[k];
   const [qs, lessons, terms] = await Promise.all([getJSON(`${k}_questions`), getJSON(`${k}_lessons`).catch(() => []), getJSON(`${k}_terms`).catch(() => [])]);
   const byId = new Map(qs.map((q) => [q.id, q]));
-  return (cache[k] = { qs, byId, lessons, terms });
+  // 問題ID → その問題が載っているレッスン（問題の途中で教材を開くため）
+  const lessonOf = new Map();
+  for (const l of lessons) for (const f of ["basicQuizIds", "quizIds", "drillQuizIds", "challengeQuizIds"]) for (const id of l[f] || []) if (!lessonOf.has(id)) lessonOf.set(id, l);
+  return (cache[k] = { qs, byId, lessons, terms, lessonOf });
+}
+
+/* ---------- 教材の本文（レッスン画面と問題中のシートで共用） ---------- */
+const POINTS_HEADING = "出題ポイント（問題で問われる言葉）";
+// 正解の選択肢から「言葉」の部分を取り出す（design/add_points.py の key_of と同じ規則）
+const answerKey = (q) => (q.choices[q.correctAnswers[0]] || "").split(/[（(：:、。]/)[0].trim();
+function lessonBodyHTML(l, focusKey) {
+  // 答えの言葉が出題ポイントに無ければ（＝本文に載っている）、本文の最初の出現に印を付ける
+  const inPoints = focusKey && (l.sections || []).some((s) => s.heading === POINTS_HEADING && s.body.split("\n").some((x) => x.replace(/^・/, "").startsWith(focusKey + "：")));
+  let marked = !focusKey || inPoints || focusKey.length < 2;
+  const bodyHTML = (body) => {
+    const at = marked ? -1 : body.indexOf(focusKey);
+    if (at < 0) return esc(body);
+    marked = true;
+    return `${esc(body.slice(0, at))}<mark class="hit" id="point-hit">${esc(focusKey)}</mark>${esc(body.slice(at + focusKey.length))}`;
+  };
+  return (l.sections || []).map((s) => {
+    if (s.heading !== POINTS_HEADING) return `<h2>${esc(s.heading)}</h2><p>${bodyHTML(s.body)}</p>`;
+    const items = s.body.split("\n").map((line) => line.replace(/^・/, "")).filter(Boolean).map((line) => {
+      const at = line.indexOf("："); const key = at > 0 ? line.slice(0, at) : ""; const desc = at > 0 ? line.slice(at + 1) : line;
+      const hit = focusKey && key === focusKey;
+      return `<li${hit ? ' class="hit" id="point-hit"' : ""}>${key ? `<b>${esc(key)}</b>` : ""}<span>${esc(desc)}</span></li>`;
+    });
+    return `<h2>出題ポイント</h2><p class="cap" style="margin:0 0 8px">問題で問われる言葉と、その意味です。</p><ul class="points">${items.join("")}</ul>`;
+  }).join("");
+}
+
+/* 問題の途中で教材を開くシート。画面を移動しないので、解きかけの状態はそのまま残る。 */
+function openLessonSheet(l, focusKey, opener) {
+  closeLessonSheet();
+  const bg = document.createElement("div");
+  bg.className = "sheet-bg"; bg.id = "lesson-sheet";
+  bg.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+      <div class="sheet-grab" aria-hidden="true"></div>
+      <div class="sheet-head"><div style="flex:1;min-width:0"><span class="cap">${esc(domainInfo(l.domain)?.shortTitle || "")}・教材</span><h2 id="sheet-title" class="sheet-title">${esc(l.title)}</h2></div>
+        <button class="icon-btn" id="sheet-x" aria-label="閉じる">${I.x}</button></div>
+      <div class="sheet-body"><article class="lesson">
+        ${l.summary ? `<div class="note" style="margin:0 0 8px"><b>要点</b><br>${esc(l.summary)}</div>` : ""}
+        ${lessonBodyHTML(l, focusKey)}
+      </article></div>
+      <div class="sheet-foot"><button class="btn btn-primary btn-block" id="sheet-back">問題に戻る</button></div>
+    </div>`;
+  document.body.appendChild(bg);
+  document.body.style.overflow = "hidden";
+  const close = () => closeLessonSheet(opener);
+  bg.addEventListener("click", (e) => { if (e.target === bg) close(); });
+  bg.querySelector("#sheet-x").addEventListener("click", close);
+  bg.querySelector("#sheet-back").addEventListener("click", close);
+  bg._key = (e) => { if (e.key === "Escape") close(); };
+  document.addEventListener("keydown", bg._key);
+  window.addEventListener("hashchange", close, { once: true });
+  const hit = bg.querySelector("#point-hit");
+  if (hit) requestAnimationFrame(() => hit.scrollIntoView({ block: "center" }));
+  bg.querySelector("#sheet-back").focus({ preventScroll: true });
+}
+function closeLessonSheet(opener) {
+  const bg = document.getElementById("lesson-sheet"); if (!bg) return;
+  document.removeEventListener("keydown", bg._key);
+  bg.remove(); document.body.style.overflow = "";
+  opener?.focus?.({ preventScroll: true });
 }
 const examInfo = (k = S.exam) => EXAMS.find((e) => e.key === k);
 const domainInfo = (id, k = S.exam) => examInfo(k)?.domains.find((d) => d.id === id);
@@ -336,9 +399,10 @@ function drawQ() {
   const ok = Q.submitted && q.correctAnswers.length === Q.sel.size && q.correctAnswers.every((i) => Q.sel.has(i));
   const left = n - Q.i - (Q.submitted ? 1 : 0);
   const fav = exState().fav.includes(q.id);
+  const lsn = Q.D.lessonOf.get(q.id);
   render(`
     <div class="qhead"><span class="cap num" style="font-weight:800;color:var(--navy)">${Q.i + 1} / ${n}</span><div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${Q.i + (Q.submitted ? 1 : 0)}"><i style="width:${((Q.i + (Q.submitted ? 1 : 0)) / n) * 100}%"></i></div><span class="cap">${left > 0 ? `残り約${Math.max(1, Math.round(left * 0.6))}分` : "あと少し"}</span></div>
-    <div class="row" style="gap:6px;flex-wrap:wrap"><span class="tag">${esc(domainInfo(q.domain)?.shortTitle || "")}</span>${multi ? `<span class="tag orange">${q.correctAnswers.length}つ選ぶ</span>` : ""}</div>
+    <div class="row" style="gap:6px;flex-wrap:wrap;align-items:center"><span class="tag">${esc(domainInfo(q.domain)?.shortTitle || "")}</span>${multi ? `<span class="tag orange">${q.correctAnswers.length}つ選ぶ</span>` : ""}${lsn && !Q.submitted ? `<button class="pill-btn pill-sm" id="lsn" style="margin-left:auto" aria-label="この問題の教材を開く（答えは光りません）">${I.book}教材</button>` : ""}</div>
     <p class="qtext">${esc(q.question)}</p>
     <div role="group" aria-label="選択肢">
     ${q.choices.map((c, i) => {
@@ -363,6 +427,7 @@ function drawQ() {
         <p class="exp" style="margin:4px 0 0">${esc(q.explanation)}</p>
         ${q.wrongChoiceExplanations && Object.keys(q.wrongChoiceExplanations).length ? `<ul class="wrong-list">${Object.entries(q.wrongChoiceExplanations).map(([i, t]) => `<li><b>${Number(i) + 1}</b><span>${esc(t)}</span></li>`).join("")}</ul>` : ""}
         ${q.beginnerNote ? `<div class="note"><b>${I.bulb} ひとこと</b><br>${esc(q.beginnerNote)}</div>` : ""}
+        ${lsn ? `<button class="pill-btn" id="lsn2" style="margin-top:12px">${I.book}この問題の教材を読む</button>` : ""}
       </section>` : ""}
     <div class="sticky-act">
       ${Q.submitted
@@ -374,6 +439,9 @@ function drawQ() {
   $("#submit")?.addEventListener("click", submit);
   $("#hint")?.addEventListener("click", hint);
   $("#next")?.addEventListener("click", nextQ);
+  // 答える前は答えが分からないよう光らせずに開き、答え合わせ後は該当の出題ポイントを光らせる
+  $("#lsn")?.addEventListener("click", (e) => openLessonSheet(lsn, null, e.currentTarget));
+  $("#lsn2")?.addEventListener("click", (e) => openLessonSheet(lsn, answerKey(q), e.currentTarget));
   $("#fav")?.addEventListener("click", () => { const st = exState(); st.fav = st.fav.includes(q.id) ? st.fav.filter((x) => x !== q.id) : [...st.fav, q.id]; save(); vibrate(); drawQ(); });
   $("#unsure")?.addEventListener("click", () => { if (Q.unsure) return; markUnsure(q); Q.unsure = true; vibrate(); toast("明日の復習に入れました"); drawQ(); });
   if (Q.submitted) $("#next")?.focus({ preventScroll: true });
@@ -452,7 +520,7 @@ async function viewLesson(id) {
       <span class="tag">${esc(domainInfo(l.domain)?.shortTitle || "")}・約${l.estimatedMinutes || 5}分</span>
       <h1 class="h-title" style="margin:10px 0 8px">${esc(l.title)}</h1>
       ${l.summary ? `<div class="note" style="margin:0 0 8px"><b>要点</b><br>${esc(l.summary)}</div>` : ""}
-      ${(l.sections || []).map((s) => `<h2>${esc(s.heading)}</h2><p>${esc(s.body)}</p>`).join("")}
+      ${lessonBodyHTML(l)}
     </article>
     <div class="stack" style="margin-top:24px">
       ${qn ? `<a class="btn btn-cta btn-block" href="#/quiz/lesson/${l.id}" id="lq">読んだ内容を${Math.min(qn, SET_SIZE)}問で確かめる</a>` : ""}
