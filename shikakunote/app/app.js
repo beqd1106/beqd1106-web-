@@ -467,7 +467,7 @@ async function viewLesson(id) {
 
 /* ---------- 操作トレーニング（train.js を必要なときだけ読む） ---------- */
 const TRAIN_EXAMS = ["dify", "wia"];
-const TRAIN_MOD = { dify: ["./train.js?v=3", "Dify"], wia: ["./train_wa.js?v=1", "WinActor"] };
+const TRAIN_MOD = { dify: ["./train.js?v=5", "Dify"], wia: ["./train_wa.js?v=1", "WinActor"] };
 async function viewTrain(id) {
   const e = examInfo();
   if (!TRAIN_EXAMS.includes(e.key)) return go("#/home");
@@ -481,6 +481,8 @@ async function viewTrain(id) {
       ${tool === "Dify" ? `<p class="cap" style="margin-top:16px">スマホでは、ブロックの右の丸をタップ → つなぎ先のブロックをタップ、でつなげます。ブロックはドラッグで動かせます。</p>` : `<p class="cap" style="margin-top:16px">フローチャートの「＋」をタップして、そこに置くノードをパレットから選びます。</p>`}`);
   }
   topbar("back", "#/train", "操作トレーニング"); tabbar("practice");
+  // エディタは画面いっぱいに使う（下のタブは隠す。ほかの画面に移ると tabbar() で戻る）
+  $("#tabbar").style.display = "none";
   render(`<div id="trroot"></div>`);
   m.mount($("#trroot"), id);
 }
