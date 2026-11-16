@@ -627,3 +627,7 @@ span.dx-in{position:absolute;left:-6px;top:16px;width:8px;height:8px;border-radi
 @keyframes sheet-up{from{transform:translateY(24px);opacity:.4}to{transform:none;opacity:1}}
 @keyframes sheet-fade{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){.sheet,.sheet-bg{animation:none}}
+/* ヒント2段目：消した選択肢と理由 */
+.elim-list{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.elim-list li{display:grid;gap:2px;padding:8px 10px;background:var(--card);border-radius:8px;font-size:13px;line-height:1.6}
+.elim-list s{color:var(--sub);font-weight:600;font-size:12px}

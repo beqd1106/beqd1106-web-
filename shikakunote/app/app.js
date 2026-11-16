@@ -1,6 +1,6 @@
 // 資格note Web — ビルドなしの1ページアプリ（hashルーティング）
 // 進捗はこのブラウザの localStorage にだけ保存する（ログイン・同期なし）。
-const DATA_V = "20261114e";
+const DATA_V = "20261117a";
 const STORE_KEY = "shikakunote.web.v1";
 const INTERVALS = [1, 3, 7, 14, 30]; // iOS版と同じ間隔反復
 const SET_SIZE = 5;
@@ -67,12 +67,12 @@ async function getJSON(name) {
 }
 async function examData(k) {
   if (cache[k]) return cache[k];
-  const [qs, lessons, terms] = await Promise.all([getJSON(`${k}_questions`), getJSON(`${k}_lessons`).catch(() => []), getJSON(`${k}_terms`).catch(() => [])]);
+  const [qs, lessons, terms, hints] = await Promise.all([getJSON(`${k}_questions`), getJSON(`${k}_lessons`).catch(() => []), getJSON(`${k}_terms`).catch(() => []), getJSON(`${k}_hints`).catch(() => ({}))]);
   const byId = new Map(qs.map((q) => [q.id, q]));
   // 問題ID → その問題が載っているレッスン（問題の途中で教材を開くため）
   const lessonOf = new Map();
   for (const l of lessons) for (const f of ["basicQuizIds", "quizIds", "drillQuizIds", "challengeQuizIds"]) for (const id of l[f] || []) if (!lessonOf.has(id)) lessonOf.set(id, l);
-  return (cache[k] = { qs, byId, lessons, terms, lessonOf });
+  return (cache[k] = { qs, byId, lessons, terms, lessonOf, hints });
 }
 
 /* ---------- 教材の本文（レッスン画面と問題中のシートで共用） ---------- */
@@ -206,18 +206,39 @@ function longest() {
 }
 const todayCount = (k) => { const d = S.days[dayKey()] || {}; return k ? d[k] || 0 : Object.entries(d).filter(([x]) => x !== "_l").reduce((a, [, v]) => a + v, 0); };
 
-/* ---------- ヒント（iOS版と同じ考え方：答えは言わない） ---------- */
+/* ---------- ヒント（iOS版 HintBuilder と同じ規則：答えは言わない） ----------
+   1段目＝問題ごとに書いた考え方（data/<exam>_hints.json）、2段目＝違う選択肢を消して理由を見せる、3段目＝教材で確かめる */
+function answerTerms(q) {
+  const out = [];
+  for (const i of q.correctAnswers) {
+    const full = (q.choices[i] || "").trim();
+    const core = full.replace(/[（(][^）)]*[)）]/g, "").replace(/^(AWS|Amazon)\s*/, "").trim();
+    if (core.length >= 3) out.push(core);
+    const m = full.match(/[（(]([^）)]+)[)）]/);
+    if (m && m[1].length >= 3) out.push(m[1]);
+  }
+  const wrong = q.choices.filter((_, i) => !q.correctAnswers.includes(i));
+  return out.filter((t) => !wrong.some((w) => w.includes(t)));
+}
+const revealsAnswer = (text, q) => answerTerms(q).some((t) => text.includes(t));
 function hintText(q) {
-  if (q.beginnerNote && !q.correctAnswers.some((i) => q.beginnerNote.includes(q.choices[i]))) return q.beginnerNote;
-  const tags = (q.tags || []).filter((t) => !q.correctAnswers.some((i) => q.choices[i].includes(t)));
+  const h = (Q.D.hints || {})[q.id];
+  if (h && !revealsAnswer(h, q)) return h;
+  if (q.beginnerNote && !revealsAnswer(q.beginnerNote, q)) return q.beginnerNote;
+  const tags = (q.tags || []).filter((t) => !/^(ドリル|頻出|基本|応用|発展|確認|チャレンジ)$/.test(t) && !q.correctAnswers.some((i) => q.choices[i].includes(t)));
   if (tags.length) return `「${tags.slice(0, 2).join("」「")}」がこの問題の着眼点です。`;
   return `${domainInfo(q.domain)?.title || "この分野"}の基本を思い出してみましょう。`;
+}
+function wrongReason(q, i) {
+  const r = ((q.wrongChoiceExplanations || {})[String(i)] || "").trim();
+  return r && !revealsAnswer(r, q) ? r : null;
 }
 function eliminate(q) {
   const wrong = q.choices.map((_, i) => i).filter((i) => !q.correctAnswers.includes(i));
   const keep = q.correctAnswers.length + 1;
   if (q.choices.length <= keep) return [];
-  const order = wrong.sort((a, b) => hash(q.id + a) - hash(q.id + b));
+  // 理由を見せると答えが分かってしまう選択肢は、なるべく消さずに残す
+  const order = wrong.sort((a, b) => (wrongReason(q, a) ? 0 : 1) - (wrongReason(q, b) ? 0 : 1) || hash(q.id + a) - hash(q.id + b));
   return order.slice(0, q.choices.length - keep);
 }
 
@@ -412,7 +433,10 @@ function drawQ() {
       return `<button class="choice ${cls}" data-i="${i}" aria-pressed="${Q.sel.has(i)}" ${Q.submitted || elim.includes(i) ? "disabled" : ""}><span class="mk">${Q.submitted && q.correctAnswers.includes(i) ? I.check.replace(/width="20" height="20"/, 'width="16" height="16"') : Q.submitted && Q.sel.has(i) ? I.x.replace(/width="20" height="20"/, 'width="16" height="16"') : i + 1}</span><span>${esc(c)}</span></button>`;
     }).join("")}
     </div>
-    ${!Q.submitted && Q.hint >= 1 ? `<div class="hint"><b>${I.bulb} ヒント</b><br>${esc(hintText(q))}${Q.hint >= 2 && elim.length ? `<br><span class="cap">ちがう選択肢を${elim.length}つ薄くしました。</span>` : ""}</div>` : ""}
+    ${!Q.submitted && Q.hint >= 1 ? `<div class="hint"><b>${I.bulb} ヒント</b><br>${esc(hintText(q))}
+      ${Q.hint >= 2 && elim.length ? `<p class="cap" style="margin:10px 0 6px">違う選択肢を薄くしました。理由も読んでから、残りから選びましょう。</p>
+        <ul class="elim-list">${elim.slice().sort((a, b) => a - b).map((i) => `<li><s>${i + 1}. ${esc(q.choices[i])}</s><span>${esc(wrongReason(q, i) || "この選択肢は当てはまりません。")}</span></li>`).join("")}</ul>` : ""}
+      ${lsn ? `<button class="pill-btn pill-sm" id="lsn3" style="margin-top:10px">${I.book}教材で確かめる</button>` : ""}</div>` : ""}
     ${Q.submitted ? `
       <section class="card result" aria-live="polite">
         <div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px">
@@ -442,6 +466,7 @@ function drawQ() {
   // 答える前は答えが分からないよう光らせずに開き、答え合わせ後は該当の出題ポイントを光らせる
   $("#lsn")?.addEventListener("click", (e) => openLessonSheet(lsn, null, e.currentTarget));
   $("#lsn2")?.addEventListener("click", (e) => openLessonSheet(lsn, answerKey(q), e.currentTarget));
+  $("#lsn3")?.addEventListener("click", (e) => openLessonSheet(lsn, null, e.currentTarget));
   $("#fav")?.addEventListener("click", () => { const st = exState(); st.fav = st.fav.includes(q.id) ? st.fav.filter((x) => x !== q.id) : [...st.fav, q.id]; save(); vibrate(); drawQ(); });
   $("#unsure")?.addEventListener("click", () => { if (Q.unsure) return; markUnsure(q); Q.unsure = true; vibrate(); toast("明日の復習に入れました"); drawQ(); });
   if (Q.submitted) $("#next")?.focus({ preventScroll: true });
