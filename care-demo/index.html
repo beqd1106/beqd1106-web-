@@ -278,9 +278,9 @@ function vVisit(v,id){
   </div><p class="note" style="margin:8px 0 0">押した時刻がそのまま記録されます。</p></div>
   <h2>やったこと</h2><div class="grid2">${PLAN[x.kind].map(p=>`<label class="check ${D.items.includes(p)?'on':''}"><input type="checkbox" value="${p}" ${D.items.includes(p)?'checked':''}>${p}</label>`).join('')}</div>
   <h2>体温・血圧</h2><div class="grid2"><div><label class="f" for="vt">体温（℃）</label><input id="vt" type="text" inputmode="decimal" placeholder="36.5" value="${esc(D.t)}"></div><div><label class="f" for="vb">血圧</label><input id="vb" type="text" inputmode="numeric" placeholder="120/80" value="${esc(D.bp)}"></div></div>
-  <h2>様子を話す</h2>
+  <h2>様子を話す（退出後に）</h2>
   <button class="mic" id="mic">${ic('rec',24)}<span id="micl">押して話す</span></button>
-  <p class="note">話した内容が下に入ります。手で直すこともできます。マイクが使えない環境では例文が入ります。</p>
+  <p class="note">家の中ではチェックだけにして、話すのは退出後の車の中などで。話した内容が下に入り、手で直すこともできます。マイクが使えない環境では例文が入ります。</p>
   <textarea id="raw" aria-label="話した内容" placeholder="例：トイレ介助と着替え。右ひざが痛いと言っていた。お昼はほぼ全部食べた。">${esc(D.raw)}</textarea>
   <div style="margin-top:12px"><button class="btn btn-secondary btn-block" id="fmt">${ic('spark',18)}記録の文章に整える</button></div>
   <div id="outw" style="margin-top:12px">${D.out?outHtml(D):''}</div>
