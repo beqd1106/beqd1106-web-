@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1f5c4a">
+<meta name="robots" content="noindex,nofollow">
+<title>ケア記録 見本</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{
+  --bg:#f4f6f5; --surface:#ffffff; --surface-2:#eef3f1; --line:#dfe6e3;
+  --text:#1b2623; --muted:#5f6f6a; --primary:#1f5c4a; --primary-ink:#ffffff; --primary-soft:#e2efe9;
+  --warn:#9a5b00; --warn-soft:#fff3dc; --danger:#b3261e; --danger-soft:#fde8e6; --ok:#1f6e3a; --ok-soft:#e3f3e7;
+  --r-sm:8px; --r-md:12px; --r-lg:16px; --shadow:0 1px 2px rgba(20,40,35,.06),0 4px 14px rgba(20,40,35,.06);
+  --fs-cap:12px; --fs-body:15px; --fs-h:17px; --fs-title:clamp(20px,5vw,24px);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font-family:"Noto Sans JP",system-ui,sans-serif;font-size:var(--fs-body);line-height:1.6;-webkit-tap-highlight-color:transparent}
+.app{max-width:460px;margin:0 auto;min-height:100vh;background:var(--bg);padding-bottom:88px;position:relative}
+header.top{position:sticky;top:0;z-index:10;background:rgba(244,246,245,.92);backdrop-filter:blur(8px);padding:12px 16px 8px;border-bottom:1px solid var(--line)}
+.top-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.brand{font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px}
+.brand .dot{width:24px;height:24px;border-radius:7px;background:var(--primary);display:grid;place-items:center}
+.demo-tag{font-size:11px;color:var(--warn);background:var(--warn-soft);padding:2px 8px;border-radius:99px;font-weight:500}
+select,input,textarea,button{font:inherit;color:inherit}
+.role{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-sm);padding:6px 28px 6px 10px;font-size:13px;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235f6f6a' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+main{padding:16px}
+h1{font-size:var(--fs-title);margin:4px 0 4px;letter-spacing:.01em}
+.sub{color:var(--muted);font-size:13px;margin:0 0 16px}
+h2{font-size:var(--fs-h);margin:24px 0 8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px;box-shadow:var(--shadow);margin-bottom:12px}
+.card.tap{cursor:pointer;transition:transform .15s,box-shadow .15s;display:flex;gap:12px;align-items:center}
+.card.tap:hover{box-shadow:0 2px 4px rgba(20,40,35,.08),0 8px 22px rgba(20,40,35,.08)}
+.card.tap:active{transform:scale(.99)}
+.chev{margin-left:auto;color:var(--muted);flex:none}
+.time{font-weight:700;font-variant-numeric:tabular-nums;min-width:52px}
+.meta{color:var(--muted);font-size:13px}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.b-ok{background:var(--ok-soft);color:var(--ok)} .b-warn{background:var(--warn-soft);color:var(--warn)} .b-danger{background:var(--danger-soft);color:var(--danger)} .b-mute{background:var(--surface-2);color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:var(--r-md);border:1px solid transparent;font-weight:700;cursor:pointer;transition:background .15s,transform .1s,opacity .15s}
+.btn:active{transform:scale(.98)}
+.btn:focus-visible,.seg button:focus-visible,.nav button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #8cc4b0;outline-offset:2px}
+.btn-primary{background:var(--primary);color:var(--primary-ink);box-shadow:0 2px 0 #143d31}
+.btn-primary:hover{background:#184c3d}
+.btn-secondary{background:var(--surface);border-color:#b9cbc4;color:var(--primary)}
+.btn-secondary:hover{background:var(--primary-soft)}
+.btn-ghost{background:transparent;color:var(--primary);min-height:40px;padding:0 10px}
+.btn-danger{background:var(--surface);border-color:#e7b4af;color:var(--danger)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none}
+.btn-block{width:100%}
+.row{display:flex;gap:8px;align-items:center}
+.row.wrap{flex-wrap:wrap}
+.grow{flex:1}
+.stack>*+*{margin-top:12px}
+label.f{display:block;font-size:13px;color:var(--muted);margin-bottom:4px;font-weight:500}
+input[type=text],input[type=number],input[type=date],select.in,textarea{width:100%;border:1px solid #c9d6d1;background:#fff;border-radius:var(--r-sm);padding:10px 12px;min-height:44px}
+textarea{min-height:110px;resize:vertical}
+.check{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);cursor:pointer;background:#fff;user-select:none}
+.check input{width:22px;height:22px;accent-color:var(--primary)}
+.check.on{border-color:#9cc7b7;background:var(--primary-soft)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.seg{display:flex;background:var(--surface-2);border-radius:var(--r-md);padding:4px;gap:4px;margin-bottom:16px}
+.seg button{flex:1;border:0;background:transparent;border-radius:9px;min-height:40px;font-weight:500;color:var(--muted);cursor:pointer}
+.seg button[aria-selected=true]{background:#fff;color:var(--primary);font-weight:700;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.mic{width:100%;min-height:72px;border-radius:var(--r-lg);border:2px dashed #9cc7b7;background:var(--primary-soft);color:var(--primary);font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:background .15s}
+.mic:hover{background:#d5e9e0}
+.mic.rec{border-style:solid;border-color:var(--danger);background:var(--danger-soft);color:var(--danger)}
+.mic.rec .pulse{animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.result{background:#fbfdfc;border:1px solid #cfe2da;border-radius:var(--r-md);padding:12px 14px;white-space:pre-wrap;font-size:14px}
+.result b{color:var(--primary)}
+.kv{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.kv:last-child{border-bottom:0}
+.alert{display:flex;gap:10px;padding:12px;border-radius:var(--r-md);font-size:14px;margin-bottom:8px;align-items:flex-start}
+.alert svg{flex:none;margin-top:2px}
+.alert.warn{background:var(--warn-soft);color:#5d3a00}
+.alert.danger{background:var(--danger-soft);color:#7a1a14}
+.alert.ok{background:var(--ok-soft);color:#14482a}
+.shift{width:100%;border-collapse:separate;border-spacing:0;font-size:13px}
+.shift td{padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+.shift td.t{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+.shift select{width:100%;min-height:38px;border:1px solid #c9d6d1;border-radius:8px;padding:4px 6px;background:#fff;font-size:13px}
+.shift tr.bad select{border-color:var(--danger);background:var(--danger-soft)}
+.dayhead{font-weight:700;background:var(--surface-2);padding:6px 8px;border-radius:8px;margin:14px 0 4px;font-size:13px}
+.empty{text-align:center;color:var(--muted);padding:32px 16px}
+.empty svg{color:#9fb3ac;margin-bottom:8px}
+nav.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:460px;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:20}
+.nav button{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--muted);min-height:52px;cursor:pointer;border-radius:10px;position:relative}
+.nav button[aria-current=page]{color:var(--primary);font-weight:700}
+.nav button[aria-current=page] .ic{background:var(--primary-soft)}
+.nav .ic{width:44px;height:28px;border-radius:99px;display:grid;place-items:center;transition:background .15s}
+.nav .cnt{position:absolute;top:2px;right:calc(50% - 22px);background:var(--danger);color:#fff;font-size:10px;font-weight:700;border-radius:99px;min-width:18px;height:18px;display:grid;place-items:center;padding:0 4px}
+.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%) translateY(20px);background:#1b2623;color:#fff;padding:12px 18px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:50;max-width:90vw}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.back{display:inline-flex;align-items:center;gap:4px;color:var(--primary);font-weight:500;background:none;border:0;padding:6px 0;cursor:pointer;min-height:40px}
+.bnum{display:flex;align-items:center;gap:6px}
+.bnum input{text-align:center}
+.spin{width:18px;height:18px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.note{font-size:12px;color:var(--muted)}
+.fade{animation:fd .2s ease-out}
+@keyframes fd{from{opacity:0;transform:translateY(4px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="gate" style="position:fixed;inset:0;z-index:100;background:#f4f6f5;display:flex;align-items:center;justify-content:center;padding:16px">
+ <form id="gf" style="background:#fff;border:1px solid #dfe6e3;border-radius:16px;padding:24px;width:100%;max-width:360px;box-shadow:0 4px 14px rgba(20,40,35,.08)">
+  <div style="font-weight:700;font-size:18px;margin-bottom:4px">ケア記録（見本）</div>
+  <p style="color:#5f6f6a;font-size:13px;margin:0 0 16px">ご案内したパスワードを入れてください。中のデータはすべて架空です。</p>
+  <label for="gp" style="display:block;font-size:13px;color:#5f6f6a;margin-bottom:4px;font-weight:500">パスワード</label>
+  <input id="gp" type="password" autocomplete="current-password" style="width:100%;min-height:48px;border:1px solid #c9d6d1;border-radius:8px;padding:10px 12px;font-size:16px">
+  <p id="ge" role="alert" style="color:#b3261e;font-size:13px;min-height:20px;margin:6px 0"></p>
+  <button class="btn btn-primary btn-block" type="submit">開く</button>
+ </form>
+</div>
+<script>
+(function(){var g=document.getElementById('gate');try{if(sessionStorage.getItem('care_auth')==='ok'){g.remove();return}}catch(e){}
+document.getElementById('gf').onsubmit=function(e){e.preventDefault();if(document.getElementById('gp').value==='care1106'){try{sessionStorage.setItem('care_auth','ok')}catch(e){}g.remove()}else{document.getElementById('ge').textContent='パスワードが違います'}}})();
+</script>
+<div class="app">
+  <header class="top">
+    <div class="top-row">
+      <div class="brand"><span class="dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></span>ケア記録<span class="demo-tag">見本・架空データ</span></div>
+      <select class="role" id="role" aria-label="使う人を切り替え">
+        <option value="helper">ヘルパー 佐藤</option>
+        <option value="sp">サ責 高橋</option>
+        <option value="sabi">サビ管 森</option>
+        <option value="admin">管理者（経営）</option>
+        <option value="family">B型の本人・家族</option>
+      </select>
+    </div>
+  </header>
+  <main id="view"></main>
+  <nav class="nav" id="nav"></nav>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ===== アイコン（線画） ===== */
+const I = {
+  rec:'<path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z"/><path d="M19 11a7 7 0 0 1-14 0M12 18v3"/>',
+  list:'<path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/>',
+  check:'<path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/>',
+  cal:'<rect x="4" y="5" width="16" height="16" rx="2"/><path d="M16 3v4M8 3v4M4 11h16"/>',
+  bell:'<path d="M10 5a2 2 0 1 1 4 0 7 7 0 0 1 4 6v3a4 4 0 0 0 2 3H4a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/>',
+  dl:'<path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M7 11l5 5 5-5M12 4v12"/>',
+  chev:'<path d="M9 6l6 6-6 6"/>', left:'<path d="M15 6l-6 6 6 6"/>',
+  warn:'<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>',
+  ok:'<circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/>',
+  send:'<path d="M10 14L21 3M21 3l-6.5 18a.55.55 0 0 1-1 0L10 14l-7-3.5a.55.55 0 0 1 0-1L21 3"/>',
+  spark:'<path d="M12 3l1.9 5.8L20 10l-6.1 1.2L12 17l-1.9-5.8L4 10l6.1-1.2z"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>',
+  swap:'<path d="M7 7h11l-3-3M17 17H6l3 3"/>',
+  inbox:'<path d="M4 13h3l3 3h4l3-3h3"/><path d="M4 13l2-8h12l2 8v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>'
+};
+const ic=(n,s=20,w=2)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
+
+/* ===== 架空データ ===== */
+const STAFF=[
+  {id:'s1',name:'佐藤',q:'介護福祉士',sex:'女',area:'北'},
+  {id:'s2',name:'田中',q:'初任者研修',sex:'女',area:'北'},
+  {id:'s3',name:'鈴木',q:'実務者研修',sex:'男',area:'南'},
+  {id:'s4',name:'伊藤',q:'初任者研修',sex:'女',area:'南'},
+  {id:'s5',name:'渡辺',q:'生活援助従事者研修',sex:'女',area:'東'},
+  {id:'s6',name:'山田',q:'介護福祉士',sex:'男',area:'東'},
+];
+const CLIENTS=[
+  {id:'c1',name:'山本 ハル',area:'北',wantSex:'女',ng:[]},
+  {id:'c2',name:'中村 清',area:'北',wantSex:'',ng:['s3']},
+  {id:'c3',name:'小林 トシ',area:'南',wantSex:'女',ng:[]},
+  {id:'c4',name:'加藤 正男',area:'東',wantSex:'',ng:[]},
+  {id:'c5',name:'吉田 キミ',area:'南',wantSex:'',ng:[]},
+];
+const B_USERS=['青木 健太','石川 優','上田 真理','岡本 翔','木村 さくら','清水 大地','西村 楓'];
+const WORKS=['軽作業（袋詰め）','清掃','農作業','パン製造','手芸'];
+const TRAVEL={'北北':10,'南南':10,'東東':10,'北南':25,'南北':25,'北東':20,'東北':20,'南東':30,'東南':30};
+const DAYS=['月','火','水','木','金'];
+const SLOTS=[ // 週の定期訪問
+  {d:0,st:'09:00',en:'10:00',c:'c1',kind:'身体',h:'s1'},{d:0,st:'10:10',en:'11:00',c:'c2',kind:'生活',h:'s1'},
+  {d:0,st:'10:30',en:'11:30',c:'c4',kind:'身体',h:'s5'},{d:0,st:'13:00',en:'14:00',c:'c3',kind:'身体',h:'s3'},
+  {d:1,st:'09:30',en:'10:30',c:'c5',kind:'生活',h:'s4'},{d:1,st:'11:00',en:'12:00',c:'c2',kind:'身体',h:'s3'},
+  {d:1,st:'14:00',en:'15:00',c:'c1',kind:'身体',h:'s2'},
+  {d:2,st:'09:00',en:'10:00',c:'c1',kind:'身体',h:'s1'},{d:2,st:'09:30',en:'10:30',c:'c3',kind:'身体',h:'s1'},
+  {d:2,st:'13:30',en:'14:30',c:'c4',kind:'生活',h:'s6'},
+  {d:3,st:'10:00',en:'11:00',c:'c5',kind:'身体',h:'s4'},{d:3,st:'14:00',en:'15:00',c:'c2',kind:'生活',h:'s2'},
+  {d:4,st:'09:00',en:'10:00',c:'c1',kind:'身体',h:'s1'},{d:4,st:'11:00',en:'12:00',c:'c3',kind:'身体',h:'s4'},
+];
+const PLAN={身体:['排泄介助','入浴・清拭','更衣介助','服薬確認','移乗・移動介助'],生活:['掃除','洗濯','調理','買い物','服薬確認']};
+const TODAY_VISITS=[
+  {id:'v1',st:'09:00',en:'10:00',c:'c1',kind:'身体'},
+  {id:'v2',st:'10:10',en:'11:00',c:'c2',kind:'生活'},
+  {id:'v3',st:'13:30',en:'14:30',c:'c4',kind:'身体'},
+  {id:'v4',st:'15:30',en:'16:30',c:'c5',kind:'生活'},
+];
+const PREV_NOTE={c1:'前回：右ひざの痛みの訴えあり。歩行時に見守りを。',c2:'前回：食欲やや低下。水分摂取を声かけ。',c4:'前回：特になし。',c5:'前回：ご家族より通院日の変更連絡あり（木曜へ）。'};
+const DUE=[ // 期限（今日からの日数）
+  {who:'山本 ハル',what:'介護保険被保険者証の有効期限',days:12,biz:'訪問介護'},
+  {who:'青木 健太',what:'受給者証（就労継続支援B型）の支給期間終了',days:24,biz:'B型'},
+  {who:'小林 トシ',what:'訪問介護計画の見直し',days:5,biz:'訪問介護'},
+  {who:'上田 真理',what:'個別支援計画のモニタリング',days:-3,biz:'B型'},
+  {who:'中村 清',what:'負担割合証の更新（8月1日切替）',days:48,biz:'訪問介護'},
+  {who:'ヘルパー 田中',what:'健康診断（年1回）',days:30,biz:'職員'},
+  {who:'全職員',what:'虐待防止研修（年1回以上）未受講 3名',days:40,biz:'職員'},
+  {who:'岡本 翔',what:'個別支援計画の作成・同意',days:19,biz:'B型'},
+];
+
+/* ===== 状態（ブラウザに保存） ===== */
+const KEY='care-demo-v1';
+const fresh=()=>({records:[
+  {id:'r0',vid:'x',c:'c3',date:today(),st:'08:00',en:'08:55',kind:'身体',helper:'田中',items:['排泄介助','更衣介助'],vit:{t:'36.5',bp:'128/76'},text:'【実施内容】排泄介助、更衣介助を実施。\n【ご様子】朝食後で落ち着かれていた。会話も多く表情良好。\n【特記・申し送り】特になし。',flag:false,status:'wait'},
+  {id:'r00',vid:'y',c:'c5',date:today(),st:'08:30',en:'09:20',kind:'生活',helper:'伊藤',items:['掃除','調理'],vit:{t:'37.6',bp:''},text:'【実施内容】掃除、調理を実施。\n【ご様子】やや倦怠感の訴えあり。\n【特記・申し送り】体温37.6℃。発熱の可能性あり。ご家族へ連絡済み。サ責へ報告。',flag:true,status:'wait'}
+ ],done:{},shift:SLOTS.map(s=>s.h),b:{},approved:0});
+let S; try{S=JSON.parse(localStorage.getItem(KEY))||fresh()}catch(e){S=fresh()}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+function today(){const d=new Date();return d.toISOString().slice(0,10)}
+const cname=id=>CLIENTS.find(c=>c.id===id).name;
+const sOf=id=>STAFF.find(s=>s.id===id);
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._);t._=setTimeout(()=>t.classList.remove('show'),2400)}
+
+/* ===== 画面切り替え ===== */
+let tab='rec', sub=null;
+const TABS=[['rec','記録','rec'],['chk','確認','check'],['shift','シフト','cal'],['due','期限','bell'],['out','書き出し','dl']];
+function renderNav(){
+  const pend=S.records.filter(r=>r.status==='wait').length, over=DUE.filter(d=>d.days<=14).length;
+  document.getElementById('nav').innerHTML=TABS.map(([k,l,i])=>{ if(k==='rec'&&ROLE==='admin'){l='ボード';i='list'}
+    const c=k==='chk'&&pend?`<span class="cnt">${pend}</span>`:k==='due'&&over?`<span class="cnt">${over}</span>`:'';
+    return `<button data-tab="${k}" ${tab===k?'aria-current="page"':''}><span class="ic">${ic(i,20)}</span>${l}${c}</button>`}).join('');
+}
+document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;tab=b.dataset.tab;sub=null;render();scrollTo(0,0)});
+let ROLE='helper';
+document.getElementById('role').addEventListener('change',e=>{ROLE=e.target.value;tab=ROLE==='sp'||ROLE==='sabi'?'chk':'rec';sub=null;render();scrollTo(0,0)});
+function render(){
+  const nav=document.getElementById('nav'); nav.style.display=ROLE==='family'?'none':'';
+  if(ROLE==='family'){const v=document.getElementById('view');v.innerHTML='';v.className='fade';return vFamily(v)}
+  renderNav();const v=document.getElementById('view');v.innerHTML='';v.className='fade';void v.offsetWidth;({rec:vRec,chk:vChk,shift:vShift,due:vDue,out:vOut})[tab](v)}
+
+/* ===== 1. 記録 ===== */
+let recMode='home';
+function vRec(v){
+  if(ROLE==='admin') return vBoard(v);
+  if(sub) return vVisit(v,sub);
+  const seg=`<div class="seg" role="tablist"><button role="tab" aria-selected="${recMode==='home'}" data-m="home">訪問介護</button><button role="tab" aria-selected="${recMode==='b'}" data-m="b">就労B型</button></div>`;
+  if(recMode==='b') return vB(v,seg);
+  const d=new Date();
+  const n=TODAY_VISITS.filter(x=>S.done[x.id]).length;
+  v.innerHTML=`<h1>今日の訪問</h1><p class="sub">${d.getMonth()+1}月${d.getDate()}日（${'日月火水木金土'[d.getDay()]}）・ヘルパー 佐藤・${n}/${TODAY_VISITS.length}件 記録済み</p>${seg}`+
+  TODAY_VISITS.map(x=>{const c=CLIENTS.find(c=>c.id===x.c);const dn=S.done[x.id];
+   return `<div class="card tap" data-v="${x.id}" role="button" tabindex="0" aria-label="${c.name}さまの訪問を開く">
+     <div class="time">${x.st}</div>
+     <div class="grow"><div style="font-weight:700">${c.name} さま</div><div class="meta">${x.kind==='身体'?'身体介護':'生活援助'}・${x.st}〜${x.en}・${c.area}地区</div></div>
+     ${dn?`<span class="badge b-ok">${ic('ok',14)}記録済み</span>`:`<span class="badge b-mute">未記録</span>`}
+     <span class="chev">${ic('chev',18)}</span></div>`}).join('')+
+  `<p class="note">押すと、到着・退出の記録と音声での記録ができます。</p>`;
+  v.querySelectorAll('[data-v]').forEach(el=>{const go=()=>{sub=el.dataset.v;render();scrollTo(0,0)};el.onclick=go;el.onkeydown=e=>{if(e.key==='Enter')go()}});
+  segBind(v);
+}
+function segBind(v){v.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{recMode=b.dataset.m;render()})}
+
+let draft=null, recog=null;
+function vVisit(v,id){
+  const x=TODAY_VISITS.find(t=>t.id===id), c=CLIENTS.find(k=>k.id===x.c);
+  if(!draft||draft.id!==id) draft={id,arr:'',dep:'',items:[],t:'',bp:'',raw:'',out:'',flag:false};
+  const D=draft;
+  const now=()=>{const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
+  v.innerHTML=`<button class="back" id="bk">${ic('left',18)}今日の訪問へ</button>
+  <h1>${c.name} さま</h1><p class="sub">${x.kind==='身体'?'身体介護':'生活援助'}・予定 ${x.st}〜${x.en}</p>
+  <div class="alert warn">${ic('list',18)}<div><b>申し送り</b><br>${PREV_NOTE[x.c]}</div></div>
+  <div class="card"><div class="grid2">
+    <button class="btn ${D.arr?'btn-secondary':'btn-primary'}" id="arr">${D.arr?'到着 '+D.arr:'到着した'}</button>
+    <button class="btn ${D.dep?'btn-secondary':'btn-primary'}" id="dep" ${D.arr?'':'disabled'}>${D.dep?'退出 '+D.dep:'退出する'}</button>
+  </div><p class="note" style="margin:8px 0 0">押した時刻がそのまま記録されます。</p></div>
+  <h2>やったこと</h2><div class="grid2">${PLAN[x.kind].map(p=>`<label class="check ${D.items.includes(p)?'on':''}"><input type="checkbox" value="${p}" ${D.items.includes(p)?'checked':''}>${p}</label>`).join('')}</div>
+  <h2>体温・血圧</h2><div class="grid2"><div><label class="f" for="vt">体温（℃）</label><input id="vt" type="text" inputmode="decimal" placeholder="36.5" value="${esc(D.t)}"></div><div><label class="f" for="vb">血圧</label><input id="vb" type="text" inputmode="numeric" placeholder="120/80" value="${esc(D.bp)}"></div></div>
+  <h2>様子を話す</h2>
+  <button class="mic" id="mic">${ic('rec',24)}<span id="micl">押して話す</span></button>
+  <p class="note">話した内容が下に入ります。手で直すこともできます。マイクが使えない環境では例文が入ります。</p>
+  <textarea id="raw" aria-label="話した内容" placeholder="例：トイレ介助と着替え。右ひざが痛いと言っていた。お昼はほぼ全部食べた。">${esc(D.raw)}</textarea>
+  <div style="margin-top:12px"><button class="btn btn-secondary btn-block" id="fmt">${ic('spark',18)}記録の文章に整える</button></div>
+  <div id="outw" style="margin-top:12px">${D.out?outHtml(D):''}</div>
+  <div style="margin-top:20px"><button class="btn btn-primary btn-block" id="sendb" ${D.out&&D.arr&&D.dep?'':'disabled'}>${ic('send',18)}サ責に送る</button>
+  <p class="note" id="why" style="text-align:center">${!D.arr||!D.dep?'到着・退出を押すと送れます':!D.out?'「記録の文章に整える」を押すと送れます':'送ると、サ責の確認待ちに入ります'}</p></div>`;
+  const q=s=>v.querySelector(s);
+  q('#bk').onclick=()=>{sub=null;render()};
+  q('#arr').onclick=()=>{D.arr=D.arr||now();render()};
+  q('#dep').onclick=()=>{D.dep=D.dep||now();render()};
+  v.querySelectorAll('.check input').forEach(cb=>cb.onchange=()=>{D.items=[...v.querySelectorAll('.check input:checked')].map(i=>i.value);cb.closest('.check').classList.toggle('on',cb.checked)});
+  q('#vt').oninput=e=>D.t=e.target.value; q('#vb').oninput=e=>D.bp=e.target.value; q('#raw').oninput=e=>D.raw=e.target.value;
+  q('#mic').onclick=()=>toggleMic(q);
+  q('#fmt').onclick=()=>{
+    const b=q('#fmt'); b.disabled=true; b.innerHTML='<span class="spin"></span>整えています';
+    setTimeout(()=>{ if(!D.raw.trim()) D.raw=SAMPLE[x.kind]; formatRecord(D,x); render(); },700);
+  };
+  q('#sendb').onclick=()=>{
+    S.records.unshift({id:'r'+Date.now(),vid:id,c:x.c,date:today(),st:D.arr,en:D.dep,kind:x.kind,helper:'佐藤',items:D.items,vit:{t:D.t,bp:D.bp},text:D.out,flag:D.flag,status:'wait'});
+    S.done[id]=1; save(); draft=null; sub=null; toast('送りました。サ責の確認待ちに入りました'); render();
+  };
+}
+const SAMPLE={身体:'トイレ介助と着替えをした。右ひざがまだ痛いと言っていた。歩く時はふらつきあり、手を添えた。お昼はほぼ全部食べた。薬は飲んだのを確認。',生活:'掃除と洗濯。冷蔵庫の中が少なかったので次回買い物が必要。本人は元気そうだった。薬は飲み忘れなし。'};
+const FLAGS=[['痛','痛みの訴え'],['ふらつ','ふらつき'],['転','転倒・転びそう'],['熱','発熱'],['食欲','食欲の変化'],['あざ','あざ・皮膚の異常'],['飲み忘れ','服薬の飲み忘れ']];
+function formatRecord(D,x){
+  const ss=D.raw.replace(/\s+/g,'').split(/[。．\n]/).filter(Boolean);
+  const isNote=s=>FLAGS.some(([k])=>s.includes(k)&&!s.includes('飲み忘れなし'))||/次回|必要|連絡/.test(s);
+  const notes=ss.filter(isNote), rest=ss.filter(s=>!isNote(s));
+  const polite=s=>s.replace(/した$/,'した').replace(/言っていた$/,'訴えあり').replace(/だった$/,'であった')+'。';
+  const items=D.items.length?D.items.join('、')+'を実施。':'';
+  let vit=''; if(D.t||D.bp) vit=`体温${D.t||'—'}℃、血圧${D.bp||'—'}。`;
+  const hot=parseFloat(D.t)>=37.5;
+  D.flag=notes.some(s=>FLAGS.slice(0,6).some(([k])=>s.includes(k)))||hot;
+  D.out=`【実施内容】${items}${vit}\n【ご様子】${rest.map(polite).join('')||'特に変化なし。'}\n【特記・申し送り】${notes.map(polite).join('')||'特になし。'}${hot?'体温37.5℃以上のためサ責へ報告。':''}`;
+}
+function outHtml(D){return `<div class="result" aria-label="整えた記録"><b>整えた記録</b>${D.flag?' <span class="badge b-warn">'+ic('warn',12)+'要注意あり</span>':''}\n${esc(D.out)}</div><p class="note">見本では簡単な決まりで整えています。本番はAIが文章にし、ヘルパーが確認してから送ります。</p>`}
+function toggleMic(q){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition, m=q('#mic'), l=q('#micl');
+  if(!SR){ draft.raw=SAMPLE[TODAY_VISITS.find(t=>t.id===draft.id).kind]; q('#raw').value=draft.raw; toast('この環境ではマイクが使えないため、例文を入れました'); return; }
+  if(recog){recog.stop();return}
+  recog=new SR(); recog.lang='ja-JP'; recog.interimResults=true; recog.continuous=true; const base=draft.raw;
+  recog.onresult=e=>{let t='';for(const r of e.results)t+=r[0].transcript;draft.raw=(base?base+'。':'')+t;q('#raw').value=draft.raw};
+  recog.onend=()=>{recog=null;m.classList.remove('rec');l.textContent='押して話す'};
+  recog.onerror=()=>{toast('音声が取れませんでした。手で入力もできます')};
+  recog.start(); m.classList.add('rec'); l.innerHTML='<span class="pulse">話しています… 押すと止まる</span>';
+}
+
+/* ===== 1b. B型 ===== */
+const RATE=300; // 見本の時間単価
+function vB(v,seg){
+  const d=today(); S.b[d]=S.b[d]||{}; const B=S.b[d];
+  B_USERS.forEach((u,i)=>{B[u]=B[u]||{in:i!==5,work:WORKS[i%WORKS.length],h:i%3?4:5,pick:i%2===0,memo:''}});
+  const att=B_USERS.filter(u=>B[u].in), hours=att.reduce((a,u)=>a+ +B[u].h,0);
+  v.innerHTML=`<h1>今日の作業記録</h1><p class="sub">就労継続支援B型・出席 ${att.length}/${B_USERS.length}名・作業 合計${hours}時間</p>${seg}`+
+  B_USERS.map(u=>{const r=B[u];return `<div class="card" data-u="${esc(u)}">
+   <div class="row"><div class="grow" style="font-weight:700">${u} さん</div>
+   <div class="seg" style="margin:0;width:150px"><button aria-selected="${r.in}" data-in="1">出席</button><button aria-selected="${!r.in}" data-in="0">欠席</button></div></div>
+   ${r.in?`<div class="grid2" style="margin-top:10px"><div><label class="f">作業</label><select class="in" data-k="work">${WORKS.map(w=>`<option ${w===r.work?'selected':''}>${w}</option>`).join('')}</select></div>
+   <div><label class="f">作業時間</label><div class="bnum"><button class="btn btn-secondary" style="min-height:44px;padding:0 12px" data-d="-0.5" aria-label="30分減らす">−</button><input type="text" value="${r.h}" readonly aria-label="時間" style="min-height:44px"><button class="btn btn-secondary" style="min-height:44px;padding:0 12px" data-d="0.5" aria-label="30分増やす">＋</button></div></div></div>
+   <label class="check ${r.pick?'on':''}" style="margin-top:8px"><input type="checkbox" data-k="pick" ${r.pick?'checked':''}>送迎あり</label>
+   <input type="text" data-k="memo" placeholder="様子のひとこと（例：集中して取り組めた）" value="${esc(r.memo)}" style="margin-top:8px">`:'<p class="note" style="margin:8px 0 0">欠席の理由はサビ管が確認します。</p>'}
+  </div>`}).join('')+
+  `<div class="card"><div class="kv"><span>今日の作業時間 合計</span><b>${hours}時間</b></div><div class="kv"><span>工賃の見込み（見本の単価 ${RATE}円/時）</span><b>${(hours*RATE).toLocaleString()}円</b></div><div class="kv"><span>送迎</span><b>${att.filter(u=>B[u].pick).length}名</b></div></div>
+  <button class="btn btn-primary btn-block" id="bsave">今日の記録を保存</button>`;
+  segBind(v);
+  v.querySelectorAll('[data-u]').forEach(card=>{const u=card.dataset.u,r=B[u];
+    card.querySelectorAll('[data-in]').forEach(b=>b.onclick=()=>{r.in=b.dataset.in==='1';save();render()});
+    card.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{r.h=Math.max(0,Math.min(8,+r.h+ +b.dataset.d));save();render()});
+    card.querySelectorAll('[data-k]').forEach(el=>el.onchange=el.oninput=()=>{const k=el.dataset.k;r[k]=el.type==='checkbox'?el.checked:el.value;save();if(k==='pick')render()});
+  });
+  v.querySelector('#bsave').onclick=()=>{save();toast('保存しました。月末の工賃集計に入ります')};
+}
+
+/* ===== 2. 確認（サ責・サビ管） ===== */
+function vChk(v){
+  const list=S.records.filter(r=>r.status==='wait').sort((a,b)=>b.flag-a.flag);
+  const done=S.records.filter(r=>r.status==='ok').length;
+  v.innerHTML=`<h1>記録の確認</h1><p class="sub">確認待ち ${list.length}件・今日の承認 ${done}件</p>`+
+  (list.length?list.map(r=>`<div class="card">
+    <div class="row wrap"><b class="grow">${cname(r.c)} さま</b>${r.flag?`<span class="badge b-warn">${ic('warn',12)}要注意</span>`:''}</div>
+    <div class="meta">${r.kind==='身体'?'身体介護':'生活援助'}・${r.st||'—'}〜${r.en||'—'}・ヘルパー ${r.helper}</div>
+    <div class="result" style="margin-top:10px">${esc(r.text)}</div>
+    <div class="grid2" style="margin-top:12px"><button class="btn btn-danger" data-ng="${r.id}">差し戻す</button><button class="btn btn-primary" data-ok="${r.id}">${ic('ok',18)}承認</button></div>
+  </div>`).join(''):`<div class="card empty">${ic('inbox',40,1.5)}<div style="font-weight:700;color:var(--text)">確認待ちはありません</div><div>ヘルパーが記録を送ると、ここに届きます。<br>要注意の記録は一番上に出ます。</div></div>`);
+  v.querySelectorAll('[data-ok]').forEach(b=>b.onclick=()=>{S.records.find(r=>r.id===b.dataset.ok).status='ok';save();toast('承認しました');render()});
+  v.querySelectorAll('[data-ng]').forEach(b=>b.onclick=()=>{const r=S.records.find(r=>r.id===b.dataset.ng);r.status='back';save();toast(`${r.helper}さんに差し戻しました（直す点を書いて送る想定）`);render()});
+}
+
+/* ===== 3. シフト（警告＋代わり手配） ===== */
+const toMin=t=>{const[h,m]=t.split(':');return h*60+ +m};
+function checkSlot(i){
+  const s=SLOTS[i], hid=S.shift[i], h=sOf(hid), c=CLIENTS.find(k=>k.id===s.c), w=[];
+  if(!h) return ['担当が決まっていません'];
+  if(s.kind==='身体'&&h.q==='生活援助従事者研修') w.push(`${h.name}さんは生活援助の資格のため、身体介護に入れません`);
+  if(c.wantSex&&c.wantSex!==h.sex) w.push(`${c.name}さまは${c.wantSex}性ヘルパーを希望されています`);
+  if(c.ng.includes(hid)) w.push(`${c.name}さまと${h.name}さんは組み合わせNGに登録されています`);
+  SLOTS.forEach((o,j)=>{ if(j===i||o.d!==s.d||S.shift[j]!==hid) return;
+    const a1=toMin(s.st),a2=toMin(s.en),b1=toMin(o.st),b2=toMin(o.en);
+    if(a1<b2&&b1<a2) w.push(`${o.st}の${cname(o.c)}さまと時間が重なっています`);
+    else if(b2<=a1){const need=TRAVEL[CLIENTS.find(k=>k.id===o.c).area+c.area];if(a1-b2<need)w.push(`前の訪問から${a1-b2}分しかありません（移動の目安${need}分）`)}
+  });
+  return w;
+}
+let absent=null;
+function vShift(v){
+  const all=SLOTS.map((_,i)=>checkSlot(i)), bad=all.filter(w=>w.length).length;
+  v.innerHTML=`<h1>今週のシフト</h1><p class="sub">定期訪問 ${SLOTS.length}件・担当を変えると、その場で確認します</p>
+  ${bad?`<div class="alert danger">${ic('warn',18)}<div><b>${bad}件に問題があります</b><br>赤い行を直してください。</div></div>`:`<div class="alert ok">${ic('ok',18)}<div><b>問題はありません</b><br>資格・希望・重なり・移動時間を確認しました。</div></div>`}
+  <div class="card" style="padding:10px 12px">`+
+  DAYS.map((d,di)=>{const rows=SLOTS.map((s,i)=>[s,i]).filter(([s])=>s.d===di);if(!rows.length)return'';
+   return `<div class="dayhead">${d}曜日</div><table class="shift">`+rows.map(([s,i])=>{const w=all[i];
+    return `<tr class="${w.length?'bad':''}"><td class="t">${s.st}</td><td><div style="font-weight:500">${cname(s.c)}</div><div class="meta">${s.kind==='身体'?'身体':'生活'}・${CLIENTS.find(k=>k.id===s.c).area}</div></td>
+    <td style="width:38%"><select data-i="${i}" aria-label="担当">${STAFF.map(h=>`<option value="${h.id}" ${S.shift[i]===h.id?'selected':''}>${h.name}</option>`).join('')}</select></td>
+    <td style="width:40px"><button class="btn btn-ghost" data-ab="${i}" title="急な休み・代わりを探す" aria-label="代わりを探す">${ic('swap',18)}</button></td></tr>
+    ${w.length?`<tr class="bad"><td></td><td colspan="3" style="color:var(--danger);font-size:12px;padding-top:0">${w.map(esc).join('<br>')}</td></tr>`:''}`}).join('')+'</table>'}).join('')+
+  `</div><p class="note">右の ${ic('swap',12)} を押すと、急な休みのときに代われる人を探して一斉に連絡できます。</p><div id="ab"></div>`;
+  v.querySelectorAll('select[data-i]').forEach(s=>s.onchange=()=>{S.shift[+s.dataset.i]=s.value;save();render()});
+  v.querySelectorAll('[data-ab]').forEach(b=>b.onclick=()=>{absent=+b.dataset.ab;showAbsent(v)});
+  if(absent!==null) showAbsent(v);
+}
+function showAbsent(v){
+  const i=absent,s=SLOTS[i],cur=S.shift[i];
+  const cands=STAFF.filter(h=>h.id!==cur).filter(h=>{const old=S.shift[i];S.shift[i]=h.id;const ok=!checkSlot(i).length;S.shift[i]=old;return ok});
+  const box=v.querySelector('#ab');
+  box.innerHTML=`<div class="card" id="abc" style="border-color:#9cc7b7"><b>${DAYS[s.d]}曜 ${s.st} ${cname(s.c)}さま</b><div class="meta">今の担当：${sOf(cur).name}さん が休みの場合</div>
+  <h2 style="margin-top:12px">代われる人 ${cands.length}名</h2><div class="meta" style="margin-bottom:8px">資格・希望・重なり・移動時間に問題がない人だけ出しています</div>
+  ${cands.length?cands.map(h=>`<div class="kv"><span>${h.name}さん（${h.q}・${h.area}地区）</span><span class="badge b-mute" data-st="${h.id}">未連絡</span></div>`).join(''):'<p class="meta">条件に合う人がいません。サ責が入るか、時間の変更を相談します。</p>'}
+  <div class="grid2" style="margin-top:12px"><button class="btn btn-secondary" id="abx">閉じる</button><button class="btn btn-primary" id="abs" ${cands.length?'':'disabled'}>${ic('send',18)}一斉に送る</button></div></div>`;
+  box.querySelector('#abx').onclick=()=>{absent=null;box.innerHTML=''};
+  box.querySelector('#abs').onclick=e=>{
+    e.target.disabled=true; e.target.innerHTML='<span class="spin"></span>返事を待っています';
+    cands.forEach(h=>{const b=box.querySelector(`[data-st="${h.id}"]`);b.className='badge b-warn';b.textContent='送信済み'});
+    setTimeout(()=>{const w=cands[0];const b=box.querySelector(`[data-st="${w.id}"]`);b.className='badge b-ok';b.textContent='受けられます';
+      const btn=box.querySelector('#abs'); btn.disabled=false; btn.innerHTML=`${ic("ok",18)}確定する`; btn.id='abfix';
+      box.insertAdjacentHTML('beforeend','');
+      btn.onclick=()=>{S.shift[i]=w.id;save();absent=null;toast(`${w.name}さんで確定しました。ほかの人には「決まりました」と送ります`);render()};
+      const n=box.querySelector('#abc'); n.insertAdjacentHTML('beforeend','<p class="note" style="margin:8px 0 0">返事が来た人の中から、サ責が選んで確定します（先着で自動には決めません）。</p>');
+    },1400);
+  };
+  box.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ===== 管理者：毎朝のボード ===== */
+function vBoard(v){
+  const pend=S.records.filter(r=>r.status==='wait'), flag=pend.filter(r=>r.flag).length;
+  const bad=SLOTS.map((_,i)=>checkSlot(i)).filter(w=>w.length).length;
+  const due=DUE.filter(d=>d.days<=14).length;
+  const abs=(S.fam&&S.fam.length)||0;
+  const wage=[14200,14800,15100,15600]; const goal=16000;
+  const stat=(n,l,tone,t)=>`<button class="card" data-go="${t}" style="text-align:left;cursor:pointer;margin:0;display:block;width:100%"><div class="meta">${l}</div><div style="font-size:28px;font-weight:700;color:var(--${tone})">${n}</div></button>`;
+  v.innerHTML=`<h1>今朝のボード</h1><p class="sub">毎朝この1画面を見れば足りるようにまとめています</p>
+  <div class="grid2" style="margin-bottom:12px">
+    ${stat(pend.length+'件','記録の確認待ち（うち要注意'+flag+'）',flag?'warn':'text','chk')}
+    ${stat(bad+'件','今週のシフトの問題',bad?'danger':'ok','shift')}
+    ${stat(due+'件','2週間以内の期限',due?'warn':'text','due')}
+    ${stat((abs+1)+'名','今日のB型の欠席',abs?'warn':'text','rec')}
+  </div>
+  <div class="card"><div class="row"><b class="grow">B型 平均工賃（月額）の見込み</b><span class="badge b-mute">見本の数字</span></div>
+   <div style="margin-top:12px">${wage.map((w,i)=>`<div class="row" style="margin:6px 0"><span class="meta" style="width:52px">${['8月','9月','10月','11月見込み'][i].replace('見込み','')}</span><div class="grow" style="background:var(--surface-2);border-radius:6px;height:18px;position:relative"><div style="width:${w/200}%;height:100%;border-radius:6px;background:${i===3?'var(--primary)':'#a9c4ba'}"></div><div style="position:absolute;left:${goal/200}%;top:-3px;bottom:-3px;border-left:2px dashed var(--warn)"></div></div><span style="width:72px;text-align:right;font-variant-numeric:tabular-nums">${w.toLocaleString()}円</span></div>`).join('')}</div>
+   <p class="note" style="margin:8px 0 0">点線は目標（見本：16,000円）。平均工賃は基本報酬の区分に関わるため、月の途中で見えると手を打てます。</p></div>`;
+  v.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{tab=b.dataset.go;if(tab==='rec'){ROLE='sabi';document.getElementById('role').value='sabi';recMode='b'}render();scrollTo(0,0)});
+}
+
+/* ===== B型の本人・家族：欠席連絡 ===== */
+function vFamily(v){
+  const st=S.famState||{};
+  const btn=(k,l)=>`<button class="btn ${st.go===k?'btn-primary':'btn-secondary'}" data-go="${k}" style="min-height:88px;font-size:20px">${l}</button>`;
+  const cond=['元気','少しつかれている','体調が悪い','通院のため'];
+  v.innerHTML=`<h1>青木 健太 さん</h1><p class="sub">今日の作業所の予定・送迎 8:40ごろ</p>
+  <div class="grid2">${btn('in','行きます')}${btn('off','休みます')}</div>
+  ${st.go==='off'?`<h2>どうしましたか</h2><div class="grid2">${cond.map(c=>`<button class="btn ${st.why===c?'btn-primary':'btn-secondary'}" data-why="${c}">${c}</button>`).join('')}</div>
+  <h2>ひとこと（なくても大丈夫）</h2><input type="text" id="fm" placeholder="例：朝から熱っぽいです" value="${esc(st.memo||'')}">`:''}
+  ${st.go==='in'?`<h2>今日の体調</h2><div class="grid2">${cond.slice(0,3).map(c=>`<button class="btn ${st.why===c?'btn-primary':'btn-secondary'}" data-why="${c}">${c}</button>`).join('')}</div>`:''}
+  <div style="margin-top:20px"><button class="btn btn-primary btn-block" id="fsend" ${st.go&&st.why?'':'disabled'}>${ic('send',18)}作業所に知らせる</button>
+  <p class="note" style="text-align:center">${st.sent?'知らせました。支援員から連絡することがあります。':'選んで押すだけで作業所に届きます'}</p></div>
+  <div class="card" style="margin-top:16px;background:var(--surface-2);box-shadow:none"><b style="font-size:13px">作業所の側で起きること</b><p class="note" style="margin:4px 0 0">欠席の連絡は支援員のスマホに届き、その日の欠席一覧に入ります。電話で様子を聞いたら、その内容を欠席時の対応の記録として残せます（下書きを用意）。</p></div>`;
+  const save2=()=>{S.famState=st;save();vFamily(v)};
+  v.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{st.go=b.dataset.go;st.why='';st.sent=false;save2()});
+  v.querySelectorAll('[data-why]').forEach(b=>b.onclick=()=>{st.why=b.dataset.why;save2()});
+  const fm=v.querySelector('#fm'); if(fm) fm.oninput=e=>{st.memo=e.target.value;S.famState=st;save()};
+  v.querySelector('#fsend').onclick=()=>{st.sent=true;if(st.go==='off'){S.fam=['青木 健太']}save2();toast('作業所に知らせました')};
+}
+
+/* ===== 4. 期限 ===== */
+function vDue(v){
+  const L=[...DUE].sort((a,b)=>a.days-b.days);
+  const tag=d=>d<0?`<span class="badge b-danger">${-d}日過ぎています</span>`:d<=14?`<span class="badge b-warn">あと${d}日</span>`:`<span class="badge b-mute">あと${d}日</span>`;
+  v.innerHTML=`<h1>期限のお知らせ</h1><p class="sub">2週間以内 ${L.filter(d=>d.days<=14).length}件・期限切れ ${L.filter(d=>d.days<0).length}件</p>
+  <div class="alert warn">${ic('bell',18)}<div>期限の60日前・30日前・14日前に、担当者のスマホへお知らせします（見本の設定）。</div></div>`+
+  L.map(d=>`<div class="card"><div class="row wrap"><b class="grow">${d.what}</b>${tag(d.days)}</div><div class="meta">${d.who}・${d.biz}</div></div>`).join('');
+}
+
+/* ===== 5. 書き出し ===== */
+function genRecords(from,to){
+  const out=[]; let d=new Date(from); const end=new Date(to); let n=0;
+  while(d<=end&&out.length<2000){ const wd=(d.getDay()+6)%7;
+    SLOTS.filter(s=>s.d===wd).forEach((s,k)=>{n++; out.push({date:d.toISOString().slice(0,10),client:cname(s.c),kind:s.kind==='身体'?'身体介護':'生活援助',st:s.st,en:(n%23===0?'':s.en),helper:sOf(S.shift[SLOTS.indexOf(s)]).name,min:(toMin(s.en)-toMin(s.st))})});
+    d.setDate(d.getDate()+1);}
+  return out;
+}
+function vOut(v){
+  const t=new Date(), f=new Date(t.getFullYear(),t.getMonth(),1), e=new Date(t.getFullYear(),t.getMonth()+1,0);
+  const iso=x=>new Date(x.getTime()-x.getTimezoneOffset()*6e4).toISOString().slice(0,10);
+  v.innerHTML=`<h1>書き出し</h1><p class="sub">期間を選んで、CSVや市の様式のExcelを作ります</p>
+  <div class="card stack">
+   <div class="grid2"><div><label class="f" for="from">開始日</label><input type="date" id="from" value="${iso(f)}"></div><div><label class="f" for="to">終了日</label><input type="date" id="to" value="${iso(e)}"></div></div>
+   <div><label class="f" for="kind">作るもの</label><select class="in" id="kind">
+     <option value="csv">訪問記録の一覧（CSV）</option>
+     <option value="city">市の様式：サービス提供実績記録票（見本の様式・Excel）</option>
+     <option value="b">B型 作業時間・工賃の集計（CSV）</option></select></div>
+   <div><label class="f" for="who">利用者</label><select class="in" id="who"><option value="">全員</option>${CLIENTS.map(c=>`<option>${c.name}</option>`).join('')}</select></div>
+   <button class="btn btn-secondary btn-block" id="chk">${ic('check',18)}出す前に確認する</button>
+  </div><div id="res"></div>`;
+  const q=s=>v.querySelector(s);
+  q('#chk').onclick=()=>{
+    const from=q('#from').value,to=q('#to').value,who=q('#who').value,kind=q('#kind').value;
+    if(!from||!to||from>to){q('#res').innerHTML=`<div class="alert danger">${ic('warn',18)}<div>開始日と終了日を確かめてください。</div></div>`;return}
+    let rows=genRecords(from,to).filter(r=>!who||r.client===who);
+    const miss=rows.filter(r=>!r.en);
+    q('#res').innerHTML=`<div class="card"><div class="kv"><span>対象の記録</span><b>${rows.length}件</b></div><div class="kv"><span>期間</span><b>${from} 〜 ${to}</b></div></div>`+
+     (miss.length?`<div class="alert warn">${ic('warn',18)}<div><b>退出時刻がない記録が${miss.length}件あります</b><br>${miss.slice(0,3).map(r=>`${r.date} ${r.client}さま（${r.helper}さん）`).join('<br>')}${miss.length>3?'<br>ほか'+(miss.length-3)+'件':''}<br>直してから出すのがおすすめです。</div></div>`:`<div class="alert ok">${ic('ok',18)}<div>抜けはありません。</div></div>`)+
+     `<button class="btn btn-primary btn-block" id="go">${ic('dl',18)}${kind==='city'?'Excelを作る':'CSVを作る'}</button>`;
+    q('#go').onclick=()=>exportData(kind,rows,from,to);
+  };
+}
+function download(name,blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+function exportData(kind,rows,from,to){
+  if(kind==='b'){
+    const head='利用者,出席日数,作業時間合計,工賃見込み(円)\n';
+    const body=B_USERS.map((u,i)=>{const days=Math.round(14+(i*3)%7),h=days*(i%3?4:5);return `${u},${days},${h},${h*RATE}`}).join('\n');
+    download(`B型工賃集計_${from}_${to}.csv`,new Blob(['﻿'+head+body],{type:'text/csv'}));toast('CSVを作りました（Excelで開けます）');return;
+  }
+  if(kind==='csv'||!window.XLSX){
+    const head='日付,利用者,サービス,開始,終了,担当,時間(分)\n';
+    download(`訪問記録_${from}_${to}.csv`,new Blob(['﻿'+head+rows.map(r=>[r.date,r.client,r.kind,r.st,r.en,r.helper,r.min].join(',')).join('\n')],{type:'text/csv'}));
+    toast(kind==='csv'?'CSVを作りました（Excelで開けます）':'Excelの部品が読めないため、CSVで作りました');return;
+  }
+  const wb=XLSX.utils.book_new();
+  const by={}; rows.forEach(r=>(by[r.client]=by[r.client]||[]).push(r));
+  Object.entries(by).forEach(([cl,rs])=>{
+    const aoa=[['サービス提供実績記録票（見本の様式）'],[],['事業所名','（事業所名）','','対象期間',`${from} 〜 ${to}`],['利用者氏名',cl,'','提出先','○○市 福祉課（見本）'],[],
+      ['日付','曜日','サービス内容','開始時刻','終了時刻','提供時間（分）','担当者','利用者確認印']];
+    rs.forEach(r=>aoa.push([r.date,'日月火水木金土'[new Date(r.date).getDay()],r.kind,r.st,r.en||'（未入力）',r.min,r.helper,'']));
+    aoa.push([],['合計','','',`${rs.length}回`,'',rs.reduce((a,r)=>a+r.min,0),'','']);
+    const ws=XLSX.utils.aoa_to_sheet(aoa); ws['!cols']=[{wch:12},{wch:5},{wch:12},{wch:9},{wch:11},{wch:13},{wch:9},{wch:13}];
+    XLSX.utils.book_append_sheet(wb,ws,cl.replace(/\s/g,'').slice(0,28));
+  });
+  XLSX.writeFile(wb,`実績記録票_${from}_${to}.xlsx`); toast('利用者ごとのシートに分けてExcelを作りました');
+}
+
+/* ===== 起動 ===== */
+if(location.hash==='#reset'){S=fresh();save()}
+const h=location.hash.slice(1); if(['rec','chk','shift','due','out'].includes(h)) tab=h; if(h==='b'){recMode='b'}
+render();
+</script>
+</body>
+</html>
