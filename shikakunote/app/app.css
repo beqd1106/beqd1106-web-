@@ -695,3 +695,22 @@ details.more{margin-top:var(--s4)}
 .cd-done .stack{text-align:left}
 .cd-done-ic{width:84px;height:84px;margin:0 auto;border-radius:50%;display:grid;place-items:center;background:var(--green);color:#fff;box-shadow:0 10px 26px color-mix(in srgb,var(--green) 40%,transparent);animation:pop .35s var(--ease) both}
 @keyframes pop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+
+/* 読み方の切り替え（サクッと／ふつう／じっくり） */
+.lm{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;margin:var(--s4) 0 var(--s2);background:var(--card2);border:1px solid var(--line);border-radius:16px}
+.lm-opt{display:grid;gap:1px;justify-items:center;min-height:52px;padding:8px 4px;border:none;border-radius:12px;background:transparent;cursor:pointer;color:var(--sub);font:inherit;transition:background .15s,color .15s,box-shadow .15s}
+.lm-opt b{font-size:14.5px}
+.lm-opt small{font-size:11px;line-height:1.3}
+.lm-opt:hover{color:var(--navy)}
+.lm-opt.on{background:var(--card);color:var(--navy);box-shadow:var(--shadow),0 0 0 1.5px var(--navy) inset}
+.lm-opt:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+/* ふつうモード */
+.us-title{margin:6px 0 4px}
+.us-goal{margin:0 0 var(--s4);color:var(--sub);font-size:14px}
+.us-list{display:grid;gap:var(--s3)}
+.us-pt{background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);padding:18px;box-shadow:var(--shadow)}
+.us-head{font-size:17px;margin:0 0 6px}
+.us-body{margin:0;font-size:16px;line-height:1.85;white-space:pre-wrap}
+.us .cd-face{min-height:0;animation:none;padding:20px 18px;border-color:color-mix(in srgb,var(--orange) 45%,var(--line))}
+.us-act{grid-template-columns:auto 1fr;align-items:center;margin-top:var(--s5) !important}
+.us-count{font-size:13px;font-weight:800;color:var(--sub);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:8px 12px}

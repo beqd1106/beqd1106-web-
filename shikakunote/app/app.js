@@ -110,7 +110,7 @@ function openLessonSheet(l, focusKey, opener) {
       <div class="sheet-head"><div style="flex:1;min-width:0"><span class="cap">${esc(domainInfo(l.domain)?.shortTitle || "")}・教材</span><h2 id="sheet-title" class="sheet-title">${esc(l.title)}</h2></div>
         <button class="icon-btn" id="sheet-x" aria-label="閉じる">${I.x}</button></div>
       <div class="sheet-body"><article class="lesson">
-        ${l.summary && !D.cards?.[l.id] ? `<div class="note" style="margin:0 0 8px"><b>要点</b><br>${esc(l.summary)}</div>` : ""}
+        ${l.summary ? `<div class="note" style="margin:0 0 8px"><b>要点</b><br>${esc(l.summary)}</div>` : ""}
         ${lessonBodyHTML(l, focusKey)}
       </article></div>
       <div class="sheet-foot"><button class="btn btn-primary btn-block" id="sheet-back">問題に戻る</button></div>
@@ -545,7 +545,7 @@ async function viewLesson(id) {
       <span class="tag">${esc(domainInfo(l.domain)?.shortTitle || "")}・約${l.estimatedMinutes || 5}分</span>
       <h1 class="h-title" style="margin:10px 0 8px">${esc(l.title)}</h1>
       ${l.summary ? `<div class="note" style="margin:0 0 8px"><b>要点</b><br>${esc(l.summary)}</div>` : ""}
-      ${D.cards?.[l.id] ? `${cardUnitsHTML(l, D.cards[l.id])}<details class="card more"><summary>くわしく読む（長文・約${l.estimatedMinutes || 5}分）</summary><div class="lesson-long">${lessonBodyHTML(l)}</div></details>` : lessonBodyHTML(l)}
+      ${D.cards?.[l.id] ? `${modeSwitchHTML(l)}${lmode() === "long" ? `<div class="lesson-long">${lessonBodyHTML(l)}</div>` : `${cardUnitsHTML(l, D.cards[l.id])}<details class="card more"><summary>くわしく読む（長文・約${l.estimatedMinutes || 5}分）</summary><div class="lesson-long">${lessonBodyHTML(l)}</div></details>`}` : lessonBodyHTML(l)}
     </article>
     <div class="stack" style="margin-top:24px">
       ${qn ? `<a class="btn btn-cta btn-block" href="#/quiz/lesson/${l.id}" id="lq">読んだ内容を${Math.min(qn, SET_SIZE)}問で確かめる</a>` : ""}
@@ -554,6 +554,7 @@ async function viewLesson(id) {
     </div>`);
   const mark = () => { if (!st.lessons.includes(l.id)) { st.lessons.push(l.id); const d = (S.days[dayKey()] ||= {}); d._l = (d._l || 0) + 1; save(); } };
   $("#lq")?.addEventListener("click", mark);
+  document.querySelectorAll(".lm-opt").forEach((b) => b.addEventListener("click", () => { S.set.lmode = b.dataset.m; save(); viewLesson(id); }));
   $("#ln")?.addEventListener("click", mark);
   $("#lm").addEventListener("click", () => { if (st.lessons.includes(l.id)) { st.lessons = st.lessons.filter((x) => x !== l.id); save(); } else mark(); viewLesson(id); toast("保存しました"); });
 }
@@ -951,6 +952,16 @@ async function viewTerms() {
 // データ: data/<exam>_cards.json = { lessonId: { units:[{title, goal, cards:[{t:"point",head,body,ex}|{t:"quiz",q}]}] } }
 // 進み具合: exState().cards[lessonId] = 終えた区切りの数
 let C = null;
+const LMODES = [
+  { m: "card", name: "サクッと", sub: "1枚ずつ" },
+  { m: "scroll", name: "ふつう", sub: "まとめて読む" },
+  { m: "long", name: "じっくり", sub: "長文" },
+];
+const lmode = () => (LMODES.some((x) => x.m === S.set.lmode) ? S.set.lmode : "card");
+function modeSwitchHTML(l) {
+  const cur = lmode();
+  return `<div class="lm" role="radiogroup" aria-label="読み方">${LMODES.map((x) => `<button class="lm-opt${x.m === cur ? " on" : ""}" role="radio" aria-checked="${x.m === cur}" data-m="${x.m}"><b>${x.name}</b><small>${x.sub}</small></button>`).join("")}</div>`;
+}
 const unitMinutes = (u) => Math.max(1, Math.round(u.cards.reduce((m, k) => m + (k.t === "quiz" ? 20 : ((k.body || "").length + (k.ex || "").length) / 6.5 + 4), 0) / 60));
 const cardsDone = (lid) => (exState().cards ||= {})[lid] || 0;
 
@@ -958,9 +969,9 @@ function cardUnitsHTML(l, cd) {
   const done = cardsDone(l.id); const n = cd.units.length; const nextU = Math.min(done, n - 1);
   const all = done >= n;
   return `<section class="cu" aria-label="カードで学ぶ">
-    <div class="cu-head"><b>カードで学ぶ</b><span class="cap">${n}区切り・全部で約${cd.units.reduce((m, u) => m + unitMinutes(u), 0)}分</span></div>
+    <div class="cu-head"><b>${lmode() === "scroll" ? "区切りごとに読む" : "カードで学ぶ"}</b><span class="cap">${n}区切り・全部で約${cd.units.reduce((m, u) => m + unitMinutes(u), 0)}分</span></div>
     <div class="cu-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${Math.min(done, n)}">${cd.units.map((_, i) => `<i class="${i < done ? "on" : ""}"></i>`).join("")}</div>
-    <a class="btn btn-cta btn-block cu-go" href="#/cards/${l.id}/${all ? 0 : nextU}">${all ? "もう一度カードで復習する" : done ? `続きから：${esc(cd.units[nextU].title)}` : `カードで始める（約${unitMinutes(cd.units[0])}分）`}</a>
+    <a class="btn btn-cta btn-block cu-go" href="#/cards/${l.id}/${all ? 0 : nextU}">${all ? "もう一度はじめから復習する" : done ? `続きから：${esc(cd.units[nextU].title)}` : `はじめる（約${unitMinutes(cd.units[0])}分）`}</a>
     <ol class="cu-list">${cd.units.map((u, i) => `<li><a class="cu-row press${i < done ? " done" : i === nextU && !all ? " now" : ""}" href="#/cards/${l.id}/${i}">
       <span class="cu-num">${i < done ? I.check : i + 1}</span>
       <span class="cu-txt"><b>${esc(u.title)}</b><small>${esc(u.goal || "")}</small></span>
@@ -975,6 +986,7 @@ async function viewCards(lid, ui) {
   const unit = cd.units[ui];
   C = { D, l, cd, ui, unit, i: 0, ans: null, ok: 0, nq: unit.cards.filter((k) => k.t === "quiz" && D.byId.has(k.q)).length };
   unit.cards = unit.cards.filter((k) => k.t !== "quiz" || D.byId.has(k.q));
+  if (lmode() === "scroll") { C.sa = {}; return drawUnitScroll(); }
   drawCard();
 }
 
@@ -1029,6 +1041,58 @@ function drawCard(dir = 0) {
     if (dx < 0) cardNext(); else cardPrev();
   });
   if (!isQuiz) st.addEventListener("click", (e) => { if (!e.target.closest("button,a")) cardNext(); });
+}
+/* ふつうモード：区切りのカードを縦に並べて読む。問題はその場で答える。 */
+function quizBlockHTML(q, idx, a, sel) {
+  const multi = q.correctAnswers.length > 1;
+  return `<div class="cd-face cd-quiz us-q" id="usq-${idx}">
+    <span class="cd-kicker">${I.bolt}<span>1問チェック</span></span>
+    <p class="cd-q">${esc(q.question)}</p>
+    ${multi ? `<p class="cap">正しいものを${q.correctAnswers.length}つ選んでください。</p>` : ""}
+    <div class="cd-choices">${q.choices.map((c, j) => {
+      const st = !a ? "" : q.correctAnswers.includes(j) ? " ok" : a.sel.has(j) ? " ng" : " dim";
+      return `<button class="choice${st}" data-i="${idx}" data-j="${j}" ${a ? "disabled" : ""} aria-pressed="${a ? a.sel.has(j) : sel?.has(j) ? "true" : "false"}"><span class="mk">${j + 1}</span><span>${esc(c)}</span></button>`;
+    }).join("")}</div>
+    ${!a && multi ? `<button class="btn btn-primary btn-block us-submit" data-i="${idx}" ${sel?.size ? "" : "disabled"}>答え合わせ</button>` : ""}
+    ${a ? `<div class="cd-fb ${a.ok ? "good" : "bad"}" role="status"><b>${a.ok ? `${I.check}<span>正解</span>` : `${I.x}<span>おしい</span>`}</b><p>${esc(firstSentence(q.explanation))}</p></div>` : ""}
+  </div>`;
+}
+function drawUnitScroll(focus) {
+  const { unit, l, cd, ui, D } = C;
+  const html = unit.cards.map((k, idx) => {
+    if (k.t === "quiz") { const s = C.sa[idx]; return quizBlockHTML(D.byId.get(k.q), idx, s?.ans, s?.sel); }
+    return `<div class="us-pt"><h2 class="us-head">${esc(k.head)}</h2><p class="us-body">${esc(k.body)}</p>${k.ex ? `<div class="cd-ex"><span>例</span><p>${esc(k.ex)}</p></div>` : ""}</div>`;
+  }).join("");
+  const nq = unit.cards.filter((k) => k.t === "quiz").length;
+  const answered = Object.values(C.sa).filter((x) => x.ans).length;
+  const y = window.scrollY;
+  render(`<div class="us">
+    <span class="cap">区切り ${ui + 1}/${cd.units.length}・${esc(l.title)}</span>
+    <h1 class="h-title us-title">${esc(unit.title)}</h1>
+    ${unit.goal ? `<p class="us-goal">${esc(unit.goal)}</p>` : ""}
+    <div class="us-list">${html}</div>
+    <div class="cd-act us-act"><span class="us-count">${answered}/${nq}問</span><button class="btn ${answered >= nq ? "btn-cta" : "btn-secondary"} btn-block" id="usDone">${answered >= nq ? "この区切りを終える" : "問題に答えて終える"}</button></div>
+  </div>`);
+  if (focus != null) window.scrollTo(0, y);
+  document.querySelectorAll(".us-q .choice").forEach((b) => b.addEventListener("click", () => usAnswer(Number(b.dataset.i), Number(b.dataset.j))));
+  document.querySelectorAll(".us-submit").forEach((b) => b.addEventListener("click", () => usSubmit(Number(b.dataset.i))));
+  $("#usDone").addEventListener("click", () => {
+    const left = unit.cards.findIndex((k, idx) => k.t === "quiz" && !C.sa[idx]?.ans);
+    if (left >= 0) { $(`#usq-${left}`)?.scrollIntoView({ behavior: "smooth", block: "center" }); toast("まだ答えていない問題があります"); return; }
+    C.i = unit.cards.length; cardDone();
+  });
+}
+function usAnswer(idx, j) {
+  const s = (C.sa[idx] ||= {}); if (s.ans) return;
+  const q = C.D.byId.get(C.unit.cards[idx].q);
+  if (q.correctAnswers.length > 1) { s.sel ||= new Set(); s.sel.has(j) ? s.sel.delete(j) : s.sel.add(j); vibrate(); return drawUnitScroll(idx); }
+  s.sel = new Set([j]); usSubmit(idx);
+}
+function usSubmit(idx) {
+  const s = C.sa[idx]; const q = C.D.byId.get(C.unit.cards[idx].q); if (!s?.sel?.size) return;
+  const ok = q.correctAnswers.length === s.sel.size && q.correctAnswers.every((x) => s.sel.has(x));
+  s.ans = { sel: s.sel, ok }; if (ok) C.ok++;
+  recordAnswer(q, ok, false); vibrate(); drawUnitScroll(idx);
 }
 const firstSentence = (t) => { const s = String(t || "").split(/(?<=。)/)[0]; return s.length > 120 ? s.slice(0, 118) + "…" : s; };
 
@@ -1121,7 +1185,7 @@ document.addEventListener("keydown", (e) => {
     else if (e.key === "Enter") { if (Q.submitted) nextQ(); else submit(); e.preventDefault(); }
     else if (e.key.toLowerCase() === "h") hint();
     else if (e.key.toLowerCase() === "c") $("#unsure")?.click();
-  } else if (C && location.hash.startsWith("#/cards/")) {
+  } else if (C && !C.sa && location.hash.startsWith("#/cards/")) {
     const k = C.unit.cards[C.i];
     if (k?.t === "quiz" && !C.ans && /^[1-9]$/.test(e.key)) { cardAnswer(Number(e.key) - 1); e.preventDefault(); }
     else if (e.key === "ArrowRight" || e.key === "Enter" || e.key === " ") { cardNext(); e.preventDefault(); }
