@@ -714,3 +714,21 @@ details.more{margin-top:var(--s4)}
 .us .cd-face{min-height:0;animation:none;padding:20px 18px;border-color:color-mix(in srgb,var(--orange) 45%,var(--line))}
 .us-act{grid-template-columns:auto 1fr;align-items:center;margin-top:var(--s5) !important}
 .us-count{font-size:13px;font-weight:800;color:var(--sub);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:8px 12px}
+
+/* カード中に教材（長文）を開くボタン */
+.cd-row{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);min-width:0}
+.cd-row .cap{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cd-book{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:6px 12px 6px 10px;border-radius:99px;border:1px solid var(--line);background:var(--card);color:var(--navy);font:inherit;font-size:13px;font-weight:800;cursor:pointer;box-shadow:var(--shadow);transition:transform .12s var(--ease),border-color .15s}
+.cd-book svg{width:16px;height:16px}
+.cd-book:hover{border-color:var(--navy)}
+.cd-book:active{transform:scale(.96)}
+.cd-book:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.sheet .lesson h2.near{scroll-margin-top:8px;color:var(--orange)}
+.sheet .lesson h2.near::before{content:"";display:inline-block;width:4px;height:1em;margin-right:8px;vertical-align:-2px;border-radius:2px;background:var(--orange)}
+.cd-fb.peek{background:var(--blue-soft)} .cd-fb.peek b{color:var(--blue)}
+.cd-fb.peek b svg{width:18px;height:18px}
+.cd-score{display:flex;justify-content:center;gap:var(--s2);margin:var(--s3) 0 var(--s2);flex-wrap:wrap}
+.cd-score span{display:grid;justify-items:center;gap:2px;min-width:88px;padding:10px 12px;border-radius:14px;background:var(--green-soft);color:var(--green);font-size:12px;font-weight:700}
+.cd-score b{font-size:22px;line-height:1}
+.cd-score .pk{background:var(--blue-soft);color:var(--blue)}
+.cd-score .ng{background:var(--card2);color:var(--sub);border:1px solid var(--line)}
