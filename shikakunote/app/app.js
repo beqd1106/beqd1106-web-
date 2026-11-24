@@ -1,6 +1,6 @@
 // 資格note Web — ビルドなしの1ページアプリ（hashルーティング）
 // 進捗はこのブラウザの localStorage にだけ保存する（ログイン・同期なし）。
-const DATA_V = "20261123e";
+const DATA_V = "20261125a";
 const STORE_KEY = "shikakunote.web.v1";
 const INTERVALS = [1, 3, 7, 14, 30]; // iOS版と同じ間隔反復
 const SET_SIZE = 5;
@@ -67,12 +67,12 @@ async function getJSON(name) {
 }
 async function examData(k) {
   if (cache[k]) return cache[k];
-  const [qs, lessons, terms, hints] = await Promise.all([getJSON(`${k}_questions`), getJSON(`${k}_lessons`).catch(() => []), getJSON(`${k}_terms`).catch(() => []), getJSON(`${k}_hints`).catch(() => ({}))]);
+  const [qs, lessons, terms, hints, cards] = await Promise.all([getJSON(`${k}_questions`), getJSON(`${k}_lessons`).catch(() => []), getJSON(`${k}_terms`).catch(() => []), getJSON(`${k}_hints`).catch(() => ({})), getJSON(`${k}_cards`).catch(() => ({}))]);
   const byId = new Map(qs.map((q) => [q.id, q]));
   // 問題ID → その問題が載っているレッスン（問題の途中で教材を開くため）
   const lessonOf = new Map();
   for (const l of lessons) for (const f of ["basicQuizIds", "quizIds", "drillQuizIds", "challengeQuizIds"]) for (const id of l[f] || []) if (!lessonOf.has(id)) lessonOf.set(id, l);
-  return (cache[k] = { qs, byId, lessons, terms, lessonOf, hints });
+  return (cache[k] = { qs, byId, lessons, terms, lessonOf, hints, cards });
 }
 
 /* ---------- 教材の本文（レッスン画面と問題中のシートで共用） ---------- */
@@ -110,7 +110,7 @@ function openLessonSheet(l, focusKey, opener) {
       <div class="sheet-head"><div style="flex:1;min-width:0"><span class="cap">${esc(domainInfo(l.domain)?.shortTitle || "")}・教材</span><h2 id="sheet-title" class="sheet-title">${esc(l.title)}</h2></div>
         <button class="icon-btn" id="sheet-x" aria-label="閉じる">${I.x}</button></div>
       <div class="sheet-body"><article class="lesson">
-        ${l.summary ? `<div class="note" style="margin:0 0 8px"><b>要点</b><br>${esc(l.summary)}</div>` : ""}
+        ${l.summary && !D.cards?.[l.id] ? `<div class="note" style="margin:0 0 8px"><b>要点</b><br>${esc(l.summary)}</div>` : ""}
         ${lessonBodyHTML(l, focusKey)}
       </article></div>
       <div class="sheet-foot"><button class="btn btn-primary btn-block" id="sheet-back">問題に戻る</button></div>
@@ -545,7 +545,7 @@ async function viewLesson(id) {
       <span class="tag">${esc(domainInfo(l.domain)?.shortTitle || "")}・約${l.estimatedMinutes || 5}分</span>
       <h1 class="h-title" style="margin:10px 0 8px">${esc(l.title)}</h1>
       ${l.summary ? `<div class="note" style="margin:0 0 8px"><b>要点</b><br>${esc(l.summary)}</div>` : ""}
-      ${lessonBodyHTML(l)}
+      ${D.cards?.[l.id] ? `${cardUnitsHTML(l, D.cards[l.id])}<details class="card more"><summary>くわしく読む（長文・約${l.estimatedMinutes || 5}分）</summary><div class="lesson-long">${lessonBodyHTML(l)}</div></details>` : lessonBodyHTML(l)}
     </article>
     <div class="stack" style="margin-top:24px">
       ${qn ? `<a class="btn btn-cta btn-block" href="#/quiz/lesson/${l.id}" id="lq">読んだ内容を${Math.min(qn, SET_SIZE)}問で確かめる</a>` : ""}
@@ -947,9 +947,142 @@ async function viewTerms() {
 }
 
 /* ---------- ルーター ---------- */
+/* ---------- カードで学ぶ（短いカード＋はさまれた1問。1区切り約3分） ---------- */
+// データ: data/<exam>_cards.json = { lessonId: { units:[{title, goal, cards:[{t:"point",head,body,ex}|{t:"quiz",q}]}] } }
+// 進み具合: exState().cards[lessonId] = 終えた区切りの数
+let C = null;
+const unitMinutes = (u) => Math.max(1, Math.round(u.cards.reduce((m, k) => m + (k.t === "quiz" ? 20 : ((k.body || "").length + (k.ex || "").length) / 6.5 + 4), 0) / 60));
+const cardsDone = (lid) => (exState().cards ||= {})[lid] || 0;
+
+function cardUnitsHTML(l, cd) {
+  const done = cardsDone(l.id); const n = cd.units.length; const nextU = Math.min(done, n - 1);
+  const all = done >= n;
+  return `<section class="cu" aria-label="カードで学ぶ">
+    <div class="cu-head"><b>カードで学ぶ</b><span class="cap">${n}区切り・全部で約${cd.units.reduce((m, u) => m + unitMinutes(u), 0)}分</span></div>
+    <div class="cu-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${Math.min(done, n)}">${cd.units.map((_, i) => `<i class="${i < done ? "on" : ""}"></i>`).join("")}</div>
+    <a class="btn btn-cta btn-block cu-go" href="#/cards/${l.id}/${all ? 0 : nextU}">${all ? "もう一度カードで復習する" : done ? `続きから：${esc(cd.units[nextU].title)}` : `カードで始める（約${unitMinutes(cd.units[0])}分）`}</a>
+    <ol class="cu-list">${cd.units.map((u, i) => `<li><a class="cu-row press${i < done ? " done" : i === nextU && !all ? " now" : ""}" href="#/cards/${l.id}/${i}">
+      <span class="cu-num">${i < done ? I.check : i + 1}</span>
+      <span class="cu-txt"><b>${esc(u.title)}</b><small>${esc(u.goal || "")}</small></span>
+      <span class="cu-min">約${unitMinutes(u)}分</span>${I.chev}</a></li>`).join("")}</ol>
+  </section>`;
+}
+
+async function viewCards(lid, ui) {
+  const D = await examData(S.exam); const l = D.lessons.find((x) => x.id === lid); const cd = D.cards?.[lid];
+  topbar("back", `#/lesson/${lid}`, "カード"); tabbar("lessons");
+  if (!l || !cd || !cd.units[ui]) return render(`<div class="empty"><p>カードが見つかりません。</p><a class="btn btn-secondary" href="#/lesson/${lid}">レッスンへ</a></div>`);
+  const unit = cd.units[ui];
+  C = { D, l, cd, ui, unit, i: 0, ans: null, ok: 0, nq: unit.cards.filter((k) => k.t === "quiz" && D.byId.has(k.q)).length };
+  unit.cards = unit.cards.filter((k) => k.t !== "quiz" || D.byId.has(k.q));
+  drawCard();
+}
+
+function drawCard(dir = 0) {
+  if (!C) return;
+  const { unit, i, l, cd, ui } = C;
+  if (i >= unit.cards.length) return cardDone();
+  const k = unit.cards[i];
+  const segs = unit.cards.map((x, j) => `<i class="${j < i ? "on" : j === i ? "cur" : ""}${x.t === "quiz" ? " q" : ""}"></i>`).join("");
+  let inner;
+  if (k.t === "quiz") {
+    const q = C.D.byId.get(k.q); const a = C.ans;
+    const multi = q.correctAnswers.length > 1;
+    inner = `<div class="cd-face cd-quiz">
+      <span class="cd-kicker">${I.bolt}<span>1問チェック</span></span>
+      <p class="cd-q">${esc(q.question)}</p>
+      ${multi ? `<p class="cap">正しいものを${q.correctAnswers.length}つ選んでください。</p>` : ""}
+      <div class="cd-choices">${q.choices.map((c, j) => {
+        const st = !a ? "" : q.correctAnswers.includes(j) ? " ok" : a.sel.has(j) ? " ng" : " dim";
+        return `<button class="choice${st}" data-j="${j}" ${a ? "disabled" : ""} aria-pressed="${a ? a.sel.has(j) : C.sel?.has(j) ? "true" : "false"}"><span class="mk">${j + 1}</span><span>${esc(c)}</span></button>`;
+      }).join("")}</div>
+      ${a ? `<div class="cd-fb ${a.ok ? "good" : "bad"}" role="status"><b>${a.ok ? `${I.check}<span>正解</span>` : `${I.x}<span>おしい</span>`}</b><p>${esc(firstSentence(q.explanation))}</p>${!a.ok ? [...a.sel].filter((j) => !q.correctAnswers.includes(j)).map((j) => wrongReason(q, j)).filter(Boolean).slice(0, 1).map((r) => `<p class="cd-why"><b>${[...a.sel].find((j) => !q.correctAnswers.includes(j)) + 1}を選んだとき</b>${esc(r.length > 120 ? r.slice(0, 118) + "…" : r)}</p>`).join("") : ""}</div>` : ""}
+    </div>`;
+  } else {
+    inner = `<div class="cd-face">
+      <span class="cd-kicker">${esc(unit.title)}</span>
+      <h2 class="cd-head">${esc(k.head)}</h2>
+      <p class="cd-body">${esc(k.body)}</p>
+      ${k.ex ? `<div class="cd-ex"><span>例</span><p>${esc(k.ex)}</p></div>` : ""}
+    </div>`;
+  }
+  const isQuiz = k.t === "quiz"; const multi = isQuiz && C.D.byId.get(k.q).correctAnswers.length > 1;
+  const canNext = !isQuiz || C.ans;
+  const nextLabel = isQuiz && !C.ans ? (multi ? "答え合わせ" : "選ぶと答え合わせ") : i === unit.cards.length - 1 ? "この区切りを終える" : "次へ";
+  render(`<div class="cd" data-dir="${dir}">
+    <div class="cd-top"><span class="cap">区切り ${ui + 1}/${cd.units.length}・${esc(l.title)}</span><div class="cd-segs" aria-label="${i + 1}/${unit.cards.length}枚目">${segs}</div></div>
+    <div class="cd-stage" id="cdStage">${inner}</div>
+    <div class="cd-act">
+      <button class="btn btn-ghost cd-prev" id="cdPrev" ${i === 0 ? "disabled" : ""} aria-label="前のカード">${I.back}</button>
+      <button class="btn ${canNext ? "btn-cta" : "btn-secondary"} btn-block" id="cdNext" ${!canNext && !(multi && C.sel?.size) ? "disabled" : ""}>${nextLabel}</button>
+    </div>
+  </div>`);
+  $("#cdPrev").addEventListener("click", cardPrev);
+  $("#cdNext").addEventListener("click", () => (isQuiz && !C.ans ? cardSubmit() : cardNext()));
+  document.querySelectorAll(".cd-choices .choice").forEach((b) => b.addEventListener("click", () => cardAnswer(Number(b.dataset.j))));
+  // 左右スワイプ（問題は選択肢を押すので、スワイプは本文カードと答え合わせ後だけ）
+  const st = $("#cdStage"); let x0 = null, y0 = null;
+  st.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+  st.addEventListener("touchend", (e) => {
+    if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.3) return;
+    if (dx < 0) cardNext(); else cardPrev();
+  });
+  if (!isQuiz) st.addEventListener("click", (e) => { if (!e.target.closest("button,a")) cardNext(); });
+}
+const firstSentence = (t) => { const s = String(t || "").split(/(?<=。)/)[0]; return s.length > 120 ? s.slice(0, 118) + "…" : s; };
+
+function cardAnswer(j) {
+  if (!C || C.ans) return;
+  const k = C.unit.cards[C.i]; if (k?.t !== "quiz") return;
+  const q = C.D.byId.get(k.q); if (j >= q.choices.length) return;
+  if (q.correctAnswers.length > 1) { C.sel ||= new Set(); C.sel.has(j) ? C.sel.delete(j) : C.sel.add(j); vibrate(); return drawCard(); }
+  C.sel = new Set([j]); cardSubmit();
+}
+function cardSubmit() {
+  const k = C.unit.cards[C.i]; const q = C.D.byId.get(k.q); const sel = C.sel || new Set();
+  if (!sel.size) return;
+  const ok = q.correctAnswers.length === sel.size && q.correctAnswers.every((x) => sel.has(x));
+  C.ans = { sel, ok }; if (ok) C.ok++;
+  recordAnswer(q, ok, false); vibrate(); drawCard();
+  $(".cd-fb")?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" });
+}
+function cardNext() {
+  if (!C) return; const k = C.unit.cards[C.i];
+  if (k?.t === "quiz" && !C.ans) return;
+  C.i++; C.ans = null; C.sel = null; drawCard(1);
+}
+function cardPrev() { if (!C || C.i === 0) return; C.i--; C.ans = null; C.sel = null; drawCard(-1); }
+
+function cardDone() {
+  const { l, cd, ui, ok, nq } = C; const st = exState(); st.cards ||= {};
+  if ((st.cards[l.id] || 0) < ui + 1) st.cards[l.id] = ui + 1;
+  const d = (S.days[dayKey()] ||= {}); d._c = (d._c || 0) + 1;
+  const last = ui + 1 >= cd.units.length;
+  if (last && !st.lessons.includes(l.id)) { st.lessons.push(l.id); d._l = (d._l || 0) + 1; }
+  save();
+  const D = C.D; C = null;
+  const nl = D.lessons[D.lessons.indexOf(l) + 1];
+  const qn = (l.quizIds || []).filter((x) => D.byId.has(x)).length;
+  const nu = cd.units[ui + 1];
+  render(`<div class="cd-done">
+    <div class="cd-done-ic">${I.checkBig}</div>
+    <h1 class="h-title">${last ? "レッスンのカードを全部めくりました" : "区切りクリア"}</h1>
+    <p class="cap">区切り ${ui + 1}/${cd.units.length}「${esc(cd.units[ui].title)}」${nq ? `・1問チェック ${ok}/${nq}問正解` : ""}</p>
+    <div class="cu-bar big">${cd.units.map((_, i) => `<i class="${i <= ui ? "on" : ""}"></i>`).join("")}</div>
+    <div class="stack" style="margin-top:24px">
+      ${nu ? `<a class="btn btn-cta btn-block" href="#/cards/${l.id}/${ui + 1}">次の区切りへ：${esc(nu.title)}（約${unitMinutes(nu)}分）</a>`
+        : qn ? `<a class="btn btn-cta btn-block" href="#/quiz/lesson/${l.id}">仕上げに${Math.min(qn, SET_SIZE)}問で確かめる</a>` : ""}
+      ${!nu && nl ? `<a class="btn btn-secondary btn-block" href="#/lesson/${nl.id}">次のレッスン：${esc(nl.title)}</a>` : ""}
+      <a class="btn btn-ghost btn-block" href="#/lesson/${l.id}">${nu ? "今日はここまで" : "レッスンに戻る"}</a>
+    </div>
+  </div>`);
+}
+
 async function route() {
   if (L && !location.hash.startsWith("#/play/")) { stopSpeak(); L = null; }
   if (T && !location.hash.startsWith("#/terms")) { T.audio.pause(); T = null; }
+  if (C && !location.hash.startsWith("#/cards/")) C = null;
   const h = location.hash.slice(2) || "home";
   const [path, qs] = h.split("?");
   const parts = path.split("/");
@@ -967,6 +1100,7 @@ async function route() {
       }
       case "lessons": return await viewLessons(parts[1]);
       case "lesson": return await viewLesson(parts[1]);
+      case "cards": return await viewCards(parts[1], Number(parts[2] || 0));
       case "listen": await loadTerms(); return await viewListen();
       case "terms": return await viewTerms();
       case "play": return await viewPlay(parts[1]);
@@ -987,6 +1121,11 @@ document.addEventListener("keydown", (e) => {
     else if (e.key === "Enter") { if (Q.submitted) nextQ(); else submit(); e.preventDefault(); }
     else if (e.key.toLowerCase() === "h") hint();
     else if (e.key.toLowerCase() === "c") $("#unsure")?.click();
+  } else if (C && location.hash.startsWith("#/cards/")) {
+    const k = C.unit.cards[C.i];
+    if (k?.t === "quiz" && !C.ans && /^[1-9]$/.test(e.key)) { cardAnswer(Number(e.key) - 1); e.preventDefault(); }
+    else if (e.key === "ArrowRight" || e.key === "Enter" || e.key === " ") { cardNext(); e.preventDefault(); }
+    else if (e.key === "ArrowLeft") { cardPrev(); e.preventDefault(); }
   } else if (L && location.hash.startsWith("#/play/")) {
     if (e.key === " ") { $("#lplay")?.click(); e.preventDefault(); }
     else if (e.key === "ArrowDown") { toSlide(L.i + 1); e.preventDefault(); }
