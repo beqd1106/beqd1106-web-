@@ -346,10 +346,87 @@ export default {
       return handleOorasuComment(request, env, ctx);
     }
 
+    // 介護事業所向け提案の共有ページ（/care/ 以下はパスワードで守る）
+    if (url.pathname === "/care" || url.pathname.startsWith("/care/")) {
+      return handleCareHub(request, env, url);
+    }
+
     // 静的アセット配信
     return env.ASSETS.fetch(request);
   },
 };
+
+// ── 共有ページの鍵（/care/）──────────────────────────────
+// パスワードは secret の CARE_HUB_PASS。合っていれば HttpOnly の Cookie（7日）を渡す
+async function careToken(env) {
+  const d = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("care-hub-v1:" + env.CARE_HUB_PASS));
+  return [...new Uint8Array(d)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+function careHeaders(h) {
+  h.set("X-Robots-Tag", "noindex, nofollow");
+  h.set("Cache-Control", "private, no-store");
+  h.set("Referrer-Policy", "no-referrer");
+  h.set("X-Content-Type-Options", "nosniff");
+  return h;
+}
+async function handleCareHub(request, env, url) {
+  if (!env.CARE_HUB_PASS) return new Response("not configured", { status: 503, headers: careHeaders(new Headers()) });
+  const token = await careToken(env);
+  if (url.pathname === "/care/login" && request.method === "POST") {
+    const form = await request.formData().catch(() => null);
+    const pass = form ? String(form.get("password") || "") : "";
+    if (pass === env.CARE_HUB_PASS) {
+      const h = careHeaders(new Headers({ Location: "/care/" }));
+      h.append("Set-Cookie", `care_hub=${token}; Path=/care/; Max-Age=604800; HttpOnly; Secure; SameSite=Lax`);
+      return new Response(null, { status: 303, headers: h });
+    }
+    await new Promise((r) => setTimeout(r, 500));
+    return careLoginPage(true);
+  }
+  const cookie = request.headers.get("Cookie") || "";
+  const ok = cookie.split(/;\s*/).some((c) => c === "care_hub=" + token);
+  if (!ok) {
+    if (request.method !== "GET" || !/\/care\/?$|\.html$/.test(url.pathname)) return new Response("Unauthorized", { status: 401, headers: careHeaders(new Headers()) });
+    return careLoginPage(false);
+  }
+  if (url.pathname === "/care") return Response.redirect(url.origin + "/care/", 301);
+  return serveCareFile(request, env, url);
+}
+// 中身は公開リポジトリに置かず、KV（CARE_HUB）から出す。動画のために Range にも答える
+const CARE_TYPES = { html: "text/html; charset=utf-8", pdf: "application/pdf", mp4: "video/mp4", jpg: "image/jpeg", png: "image/png" };
+async function serveCareFile(request, env, url) {
+  let key = decodeURIComponent(url.pathname.slice("/care/".length)) || "index.html";
+  if (key.endsWith("/")) key += "index.html";
+  if (!/^[a-z0-9_\-\/]+\.(html|pdf|mp4|jpg|png)$/i.test(key) || key.includes("..")) return new Response("Not Found", { status: 404, headers: careHeaders(new Headers()) });
+  const buf = env.CARE_HUB ? await env.CARE_HUB.get(key, "arrayBuffer") : null;
+  if (!buf) return new Response("Not Found", { status: 404, headers: careHeaders(new Headers()) });
+  const h = careHeaders(new Headers({ "Content-Type": CARE_TYPES[key.split(".").pop().toLowerCase()], "Accept-Ranges": "bytes" }));
+  const total = buf.byteLength;
+  const m = /^bytes=(\d*)-(\d*)$/.exec(request.headers.get("Range") || "");
+  if (m && (m[1] || m[2])) {
+    let start = m[1] ? Number(m[1]) : Math.max(0, total - Number(m[2]));
+    let end = m[1] && m[2] ? Math.min(Number(m[2]), total - 1) : total - 1;
+    if (start >= total || start > end) { h.set("Content-Range", `bytes */${total}`); return new Response(null, { status: 416, headers: h }); }
+    h.set("Content-Range", `bytes ${start}-${end}/${total}`);
+    h.set("Content-Length", String(end - start + 1));
+    return new Response(request.method === "HEAD" ? null : buf.slice(start, end + 1), { status: 206, headers: h });
+  }
+  h.set("Content-Length", String(total));
+  return new Response(request.method === "HEAD" ? null : buf, { status: 200, headers: h });
+}
+function careLoginPage(failed) {
+  const html = `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>共有ページ｜ケア記録のご提案</title>
+<style>:root{--bg:#f4f1ea;--ink:#1f2a26;--sub:#5d6b65;--line:#ddd6c8;--acc:#1f6b52}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:16px;background:var(--bg);color:var(--ink);font-family:"Hiragino Sans","BIZ UDPGothic","Yu Gothic UI","Meiryo",sans-serif}
+form{width:100%;max-width:380px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px 24px;box-shadow:0 18px 40px -24px rgba(31,42,38,.45)}
+.k{font-size:12px;letter-spacing:.12em;color:var(--acc);font-weight:700}h1{font-size:22px;margin:8px 0 6px}p{font-size:14px;color:var(--sub);line-height:1.7;margin:0 0 18px}
+label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}input{width:100%;min-height:50px;border:1.5px solid #c9d2cd;border-radius:10px;padding:10px 14px;font-size:16px}input:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(31,107,82,.18)}
+button{margin-top:14px;width:100%;min-height:52px;border:0;border-radius:10px;background:var(--acc);color:#fff;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 2px 0 #14463a}button:hover{background:#185a45}button:active{transform:translateY(1px);box-shadow:none}
+.err{color:#b3261e;font-size:13px;margin-top:8px}</style></head><body>
+<form method="post" action="/care/login"><div class="k">SHARED PAGE</div><h1>ケア記録のご提案</h1><p>提案資料・操作動画・試せるアプリをまとめた共有ページです。お知らせしたパスワードを入れてください。</p>
+<label for="p">パスワード</label><input id="p" name="password" type="password" autocomplete="current-password" required autofocus>${failed ? '<div class="err" role="alert">パスワードが違います</div>' : ""}
+<button type="submit">開く</button></form></body></html>`;
+  return new Response(html, { status: failed ? 401 : 200, headers: careHeaders(new Headers({ "Content-Type": "text/html; charset=utf-8" })) });
+}
 
 // ── AI 生成ハンドラー（Cloudflare Workers AI）───────────
 async function handleAIGenerate(request, env) {

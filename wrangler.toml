@@ -5,6 +5,11 @@ main = "worker.js"
 [assets]
 directory = "."
 binding = "ASSETS"
+run_worker_first = ["/care", "/care/*"]
 
 [ai]
 binding = "AI"
+
+[[kv_namespaces]]
+binding = "CARE_HUB"
+id = "48383a4b0d544bc1b124d3de6d5f7cc9"
