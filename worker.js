@@ -383,6 +383,8 @@ async function handleCareHub(request, env, url) {
     await new Promise((r) => setTimeout(r, 500));
     return careLoginPage(true);
   }
+  // アプリの見本（架空データ・アプリ側にログインあり）は、URLだけで開けるようにする
+  if (request.method === "GET" && /^\/care\/kiroku\/(index\.html)?$/.test(url.pathname)) return serveCareFile(request, env, url);
   const cookie = request.headers.get("Cookie") || "";
   const ok = cookie.split(/;\s*/).some((c) => c === "care_hub=" + token);
   if (!ok) {
